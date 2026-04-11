@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#2a5c3f"/>
+<link rel="manifest" href="./manifest.json"/>
+<link rel="apple-touch-icon" href="./icons/icon-192.png"/>
+<meta name="application-name" content="酒造ツール"/>
+<title>アルコール分温度換算表 資料ビュー / ベータ1</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;background:linear-gradient(180deg,#f6f8f6 0%,#f4f1eb 55%,#f7f6f3 100%);color:#17211b;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;overscroll-behavior:none;}
+a{color:inherit;}
+button,input,select{font:inherit;}
+.page{max-width:1180px;margin:0 auto;padding:18px 16px 48px;padding-bottom:max(48px, calc(env(safe-area-inset-bottom) + 24px));}
+.nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:14px 16px;padding-top:max(16px, calc(env(safe-area-inset-top) + 12px));padding-bottom:14px;background:rgba(251,252,250,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,220,214,.9);box-shadow:0 10px 24px rgba(27,38,31,.06);}
+.back-btn,.ghost-btn,.apply-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:16px;border:1.5px solid #d7ddd7;background:#fff;color:#445047;font-size:14px;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease, color .12s ease;box-shadow:0 8px 18px rgba(35,78,55,.10);}
+.back-btn:active,.ghost-btn:active,.apply-btn:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(53,88,66,.10);}
+.back-btn:hover,.ghost-btn:hover,.apply-btn:hover{border-color:#b8c8bf;color:#244732;}
+.nav-title{font-size:18px;font-weight:800;line-height:1.35;min-width:0;}
+.card{margin-top:12px;border-radius:24px;border:1px solid rgba(201,213,206,.88);background:rgba(255,255,255,.95);box-shadow:0 8px 24px rgba(29,44,36,.07);padding:16px 14px;}
+.search-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;}
+.search-actions{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.search-actions .apply-btn,.search-actions .ghost-btn{width:100%;}
+.page-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;margin-top:10px;}
+.page-controls .field{grid-column:1 / -1;}
+.field{display:grid;gap:4px;}
+.field label{font-size:12px;font-weight:800;color:#334039;}
+.input,.select{width:100%;height:48px;border-radius:14px;border:1.5px solid #d6ddd7;background:#fff;font-size:16px;font-weight:800;padding:0 14px;color:#1a1a1a;}
+.input::placeholder{color:#8b968f;font-weight:600;}
+.apply-btn{width:100%;white-space:nowrap;min-height:48px;padding:12px 18px;background:#355842;border:2px solid #355842;color:#fff;box-shadow:0 8px 18px rgba(35,78,55,.14);}
+.apply-btn:hover{background:#2f4d3a;border-color:#2f4d3a;color:#fff;}
+.meta{padding:12px 14px;border-radius:18px;background:linear-gradient(180deg,#f8fbf9 0%,#f2f7f3 100%);border:1px solid #dce4de;display:grid;gap:8px;}
+.meta-main{font-size:14px;font-weight:800;color:#21352b;line-height:1.7;}
+.meta-sub{font-size:12px;line-height:1.8;color:#5d6c61;}
+.status-row{display:flex;flex-wrap:wrap;gap:8px;}
+.status-pill{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:8px 12px;border-radius:999px;background:#eff5f0;border:1px solid #d5dfd8;color:#284031;font-size:13px;font-weight:800;}
+.status-pill span{font-weight:700;color:#5b6a61;}
+.error{display:none;margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid #efcbc4;background:#fff6f4;color:#8a4337;font-size:12px;line-height:1.8;}
+.error.show{display:block;}
+.notice-box{margin-top:10px;padding:12px 14px;border-radius:14px;background:#fff8e8;border:1px solid #e7d7a8;color:#5c4712;line-height:1.7;font-size:14px;}
+.notice-box strong{display:block;margin-bottom:4px;font-size:14px;}
+.notice-box p + p{margin-top:6px;}
+@media (max-width:640px){
+  .notice-box{font-size:13px;padding:11px 12px;}
+}
+.viewer-card{padding:0;overflow:hidden;}
+.image-toolbar{display:grid;gap:10px;padding:14px;border-bottom:1px solid #e2e8e3;background:#f8fbf9;}
+.image-toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.viewer-meta{border-top:1px solid #e2e8e3;}
+.guide-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 14px;border-radius:999px;border:1.5px solid #cfd9d2;background:#fff;color:#294031;font-size:13px;font-weight:800;cursor:pointer;}
+.guide-btn.active{background:#234734;color:#fff;border-color:#234734;}
+.image-wrap{overflow:auto;background:#eef1ed;touch-action:pan-x pan-y pinch-zoom;}
+.image-stage{position:relative;min-width:100%;padding:16px;display:flex;justify-content:flex-start;align-items:flex-start;}
+.doc-image{display:block;position:relative;z-index:1;max-width:none;height:auto;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(27,38,31,.08);}
+.guide-overlay{position:absolute;z-index:2;display:none;pointer-events:none;}
+.guide-overlay.active{display:block;}
+.guide-line{position:absolute;pointer-events:none;}
+.guide-line-v{top:0;bottom:0;width:1px;background:rgba(216,72,39,.34);box-shadow:0 0 0 1px rgba(255,255,255,.18);}
+.guide-line-h{left:0;right:0;height:1px;background:rgba(27,96,201,.34);box-shadow:0 0 0 1px rgba(255,255,255,.18);}
+.guide-handle{position:absolute;pointer-events:auto;display:flex;align-items:center;justify-content:center;position:absolute;border:none;border-radius:999px;color:rgba(255,255,255,.96);font-weight:800;letter-spacing:.01em;touch-action:none;cursor:grab;box-shadow:0 4px 12px rgba(24,34,28,.12);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(1px);-webkit-backdrop-filter:blur(1px);}
+.guide-handle::before{content:"";position:absolute;inset:-10px;}
+.guide-handle:active,.guide-handle.dragging{cursor:grabbing;box-shadow:0 6px 14px rgba(24,34,28,.16);}
+.guide-handle-v{top:-14px;transform:translateX(-50%);min-width:50px;height:24px;padding:0 10px;background:rgba(216,72,39,.56);font-size:10.5px;}
+.guide-handle-h{left:-14px;transform:translateY(-50%);width:24px;min-height:50px;padding:8px 0;background:rgba(27,96,201,.56);font-size:10.5px;writing-mode:vertical-rl;text-orientation:mixed;}
+.guide-handle.dragging.guide-handle-v{background:rgba(216,72,39,.72);}
+.guide-handle.dragging.guide-handle-h{background:rgba(27,96,201,.72);}
+@media(max-width:860px){
+  .nav-title{font-size:15px;}
+  .page{padding-left:12px;padding-right:12px;}
+  .card{padding:14px 12px;}
+  .image-stage{padding:38px 12px 12px 44px;}
+  .image-toolbar-actions{width:100%;}
+  .guide-btn{width:100%;}
+  .guide-handle-v{top:-28px;min-width:46px;height:22px;font-size:10px;}
+  .guide-handle-h{left:-34px;width:22px;min-height:46px;font-size:10px;}
+}
+@media(max-width:420px){
+  .back-btn,.ghost-btn,.apply-btn{padding:10px 12px;font-size:13px;}
+  .nav{gap:8px;padding-left:12px;padding-right:12px;}
+}
+
+</style>
+</head>
+<body>
+<div class="nav">
+  <a id="backLink" class="back-btn" href="./index.html">← トップへ戻る</a>
+  <div class="nav-title">アルコール分温度換算表</div>
+</div>
+<div class="page">
+  <div class="card controls-card">
+    <div class="search-controls">
+      <div class="field">
+        <label for="abvInput">測定度数</label>
+        <input id="abvInput" class="input" inputmode="decimal" placeholder="例 15.5" />
+      </div>
+      <div class="field">
+        <label for="tempInput">温度</label>
+        <input id="tempInput" class="input" inputmode="decimal" placeholder="例 10.0" />
+      </div>
+      <div class="search-actions">
+        <button id="applyBtn" class="apply-btn" type="button">この条件で開く</button>
+        <button id="resetInputsBtn" class="ghost-btn" type="button">入力値をリセット</button>
+      </div>
+    </div>
+    <div class="page-controls">
+      <div class="field">
+        <label for="pageSelect">アルコール帯</label>
+        <select id="pageSelect" class="select"></select>
+      </div>
+      <button id="prevBtn" class="ghost-btn" type="button">← 前ページ</button>
+      <button id="nextBtn" class="ghost-btn" type="button">次ページ →</button>
+    </div>
+    <div id="errorBox" class="error"></div>
+
+    <div class="notice-box" role="note" aria-label="自動補助線の注意">
+      <strong>補助線は目安です</strong>
+      <p>自動補助線は、入力した測定度数と温度に合わせて表示されますが、画像のスキャン条件や余白位置の差により、実際の交点と少しズレる場合があります。</p>
+      <p>必ずご自身で、測定温度と測定度数の位置を換算表上で確認してください。</p>
+    </div>
+  </div>
+  <div class="card viewer-card">
+    <div class="image-toolbar">
+      <div class="image-toolbar-actions">
+        <button id="toggleGuideBtn" class="guide-btn" type="button" aria-pressed="false">補助線を使う</button>
+      </div>
+      <div class="meta viewer-meta">
+        <div id="metaText" class="meta-main">表示準備中…</div>
+        <div class="status-row">
+          <div id="abvStatus" class="status-pill"><span>測定度数</span><strong>未入力</strong></div>
+          <div id="tempStatus" class="status-pill"><span>温度</span><strong>未入力</strong></div>
+        </div>
+        <div id="pageNote" class="meta-sub"></div>
+      </div>
+    </div>
+    <div id="imageWrap" class="image-wrap">
+      <div id="imageStage" class="image-stage">
+        <img id="docImage" class="doc-image" alt="アルコール分温度換算表の資料画像" decoding="async">
+        <div id="guideOverlay" class="guide-overlay" aria-hidden="true">
+          <div id="guideVertical" class="guide-line guide-line-v"></div>
+          <button id="guideVerticalHandle" class="guide-handle guide-handle-v" type="button" aria-label="縦補助線を動かす">度数</button>
+          <div id="guideHorizontal" class="guide-line guide-line-h"></div>
+          <button id="guideHorizontalHandle" class="guide-handle guide-handle-h" type="button" aria-label="横補助線を動かす">温度</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="./data/document-pages.js"></script>
+<script>
+(function(){
+  /* ===== 定数・DOM参照 ===== */
+  const VIEW_META = {
+    version: 'ベータ1',
+    stateStorageKey: 'sake_docs_view_state_v57_2_21_8_12',
+    defaultBackHref: './index.html'
+  };
+  const PAGE_NAV_LABELS = {
+    prev: '← 前ページ',
+    next: '次ページ →'
+  };
+  const params = new URLSearchParams(location.search);
+  const pages = Array.isArray(window.DOCUMENT_PAGES) ? window.DOCUMENT_PAGES : [];
+  const pageSelect = document.getElementById('pageSelect');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const docImage = document.getElementById('docImage');
+  const imageWrap = document.getElementById('imageWrap');
+  const imageStage = document.getElementById('imageStage');
+  const metaText = document.getElementById('metaText');
+  const pageNote = document.getElementById('pageNote');
+  const errorBox = document.getElementById('errorBox');
+  const backLink = document.getElementById('backLink');
+  const abvInput = document.getElementById('abvInput');
+  const tempInput = document.getElementById('tempInput');
+  const applyBtn = document.getElementById('applyBtn');
+  const resetInputsBtn = document.getElementById('resetInputsBtn');
+  const toggleGuideBtn = document.getElementById('toggleGuideBtn');
+  const guideOverlay = document.getElementById('guideOverlay');
+  const guideVertical = document.getElementById('guideVertical');
+  const guideHorizontal = document.getElementById('guideHorizontal');
+  const guideVerticalHandle = document.getElementById('guideVerticalHandle');
+  const guideHorizontalHandle = document.getElementById('guideHorizontalHandle');
+  const abvStatus = document.getElementById('abvStatus').querySelector('strong');
+  const tempStatus = document.getElementById('tempStatus').querySelector('strong');
+  const requestedBack = params.get('back');
+  const requestedPage = params.get('page');
+  const requestedAbv = normalizeDecimal(params.get('abv'));
+  const requestedTemp = normalizeDecimal(params.get('temp'));
+  const GUIDE_CALIBRATION = {
+    abvBoundaryStartRatio: 0.0606,
+    abvBoundaryEndRatio: 0.9590,
+    tempBoundaryStartRatio: 0.0364,
+    tempBoundaryEndRatio: 0.9555,
+    abvStep: 0.1,
+    tempMin: 0.0,
+    tempMax: 35.0,
+    tempStep: 0.5
+  };
+  let currentIndex = 0;
+  let guideEnabled = false;
+  let guideXRatio = 0.5;
+  let guideYRatio = 0.5;
+  let dragState = null;
+
+  function safeLoadState(){
+    try {
+      const raw = localStorage.getItem(VIEW_META.stateStorageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+  function safeSaveState(next){
+    try {
+      localStorage.setItem(VIEW_META.stateStorageKey, JSON.stringify(next));
+    } catch {}
+  }
+  function clamp(num, min, max){ return Math.max(min, Math.min(num, max)); }
+  function parseRange(label){
+    const match = String(label || '').match(/([0-9]+(?:\.[0-9]+)?)\s*〜\s*([0-9]+(?:\.[0-9]+)?)/);
+    if (!match) return null;
+    return {start:Number(match[1]), end:Number(match[2])};
+  }
+  function normalizeDecimal(value){
+    const trimmed = String(value || '').trim().replace(/。/g,'.');
+    if (!trimmed) return '';
+    const num = Number(trimmed);
+    if (!Number.isFinite(num)) return '';
+    return num.toFixed(1).replace(/\.0$/, '.0');
+  }
+  function setStatusText(target, value, emptyText){
+    target.textContent = value ? value : emptyText;
+  }
+  function getGuideCalibration(page){
+    return Object.assign({}, GUIDE_CALIBRATION, page && page.guideCalibration ? page.guideCalibration : {});
+  }
+  function updateGuideHandleLabels(abvLabel, tempLabel){
+    guideVerticalHandle.textContent = abvLabel ? (abvLabel + '%') : '度数';
+    guideHorizontalHandle.textContent = tempLabel ? (tempLabel + '℃') : '温度';
+  }
+  function getGuideXRatioForPage(abvValue, page){
+    if (!Number.isFinite(abvValue) || !page) return null;
+    const range = parseRange(page.label);
+    if (!range) return null;
+    const calibration = getGuideCalibration(page);
+    const columnCount = Math.round((range.end - range.start) / calibration.abvStep) + 1;
+    if (columnCount <= 0) return null;
+    const boundaryWidth = calibration.abvBoundaryEndRatio - calibration.abvBoundaryStartRatio;
+    if (!(boundaryWidth > 0)) return null;
+    const columnWidth = boundaryWidth / columnCount;
+    const columnIndex = clamp(((abvValue - range.start) / calibration.abvStep) + 0.5, 0.5, columnCount - 0.5);
+    return calibration.abvBoundaryStartRatio + (columnIndex * columnWidth);
+  }
+  function getGuideYRatioForPage(tempValue, page){
+    if (!Number.isFinite(tempValue)) return null;
+    const calibration = getGuideCalibration(page);
+    const rowCount = Math.round((calibration.tempMax - calibration.tempMin) / calibration.tempStep) + 1;
+    if (rowCount <= 0) return null;
+    const boundaryHeight = calibration.tempBoundaryEndRatio - calibration.tempBoundaryStartRatio;
+    if (!(boundaryHeight > 0)) return null;
+    const rowHeight = boundaryHeight / rowCount;
+    const rowIndex = clamp(((tempValue - calibration.tempMin) / calibration.tempStep) + 0.5, 0.5, rowCount - 0.5);
+    return calibration.tempBoundaryStartRatio + (rowIndex * rowHeight);
+  }
+  function applyGuideFromInputs(abvValue, tempValue, page, labels){
+    let moved = false;
+    const targetPage = page || pages[currentIndex];
+    if (Number.isFinite(abvValue)) {
+      const nextX = getGuideXRatioForPage(abvValue, targetPage);
+      if (Number.isFinite(nextX)) {
+        guideXRatio = clamp(nextX, 0, 1);
+        moved = true;
+      }
+    }
+    if (Number.isFinite(tempValue)) {
+      const nextY = getGuideYRatioForPage(tempValue, targetPage);
+      if (Number.isFinite(nextY)) {
+        guideYRatio = clamp(nextY, 0, 1);
+        moved = true;
+      }
+    }
+    updateGuideHandleLabels(labels && labels.abv ? labels.abv : normalizeDecimal(abvInput.value), labels && labels.temp ? labels.temp : normalizeDecimal(tempInput.value));
+    syncGuideOverlay();
+    return moved;
+  }
+  function syncGuideOverlay(){
+    const width = docImage.clientWidth;
+    const height = docImage.clientHeight;
+    if (!width || !height) return;
+    guideOverlay.style.left = docImage.offsetLeft + 'px';
+    guideOverlay.style.top = docImage.offsetTop + 'px';
+    guideOverlay.style.width = width + 'px';
+    guideOverlay.style.height = height + 'px';
+    const x = Math.round(width * guideXRatio);
+    const y = Math.round(height * guideYRatio);
+    guideVertical.style.left = x + 'px';
+    guideVerticalHandle.style.left = x + 'px';
+    guideHorizontal.style.top = y + 'px';
+    guideHorizontalHandle.style.top = y + 'px';
+  }
+  function setGuideEnabled(next){
+    guideEnabled = !!next;
+    guideOverlay.classList.toggle('active', guideEnabled);
+    toggleGuideBtn.classList.toggle('active', guideEnabled);
+    toggleGuideBtn.setAttribute('aria-pressed', guideEnabled ? 'true' : 'false');
+    toggleGuideBtn.textContent = guideEnabled ? '補助線を消す' : '補助線を使う';
+    syncGuideOverlay();
+    saveViewState();
+  }
+  function beginGuideDrag(axis, event){
+    if (!guideEnabled) return;
+    dragState = { axis, handle: event.currentTarget };
+    if (dragState.handle) dragState.handle.classList.add('dragging');
+    if (event.pointerId != null && event.currentTarget.setPointerCapture) {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+    event.preventDefault();
+  }
+  function updateGuideFromPointer(event){
+    if (!dragState || !guideEnabled) return;
+    const rect = guideOverlay.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    if (dragState.axis === 'x') {
+      const nextX = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+      guideXRatio = nextX;
+    } else {
+      const nextY = clamp((event.clientY - rect.top) / rect.height, 0, 1);
+      guideYRatio = nextY;
+    }
+    syncGuideOverlay();
+    saveViewState();
+    event.preventDefault();
+  }
+  function endGuideDrag(){
+    if (dragState && dragState.handle) dragState.handle.classList.remove('dragging');
+    dragState = null;
+  }
+  function saveViewState(){
+    safeSaveState({
+      abv: abvInput.value.trim(),
+      temp: tempInput.value.trim(),
+      pageId: pages[currentIndex] ? pages[currentIndex].id : '',
+      guideEnabled: guideEnabled,
+      guideXRatio: guideXRatio,
+      guideYRatio: guideYRatio
+    });
+  }
+  function updateButtons() {
+    prevBtn.textContent = PAGE_NAV_LABELS.prev;
+    nextBtn.textContent = PAGE_NAV_LABELS.next;
+    prevBtn.disabled = currentIndex <= 0;
+    nextBtn.disabled = currentIndex >= pages.length - 1;
+    pageSelect.disabled = pages.length <= 1;
+  }
+  function applyFitView(){
+    imageStage.style.width = '100%';
+    docImage.style.width = '100%';
+    docImage.style.minWidth = '0';
+    syncGuideOverlay();
+    saveViewState();
+  }
+  function render(index, options) {
+    currentIndex = clamp(index, 0, pages.length - 1);
+    const page = pages[currentIndex];
+    pageSelect.value = String(currentIndex);
+    errorBox.classList.remove('show');
+    metaText.hidden = false;
+    metaText.textContent = (page.title || page.label || ('ページ ' + (currentIndex + 1))) + ' を表示中';
+    const noteText = page.note || '';
+    pageNote.textContent = noteText;
+    pageNote.style.display = noteText ? '' : 'none';
+    docImage.src = page.file;
+    docImage.alt = page.title || page.label || 'アルコール分温度換算表資料';
+    syncGuideOverlay();
+    updateButtons();
+    if (!(options && options.keepScroll)) {
+      imageWrap.scrollTop = 0;
+      imageWrap.scrollLeft = 0;
+    }
+    saveViewState();
+  }
+  function findPageIndexByAbv(value){
+    const candidates = pages.map((page, index) => ({page, index, range: parseRange(page.label)})).filter(item => item.range && value >= item.range.start && value <= item.range.end);
+    if (!candidates.length) return -1;
+    const preferred = candidates.find(item => value < item.range.end || item.index === pages.length - 1);
+    return (preferred || candidates[0]).index;
+  }
+  function applyInputs(){
+    const normalizedAbv = normalizeDecimal(abvInput.value);
+    const normalizedTemp = normalizeDecimal(tempInput.value);
+    const abvNum = normalizedAbv ? Number(normalizedAbv) : NaN;
+    const tempNum = normalizedTemp ? Number(normalizedTemp) : NaN;
+    let targetPage = pages[currentIndex];
+    errorBox.classList.remove('show');
+    if (normalizedAbv) {
+      abvInput.value = normalizedAbv;
+      setStatusText(abvStatus, normalizedAbv + '%', '未入力');
+      const idx = findPageIndexByAbv(abvNum);
+      if (idx >= 0) {
+        targetPage = pages[idx];
+        render(idx);
+      } else {
+        errorBox.textContent = '測定度数に合うページが見つかりませんでした。1.0〜100.0 の範囲で確認してください。';
+        errorBox.classList.add('show');
+      }
+    } else {
+      setStatusText(abvStatus, '', '未入力');
+    }
+    if (normalizedTemp) {
+      tempInput.value = normalizedTemp;
+      setStatusText(tempStatus, normalizedTemp + '℃', '未入力');
+    } else {
+      setStatusText(tempStatus, '', '未入力');
+    }
+    const moved = applyGuideFromInputs(abvNum, tempNum, targetPage, {abv: normalizedAbv, temp: normalizedTemp});
+    if (moved) setGuideEnabled(true);
+    saveViewState();
+  }
+
+  function resetSearchInputs(){
+    abvInput.value = '';
+    tempInput.value = '';
+    guideXRatio = 0.5;
+    guideYRatio = 0.5;
+    showViewError('');
+    setStatusText(abvStatus, '', '未入力');
+    setStatusText(tempStatus, '', '未入力');
+    updateGuideHandleLabels('', '');
+    syncGuideOverlay();
+    setGuideEnabled(false);
+    saveViewState();
+  }
+
+  function showViewError(message){
+    errorBox.textContent = message || '';
+    errorBox.classList.toggle('show', !!message);
+  }
+  function populatePageOptions(){
+    pages.forEach((page, index) => {
+      const opt = document.createElement('option');
+      opt.value = String(index);
+      opt.textContent = page.label || ('ページ ' + (index + 1));
+      pageSelect.appendChild(opt);
+    });
+  }
+  function resolveInitialPageIndex(savedState){
+    if (requestedPage) {
+      const idx = pages.findIndex(page => page.id === requestedPage || page.sourceName === requestedPage || page.label === requestedPage);
+      if (idx >= 0) return idx;
+    }
+    if (savedState.pageId) {
+      const idx = pages.findIndex(page => page.id === savedState.pageId);
+      if (idx >= 0) return idx;
+    }
+    return currentIndex;
+  }
+  function restoreInitialViewState(savedState){
+    currentIndex = resolveInitialPageIndex(savedState);
+    if (requestedAbv) abvInput.value = requestedAbv;
+    if (requestedTemp) tempInput.value = requestedTemp;
+    if (savedState.abv && !abvInput.value) abvInput.value = savedState.abv;
+    if (savedState.temp && !tempInput.value) tempInput.value = savedState.temp;
+    if (typeof savedState.guideEnabled === 'boolean') guideEnabled = savedState.guideEnabled;
+    if (typeof savedState.guideXRatio === 'number' && Number.isFinite(savedState.guideXRatio)) guideXRatio = clamp(savedState.guideXRatio, 0, 1);
+    if (typeof savedState.guideYRatio === 'number' && Number.isFinite(savedState.guideYRatio)) guideYRatio = clamp(savedState.guideYRatio, 0, 1);
+  }
+  function syncInitialGuideFromInputs(){
+    const abvLabel = normalizeDecimal(abvInput.value);
+    const tempLabel = normalizeDecimal(tempInput.value);
+    updateGuideHandleLabels(abvLabel, tempLabel);
+    if (requestedAbv || requestedTemp) {
+      applyInputs();
+      return;
+    }
+    applyGuideFromInputs(Number(abvLabel), Number(tempLabel), pages[currentIndex], {abv: abvLabel, temp: tempLabel});
+  }
+  function bindViewEvents(){
+    docImage.addEventListener('load', applyFitView);
+    docImage.addEventListener('error', function(){ showViewError('画像を読み込めませんでした。images 配下を確認してください。'); });
+    pageSelect.addEventListener('change', function(){ render(Number(pageSelect.value)); });
+    prevBtn.addEventListener('click', function(){ if(currentIndex>0) render(currentIndex-1); });
+    nextBtn.addEventListener('click', function(){ if(currentIndex<pages.length-1) render(currentIndex+1); });
+    applyBtn.addEventListener('click', applyInputs);
+    resetInputsBtn.addEventListener('click', resetSearchInputs);
+    toggleGuideBtn.addEventListener('click', function(){ setGuideEnabled(!guideEnabled); });
+    guideVerticalHandle.addEventListener('pointerdown', function(event){ beginGuideDrag('x', event); });
+    guideHorizontalHandle.addEventListener('pointerdown', function(event){ beginGuideDrag('y', event); });
+    window.addEventListener('pointermove', updateGuideFromPointer, {passive:false});
+    window.addEventListener('pointerup', endGuideDrag);
+    window.addEventListener('pointercancel', endGuideDrag);
+    window.addEventListener('resize', syncGuideOverlay);
+    [abvInput, tempInput].forEach((input) => {
+      input.addEventListener('keydown', function(event){
+        if (event.key === 'Enter') { event.preventDefault(); applyInputs(); }
+      });
+      input.addEventListener('change', function(){
+        updateGuideHandleLabels(normalizeDecimal(abvInput.value), normalizeDecimal(tempInput.value));
+        saveViewState();
+      });
+    });
+  }
+  function resolveBackHref(raw){
+    const cleaned = String(raw || '').trim().replace(/^\.\//, '').replace(/^\//, '');
+    if (!cleaned) return VIEW_META.defaultBackHref;
+    if (cleaned === 'index.html' || cleaned === 'sake_calc_tool_beta1.html') return './' + cleaned;
+    return VIEW_META.defaultBackHref;
+  }
+  function initializeDocumentView(){
+    backLink.href = resolveBackHref(requestedBack);
+    if (!pages.length) {
+      metaText.textContent='表示できる資料がありません。';
+      pageNote.textContent='data/document-pages.js を確認してください。';
+      prevBtn.disabled=true; nextBtn.disabled=true; pageSelect.disabled=true;
+      showViewError('資料一覧が空です。');
+      return;
+    }
+    populatePageOptions();
+    const saved = safeLoadState();
+    restoreInitialViewState(saved);
+    render(currentIndex);
+    setStatusText(abvStatus, abvInput.value ? normalizeDecimal(abvInput.value) + '%' : '', '未入力');
+    setStatusText(tempStatus, tempInput.value ? normalizeDecimal(tempInput.value) + '℃' : '', '未入力');
+    applyFitView();
+    syncInitialGuideFromInputs();
+    setGuideEnabled(guideEnabled);
+    bindViewEvents();
+  }
+  initializeDocumentView();
+})();
+</script>
+<script>
+(function(){
+  const isSecureLike = window.isSecureContext || location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if(!('serviceWorker' in navigator) || !isSecureLike) return;
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(function(error){ console.warn('service worker registration failed', error); });
+  });
+})();
+</script>
+</body>
+</html>
