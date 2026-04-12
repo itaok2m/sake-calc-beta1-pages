@@ -22,8 +22,10 @@ button,input,select{font:inherit;}
 .nav-title{font-size:18px;font-weight:800;line-height:1.35;min-width:0;}
 .card{margin-top:12px;border-radius:24px;border:1px solid rgba(201,213,206,.88);background:rgba(255,255,255,.95);box-shadow:0 8px 24px rgba(29,44,36,.07);padding:16px 14px;}
 .search-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;}
-.search-actions{grid-column:1 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-.search-actions .apply-btn,.search-actions .ghost-btn{width:100%;}
+.search-actions{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:stretch;}
+.search-actions .apply-btn{width:100%;}
+.compact-reset-btn{min-width:142px;min-height:48px;padding:12px 14px;white-space:nowrap;}
+.compact-reset-btn::before{content:'↺ ';font-weight:900;}
 .page-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;margin-top:10px;}
 .page-controls .field{grid-column:1 / -1;}
 .field{display:grid;gap:4px;}
@@ -80,6 +82,7 @@ button,input,select{font:inherit;}
 @media(max-width:420px){
   .back-btn,.ghost-btn,.apply-btn{padding:10px 12px;font-size:13px;}
   .nav{gap:8px;padding-left:12px;padding-right:12px;}
+  .compact-reset-btn{min-width:126px;}
 }
 
 </style>
@@ -102,7 +105,7 @@ button,input,select{font:inherit;}
       </div>
       <div class="search-actions">
         <button id="applyBtn" class="apply-btn" type="button">この条件で開く</button>
-        <button id="resetInputsBtn" class="ghost-btn" type="button">入力値をリセット</button>
+        <button id="resetInputsBtn" class="ghost-btn compact-reset-btn" type="button">入力値をリセット</button>
       </div>
     </div>
     <div class="page-controls">

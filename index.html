@@ -660,6 +660,7 @@ input::placeholder{color:#c4bdb5;}
 .share-choice-btn .btn-main{font-size:14px;font-weight:900;line-height:1.35;}
 .share-choice-btn .btn-sub{font-size:11px;font-weight:700;line-height:1.6;color:#6b756e;}
 .share-choice-btn.is-human{background:#f7fbf8;border-color:#d1e1d7;}
+.share-choice-btn.is-tank2mm{background:#eef6fb;border-color:#c9dced;}
 .share-choice-btn.is-restore{background:#fbf8f3;border-color:#e2dacd;}
 .share-choice-preview-wrap{display:grid;gap:8px;}
 .share-choice-preview-label{font-size:12px;font-weight:800;color:#31463a;}
@@ -1366,6 +1367,101 @@ body::before{
 
 .history-status-badge{pointer-events:none;user-select:none;}
 
+
+
+/* ===== 2mm表（beta1統合） ===== */
+#tank2mm-screen .wrapper{max-width:760px;}
+#tank2mm-screen .tm2-root{display:grid;gap:14px;width:100%;}
+#tank2mm-screen .field-row.col2{grid-template-columns:1fr;}
+#tank2mm-screen .tm2-current-card{background:linear-gradient(180deg,#f5faf6 0%,#edf5ef 100%);border:1px solid #d6e4da;border-radius:14px;padding:14px 14px 12px;}
+#tank2mm-screen .tm2-current-card.is-empty{background:#f8fbf8;border-style:dashed;}
+#tank2mm-screen .tm2-current-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+#tank2mm-screen .tm2-current-label{font-size:12px;font-weight:800;line-height:1.6;color:#4b5f52;}
+#tank2mm-screen .tm2-current-open-btn{width:auto;min-height:40px;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.35;box-shadow:0 6px 14px rgba(35,78,55,.12);white-space:nowrap;flex:0 0 auto;}
+#tank2mm-screen .tm2-current-open-btn:disabled{opacity:.55;}
+#tank2mm-screen .tm2-current-name{margin-top:4px;font-size:26px;font-weight:800;line-height:1.25;color:#13241b;}
+#tank2mm-screen .tm2-current-meta{margin-top:10px;display:grid;gap:4px;justify-items:start;}
+#tank2mm-screen .tm2-current-row{font-size:13px;line-height:1.75;color:#24362a;display:flex;align-items:baseline;justify-content:flex-start;gap:.75em;flex-wrap:wrap;text-align:left;}
+#tank2mm-screen .tm2-current-row span{display:inline-block;min-width:auto;color:#617066;}
+#tank2mm-screen .tm2-current-note{margin-top:8px;font-size:12px;line-height:1.8;color:#657268;text-align:left;}
+#tank2mm-screen .tm2-share-card{padding:14px;border-radius:14px;border:1px solid #d8e2dc;background:#fbfcfb;display:grid;gap:10px;}
+#tank2mm-screen .tm2-share-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+#tank2mm-screen .tm2-share-title{font-size:13px;font-weight:800;line-height:1.6;color:#23372d;}
+#tank2mm-screen .tm2-share-note{font-size:11px;line-height:1.7;color:#657268;}
+#tank2mm-screen .tm2-share-clear-btn{width:auto;min-height:40px;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.35;white-space:nowrap;flex:0 0 auto;}
+#tank2mm-screen .tm2-share-input{width:100%;min-height:118px;border:1px solid #d8e1da;border-radius:14px;background:#fff;padding:12px 13px;font:inherit;line-height:1.7;color:#27352d;resize:vertical;box-sizing:border-box;}
+#tank2mm-screen .tm2-share-input:focus{outline:none;border-color:#2a5c3f;box-shadow:0 0 0 3px rgba(42,92,63,.08);}
+#tank2mm-screen .tm2-mode-group-title{font-size:12px;font-weight:800;line-height:1.6;color:#4b5f52;margin-bottom:10px;}
+#tank2mm-screen .tm2-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+#tank2mm-screen .tm2-mode-btn{
+  min-height:64px;padding:14px 14px 12px;border-radius:16px;border:1px solid #d6ddd7;
+  background:#fff;color:#57635b;text-align:left;font:inherit;font-weight:800;cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:background .15s,color .15s,border-color .15s,box-shadow .15s,transform .15s;
+}
+#tank2mm-screen .tm2-mode-btn.is-active{color:#1d422d;border-color:#9db7a5;background:linear-gradient(180deg,#eef6f0,#e3efe6);box-shadow:0 8px 18px rgba(35,78,55,.08);}
+#tank2mm-screen .tm2-mode-btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none;}
+#tank2mm-screen .tm2-mode-title{display:block;font-size:14px;line-height:1.35;}
+#tank2mm-screen .tm2-mode-sub{display:block;font-size:11px;font-weight:600;line-height:1.55;color:#7a847d;margin-top:4px;}
+#tank2mm-screen .tm2-mode-btn.is-active .tm2-mode-sub{color:#51705d;}
+#tank2mm-screen .tm2-result-box{padding:15px 16px;border-radius:16px;border:1px solid #d9e4dc;background:linear-gradient(180deg,#fbfdfb 0%,#f2f7f3 100%);}
+#tank2mm-screen .tm2-result-label{font-size:12px;font-weight:700;color:#4e5d53;}
+#tank2mm-screen .tm2-result-value{margin-top:6px;font-size:28px;font-weight:800;line-height:1.3;color:#13241b;word-break:break-word;}
+#tank2mm-screen .tm2-subnote{margin-top:10px;font-size:13px;line-height:1.8;color:#5b665d;}
+#tank2mm-screen .tm2-subnote.is-guide{padding:10px 12px;border-radius:12px;border:1px solid #cfe3d4;background:#edf7ef;color:#2a5c3f;}
+#tank2mm-screen .tm2-status{margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid #d7ddd7;background:#f8fbf8;}
+#tank2mm-screen .tm2-status.is-idle{color:#657268;}
+#tank2mm-screen .tm2-status.is-ok{border-color:#cfe3d4;background:#eef7f0;}
+#tank2mm-screen .tm2-status.is-caution{border-color:#e7d19a;background:#fff6e3;}
+#tank2mm-screen .tm2-status-title{font-size:14px;font-weight:800;line-height:1.6;}
+#tank2mm-screen .tm2-status-note{margin-top:4px;font-size:13px;line-height:1.8;}
+#tank2mm-screen .tm2-detail-toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+#tank2mm-screen .tm2-detail-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;}
+#tank2mm-screen .tm2-detail-btn::after{content:'▼';font-size:12px;color:#617066;flex:0 0 auto;}
+#tank2mm-screen .tm2-detail-btn[aria-expanded="true"]::after{content:'▲';}
+#tank2mm-screen .tm2-detail-panel{margin-top:10px;padding:12px 14px;border-radius:14px;border:1px dashed #c9d4c9;background:#fcfdfb;}
+#tank2mm-screen .tm2-detail-grid{display:grid;gap:8px;}
+#tank2mm-screen .tm2-list-top{margin-bottom:12px;}
+#tank2mm-screen .tm2-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;}
+#tank2mm-screen .tm2-mini-reset-btn{
+  min-height:48px;padding:10px 14px;border-radius:14px;white-space:nowrap;
+  border:1px solid #d4893b;background:#e89338;color:#fff;box-shadow:none;
+}
+#tank2mm-screen .tm2-mini-reset-btn::before{content:'↺ ';font-weight:900;}
+#tank2mm-screen .tm2-mini-reset-btn:hover{background:#df8830;border-color:#c77b29;color:#fff;}
+#tank2mm-screen .tm2-mini-reset-btn:active{transform:scale(.99);}
+#tank2mm-screen .tm2-detail-row{font-size:13px;line-height:1.8;color:#1f2f25;}
+#tank2mm-screen .tm2-detail-row span{display:inline-block;min-width:9em;color:#69756d;}
+#tank2mm-screen .tm2-detail-group{padding:10px 0;border-bottom:1px solid #e7ece5;}
+#tank2mm-screen .tm2-detail-group:last-child{padding-bottom:0;border-bottom:none;}
+#tank2mm-screen .tm2-detail-heading{font-size:14px;font-weight:800;color:#173425;margin-bottom:6px;}
+#tank2mm-screen .tm2-error{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid #efb6b1;background:#fff0ef;color:#b42318;font-size:13px;line-height:1.8;}
+#tank2mm-screen .tm2-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+#tank2mm-screen .tm2-list-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;}
+#tank2mm-screen .tm2-list-head h2{font-size:18px;line-height:1.4;color:#1a1a1a;}
+#tank2mm-screen .tm2-list-note{font-size:12px;line-height:1.8;color:#66746a;}
+#tank2mm-screen .tm2-table-wrap{border:1px solid #d7ddd7;border-radius:16px;overflow:hidden;background:#fff;max-height:68vh;overflow:auto;}
+#tank2mm-screen .tm2-table{width:100%;border-collapse:collapse;}
+#tank2mm-screen .tm2-table th,#tank2mm-screen .tm2-table td{padding:12px 14px;border-bottom:1px solid #e7ece5;text-align:left;font-size:13px;}
+#tank2mm-screen .tm2-table thead th{position:sticky;top:0;background:#f4f8f2;z-index:1;font-weight:800;}
+#tank2mm-screen .tm2-table tbody tr.is-highlight{background:#eaf3ec;}
+#tank2mm-screen .tm2-footer-note{margin-top:10px;font-size:12px;line-height:1.8;color:#66746a;}
+#tank2mm-screen [hidden]{display:none !important;}
+@media(max-width:640px){
+  #tank2mm-screen .tm2-mode-grid{grid-template-columns:1fr;}
+  #tank2mm-screen .tm2-actions{grid-template-columns:1fr;}
+  #tank2mm-screen .tm2-list-head{display:block;}
+  #tank2mm-screen .tm2-list-head h2{margin-bottom:4px;}
+  #tank2mm-screen .tm2-detail-row span{min-width:8em;}
+  #tank2mm-screen .tm2-detail-toggle-grid{grid-template-columns:1fr 1fr;}
+  #tank2mm-screen .tm2-detail-btn{min-height:56px;padding:10px 12px;font-size:13px;}
+  #tank2mm-screen .tm2-input-row{grid-template-columns:minmax(0,1fr) auto;}
+  #tank2mm-screen .tm2-mini-reset-btn{padding:10px 12px;font-size:13px;}
+  #tank2mm-screen .tm2-current-head{align-items:flex-start;}
+  #tank2mm-screen .tm2-current-open-btn{min-height:38px;padding:8px 10px;font-size:12px;}
+  #tank2mm-screen .tm2-share-head{display:block;}
+  #tank2mm-screen .tm2-share-clear-btn{margin-top:8px;width:100%;justify-content:center;}
+}
+
 </style>
 </head>
 <body>
@@ -1392,6 +1488,12 @@ body::before{
 <p>アルコール分温度換算表の余白を整理したWebP画像を、資料として表示します。</p>
 <div class="tool-card-arrow">→</div>
 </a>
+
+<div class="tool-card" data-nav-screen="tank2mm-screen" role="button" tabindex="0">
+<h2>2mm表</h2>
+<p>尺棒で測った検尺値や目標数量から、紙の2mm表をもとに容量と候補mmを確認します。</p>
+<div class="tool-card-arrow">→</div>
+</div>
 <div class="tool-card" data-action="goto-warimizu-wari" role="button" tabindex="0">
 <h2>割水計算</h2>
 <p>原液の数量や成分をもとに、目標値へ合わせるための加水量や調整後の値を計算します。</p>
@@ -2017,6 +2119,108 @@ body::before{
 </div>
 </div></div>
 </div>
+
+<div class="screen" id="tank2mm-screen">
+<div class="tool-nav">
+<button class="back-btn" data-nav-screen="home-screen">← トップ</button>
+<div class="tool-nav-place"><span class="tool-nav-title">2mm表</span></div></div>
+<div class="tool-body">
+<div class="screen-lead"><h1>2mm表</h1><p>紙の記載値をもとに、尺→L と L→尺 を確認します。正式な最終基準は紙の2mm表です。</p></div>
+<div class="wrapper" id="tm2-root">
+<div class="card" data-tm2-panel="main">
+<div class="group">
+<div class="field-row col2">
+<div class="field">
+<label>番号帯</label>
+<div class="input-wrap"><select data-tm2-role="group"><option value="">番号帯を選んでください</option></select></div>
+</div>
+<div class="field">
+<label>タンク番号</label>
+<div class="input-wrap"><select data-tm2-role="tank" disabled><option value="">先に番号帯を選んでください</option></select></div>
+</div>
+</div>
+</div>
+<div class="group">
+<div class="tm2-current-card is-empty" data-tm2-role="current-card">
+<div class="tm2-current-head">
+<div class="tm2-current-label">今見ているタンク</div>
+<button class="calc-btn tm2-current-open-btn" data-tm2-action="open-list" disabled type="button">2mm表を見る</button>
+</div>
+<div class="tm2-current-name" data-tm2-role="current-name">未選択</div>
+<div class="tm2-current-meta" data-tm2-role="current-meta" hidden>
+<div class="tm2-current-row"><span>検尺範囲</span><strong data-tm2-role="current-range">—</strong></div>
+<div class="tm2-current-row"><span>容量目安</span><strong data-tm2-role="current-volume-range">—</strong></div>
+<div class="tm2-current-row"><span>2mm当の目安</span><strong data-tm2-role="current-step-volume">—</strong></div>
+</div>
+<div class="tm2-current-note" data-tm2-role="current-note">先にタンクを選ぶと、この下で尺から見るかLから見るかを選べます。</div>
+</div>
+</div>
+<div class="tm2-share-card">
+<div class="tm2-share-head">
+<div>
+<div class="tm2-share-title">共有文メモ（最新1件）</div>
+<div class="tm2-share-note">各計算機の共有内「2mm表に送る」で上書きされます。数量は下で手入力してください。</div>
+</div>
+<button class="back-btn reset-btn tm2-share-clear-btn" data-action="clear-tm2-share-memo" type="button">メモを消す</button>
+</div>
+<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の共有内「2mm表に送る」で入った共有文をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
+</div>
+<div class="group">
+<div class="tm2-mode-group-title">見る内容を選ぶ</div>
+<div class="tm2-mode-grid" role="tablist" aria-label="2mm表の換算方式">
+<button aria-pressed="true" class="tm2-mode-btn is-active" data-tm2-action="mode" data-tm2-mode="gauge" disabled type="button">
+<span class="tm2-mode-title">尺から見る</span>
+<span class="tm2-mode-sub">検尺値(mm)から容量(L)を見る</span>
+</button>
+<button aria-pressed="false" class="tm2-mode-btn" data-tm2-action="mode" data-tm2-mode="volume" disabled type="button">
+<span class="tm2-mode-title">Lから見る</span>
+<span class="tm2-mode-sub">目標数量(L)から候補mmを見る</span>
+</button>
+</div>
+</div>
+<div class="group" data-tm2-field="gauge">
+<div class="field">
+<label>検尺値 <span class="unit-hint">mm</span></label>
+<div class="tm2-input-row"><div class="input-wrap"><input data-tm2-role="gauge" disabled inputmode="numeric" placeholder="例：244" step="1" type="number"/></div><button class="back-btn reset-btn tm2-mini-reset-btn" data-tm2-action="reset" type="button">入力値をリセット</button></div>
+<div class="hint" data-tm2-role="gauge-help">タンクを選ぶと入力範囲を表示します。</div>
+</div>
+</div>
+<div class="group" data-tm2-field="volume" hidden>
+<div class="field">
+<label>目標数量 <span class="unit-hint">L</span></label>
+<div class="tm2-input-row"><div class="input-wrap"><input data-tm2-role="volume" disabled inputmode="decimal" placeholder="例：291.6" step="0.1" type="number"/></div><button class="back-btn reset-btn tm2-mini-reset-btn" data-tm2-action="reset" type="button">入力値をリセット</button></div>
+<div class="hint" data-tm2-role="volume-help">タンクを選ぶと入力範囲の目安を表示します。</div>
+</div>
+</div>
+<div class="tm2-result-box" aria-live="polite">
+<div class="tm2-result-label" data-tm2-role="result-heading">換算値(L)</div>
+<div class="tm2-result-value" data-tm2-role="result-value">—</div>
+<div class="tm2-subnote" data-tm2-role="result-subtext"></div>
+</div>
+<div class="tm2-status is-idle" data-tm2-role="audit-status"><div class="tm2-status-title">監査状態: タンク未選択</div><div class="tm2-status-note">タンクを選ぶと監査状態を表示します。</div></div>
+<div class="tm2-detail-toggle-grid">
+<button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-reason" disabled type="button">結果の理由を見る</button>
+<button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-audit" disabled type="button">登録値・監査詳細を見る</button>
+</div>
+<div class="tm2-detail-panel" data-tm2-role="reason-panel" hidden><div class="tm2-detail-grid" data-tm2-role="reason-grid"></div></div>
+<div class="tm2-detail-panel" data-tm2-role="audit-panel" hidden><div class="tm2-detail-grid" data-tm2-role="audit-grid"></div></div>
+<div class="tm2-error" data-tm2-role="error" hidden></div>
+</div>
+<div class="card" data-tm2-panel="list" hidden>
+<div class="tm2-list-top"><button class="back-btn" data-tm2-action="close-list" type="button">入力画面へ戻る</button></div>
+<div class="tm2-list-head"><h2 data-tm2-role="list-title">2mm表</h2><div class="tm2-list-note">紙の2mm表（2mm刻み）</div></div>
+<div class="tm2-table-wrap">
+<table class="tm2-table">
+<thead><tr><th>検尺値(mm)</th><th>換算値(L)</th></tr></thead>
+<tbody data-tm2-role="list-body"><tr><td colspan="2">タンクを選ぶと2mm表を表示します。</td></tr></tbody>
+</table>
+</div>
+<div class="tm2-footer-note">この一覧は紙の記載値で計算した表示用一覧です。整合ズレは監査状態で確認し、正式基準は紙の2mm表を使ってください。</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="screen" id="moto">
 <div class="tool-nav">
 <button class="back-btn" data-nav-screen="home-screen">← トップ</button>
@@ -2138,7 +2342,7 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-10 22:50',
+  builtAt: '2026-04-12 13:50',
   betaNotes: [
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
@@ -2251,6 +2455,515 @@ function toggleEl(target, visible, display='block'){
   if(visible) showEl(target, display);
   else hideEl(target, display);
 }
+
+/* ===== 2mm表（beta1統合） ===== */
+(function(){
+  const root = document.getElementById('tm2-root');
+  if(!root) return;
+
+  const TM2_TANKS = [
+    { tank_no:70, label:'No.70', group_label:'61〜80', full_l:423, bottom_l:12, center_mm:780, per_mm_l:0.52778, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:73, label:'No.73', group_label:'61〜80', full_l:454, bottom_l:23, center_mm:736, per_mm_l:0.58590, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:83, label:'No.83', group_label:'81〜100', full_l:671, bottom_l:19, center_mm:890, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:88, label:'No.88', group_label:'81〜100', full_l:668, bottom_l:16, center_mm:894, per_mm_l:0.72963, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:89, label:'No.89', group_label:'81〜100', full_l:660, bottom_l:18, center_mm:880, per_mm_l:0.72963, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:90, label:'No.90', group_label:'81〜100', full_l:663, bottom_l:17, center_mm:882, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:92, label:'No.92', group_label:'81〜100', full_l:660, bottom_l:17, center_mm:878, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:133, label:'No.133', group_label:'121〜140', full_l:189, bottom_l:1, center_mm:670, per_mm_l:0.2806, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' }
+  ];
+
+  const $ = sel => root.querySelector(sel);
+  const $$ = sel => Array.from(root.querySelectorAll(sel));
+  const els = {
+    mainPanel: $('[data-tm2-panel="main"]'),
+    listPanel: $('[data-tm2-panel="list"]'),
+    modeButtons: $$('[data-tm2-action="mode"]'),
+    groupSelect: $('[data-tm2-role="group"]'),
+    tankSelect: $('[data-tm2-role="tank"]'),
+    currentCard: $('[data-tm2-role="current-card"]'),
+    currentName: $('[data-tm2-role="current-name"]'),
+    currentMeta: $('[data-tm2-role="current-meta"]'),
+    currentRange: $('[data-tm2-role="current-range"]'),
+    currentVolumeRange: $('[data-tm2-role="current-volume-range"]'),
+    currentStepVolume: $('[data-tm2-role="current-step-volume"]'),
+    currentNote: $('[data-tm2-role="current-note"]'),
+    gaugeField: $('[data-tm2-field="gauge"]'),
+    volumeField: $('[data-tm2-field="volume"]'),
+    gaugeInput: $('[data-tm2-role="gauge"]'),
+    volumeInput: $('[data-tm2-role="volume"]'),
+    gaugeHelp: $('[data-tm2-role="gauge-help"]'),
+    volumeHelp: $('[data-tm2-role="volume-help"]'),
+    resultHeading: $('[data-tm2-role="result-heading"]'),
+    resultValue: $('[data-tm2-role="result-value"]'),
+    resultSubtext: $('[data-tm2-role="result-subtext"]'),
+    auditStatus: $('[data-tm2-role="audit-status"]'),
+    reasonToggle: $('[data-tm2-action="toggle-reason"]'),
+    reasonPanel: $('[data-tm2-role="reason-panel"]'),
+    reasonGrid: $('[data-tm2-role="reason-grid"]'),
+    auditToggle: $('[data-tm2-action="toggle-audit"]'),
+    auditPanel: $('[data-tm2-role="audit-panel"]'),
+    auditGrid: $('[data-tm2-role="audit-grid"]'),
+    errorBox: $('[data-tm2-role="error"]'),
+    openListBtn: $('[data-tm2-action="open-list"]'),
+    listTitle: $('[data-tm2-role="list-title"]'),
+    listBody: $('[data-tm2-role="list-body"]')
+  };
+
+  const state = {
+    mode:'gauge',
+    selectedGroup:'',
+    selectedTankNo:'',
+    lastValidGauge:null,
+    lastReasonCandidates:[],
+    auditOpen:false,
+    reasonOpen:false
+  };
+
+  function countDecimals(value){
+    const str = String(value);
+    if(!str.includes('.')) return 0;
+    return str.split('.')[1].length;
+  }
+  function getGroups(){
+    return [...new Set(TM2_TANKS.map(tank => tank.group_label))];
+  }
+  function getTanksByGroup(groupLabel){
+    return TM2_TANKS.filter(tank => tank.group_label === groupLabel).sort((a,b) => a.tank_no - b.tank_no);
+  }
+  function getSelectedTank(){
+    const tankNo = Number(state.selectedTankNo);
+    return TM2_TANKS.find(tank => tank.tank_no === tankNo) || null;
+  }
+  function calculateReferencePerMm(tank){
+    return (tank.full_l - tank.bottom_l) / tank.center_mm;
+  }
+  function formatTwoMmPerStep(tank){
+    const decimals = countDecimals(tank.per_mm_l);
+    return Number(tank.per_mm_l * 2).toFixed(decimals);
+  }
+  function calculateRawVolume(tank, gaugeMm){
+    return tank.bottom_l + ((tank.center_mm - gaugeMm) * tank.per_mm_l);
+  }
+  function calculateVolume(tank, gaugeMm){
+    const rawVolume = calculateRawVolume(tank, gaugeMm);
+    return Math.min(tank.full_l, Math.max(tank.bottom_l, Math.floor(rawVolume)));
+  }
+  function buildAuditInfo(tank){
+    if(!tank || tank.audit_enabled === false){
+      return { status:'idle', title:'監査状態: 情報なし', note:'', detailGroups:[] };
+    }
+    const decimals = countDecimals(tank.per_mm_l);
+    const reference = calculateReferencePerMm(tank);
+    const recordedRounded = Number(tank.per_mm_l).toFixed(decimals);
+    const referenceRounded = Number(reference).toFixed(decimals);
+    const perMmDiff = tank.per_mm_l - reference;
+    const isMatch = recordedRounded === referenceRounded;
+    const spanCalculated = tank.bottom_l + (tank.center_mm * tank.per_mm_l);
+    const closingError = spanCalculated - tank.full_l;
+    return {
+      status: isMatch ? 'ok' : 'caution',
+      title: isMatch ? '監査状態: 問題なし' : '監査状態: 点検候補あり',
+      note: '',
+      detailGroups:[
+        {
+          heading:'記載値',
+          rows:[
+            { label:'記載1mm当', value:Number(tank.per_mm_l).toFixed(decimals) },
+            { label:'記載の全容量', value:`${tank.full_l}L` },
+            { label:'記載の底板面以下', value:`${tank.bottom_l}L` },
+            { label:'記載の中心深', value:`${tank.center_mm}mm` }
+          ]
+        },
+        {
+          heading:'検算値',
+          rows:[
+            { label:'検算1mm当', value:referenceRounded },
+            { label:'1mm当の差', value:`${perMmDiff >= 0 ? '+' : ''}${perMmDiff.toFixed(Math.max(decimals, 5))}` },
+            { label:'検算式', value:`(${tank.full_l} - ${tank.bottom_l}) ÷ ${tank.center_mm} = ${reference.toFixed(Math.max(decimals, 5))}` },
+            { label:'全量戻し式', value:`${tank.bottom_l} + (${tank.center_mm} × ${Number(tank.per_mm_l).toFixed(decimals)}) = ${spanCalculated.toFixed(5)}L` },
+            { label:'全体差', value:`${closingError >= 0 ? '+' : ''}${closingError.toFixed(5)}L` }
+          ]
+        },
+        {
+          heading:'補足',
+          rows:[
+            { label:'監査メモ', value:tank.audit_note ? tank.audit_note : '未設定' }
+          ]
+        }
+      ]
+    };
+  }
+  function renderAuditGrid(audit){
+    const detailGroups = audit && Array.isArray(audit.detailGroups) ? audit.detailGroups : [];
+    if(detailGroups.length===0){
+      els.auditGrid.innerHTML = '<div class="tm2-detail-row"><span>詳細</span>表示できる情報がありません。</div>';
+      return;
+    }
+    els.auditGrid.innerHTML = detailGroups.map(group => {
+      const headingRow = group.heading ? `<div class="tm2-detail-heading">${group.heading}</div>` : '';
+      const rows = Array.isArray(group.rows) ? group.rows.map(row => `<div class="tm2-detail-row"><span>${row.label}</span>${row.value}</div>`).join('') : '';
+      return `<div class="tm2-detail-group">${headingRow}${rows}</div>`;
+    }).join('');
+  }
+  function renderReasonGrid(candidates){
+    if(!candidates || candidates.length===0){
+      els.reasonGrid.innerHTML = '<div class="tm2-detail-row"><span>詳細</span>表示できる理由がありません。</div>';
+      return;
+    }
+    els.reasonGrid.innerHTML = candidates.map(candidate => {
+      const headingRow = candidate.heading ? `<div class="tm2-detail-heading">${candidate.heading}</div>` : '';
+      const targetRow = candidate.targetVolume != null ? `<div class="tm2-detail-row"><span>目標L</span>${candidate.targetVolume}L</div>` : '';
+      const mmRow = candidate.mm != null ? `<div class="tm2-detail-row"><span>検尺値</span>${candidate.mm}mm</div>` : '';
+      const formulaRow = candidate.formula ? `<div class="tm2-detail-row"><span>計算式</span>${candidate.formula}</div>` : '';
+      return `<div class="tm2-detail-group">${headingRow}${targetRow}${mmRow}<div class="tm2-detail-row"><span>表示L</span>${candidate.displayedL}L</div><div class="tm2-detail-row"><span>切り捨て前</span>${candidate.rawVolume.toFixed(3)}L</div><div class="tm2-detail-row"><span>記載1mm当</span>${candidate.perMmDisplay}</div><div class="tm2-detail-row"><span>2mm当の目安</span>${candidate.twoMmDisplay}L</div>${formulaRow}</div>`;
+    }).join('');
+  }
+  function syncReasonToggle(){
+    const enabled = state.lastReasonCandidates.length > 0;
+    els.reasonToggle.disabled = !enabled;
+    els.reasonToggle.textContent = enabled ? (state.reasonOpen ? '結果の理由を閉じる' : '結果の理由を見る') : '結果の理由を見る';
+    els.reasonToggle.setAttribute('aria-expanded', state.reasonOpen ? 'true' : 'false');
+    els.reasonPanel.hidden = !(enabled && state.reasonOpen);
+  }
+  function syncAuditToggle(tank){
+    const enabled = Boolean(tank);
+    els.auditToggle.disabled = !enabled;
+    els.auditToggle.textContent = enabled ? (state.auditOpen ? '登録値・監査詳細を閉じる' : '登録値・監査詳細を見る') : '登録値・監査詳細を見る';
+    els.auditToggle.setAttribute('aria-expanded', state.auditOpen ? 'true' : 'false');
+    els.auditPanel.hidden = !(enabled && state.auditOpen);
+  }
+
+  function updateCurrentTankCard(tank){
+    if(!tank){
+      els.currentCard.classList.add('is-empty');
+      els.currentName.textContent = '未選択';
+      els.currentMeta.hidden = true;
+      els.currentRange.textContent = '—';
+      els.currentVolumeRange.textContent = '—';
+      els.currentStepVolume.textContent = '—';
+      els.currentNote.textContent = '先にタンクを選ぶと、この下で尺から見るかLから見るかを選べます。';
+      return;
+    }
+    els.currentCard.classList.remove('is-empty');
+    els.currentName.textContent = tank.label;
+    els.currentMeta.hidden = false;
+    els.currentRange.textContent = `0〜${tank.center_mm}mm の偶数`;
+    els.currentVolumeRange.textContent = `${tank.bottom_l}〜${tank.full_l}L`;
+    els.currentStepVolume.textContent = `${formatTwoMmPerStep(tank)}L`;
+    els.currentNote.textContent = 'このタンクを基準に、下で尺から見るかLから見るかを選びます。';
+  }
+  function syncModeButtons(tank){
+    const enabled = Boolean(tank);
+    els.modeButtons.forEach(btn => {
+      btn.disabled = !enabled;
+    });
+  }
+  function setError(message){
+    els.errorBox.hidden = !message;
+    els.errorBox.textContent = message || '';
+  }
+  function setResultSubtext(message, kind){
+    els.resultSubtext.textContent = message || '';
+    els.resultSubtext.classList.toggle('is-guide', kind === 'guide' && Boolean(message));
+  }
+  function updateAuditView(tank){
+    if(!tank){
+      els.auditStatus.className = 'tm2-status is-idle';
+      els.auditStatus.innerHTML = '<div class="tm2-status-title">監査状態: タンク未選択</div><div class="tm2-status-note">タンクを選ぶと監査状態を表示します。</div>';
+      els.auditGrid.innerHTML = '';
+      state.auditOpen = false;
+      syncAuditToggle(null);
+      return;
+    }
+    const audit = buildAuditInfo(tank);
+    els.auditStatus.className = `tm2-status ${audit.status === 'caution' ? 'is-caution' : 'is-ok'}`;
+    els.auditStatus.innerHTML = `<div class="tm2-status-title">${audit.title}</div>`;
+    renderAuditGrid(audit);
+    syncAuditToggle(tank);
+  }
+  function updateInputAvailability(){
+    const tank = getSelectedTank();
+    const hasTank = Boolean(tank);
+    syncModeButtons(tank);
+    updateCurrentTankCard(tank);
+    els.gaugeInput.disabled = !hasTank || state.mode !== 'gauge';
+    els.volumeInput.disabled = !hasTank || state.mode !== 'volume';
+    if(tank){
+      els.gaugeHelp.textContent = `入力範囲: 0〜${tank.center_mm}mm の偶数`;
+      els.volumeHelp.textContent = `入力目安: ${tank.bottom_l}〜${tank.full_l}L`;
+    }else{
+      els.gaugeHelp.textContent = 'タンクを選ぶと入力範囲を表示します。';
+      els.volumeHelp.textContent = 'タンクを選ぶと入力範囲の目安を表示します。';
+    }
+  }
+  function validateGaugeInput(rawValue, tank){
+    const value = String(rawValue).trim();
+    if(!tank) return { valid:false, message:'先にタンク番号を選んでください。' };
+    if(value==='') return { valid:false, message:'' };
+    if(!/^\d+$/.test(value)) return { valid:false, message:'この検尺値には値がありません。0〜中心深mm の偶数を入力してください。' };
+    const gaugeMm = Number(value);
+    if(gaugeMm < 0 || gaugeMm > tank.center_mm || gaugeMm % 2 !== 0) return { valid:false, message:'この検尺値には値がありません。0〜中心深mm の偶数を入力してください。' };
+    return { valid:true, gaugeMm };
+  }
+  function validateVolumeInput(rawValue, tank){
+    const value = String(rawValue).trim();
+    if(!tank) return { valid:false, message:'先にタンク番号を選んでください。' };
+    if(value==='') return { valid:false, message:'' };
+    if(!/^\d+(?:\.\d+)?$/.test(value)) return { valid:false, message:`この数量には候補がありません。${tank.bottom_l}〜${tank.full_l}L を入力してください。` };
+    const targetVolume = Number(value);
+    if(!Number.isFinite(targetVolume) || targetVolume < tank.bottom_l || targetVolume > tank.full_l) return { valid:false, message:`この数量には候補がありません。${tank.bottom_l}〜${tank.full_l}L を入力してください。` };
+    return { valid:true, targetVolume };
+  }
+  function hasExactDisplayedVolumeCandidate(tank, targetVolume){
+    if(!Number.isInteger(targetVolume)) return false;
+    for(let mm=0; mm<=tank.center_mm; mm+=2){
+      if(calculateVolume(tank, mm) === targetVolume) return true;
+    }
+    return false;
+  }
+  function buildVolumeCandidates(tank, targetVolume){
+    const decimals = countDecimals(tank.per_mm_l);
+    const perMmDisplay = Number(tank.per_mm_l).toFixed(decimals);
+    const allCandidates = [];
+    for(let mm=0; mm<=tank.center_mm; mm+=2){
+      const rawVolume = calculateRawVolume(tank, mm);
+      const displayedL = calculateVolume(tank, mm);
+      allCandidates.push({
+        heading:`候補 ${mm}mm`, targetVolume, mm, rawVolume, displayedL,
+        diffAbs:Math.abs(rawVolume - targetVolume), perMmDisplay, twoMmDisplay: formatTwoMmPerStep(tank),
+        formula:`${tank.bottom_l} + ((${tank.center_mm} - ${mm}) × ${perMmDisplay}) = ${rawVolume.toFixed(5)}L → 表示 ${displayedL}L`
+      });
+    }
+    allCandidates.sort((a,b) => a.diffAbs !== b.diffAbs ? a.diffAbs - b.diffAbs : a.mm - b.mm);
+    const targetDisplayedL = Math.floor(targetVolume);
+    const sameDisplayed = allCandidates.filter(candidate => candidate.displayedL === targetDisplayedL);
+    if(sameDisplayed.length > 0){
+      sameDisplayed.sort((a,b) => a.diffAbs !== b.diffAbs ? a.diffAbs - b.diffAbs : a.mm - b.mm);
+      return sameDisplayed;
+    }
+    const minDiff = allCandidates[0] ? allCandidates[0].diffAbs : null;
+    if(minDiff == null) return [];
+    return allCandidates.filter(candidate => Math.abs(candidate.diffAbs - minDiff) < 1e-9);
+  }
+  function updateResult(){
+    const tank = getSelectedTank();
+    updateAuditView(tank);
+    state.lastReasonCandidates = [];
+    state.reasonOpen = false;
+    renderReasonGrid([]);
+    syncReasonToggle();
+    if(!tank){
+      els.resultValue.textContent = '—';
+      setResultSubtext('', '');
+      els.openListBtn.disabled = true;
+      setError('');
+      state.lastValidGauge = null;
+      return;
+    }
+    els.openListBtn.disabled = false;
+    if(state.mode === 'gauge'){
+      const validation = validateGaugeInput(els.gaugeInput.value, tank);
+      if(String(els.gaugeInput.value).trim()===''){
+        els.resultValue.textContent = '—';
+        setResultSubtext('', '');
+        setError('');
+        state.lastValidGauge = null;
+        return;
+      }
+      if(!validation.valid){
+        els.resultValue.textContent = '—';
+        setResultSubtext('', '');
+        state.lastValidGauge = null;
+        setError(validation.message);
+        return;
+      }
+      const volume = calculateVolume(tank, validation.gaugeMm);
+      const rawVolume = calculateRawVolume(tank, validation.gaugeMm);
+      const decimals = countDecimals(tank.per_mm_l);
+      const perMmDisplay = Number(tank.per_mm_l).toFixed(decimals);
+      state.lastReasonCandidates = [{
+        heading:'', mm:validation.gaugeMm, rawVolume, displayedL:volume, perMmDisplay, twoMmDisplay: formatTwoMmPerStep(tank),
+        formula:`${tank.bottom_l} + ((${tank.center_mm} - ${validation.gaugeMm}) × ${perMmDisplay}) = ${rawVolume.toFixed(5)}L → 表示 ${volume}L`
+      }];
+      els.resultValue.textContent = `${volume} L`;
+      state.lastValidGauge = validation.gaugeMm;
+      renderReasonGrid(state.lastReasonCandidates);
+      syncReasonToggle();
+      setResultSubtext('', '');
+      setError('');
+      return;
+    }
+    const validation = validateVolumeInput(els.volumeInput.value, tank);
+    if(String(els.volumeInput.value).trim()===''){
+      els.resultValue.textContent = '—';
+      setResultSubtext('', '');
+      setError('');
+      state.lastValidGauge = null;
+      return;
+    }
+    if(!validation.valid){
+      els.resultValue.textContent = '—';
+      setResultSubtext('', '');
+      state.lastValidGauge = null;
+      setError(validation.message);
+      return;
+    }
+    const candidates = buildVolumeCandidates(tank, validation.targetVolume);
+    if(!candidates.length){
+      els.resultValue.textContent = '—';
+      setResultSubtext('', '');
+      state.lastValidGauge = null;
+      setError('この数量には候補がありません。');
+      return;
+    }
+    state.lastReasonCandidates = candidates;
+    state.lastValidGauge = candidates[0].mm;
+    els.resultValue.textContent = candidates.map(candidate => `${candidate.mm}mm`).join(' / ');
+    const notes = [];
+    if(Number.isInteger(validation.targetVolume) && !hasExactDisplayedVolumeCandidate(tank, validation.targetVolume)) notes.push('入力した数量に一致する候補がないため、近い候補を表示しています。');
+    if(candidates.length > 1) notes.push('表示Lが同じ候補が複数あるため、並べて表示しています。');
+    renderReasonGrid(candidates);
+    syncReasonToggle();
+    setResultSubtext(notes.join(' '), notes.length ? 'guide' : '');
+    setError('');
+  }
+  function populateGroups(){
+    getGroups().forEach(group => {
+      const option = document.createElement('option');
+      option.value = group;
+      option.textContent = group;
+      els.groupSelect.appendChild(option);
+    });
+  }
+  function populateTanks(groupLabel){
+    const tanks = getTanksByGroup(groupLabel);
+    els.tankSelect.innerHTML = '';
+    if(!groupLabel || tanks.length === 0){
+      const option = document.createElement('option');
+      option.value = '';
+      option.textContent = '該当タンクがありません';
+      els.tankSelect.appendChild(option);
+      els.tankSelect.disabled = true;
+      return;
+    }
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'タンク番号を選んでください';
+    els.tankSelect.appendChild(defaultOption);
+    tanks.forEach(tank => {
+      const option = document.createElement('option');
+      option.value = String(tank.tank_no);
+      option.textContent = tank.label;
+      els.tankSelect.appendChild(option);
+    });
+    els.tankSelect.disabled = false;
+  }
+  function setMode(mode){
+    state.mode = mode;
+    state.reasonOpen = false;
+    state.lastReasonCandidates = [];
+    els.modeButtons.forEach(btn => {
+      const active = btn.dataset.tm2Mode === mode;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    els.gaugeField.hidden = mode !== 'gauge';
+    els.volumeField.hidden = mode !== 'volume';
+    els.resultHeading.textContent = mode === 'gauge' ? '換算値(L)' : '候補(mm)';
+    updateInputAvailability();
+    updateResult();
+  }
+  function resetInputs(){
+    els.gaugeInput.value = '';
+    els.volumeInput.value = '';
+    state.lastValidGauge = null;
+    state.reasonOpen = false;
+    state.lastReasonCandidates = [];
+    els.resultValue.textContent = '—';
+    setResultSubtext('', '');
+    renderReasonGrid([]);
+    syncReasonToggle();
+    setError('');
+    updateAuditView(getSelectedTank());
+  }
+  function openList(){
+    const tank = getSelectedTank();
+    if(!tank) return;
+    els.listTitle.textContent = `${tank.label} の2mm表`; 
+    const rows = [];
+    for(let mm=0; mm<=tank.center_mm; mm+=2){
+      const volume = calculateVolume(tank, mm);
+      const highlight = state.lastValidGauge === mm;
+      rows.push(`<tr${highlight ? ' class="is-highlight" data-tm2-highlight="1"' : ''}><td>${mm}</td><td>${volume}</td></tr>`);
+    }
+    els.listBody.innerHTML = rows.join('');
+    els.mainPanel.hidden = true;
+    els.listPanel.hidden = false;
+    const highlightRow = els.listBody.querySelector('[data-tm2-highlight="1"]');
+    const tableWrap = els.listPanel.querySelector('.tm2-table-wrap');
+    if(highlightRow) highlightRow.scrollIntoView({ block:'center' });
+    else if(tableWrap) tableWrap.scrollTop = 0;
+  }
+  function closeList(){
+    els.listPanel.hidden = true;
+    els.mainPanel.hidden = false;
+  }
+  root.addEventListener('click', event => {
+    const btn = event.target.closest('[data-tm2-action]');
+    if(!btn) return;
+    const action = btn.dataset.tm2Action;
+    if(action === 'mode') setMode(btn.dataset.tm2Mode || 'gauge');
+    if(action === 'reset') resetInputs();
+    if(action === 'open-list') openList();
+    if(action === 'close-list') closeList();
+    if(action === 'toggle-reason'){
+      if(state.lastReasonCandidates.length === 0) return;
+      state.reasonOpen = !state.reasonOpen;
+      renderReasonGrid(state.lastReasonCandidates);
+      syncReasonToggle();
+    }
+    if(action === 'toggle-audit'){
+      const tank = getSelectedTank();
+      if(!tank) return;
+      state.auditOpen = !state.auditOpen;
+      renderAuditGrid(buildAuditInfo(tank));
+      syncAuditToggle(tank);
+    }
+  });
+  els.groupSelect.addEventListener('change', () => {
+    state.selectedGroup = els.groupSelect.value;
+    state.selectedTankNo = '';
+    state.auditOpen = false;
+    state.reasonOpen = false;
+    state.lastReasonCandidates = [];
+    populateTanks(state.selectedGroup);
+    els.tankSelect.value = '';
+    els.gaugeInput.value = '';
+    els.volumeInput.value = '';
+    state.lastValidGauge = null;
+    updateInputAvailability();
+    updateResult();
+  });
+  els.tankSelect.addEventListener('change', () => {
+    state.selectedTankNo = els.tankSelect.value;
+    state.auditOpen = false;
+    state.reasonOpen = false;
+    state.lastReasonCandidates = [];
+    state.lastValidGauge = null;
+    els.gaugeInput.value = '';
+    els.volumeInput.value = '';
+    updateInputAvailability();
+    updateResult();
+  });
+  els.gaugeInput.addEventListener('input', updateResult);
+  els.volumeInput.addEventListener('input', updateResult);
+  populateGroups();
+  updateInputAvailability();
+  updateAuditView(null);
+  renderReasonGrid([]);
+  syncReasonToggle();
+  closeList();
+})();
 
 /* ===== 割水計算 JS ===== */
 const WmixDisplayProfile = {
@@ -2934,6 +3647,7 @@ function Jcalc(){
 </div>
 <div class="share-choice-actions">
 <button class="back-btn share-choice-btn is-human" data-action="share-choice-copy-human" type="button"><span class="btn-kicker">相手に送る用</span><span class="btn-main">共有文をコピー</span><span class="btn-sub">Slack・メールにそのまま貼れる文です。</span></button>
+<button class="back-btn share-choice-btn is-tank2mm" data-action="share-choice-send-tank2mm" type="button"><span class="btn-kicker">この端末の2mm表へ</span><span class="btn-main">2mm表に送る</span><span class="btn-sub">共有文メモを最新1件だけ上書きし、数量は2mm表で手入力します。</span></button>
 <button class="back-btn share-choice-btn is-restore" data-action="share-choice-copy-restore" type="button"><span class="btn-kicker">このツールへ戻す用</span><span class="btn-main">復元用コードをコピー</span><span class="btn-sub">貼り付けて同じ条件を復元できます。</span></button>
 </div>
 <div class="share-choice-preview-wrap">
@@ -3159,8 +3873,10 @@ function Jcalc(){
     'clear-tool-history': el => clearHistoryForTool(el.dataset.toolKey || '', true),
     'copy-current-condition': el => openCurrentShareChoiceFromTrigger(el),
     'share-choice-copy-human': () => copyShareChoiceHuman(),
+    'share-choice-send-tank2mm': () => sendShareChoiceToTank2mm(),
     'share-choice-copy-restore': () => copyShareChoiceRestore(),
     'share-choice-close': () => closeShareChoice(),
+    'clear-tm2-share-memo': () => clearTank2mmShareMemo(true),
     'action-confirm-cancel': () => closeActionConfirm(),
     'action-confirm-accept': () => acceptActionConfirm(),
     'load-shared-condition': () => loadSharedConditionFromInput(true),
@@ -3216,6 +3932,26 @@ function Jcalc(){
   function getShareChoiceHelp(){ return q('#share-choice-help'); }
   function getShareChoiceSourceBadge(){ return q('#share-choice-source-badge'); }
   function getShareChoiceSourceText(){ return q('#share-choice-source-text'); }
+  function getTank2mmShareMemoInput(){ return q('#tm2_share_memo'); }
+  function setTank2mmShareMemo(text, options={}){
+    const input=getTank2mmShareMemoInput();
+    if(input) input.value = String(text || '');
+    saveInputs();
+    if(options.navigate!==false){
+      window.showScreen('tank2mm-screen');
+      saveUIState();
+    }
+    return String(text || '');
+  }
+  function clearTank2mmShareMemo(notify){
+    const input=getTank2mmShareMemoInput();
+    if(input) input.value='';
+    saveInputs();
+    if(notify) toast('2mm表の共有文メモを消しました');
+  }
+  document.addEventListener('input', event=>{
+    if(event.target?.id==='tm2_share_memo') saveInputs();
+  }, true);
   function setShareChoiceHelp(message, isError=false){
     const help=getShareChoiceHelp();
     if(!help) return;
@@ -3252,8 +3988,11 @@ function Jcalc(){
     const results=trimShareLines(summaryData?.resultLines||[], 5);
     const lines=[];
     lines.push(`${labels.groupLabel} / ${labels.variantLabel} / ${statusLabel}`);
-    if(sharedAt) lines.push(`共有時刻 ${sharedAt}`);
-    if(historyTime) lines.push(`履歴登録 ${historyTime} JST`);
+    if(inputs.visible.length){
+      lines.push('入力');
+      inputs.visible.forEach(line=>lines.push(`- ${line.label}: ${line.value}`));
+      if(inputs.rest>0) lines.push(`- その他入力: ${inputs.rest}件`);
+    }
     if(results.visible.length){
       lines.push('結果');
       results.visible.forEach(line=>lines.push(`- ${line.label}: ${line.value}`));
@@ -3262,11 +4001,8 @@ function Jcalc(){
       lines.push('結果');
       lines.push('- 結果は未計算');
     }
-    if(inputs.visible.length){
-      lines.push('入力');
-      inputs.visible.forEach(line=>lines.push(`- ${line.label}: ${line.value}`));
-      if(inputs.rest>0) lines.push(`- その他入力: ${inputs.rest}件`);
-    }
+    if(sharedAt) lines.push(`共有時刻 ${sharedAt}`);
+    if(historyTime) lines.push(`履歴登録 ${historyTime} JST`);
     return lines.join('\n');
   }
   function buildCurrentHumanShareText(toolKey){
@@ -3376,6 +4112,24 @@ function Jcalc(){
       setShareChoiceHelp('自動コピーできませんでした。下のプレビューを選択済みです。長押しまたは右クリックで手動コピーしてください。', true);
       selectShareChoicePreview();
       toast('自動コピーできなかったため、下のプレビューを手動でコピーしてください');
+    });
+  }
+  function executeShareChoiceSendToTank2mm(){
+    updateShareChoicePreview('human');
+    const text=buildHumanTextFromContext(ShareChoiceState);
+    if(!text){ toast('2mm表へ送る共有文を作成できませんでした'); return; }
+    setTank2mmShareMemo(text, {navigate:true});
+    closeShareChoice();
+    toast('2mm表へ共有文を送りました');
+  }
+  function sendShareChoiceToTank2mm(){
+    updateShareChoicePreview('human');
+    const text=buildHumanTextFromContext(ShareChoiceState);
+    if(!text){ toast('2mm表へ送る共有文を作成できませんでした'); return; }
+    openActionConfirm({
+      title:'2mm表に送りますか？',
+      note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
+      onConfirm:executeShareChoiceSendToTank2mm
     });
   }
   function copyShareChoiceRestore(){
