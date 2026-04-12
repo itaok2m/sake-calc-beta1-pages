@@ -436,7 +436,8 @@ input::placeholder{color:#c4bdb5;}
 .history-shortcut-panel .inline-history-box{display:none !important;}
 .history-shortcut-panel .inline-tools-header{margin-bottom:0;}
 .history-shortcut-panel .inline-tools-note{max-width:none;}
-.history-shortcut-panel .inline-tools-actions{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));}
+.history-shortcut-panel .inline-tools-actions{grid-template-columns:repeat(2,minmax(0,1fr));}
+.history-shortcut-panel .inline-tools-actions .back-btn,.history-shortcut-panel .inline-tools-actions .calc-btn{min-width:0;white-space:normal;line-height:1.45;text-align:center;}
 .history-shortcut-panel .inline-tools-actions .danger-btn{display:none !important;}
 
 .history-card{
@@ -3424,6 +3425,14 @@ function formatTruncatedFixed(value,digits=2){
   const truncated=value>=0 ? Math.floor(value*factor)/factor : Math.ceil(value*factor)/factor;
   return truncated.toFixed(digits);
 }
+function EexRaw(dal,d){return ((d-dal)*260+0.21);}
+function EtexRaw(dal,d,al){return EexRaw(dal,d)+1.5894*al;}
+function Eex(dal,d){return Math.floor(100*EexRaw(dal,d)+0.05)/100;}
+function Etex(dal,d,al){return Math.floor(100*EtexRaw(dal,d,al)+0.05)/100;}
+function EexdevRaw(d1,d0,dv,dev){return dev*(EexRaw(d1,dv)-EexRaw(d0,dv))+EexRaw(d0,dv);}
+function EtexdevRaw(d1,d0,dv,al,dev){return dev*(EtexRaw(d1,dv,al+1)-EtexRaw(d0,dv,al))+EtexRaw(d0,dv,al);}
+function Eexdev(d1,d0,dv,dev){return Math.floor(100*EexdevRaw(d1,d0,dv,dev)+0.05)/100;}
+function Etexdev(d1,d0,dv,al,dev){return Math.floor(100*EtexdevRaw(d1,d0,dv,al,dev)+0.05)/100;}
 function EshowErr(msg){
   const e=document.getElementById('Eerr');
   if(!e){ hideEl('Eresult'); return; }
@@ -4948,8 +4957,8 @@ function setupHistoryShortcutPanels(){
       ? WactiveMixToolKey()
       : (panel.dataset.historyDynamic==='mix' ? `warimizu:mix:${getMixMode()}` : normalizeHistoryToolKey(panel.dataset.historyKey||''));
     const cfg=configFor(toolKey);
-    if(title) title.textContent = cfg ? `${cfg.label}を総合計算履歴に追加` : '総合計算履歴に追加';
-    if(note) note.textContent = '2mm表へ送る時はこの画面、入力欄への反映や比較は「総合計算履歴を見る」から行います。';
+    if(title) title.textContent = cfg ? `${cfg.label}の保存・連携` : '保存・連携';
+    if(note) note.textContent = '2mm表へ送る時はこの画面から。入力欄へ戻す・比較する時は「総合計算履歴を見る」から行います。';
     if(addButton){
       addButton.textContent='総合計算履歴に追加';
       addButton.classList.add('history-add-btn');
