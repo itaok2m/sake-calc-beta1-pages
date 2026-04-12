@@ -148,6 +148,7 @@ body > *{position:relative;z-index:1;}
 .share-payload-input:focus{outline:none;border-color:#2a5c3f;box-shadow:0 0 0 3px rgba(42,92,63,.08);}
 .share-actions{margin-top:2px;}
 .share-copy-btn{background:#f5faf7;border:1px solid #d6e5db;color:#2f4b39;}
+.tank2mm-send-btn{background:#eef6f0;border:1px solid #c6d7cb;color:#234331;}
 .share-role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
 .share-role-card{border:1px solid #e4ddd2;border-radius:14px;background:#faf8f4;padding:12px 13px;display:grid;gap:4px;}
 .share-role-card.is-send{background:#f7faf8;border-color:#d6e5db;}
@@ -626,9 +627,12 @@ input::placeholder{color:#c4bdb5;}
 .history-compare-table-detail-cell{padding:6px;background:#fbfcfb;}
 .history-compare-table-detail-cell.is-base{background:#f7fbf8;border-left:2px solid #355842;border-right:2px solid #355842;}
 .history-compare-table-details{display:grid;gap:6px;}
-.history-compare-table-details>summary{list-style:none;display:flex;align-items:center;justify-content:center;min-height:32px;padding:6px 8px;font-size:10.5px;font-weight:800;color:#294333;background:#fff;border:1.5px solid #c7d6cb;border-radius:12px;box-shadow:none;}
+.history-compare-table-details>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:6px 8px;font-size:10.5px;font-weight:800;color:#294333;background:#fff;border:1.5px solid #c7d6cb;border-radius:12px;box-shadow:none;text-align:left;}
 .history-compare-table-details>summary::-webkit-details-marker{display:none;}
 .history-compare-table-details[open]>summary{background:#355842;border-color:#355842;color:#fff;}
+.history-compare-table-details[open]>summary .disclosure-icon{transform:rotate(180deg);}
+.history-compare-table-details>summary .disclosure-label{font-size:10px;line-height:1.35;}
+.history-compare-table-details>summary .disclosure-icon{width:24px;height:24px;font-size:13px;}
 .history-compare-table-detail-body{display:grid;gap:8px;padding-top:6px;}
 .history-compare-table-detail-body .history-meta-actions{display:grid;grid-template-columns:1fr;gap:8px;}
 .history-compare-table-detail-body .history-meta-actions button{width:100%;}
@@ -903,6 +907,9 @@ body::before{
 .calc-btn,.history-select-toggle.is-selected,.history-entry-restore,.history-compare-screen-base-btn.current{background:#355842 !important;border:2px solid #355842 !important;color:#fff !important;}
 .inline-tools-actions [data-action="run-tool-history"],.inline-tools-actions [data-action="run-active-mix-history"]{background:#f6faf7 !important;border:2px solid #c8d8cd !important;color:#355842 !important;box-shadow:none !important;}
 .inline-tools-actions [data-action="run-tool-history"]:active,.inline-tools-actions [data-action="run-active-mix-history"]:active{box-shadow:none !important;}
+.history-shortcut-panel .inline-tools-actions .history-add-btn{background:#355842 !important;border:2px solid #355842 !important;color:#fff !important;box-shadow:none !important;}
+.history-shortcut-panel .inline-tools-actions .history-view-btn{background:#f7f5f1 !important;border:2px solid #ddd5ca !important;color:#4e544f !important;box-shadow:none !important;}
+.history-shortcut-panel .inline-tools-actions .tank2mm-send-btn{background:#eef6f0 !important;border:2px solid #c6d7cb !important;color:#234331 !important;box-shadow:none !important;}
 .history-select-toggle,.history-entry-copy,.history-compare-screen-base-btn{background:#fff;border:2px solid #c7d6cb;color:#264333;}
 .back-btn.danger-btn,.history-entry-delete{background:#fff6f4;border:2px solid #e5c2b8;color:#8a4337;}
 .history-meta-actions button,.history-select-toggle{min-height:44px;}
@@ -2162,11 +2169,11 @@ body::before{
 <div class="tm2-share-head">
 <div>
 <div class="tm2-share-title">共有文メモ（最新1件）</div>
-<div class="tm2-share-note">各計算機の共有内「2mm表に送る」で上書きされます。数量は下で手入力してください。</div>
+<div class="tm2-share-note">各計算機の「2mm表に送る」で上書きされます。数量は下で手入力してください。</div>
 </div>
 <button class="back-btn reset-btn tm2-share-clear-btn" data-action="clear-tm2-share-memo" type="button">メモを消す</button>
 </div>
-<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の共有内「2mm表に送る」で入った共有文をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
+<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の「2mm表に送る」で入った内容をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
 </div>
 <div class="group">
 <div class="tm2-mode-group-title">見る内容を選ぶ</div>
@@ -3655,15 +3662,14 @@ function Jcalc(){
 <div class="share-choice-sheet" role="dialog" aria-modal="true" aria-labelledby="share-choice-title">
 <div class="share-choice-head">
 <div class="share-choice-title" id="share-choice-title">共有</div>
-<div class="share-choice-source"><span class="history-status-badge is-soft" id="share-choice-source-badge">試算</span><span class="share-choice-note" id="share-choice-source-text">共有文・2mm表に送る・復元用コードを選べます。</span></div>
+<div class="share-choice-source"><span class="history-status-badge is-soft" id="share-choice-source-badge">試算</span><span class="share-choice-note" id="share-choice-source-text">共有文・復元用コードを選べます。</span></div>
 <div class="share-choice-guide">
-<div class="share-choice-note">相手に見せる時は「共有文」、この端末の2mm表に送る時は「2mm表に送る」、あとでこのツールに同じ条件を戻したい時は「復元用コード」を使います。</div>
+<div class="share-choice-note">相手に見せる時は「共有文」、あとでこのツールに同じ条件を戻したい時は「復元用コード」を使います。</div>
 <div class="share-choice-note is-subtle">コピー前に確認画面が出ます。</div>
 </div>
 </div>
 <div class="share-choice-actions">
 <button class="back-btn share-choice-btn is-human" data-action="share-choice-copy-human" type="button"><span class="btn-kicker">相手に送る用</span><span class="btn-main">共有文をコピー</span><span class="btn-sub">Slack・メールにそのまま貼れる文です。</span></button>
-<button class="back-btn share-choice-btn is-tank2mm" data-action="share-choice-send-tank2mm" type="button"><span class="btn-kicker">この端末の2mm表へ</span><span class="btn-main">2mm表に送る</span><span class="btn-sub">共有文メモを最新1件だけ上書きし、数量は2mm表で手入力します。</span></button>
 <button class="back-btn share-choice-btn is-restore" data-action="share-choice-copy-restore" type="button"><span class="btn-kicker">このツールへ戻す用</span><span class="btn-main">復元用コードをコピー</span><span class="btn-sub">貼り付けて同じ条件を復元できます。</span></button>
 </div>
 <div class="share-choice-preview-wrap">
@@ -3888,6 +3894,7 @@ function Jcalc(){
     'run-tool-history': el => runCalculationAndCommit(el.dataset.toolKey || ''),
     'clear-tool-history': el => clearHistoryForTool(el.dataset.toolKey || '', true),
     'copy-current-condition': el => openCurrentShareChoiceFromTrigger(el),
+    'send-current-to-tm2': el => sendCurrentConditionToTank2mmFromTrigger(el),
     'share-choice-copy-human': () => copyShareChoiceHuman(),
     'share-choice-send-tank2mm': () => sendShareChoiceToTank2mm(),
     'share-choice-copy-restore': () => copyShareChoiceRestore(),
@@ -3902,6 +3909,7 @@ function Jcalc(){
     'goto-warimizu-aalc': () => gotoWarimizuShortcut(3, 'AalcSetMode', 0),
     'restore-history-item': el => restoreHistoryItem(el.dataset.historyId || '', true),
     'copy-history-condition': el => openHistoryShareChoice(el.dataset.historyId || ''),
+    'send-history-to-tm2': el => sendHistoryConditionToTank2mm(el.dataset.historyId || ''),
     'delete-history-item': el => deleteHistoryItem(el.dataset.historyId || '', true),
     'toggle-history-compare-draft': el => toggleHistoryCompareDraftItem(el.dataset.historyId || '', true),
     'clear-history-compare-draft': () => clearHistoryCompareDraft({notify:true}),
@@ -4085,7 +4093,7 @@ function Jcalc(){
       sourceBadge.textContent=statusLabel;
       sourceBadge.className=`history-status-badge ${statusLabel==='履歴'?'':'is-soft'}`;
     }
-    if(sourceText) sourceText.textContent = toolKey ? `${labels.groupLabel} / ${labels.variantLabel}` : '共有文・2mm表に送る・復元用コードを選べます。';
+    if(sourceText) sourceText.textContent = toolKey ? `${labels.groupLabel} / ${labels.variantLabel}` : '共有文・復元用コードを選べます。';
     modal.hidden=false;
     updateShareChoicePreview('human');
   }
@@ -4128,6 +4136,46 @@ function Jcalc(){
       setShareChoiceHelp('自動コピーできませんでした。下のプレビューを選択済みです。長押しまたは右クリックで手動コピーしてください。', true);
       selectShareChoicePreview();
       toast('自動コピーできなかったため、下のプレビューを手動でコピーしてください');
+    });
+  }
+  function sendCurrentConditionToTank2mmFromTrigger(el){
+    const toolKey=resolveToolKeyFromTrigger(el);
+    if(!toolKey || !configFor(toolKey)){
+      toast('この画面では2mm表へ送る条件が見つかりません');
+      return;
+    }
+    const text=buildCurrentHumanShareText(toolKey);
+    if(!text){
+      toast('2mm表へ送る共有文を作成できませんでした');
+      return;
+    }
+    openActionConfirm({
+      title:'2mm表に送りますか？',
+      note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
+      onConfirm:()=>{
+        setTank2mmShareMemo(text, {navigate:true});
+        toast('2mm表へ共有文を送りました');
+      }
+    });
+  }
+  function sendHistoryConditionToTank2mm(id){
+    const item=getHistory().find(entry=>entry.id===id);
+    if(!item || !configFor(item.toolKey)){
+      toast('2mm表へ送る履歴が見つかりません');
+      return;
+    }
+    const text=buildHistoryHumanShareText(item.id);
+    if(!text){
+      toast('2mm表へ送る共有文を作成できませんでした');
+      return;
+    }
+    openActionConfirm({
+      title:'2mm表に送りますか？',
+      note:'この履歴の共有文で、この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
+      onConfirm:()=>{
+        setTank2mmShareMemo(text, {navigate:true});
+        toast('この履歴を2mm表へ送りました');
+      }
     });
   }
   function executeShareChoiceSendToTank2mm(){
@@ -4901,34 +4949,42 @@ function setupHistoryShortcutPanels(){
       : (panel.dataset.historyDynamic==='mix' ? `warimizu:mix:${getMixMode()}` : normalizeHistoryToolKey(panel.dataset.historyKey||''));
     const cfg=configFor(toolKey);
     if(title) title.textContent = cfg ? `${cfg.label}を総合計算履歴に追加` : '総合計算履歴に追加';
-    if(note) note.textContent = '入力欄への反映や削除、必要な比較は、総合計算履歴で行います。';
-    if(addButton) addButton.textContent='総合計算履歴に追加';
+    if(note) note.textContent = '2mm表へ送る時はこの画面、入力欄への反映や比較は「総合計算履歴を見る」から行います。';
+    if(addButton){
+      addButton.textContent='総合計算履歴に追加';
+      addButton.classList.add('history-add-btn');
+    }
     if(actions){
       actions.querySelectorAll('[data-action="clear-tool-history"]').forEach(btn=>btn.remove());
+      let sendButton=actions.querySelector('[data-action="send-current-to-tm2"]');
+      if(!sendButton){
+        sendButton=document.createElement('button');
+        sendButton.type='button';
+        sendButton.className='back-btn tank2mm-send-btn share-transfer-btn';
+        sendButton.dataset.action='send-current-to-tm2';
+      }
+      sendButton.innerHTML='<span class="btn-main">2mm表に送る</span><span class="btn-sub">この端末の2mm表メモへ入れます</span>';
       let copyButton=actions.querySelector('[data-action="copy-current-condition"]');
       if(!copyButton){
         copyButton=document.createElement('button');
         copyButton.type='button';
         copyButton.className='back-btn share-copy-btn share-transfer-btn';
         copyButton.dataset.action='copy-current-condition';
-        const addButtonNode=actions.querySelector('[data-action="run-tool-history"],[data-action="run-active-mix-history"]');
-        if(addButtonNode) actions.insertBefore(copyButton, addButtonNode.nextSibling);
-        else actions.appendChild(copyButton);
       }
       copyButton.innerHTML='<span class="btn-main">共有</span><span class="btn-sub">共有文 / 復元用コード</span>';
       let openButton=actions.querySelector('[data-nav-screen="history-screen"]');
       if(!openButton){
         openButton=document.createElement('button');
         openButton.type='button';
-        openButton.className='back-btn reset-btn';
         openButton.dataset.navScreen='history-screen';
-        actions.appendChild(openButton);
       }
-      openButton.textContent='総合計算履歴';
+      openButton.className='back-btn reset-btn history-view-btn';
+      openButton.textContent='総合計算履歴を見る';
       const groupMeta = getHistoryGroupMeta({toolKey});
       const variantMeta = getHistoryVariantMetaByToolKey(toolKey);
       openButton.dataset.historyFilter = groupMeta.key || 'all';
       openButton.dataset.historyVariant = variantMeta.key || 'all';
+      [sendButton, addButton, openButton, copyButton].filter(Boolean).forEach(node=>actions.appendChild(node));
     }
   });
 }
@@ -4973,6 +5029,7 @@ function setupHistoryShortcutPanels(){
   function buildHistoryActionViews(item,{pinned,isBase,compareScreen=false}){
     const actions=[];
     actions.push(createHistoryActionView('history-entry-restore','この条件を入力欄に反映', 'restore-history-item', item.id));
+    actions.push(createHistoryActionView('history-entry-send2mm','2mm表に送る', 'send-history-to-tm2', item.id));
     actions.push(createHistoryActionView('history-entry-copy','共有', 'copy-history-condition', item.id));
     actions.push(createHistoryActionView('history-entry-delete','この履歴を削除', 'delete-history-item', item.id));
     return actions;
@@ -5031,6 +5088,7 @@ function setupHistoryShortcutPanels(){
       showVariantChip:display.showVariantChip!==false,
       time:getHistoryDisplayTime(item),
       toolKey:item.toolKey,
+      actionSummaryLabel:compareScreen ? 'この結果の操作' : 'この履歴の操作',
       actions:buildHistoryActionViews(item,{pinned,isBase,compareScreen}),
       sections,
       isBase,
@@ -5084,16 +5142,16 @@ function setupHistoryShortcutPanels(){
   function renderHistoryCompactCompareCard(cardView){
     const changedCount=(cardView.compareHighlights||[]).length;
     const countLabel=changedCount ? `差分 ${changedCount}項目` : '差分なし';
-    return `<div class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-compare-card-shell"><div class="history-compare-card-top"><div class="history-compare-card-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-compare-card-status">${escapeHtml(countLabel)}</span></div><div class="history-compare-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-compare-chip-row">${renderHistoryCompareHighlights(cardView)}</div><details class="history-compare-details">${detailSummaryMarkup('操作')}<div class="history-compare-detail-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div>`;
+    return `<div class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-compare-card-shell"><div class="history-compare-card-top"><div class="history-compare-card-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-compare-card-status">${escapeHtml(countLabel)}</span></div><div class="history-compare-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-compare-chip-row">${renderHistoryCompareHighlights(cardView)}</div><details class="history-compare-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-compare-detail-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div>`;
   }
   function renderHistoryBaseSummaryCard(cardView){
-    return `<div class="history-base-summary-card" data-history-id="${escapeHtml(cardView.id)}"><div class="history-base-summary-head"><div class="history-base-summary-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-base-summary-tag">基準</span></div><div class="history-base-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-base-card-controls"><details class="history-base-summary-details">${detailSummaryMarkup('操作')}<div class="history-base-summary-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div>`;
+    return `<div class="history-base-summary-card" data-history-id="${escapeHtml(cardView.id)}"><div class="history-base-summary-head"><div class="history-base-summary-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-base-summary-tag">基準</span></div><div class="history-base-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-base-card-controls"><details class="history-base-summary-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-base-summary-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div>`;
   }
   function renderHistoryCard(cardView){
     if(cardView.isCompareCard) return renderHistoryCompactCompareCard(cardView);
     if(cardView.isBase) return renderHistoryBaseSummaryCard(cardView);
     const selectButton=renderHistorySelectButton(cardView);
-    return `<article class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-meta"><div class="history-meta-top"><div class="history-meta-main"><div class="history-card-kicker"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div></div>${selectButton?`<div class="history-card-mini-actions">${selectButton}</div>`:''}</div><div class="history-card-read"><div class="history-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div></div></div><div class="history-card-quick"><div class="history-card-controls"><details class="history-card-details">${detailSummaryMarkup('操作')}<div class="history-card-detail-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div></article>`;
+    return `<article class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-meta"><div class="history-meta-top"><div class="history-meta-main"><div class="history-card-kicker"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div></div>${selectButton?`<div class="history-card-mini-actions">${selectButton}</div>`:''}</div><div class="history-card-read"><div class="history-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div></div></div><div class="history-card-quick"><div class="history-card-controls"><details class="history-card-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-card-detail-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div></article>`;
   }
   function renderSinglePanel(panel){
     if(!panel) return;
@@ -5224,7 +5282,7 @@ function setupHistoryShortcutPanels(){
   function renderHistoryCompareTableDetailCell(view, baseId){
     const isBase=view && view.id===baseId;
     const actions=(view?.actions||[]).map(renderHistoryActionButton).join('');
-    return `<td class="history-compare-table-detail-cell history-compare-table-actionfoot ${isBase?'is-base':''}"><details class="history-compare-table-details"><summary>操作</summary><div class="history-compare-table-detail-body"><div class="history-meta-actions">${actions}</div></div></details></td>`;
+    return `<td class="history-compare-table-detail-cell history-compare-table-actionfoot ${isBase?'is-base':''}"><details class="history-compare-table-details">${detailSummaryMarkup(view?.actionSummaryLabel || 'この結果の操作')}<div class="history-compare-table-detail-body"><div class="history-meta-actions">${actions}</div></div></details></td>`;
   }
   function renderHistoryCompareTableActionBar(views, baseId){
     const cells=views.map(view=>renderHistoryCompareTableDetailCell(view, baseId)).join('');
