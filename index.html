@@ -2419,6 +2419,13 @@ function showScreen(id){
   if(!nextScreen) return;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   nextScreen.classList.add('active');
+  if(id==='tank2mm-screen' && typeof window.refreshTank2mmScreen === 'function'){
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        try{ window.refreshTank2mmScreen(); }catch{}
+      });
+    });
+  }
   if(typeof window.renderHistory === 'function') window.renderHistory();
   window.scrollTo(0,0);
 }
@@ -2955,6 +2962,12 @@ function toggleEl(target, visible, display='block'){
     updateInputAvailability();
     updateResult();
   });
+  function refreshTank2mmScreen(){
+    updateInputAvailability();
+    updateResult();
+    if(els.listPanel && !els.listPanel.hidden && els.mainPanel && els.mainPanel.hidden) openList();
+  }
+  window.refreshTank2mmScreen = refreshTank2mmScreen;
   els.gaugeInput.addEventListener('input', updateResult);
   els.volumeInput.addEventListener('input', updateResult);
   populateGroups();
