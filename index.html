@@ -2353,7 +2353,7 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-12 13:50',
+  builtAt: '2026-04-13 15:18',
   betaNotes: [
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
@@ -2480,6 +2480,16 @@ function toggleEl(target, visible, display='block'){
   if(!root) return;
 
   const TM2_TANKS = [
+    { tank_no:40, label:'No.40', group_label:'21〜40', full_l:7034, bottom_l:465, center_mm:1926, per_mm_l:3.41099, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
+    { tank_no:41, label:'No.41', group_label:'41〜60', full_l:7074, bottom_l:440, center_mm:1938, per_mm_l:3.42355, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
+    { tank_no:42, label:'No.42', group_label:'41〜60', full_l:7066, bottom_l:349, center_mm:1958, per_mm_l:3.43062, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 6717 の記載あり。7066 側にチェックあり。' },
+    { tank_no:43, label:'No.43', group_label:'41〜60', full_l:7718, bottom_l:483, center_mm:1964, per_mm_l:3.68431, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 7235 の記載あり。全容量にチェックあり。1mm当の末尾 31 は書き足しに見える。' },
+    { tank_no:45, label:'No.45', group_label:'41〜60', full_l:7695, bottom_l:470, center_mm:1954, per_mm_l:3.69766, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 7225 の記載あり。全容量にチェックあり。1mm当末尾 66 は追加に見える。' },
+    { tank_no:46, label:'No.46', group_label:'41〜60', full_l:7700, bottom_l:453, center_mm:1960, per_mm_l:3.69766, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'7700 にチェックあり。うっすら 7247 の記載あり。1mm当末尾 66 は追加に見える。' },
+    { tank_no:61, label:'No.61', group_label:'61〜80', full_l:2178, bottom_l:135, center_mm:1228, per_mm_l:1.66426, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
+    { tank_no:62, label:'No.62', group_label:'61〜80', full_l:2068, bottom_l:99, center_mm:1356, per_mm_l:1.45220, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
+    { tank_no:63, label:'No.63', group_label:'61〜80', full_l:2257, bottom_l:109, center_mm:1280, per_mm_l:1.67839, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
+    { tank_no:66, label:'No.66', group_label:'61〜80', full_l:1078, bottom_l:47, center_mm:990, per_mm_l:1.042, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'記載1mm当が他タンクより少ない桁数で記載されている。原票記載どおり 1.042 を採用する。計算整合は大きく崩れていないが、重点検査対象とする。' },
     { tank_no:70, label:'No.70', group_label:'61〜80', full_l:423, bottom_l:12, center_mm:780, per_mm_l:0.52778, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:73, label:'No.73', group_label:'61〜80', full_l:454, bottom_l:23, center_mm:736, per_mm_l:0.58590, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:83, label:'No.83', group_label:'81〜100', full_l:671, bottom_l:19, center_mm:890, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
