@@ -2487,6 +2487,15 @@ function toggleEl(target, visible, display='block'){
     { tank_no:89, label:'No.89', group_label:'81〜100', full_l:660, bottom_l:18, center_mm:880, per_mm_l:0.72963, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:90, label:'No.90', group_label:'81〜100', full_l:663, bottom_l:17, center_mm:882, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:92, label:'No.92', group_label:'81〜100', full_l:660, bottom_l:17, center_mm:878, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
+    { tank_no:111, label:'No.111', group_label:'101〜120', full_l:2258, bottom_l:105, center_mm:1294, source_note:'容器検定簿の区間別記載', audit_enabled:true, audit_note:'固定1mm当ではなく、容器検定簿の区間別記載で計算', segments:[
+      { start_depth_mm:0, end_depth_mm:206, start_l:105, end_l:458, recorded_per_mm_l:1.713 },
+      { start_depth_mm:206, end_depth_mm:388, start_l:458, end_l:758, recorded_per_mm_l:1.648 },
+      { start_depth_mm:388, end_depth_mm:570, start_l:758, end_l:1058, recorded_per_mm_l:1.648 },
+      { start_depth_mm:570, end_depth_mm:750, start_l:1058, end_l:1358, recorded_per_mm_l:1.666 },
+      { start_depth_mm:750, end_depth_mm:930, start_l:1358, end_l:1658, recorded_per_mm_l:1.666 },
+      { start_depth_mm:930, end_depth_mm:1112, start_l:1658, end_l:1958, recorded_per_mm_l:1.648 },
+      { start_depth_mm:1112, end_depth_mm:1294, start_l:1958, end_l:2258, recorded_per_mm_l:1.648 }
+    ] },
     { tank_no:117, label:'No.117', group_label:'101〜120', full_l:642, bottom_l:7, center_mm:886, per_mm_l:0.71707, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:130, label:'No.130', group_label:'121〜140', full_l:634, bottom_l:5, center_mm:892, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'2mm表で尺0で633、容器検定簿で尺0で634' },
     { tank_no:131, label:'No.131', group_label:'121〜140', full_l:636, bottom_l:5, center_mm:896, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
@@ -2556,14 +2565,78 @@ function toggleEl(target, visible, display='block'){
     const tankNo = Number(state.selectedTankNo);
     return TM2_TANKS.find(tank => tank.tank_no === tankNo) || null;
   }
+  function isSegmentTank(tank){
+    return Boolean(tank && Array.isArray(tank.segments) && tank.segments.length);
+  }
+  function getTankDisplayDecimals(tank){
+    if(isSegmentTank(tank)) return tank.segments.reduce((max, segment) => Math.max(max, countDecimals(segment.recorded_per_mm_l)), 0);
+    return countDecimals(tank.per_mm_l);
+  }
+  function getTankLiquidDepth(tank, gaugeMm){
+    return tank.center_mm - gaugeMm;
+  }
+  function getTankSegmentByLiquidDepth(tank, liquidDepth){
+    if(!isSegmentTank(tank)) return null;
+    return tank.segments.find(segment => liquidDepth >= segment.start_depth_mm && liquidDepth <= segment.end_depth_mm) || null;
+  }
+  function getTankSegmentByGauge(tank, gaugeMm){
+    return getTankSegmentByLiquidDepth(tank, getTankLiquidDepth(tank, gaugeMm));
+  }
+  function getSegmentActualPerMm(segment){
+    const depthSpan = segment.end_depth_mm - segment.start_depth_mm;
+    if(depthSpan <= 0) return 0;
+    return (segment.end_l - segment.start_l) / depthSpan;
+  }
+  function getGaugeMeta(tank, gaugeMm){
+    if(isSegmentTank(tank)){
+      const liquidDepth = getTankLiquidDepth(tank, gaugeMm);
+      const segment = getTankSegmentByLiquidDepth(tank, liquidDepth);
+      if(segment){
+        const decimals = getTankDisplayDecimals(tank);
+        return {
+          liquidDepth,
+          segment,
+          perMmDisplay: Number(segment.recorded_per_mm_l).toFixed(decimals),
+          twoMmDisplay: Number(segment.recorded_per_mm_l * 2).toFixed(decimals),
+          segmentRangeLabel: `液深 ${segment.start_depth_mm}〜${segment.end_depth_mm}mm（底からの深さ）`,
+          formulaLabel: `${segment.start_l} + ((${liquidDepth} - ${segment.start_depth_mm}) × ${getSegmentActualPerMm(segment).toFixed(6)})`
+        };
+      }
+    }
+    const decimals = getTankDisplayDecimals(tank);
+    return {
+      liquidDepth: getTankLiquidDepth(tank, gaugeMm),
+      segment: null,
+      perMmDisplay: Number(tank.per_mm_l).toFixed(decimals),
+      twoMmDisplay: Number(tank.per_mm_l * 2).toFixed(decimals),
+      segmentRangeLabel: '',
+      formulaLabel: `${tank.bottom_l} + ((${tank.center_mm} - ${gaugeMm}) × ${Number(tank.per_mm_l).toFixed(decimals)})`
+    };
+  }
   function calculateReferencePerMm(tank){
     return (tank.full_l - tank.bottom_l) / tank.center_mm;
   }
   function formatTwoMmPerStep(tank){
+    if(isSegmentTank(tank)){
+      const actuals = tank.segments.map(getSegmentActualPerMm);
+      const decimals = Math.max(3, ...actuals.map(countDecimals));
+      const minValue = Math.min(...actuals);
+      const maxValue = Math.max(...actuals);
+      const low = Number(minValue * 2).toFixed(decimals);
+      const high = Number(maxValue * 2).toFixed(decimals);
+      return low === high ? `${low}L` : `${low}〜${high}L`;
+    }
     const decimals = countDecimals(tank.per_mm_l);
-    return Number(tank.per_mm_l * 2).toFixed(decimals);
+    return `${Number(tank.per_mm_l * 2).toFixed(decimals)}L`;
   }
   function calculateRawVolume(tank, gaugeMm){
+    if(isSegmentTank(tank)){
+      const liquidDepth = getTankLiquidDepth(tank, gaugeMm);
+      const segment = getTankSegmentByLiquidDepth(tank, liquidDepth);
+      if(segment){
+        return segment.start_l + ((liquidDepth - segment.start_depth_mm) * getSegmentActualPerMm(segment));
+      }
+    }
     return tank.bottom_l + ((tank.center_mm - gaugeMm) * tank.per_mm_l);
   }
   function calculateVolume(tank, gaugeMm){
@@ -2573,6 +2646,39 @@ function toggleEl(target, visible, display='block'){
   function buildAuditInfo(tank){
     if(!tank || tank.audit_enabled === false){
       return { status:'idle', title:'監査状態: 情報なし', note:'', detailGroups:[] };
+    }
+    if(isSegmentTank(tank)){
+      const decimals = getTankDisplayDecimals(tank);
+      return {
+        status:'ok',
+        title:'監査状態: 区間別登録',
+        note:'',
+        detailGroups:[
+          {
+            heading:'記載値',
+            rows:[
+              { label:'記載の全容量', value:`${tank.full_l}L` },
+              { label:'記載の底板面以下', value:`${tank.bottom_l}L` },
+              { label:'記載の中心深', value:`${tank.center_mm}mm` },
+              { label:'登録方式', value:'容器検定簿の区間別記載を使用' }
+            ]
+          },
+          {
+            heading:'区間別1mm当',
+            rows:tank.segments.map(segment => ({
+              label:`液深 ${segment.start_depth_mm}〜${segment.end_depth_mm}mm`,
+              value:`${segment.start_l}L→${segment.end_l}L / 記載1mm当 ${Number(segment.recorded_per_mm_l).toFixed(decimals)}`
+            }))
+          },
+          {
+            heading:'補足',
+            rows:[
+              { label:'監査メモ', value:tank.audit_note ? tank.audit_note : '未設定' },
+              { label:'計算の考え方', value:'各区間の累計深さ・累計容量を直線でつなぎ、境界の累計容量が合うように表示用一覧を作成' }
+            ]
+          }
+        ]
+      };
     }
     const decimals = countDecimals(tank.per_mm_l);
     const reference = calculateReferencePerMm(tank);
@@ -2636,8 +2742,9 @@ function toggleEl(target, visible, display='block'){
       const headingRow = candidate.heading ? `<div class="tm2-detail-heading">${candidate.heading}</div>` : '';
       const targetRow = candidate.targetVolume != null ? `<div class="tm2-detail-row"><span>目標L</span>${candidate.targetVolume}L</div>` : '';
       const mmRow = candidate.mm != null ? `<div class="tm2-detail-row"><span>検尺値</span>${candidate.mm}mm</div>` : '';
+      const segmentRow = candidate.segmentRangeLabel ? `<div class="tm2-detail-row"><span>該当区間</span>${candidate.segmentRangeLabel}</div>` : '';
       const formulaRow = candidate.formula ? `<div class="tm2-detail-row"><span>計算式</span>${candidate.formula}</div>` : '';
-      return `<div class="tm2-detail-group">${headingRow}${targetRow}${mmRow}<div class="tm2-detail-row"><span>表示L</span>${candidate.displayedL}L</div><div class="tm2-detail-row"><span>切り捨て前</span>${candidate.rawVolume.toFixed(3)}L</div><div class="tm2-detail-row"><span>記載1mm当</span>${candidate.perMmDisplay}</div><div class="tm2-detail-row"><span>2mm当の目安</span>${candidate.twoMmDisplay}L</div>${formulaRow}</div>`;
+      return `<div class="tm2-detail-group">${headingRow}${targetRow}${mmRow}${segmentRow}<div class="tm2-detail-row"><span>表示L</span>${candidate.displayedL}L</div><div class="tm2-detail-row"><span>切り捨て前</span>${candidate.rawVolume.toFixed(3)}L</div><div class="tm2-detail-row"><span>記載1mm当</span>${candidate.perMmDisplay}</div><div class="tm2-detail-row"><span>2mm当の目安</span>${candidate.twoMmDisplay}</div>${formulaRow}</div>`;
     }).join('');
   }
   function syncReasonToggle(){
@@ -2671,8 +2778,8 @@ function toggleEl(target, visible, display='block'){
     els.currentMeta.hidden = false;
     els.currentRange.textContent = `0〜${tank.center_mm}mm の偶数`;
     els.currentVolumeRange.textContent = `${tank.bottom_l}〜${tank.full_l}L`;
-    els.currentStepVolume.textContent = `${formatTwoMmPerStep(tank)}L`;
-    els.currentNote.textContent = 'このタンクを基準に、下で尺から見るかLから見るかを選びます。';
+    els.currentStepVolume.textContent = formatTwoMmPerStep(tank);
+    els.currentNote.textContent = isSegmentTank(tank) ? 'このタンクは区間別の記載値で計算します。下で尺から見るかLから見るかを選びます。' : 'このタンクを基準に、下で尺から見るかLから見るかを選びます。';
   }
   function syncModeButtons(tank){
     const enabled = Boolean(tank);
@@ -2744,16 +2851,19 @@ function toggleEl(target, visible, display='block'){
     return false;
   }
   function buildVolumeCandidates(tank, targetVolume){
-    const decimals = countDecimals(tank.per_mm_l);
-    const perMmDisplay = Number(tank.per_mm_l).toFixed(decimals);
     const allCandidates = [];
     for(let mm=0; mm<=tank.center_mm; mm+=2){
       const rawVolume = calculateRawVolume(tank, mm);
       const displayedL = calculateVolume(tank, mm);
+      const gaugeMeta = getGaugeMeta(tank, mm);
+      const formula = isSegmentTank(tank)
+        ? `${gaugeMeta.formulaLabel} = ${rawVolume.toFixed(5)}L → 表示 ${displayedL}L`
+        : `${gaugeMeta.formulaLabel} = ${rawVolume.toFixed(5)}L → 表示 ${displayedL}L`;
       allCandidates.push({
         heading:`候補 ${mm}mm`, targetVolume, mm, rawVolume, displayedL,
-        diffAbs:Math.abs(rawVolume - targetVolume), perMmDisplay, twoMmDisplay: formatTwoMmPerStep(tank),
-        formula:`${tank.bottom_l} + ((${tank.center_mm} - ${mm}) × ${perMmDisplay}) = ${rawVolume.toFixed(5)}L → 表示 ${displayedL}L`
+        diffAbs:Math.abs(rawVolume - targetVolume), perMmDisplay:gaugeMeta.perMmDisplay, twoMmDisplay: gaugeMeta.twoMmDisplay,
+        segmentRangeLabel:gaugeMeta.segmentRangeLabel,
+        formula
       });
     }
     allCandidates.sort((a,b) => a.diffAbs !== b.diffAbs ? a.diffAbs - b.diffAbs : a.mm - b.mm);
@@ -2801,11 +2911,11 @@ function toggleEl(target, visible, display='block'){
       }
       const volume = calculateVolume(tank, validation.gaugeMm);
       const rawVolume = calculateRawVolume(tank, validation.gaugeMm);
-      const decimals = countDecimals(tank.per_mm_l);
-      const perMmDisplay = Number(tank.per_mm_l).toFixed(decimals);
+      const gaugeMeta = getGaugeMeta(tank, validation.gaugeMm);
       state.lastReasonCandidates = [{
-        heading:'', mm:validation.gaugeMm, rawVolume, displayedL:volume, perMmDisplay, twoMmDisplay: formatTwoMmPerStep(tank),
-        formula:`${tank.bottom_l} + ((${tank.center_mm} - ${validation.gaugeMm}) × ${perMmDisplay}) = ${rawVolume.toFixed(5)}L → 表示 ${volume}L`
+        heading:'', mm:validation.gaugeMm, rawVolume, displayedL:volume, perMmDisplay:gaugeMeta.perMmDisplay, twoMmDisplay:gaugeMeta.twoMmDisplay,
+        segmentRangeLabel:gaugeMeta.segmentRangeLabel,
+        formula:`${gaugeMeta.formulaLabel} = ${rawVolume.toFixed(5)}L → 表示 ${volume}L`
       }];
       els.resultValue.textContent = `${volume} L`;
       state.lastValidGauge = validation.gaugeMm;
