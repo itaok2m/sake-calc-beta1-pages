@@ -1872,6 +1872,119 @@ body::before{
   #tank2mm-screen .tm2-info-band{padding:9px 10px;}
 }
 
+
+/* ===== UI整理 4手目 / safe simplification patch 2026-04-15 ===== */
+.group.ui-input-surface{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  padding:12px 0 10px !important;
+  margin-bottom:0 !important;
+  box-shadow:none !important;
+}
+.group.ui-input-surface + .group.ui-input-surface{
+  border-top:1px solid #e2e7e3 !important;
+  padding-top:14px !important;
+  margin-top:4px !important;
+}
+.group.ui-input-surface .group-title{
+  margin-bottom:10px !important;
+}
+.panel-desc.ui-help-surface{
+  padding:0 0 3px !important;
+  margin-bottom:3px !important;
+  color:#616b66 !important;
+  font-size:11.5px !important;
+  line-height:1.72 !important;
+}
+.calc-help.ui-help-surface{
+  margin-top:4px !important;
+  color:#768079 !important;
+  font-size:11px !important;
+  line-height:1.75 !important;
+}
+.compact-help-disclosure{
+  margin-top:4px;
+}
+.compact-help-disclosure summary{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  list-style:none;
+  cursor:pointer;
+  color:#6f7972;
+  font-size:11px;
+  line-height:1.7;
+}
+.compact-help-disclosure summary::-webkit-details-marker{display:none;}
+.compact-help-disclosure .disclosure-icon{
+  color:#818982;
+  transition:transform .15s ease;
+  flex:0 0 auto;
+}
+.compact-help-disclosure[open] .disclosure-icon{transform:rotate(180deg);}
+.compact-help-body{
+  padding-top:6px;
+  font-size:11px;
+  line-height:1.75;
+  color:#768079;
+}
+.compact-guide-disclosure{
+  margin-top:10px;
+  border-top:1px dashed #d9dfda;
+  padding-top:8px;
+}
+.compact-guide-disclosure summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  list-style:none;
+  cursor:pointer;
+  color:#55605a;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.6;
+}
+.compact-guide-disclosure summary::-webkit-details-marker{display:none;}
+.compact-guide-disclosure .disclosure-icon{
+  color:#6d7771;
+  transition:transform .15s ease;
+  flex:0 0 auto;
+}
+.compact-guide-disclosure[open] .disclosure-icon{transform:rotate(180deg);}
+.compact-guide-body{
+  padding-top:8px;
+  font-size:12px;
+  line-height:1.8;
+  color:#5b655f;
+}
+#tank2mm-screen .tm2-info-band{
+  padding:8px 10px;
+  gap:8px;
+}
+#tank2mm-screen .tm2-info-band > * + *{
+  padding-top:8px !important;
+}
+#tank2mm-screen .tm2-current-label{
+  font-size:11px !important;
+}
+#tank2mm-screen .tm2-share-title,
+#tank2mm-screen .tm2-status-title{
+  font-size:12px !important;
+}
+@media(max-width:640px){
+  .group.ui-input-surface{
+    padding:11px 0 9px !important;
+  }
+  .group.ui-input-surface + .group.ui-input-surface{
+    padding-top:12px !important;
+  }
+  #tank2mm-screen .tm2-info-band{
+    padding:8px 9px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2756,9 +2869,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-15 21:46 JST',
+  builtAt: '2026-04-15 22:34 JST',
   betaNotes: [
-    '2026-04-15 UI整理 3手目: 説明・補足・考え方の囲みを弱め、結果枠の内側小箱と2mm表上部の箱感を軽くしました。',
+    '2026-04-15 UI整理 5手目: 入力主役は維持したまま、長い補足を折りたたみへ寄せて常時表示の文量を減らしました。',
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
     '日本酒度とボーメ度の混合計算は近似です。',
@@ -6138,6 +6251,41 @@ function applyUiCommonRoles(root){
   pick('.tank2mm-send-btn').forEach(el=>{
     el.classList.remove('ui-primary-action','ui-utility-action','ui-danger-action','ui-disclosure-action');
     el.classList.add('ui-secondary-action');
+  });
+  simplifyUiStep4(scope);
+  simplifyUiStep5(scope);
+}
+
+
+function simplifyUiStep4(root){
+  const scope = root && typeof root.querySelectorAll==='function' ? root : document;
+  Array.from(scope.querySelectorAll('.formula-guide.ui-guide-surface, #tank2mm-screen .tm2-subnote.is-guide.ui-guide-surface')).forEach(el=>{
+    if(el.dataset.compactGuideDone==='1') return;
+    const bodyHtml = (el.innerHTML || '').trim();
+    const label = el.classList.contains('formula-guide') ? '考え方を見る' : '見かたを見る';
+    const details = document.createElement('details');
+    details.className = 'compact-guide-disclosure';
+    details.innerHTML = `<summary><span class="disclosure-label">${label}</span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary><div class="compact-guide-body">${bodyHtml}</div>`;
+    el.dataset.compactGuideDone = '1';
+    el.replaceWith(details);
+  });
+}
+
+function simplifyUiStep5(root){
+  const scope = root && typeof root.querySelectorAll==='function' ? root : document;
+  Array.from(scope.querySelectorAll('.calc-help.ui-help-surface')).forEach(el=>{
+    if(el.dataset.compactHelpDone==='1') return;
+    const text = (el.textContent || '').replace(/\s+/g,' ').trim();
+    const longHelp = text.length >= 24 || (text.match(/。/g)||[]).length >= 2 || text.includes('履歴');
+    if(!longHelp) return;
+    const firstSentence = (text.split('。')[0] || '').trim();
+    const summaryText = firstSentence ? (firstSentence.endsWith('。') ? firstSentence : firstSentence + '。') : '補足を見る';
+    const bodyHtml = (el.innerHTML || '').trim();
+    const details = document.createElement('details');
+    details.className = 'compact-help-disclosure';
+    details.innerHTML = `<summary><span class="disclosure-label">${summaryText}</span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary><div class="compact-help-body">${bodyHtml}</div>`;
+    el.dataset.compactHelpDone = '1';
+    el.replaceWith(details);
   });
 }
 
