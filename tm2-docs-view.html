@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#2a5c3f"/>
+<link rel="manifest" href="./manifest.json"/>
+<link rel="apple-touch-icon" href="./icons/icon-192.png"/>
+<meta name="application-name" content="酒造ツール"/>
+<title>タンク登録の確認 / ベータ1</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+body{font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;background:#f6f8f6;color:#17211b;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;}
+.page{max-width:860px;margin:0 auto;padding:18px 16px 56px;padding-bottom:max(56px, calc(env(safe-area-inset-bottom) + 24px));display:grid;gap:12px;}
+.nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:14px 16px;padding-top:max(16px, calc(env(safe-area-inset-top) + 12px));padding-bottom:14px;background:rgba(251,252,250,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,220,214,.9);}
+.back-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:16px;border:1.5px solid #d7ddd7;background:#fff;color:#445047;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(35,78,55,.10);}
+.back-btn:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(53,88,66,.10);}
+.nav-title{font-size:18px;font-weight:800;line-height:1.35;min-width:0;}
+.card{border-radius:20px;border:1px solid rgba(201,213,206,.92);background:#fff;box-shadow:0 8px 24px rgba(29,44,36,.06);padding:16px;display:grid;gap:10px;}
+.hero{gap:12px;}
+.kicker{font-size:11px;font-weight:800;letter-spacing:.05em;color:#5c6a61;}
+h1{font-size:25px;line-height:1.35;}
+.lead,.body-text,.plain-note{font-size:14px;line-height:1.85;color:#445249;}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));}
+.mini{padding:12px 14px;border-radius:16px;background:#f8fbf9;border:1px solid #dde5df;display:grid;gap:5px;}
+.segment-table{display:grid;gap:8px;}
+.segment-row{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:8px;padding:10px 12px;border-radius:14px;border:1px solid #dde5df;background:#fbfdfb;}
+.segment-cell{display:grid;gap:2px;}
+.segment-head{font-size:12px;font-weight:800;line-height:1.6;color:#5b6a61;}
+.segment-value{font-size:13px;line-height:1.75;color:#233229;word-break:break-word;}
+.label{font-size:12px;font-weight:800;line-height:1.6;color:#5b6a61;}
+.value{font-size:16px;font-weight:800;line-height:1.6;color:#1d2f25;word-break:break-word;}
+.section-title{font-size:18px;font-weight:800;line-height:1.4;color:#173425;}
+.row-list{display:grid;gap:10px;}
+.row{padding:12px 14px;border-radius:16px;border:1px solid #dde5df;background:#fbfdfb;display:grid;gap:4px;}
+.row-title{font-size:14px;font-weight:800;line-height:1.6;color:#213429;}
+.row-text{font-size:13px;line-height:1.85;color:#506057;}
+.note-box{padding:12px 14px;border-radius:16px;border:1px solid #d8e2dc;background:#f7faf8;font-size:13px;line-height:1.85;color:#425148;}
+.footer-note{font-size:12px;line-height:1.85;color:#607066;}
+[hidden]{display:none !important;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}.segment-row{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="nav">
+  <button class="back-btn" id="backToTm2" type="button">← 直前の2mm表へ戻る</button>
+  <div class="nav-title">タンク登録の確認</div>
+</div>
+<div class="page">
+  <section class="card hero">
+    <div>
+      <h1 id="page-title">タンク登録の確認</h1>
+    </div>
+      </section>
+  <section class="card">
+    <div class="section-title">登録値</div>
+    <div class="grid">
+      <div class="mini"><div class="label">タンク</div><div class="value" id="tank-label">未指定</div></div>
+      <div class="mini"><div class="label">計算方式</div><div class="value" id="calc-label">未指定</div></div>
+      <div class="mini"><div class="label">記載の全容量</div><div class="value" id="full-l">—</div></div>
+      <div class="mini"><div class="label">記載の底板面以下</div><div class="value" id="bottom-l">—</div></div>
+      <div class="mini"><div class="label">記載の中心深</div><div class="value" id="center-mm">—</div></div>
+      <div class="mini" id="fixed-permm-card" hidden><div class="label">記載1mm当</div><div class="value" id="fixed-permm">—</div></div>
+      <div class="mini"><div class="label">1mm当の切替</div><div class="value" id="boundary-label">—</div></div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="section-title">計算のしかた</div>
+    <div class="row-list" id="calc-steps"></div>
+    <div class="row-list" id="calc-example"></div>
+  </section>
+  <section class="card" id="segment-card" hidden>
+    <div class="section-title">区間登録値</div>
+        <div class="segment-table" id="segment-list"></div>
+  </section>
+</div>
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const tankNo = params.get('tankNo') || '';
+  const tankLabel = params.get('tankLabel') || (tankNo ? `No.${tankNo}` : '未指定');
+  const fullL = params.get('fullL') || '';
+  const bottomL = params.get('bottomL') || '';
+  const centerMm = params.get('centerMm') || '';
+  const perMm = params.get('perMm') || '';
+  const calcMode = params.get('calcMode') || 'fixed';
+  const boundaryMode = params.get('boundaryMode') || 'none';
+  const returnScreen = params.get('returnScreen') || 'tank2mm-screen';
+  const segmentsParam = params.get('segments') || '';
+  const activeGaugeParam = params.get('tm2activegauge') || (params.get('tm2mode') === 'gauge' ? (params.get('tm2gauge') || '') : '');
+  const returnUrl = params.get('returnUrl') || '';
+  const TM2_RETURN_KEY = 'sake-tools-tm2-return-v1';
+  const activeGauge = Number(activeGaugeParam);
+  const calcModeLabels = {
+    fixed:'固定の1mm当で計算',
+    segment_linear:'区間の前後をまっすぐ結んで計算',
+    segment_recorded:'区間の記載1mm当をそのまま使う計算'
+  };
+  const boundaryLabels = {
+    none:'固定1mm当のため切替なし',
+    inclusive:'区間の端もその区間の値で計算',
+    next:'1mm当は区間の終わりで次の値に切り替え'
+  };
+  const calcSteps = {
+    fixed:[
+      '中心深 − 検尺（空積深） = 入身深 を出します。',
+      '底板面以下 ＋ 入身深 × 1mm当 で容量を出し、最後に1L未満を切り捨てます。'
+    ],
+    segment_linear:[
+      '中心深 − 検尺（空積深） = 入身深 を出します。',
+      'その入身深が入る区間を選び、その区間で容量を出して最後に1L未満を切り捨てます。'
+    ],
+    segment_recorded:[
+      '中心深 − 検尺（空積深） = 入身深 を出します。',
+      'その入身深が入る区間を選び、開始容量 ＋ 区間に入ってからのmm × 1mm当 で容量を出して最後に1L未満を切り捨てます。'
+    ]
+  };
+  const segments = segmentsParam ? segmentsParam.split('|').map(row => {
+    const [startDepth,endDepth,startL,endL,recordedPerMm] = row.split(',');
+    return {
+      startDepth:Number(startDepth),
+      endDepth:Number(endDepth),
+      startL:Number(startL),
+      endL:Number(endL),
+      recordedPerMm:Number(recordedPerMm)
+    };
+  }).filter(item => Number.isFinite(item.startDepth) && Number.isFinite(item.endDepth) && Number.isFinite(item.startL) && Number.isFinite(item.endL) && Number.isFinite(item.recordedPerMm)) : [];
+  function getSegmentForLiquidDepth(liquidDepth){
+    if(!Number.isFinite(liquidDepth)) return null;
+    if(boundaryMode === 'next'){
+      for(let i=0;i<segments.length;i++){
+        const item = segments[i];
+        const isLast = i === segments.length - 1;
+        if(isLast){
+          if(liquidDepth >= item.startDepth && liquidDepth <= item.endDepth) return item;
+        }else if(liquidDepth >= item.startDepth && liquidDepth < item.endDepth){
+          return item;
+        }
+      }
+      return null;
+    }
+    return segments.find(item => liquidDepth >= item.startDepth && liquidDepth <= item.endDepth) || null;
+  }
+  function buildCurrentExample(){
+    if(!Number.isFinite(activeGauge) || !Number.isFinite(Number(centerMm)) || activeGauge < 0 || activeGauge > Number(centerMm)) return '';
+    const liquidDepth = Number(centerMm) - activeGauge;
+    if(calcMode === 'fixed'){
+      if(!Number.isFinite(Number(bottomL)) || !Number.isFinite(Number(fullL)) || !Number.isFinite(Number(centerMm)) || Number(centerMm) === 0) return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 で容量を出します。`;
+      const formulaPerMm = Number.isFinite(Number(perMm)) ? Number(perMm) : ((Number(fullL) - Number(bottomL)) / Number(centerMm));
+      const raw = Number(bottomL) + (liquidDepth * formulaPerMm);
+      return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 ${formulaPerMm.toFixed(4)}L = ${raw.toFixed(5)}L、表示は ${Math.floor(raw)}Lです。`;
+    }
+    const segment = getSegmentForLiquidDepth(liquidDepth);
+    if(!segment) return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。入身深が入る区間で容量を出します。`;
+    const diffMm = liquidDepth - segment.startDepth;
+    const segmentPerMm = Number(segment.recordedPerMm);
+    const raw = Number(segment.startL) + (diffMm * segmentPerMm);
+    return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。入身深 ${liquidDepth}mm は ${segment.startDepth}〜${segment.endDepth}mm の区間なので、開始容量 ${segment.startL}L（${segment.startDepth}mm）＋ ${diffMm}mm × 1mm当 ${segmentPerMm.toFixed(6)}L = ${raw.toFixed(5)}L、表示は ${Math.floor(raw)}Lです。`;
+  }
+  document.getElementById('page-title').textContent = tankNo ? `${tankLabel} / タンク登録の確認` : 'タンク登録の確認';
+  document.getElementById('tank-label').textContent = tankLabel;
+  document.getElementById('calc-label').textContent = calcModeLabels[calcMode] || calcModeLabels.fixed;
+  document.getElementById('full-l').textContent = fullL ? `${fullL}L` : '—';
+  document.getElementById('bottom-l').textContent = bottomL ? `${bottomL}L` : '—';
+  document.getElementById('center-mm').textContent = centerMm ? `${centerMm}mm` : '—';
+  document.getElementById('boundary-label').textContent = boundaryLabels[boundaryMode] || boundaryLabels.none;
+  const fixedPerMmCard = document.getElementById('fixed-permm-card');
+  const fixedPerMmValue = document.getElementById('fixed-permm');
+  if(calcMode === 'fixed' && fixedPerMmCard && fixedPerMmValue && perMm){
+    fixedPerMmCard.hidden = false;
+    fixedPerMmValue.textContent = `${Number(perMm).toFixed(String(perMm).includes('.') ? String(perMm).split('.')[1].length : 0)}L`;
+  }
+  document.getElementById('calc-steps').innerHTML = (calcSteps[calcMode] || calcSteps.fixed).map(text => `<div class="row"><div class="row-text">${text}</div></div>`).join('');
+  const calcExample = buildCurrentExample();
+  document.getElementById('calc-example').innerHTML = calcExample ? `<div class="row"><div class="row-title">今の入力での計算</div><div class="row-text">${calcExample}</div></div>` : ''; 
+  const segmentCard = document.getElementById('segment-card');
+  const segmentList = document.getElementById('segment-list');
+  if(segmentCard && segmentList && segments.length){
+    segmentCard.hidden = false;
+    segmentList.innerHTML = segments.map(item => `
+      <div class="segment-row">
+        <div class="segment-cell"><div class="segment-head">入身深の範囲</div><div class="segment-value">${item.startDepth}〜${item.endDepth}mm</div></div>
+        <div class="segment-cell"><div class="segment-head">開始容量</div><div class="segment-value">${item.startL}L</div></div>
+        <div class="segment-cell"><div class="segment-head">終わり容量</div><div class="segment-value">${item.endL}L</div></div>
+        <div class="segment-cell"><div class="segment-head">1mm当</div><div class="segment-value">${item.recordedPerMm.toFixed(3)}L</div></div>
+      </div>`).join('');
+  }
+  document.getElementById('backToTm2').addEventListener('click', function(){
+    const payload = {
+      screen: 'tank2mm-screen',
+      groupKey: params.get('tm2group') || '',
+      tankNo: params.get('tm2tank') || '',
+      mode: params.get('tm2mode') === 'volume' ? 'volume' : 'gauge',
+      inputValue: params.get('tm2input') || '',
+      gaugeValue: params.get('tm2gauge') || '',
+      volumeValue: params.get('tm2volume') || '',
+      listOpen: (params.get('tm2list') || '') === '1',
+      activeGauge: params.get('tm2activegauge') || '',
+      scrollTargetGauge: params.get('tm2scrollgauge') || params.get('tm2activegauge') || ''
+    };
+    const backParams = new URLSearchParams();
+    backParams.set('screen', returnScreen || 'tank2mm-screen');
+    backParams.set('tm2return', '1');
+    if(payload.groupKey) backParams.set('tm2group', payload.groupKey);
+    if(payload.tankNo) backParams.set('tm2tank', payload.tankNo);
+    if(payload.mode) backParams.set('tm2mode', payload.mode);
+    if(payload.gaugeValue) backParams.set('tm2gauge', payload.gaugeValue);
+    if(payload.volumeValue) backParams.set('tm2volume', payload.volumeValue);
+    if(payload.listOpen) backParams.set('tm2list', '1');
+    if(payload.activeGauge) backParams.set('tm2activegauge', payload.activeGauge);
+    if(payload.scrollTargetGauge) backParams.set('tm2scrollgauge', payload.scrollTargetGauge);
+    if(payload.inputValue) backParams.set('tm2input', payload.inputValue);
+    const targetUrl = returnUrl || `./index.html?${backParams.toString()}`;
+    try{ localStorage.setItem(TM2_RETURN_KEY, JSON.stringify(payload)); }catch{}
+    try{ localStorage.setItem('sake-tools-last-screen-v2','tank2mm-screen'); }catch{}
+    try{
+      const raw = localStorage.getItem('sake-tools-ui-state-v1');
+      const parsed = raw ? JSON.parse(raw) : {};
+      parsed.screen = 'tank2mm-screen';
+      parsed.tm2State = payload;
+      localStorage.setItem('sake-tools-ui-state-v1', JSON.stringify(parsed));
+    }catch{}
+    try{ sessionStorage.setItem('sake-tools-force-screen-v1','tank2mm-screen'); }catch{}
+    window.location.href = targetUrl;
+  });
+})();
+</script>
+</body>
+</html>
