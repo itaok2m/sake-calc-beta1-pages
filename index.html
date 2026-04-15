@@ -814,10 +814,10 @@ body::before{
 .back-btn{border-radius:16px;border:1px solid #d7ddd7;background:#fff;color:#445047;font-weight:800;box-shadow:0 4px 10px rgba(30,52,41,.05);}
 .back-btn:hover{border-color:#b8c8bf;color:#244732;}
 .tool-nav-title{font-size:18px;line-height:1.35;}
-.screen-lead{width:min(760px,100%);padding:18px 18px 16px;border-radius:24px;border:1px solid rgba(201,213,206,.95);background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(241,247,243,.95));box-shadow:var(--shadow-card);} 
+.screen-lead{width:min(760px,100%);display:grid;gap:0;padding:2px 0 4px;border:none;border-radius:0;background:transparent;box-shadow:none;} 
 
-.screen-lead h1{font-size:24px;line-height:1.28;margin-bottom:8px;color:#13241b;}
-.screen-lead p{font-size:13px;line-height:1.85;color:#59665d;}
+.screen-lead h1{font-size:24px;line-height:1.28;margin:0 0 8px;color:#13241b;}
+.screen-lead p{margin:0;font-size:13px;line-height:1.85;color:#59665d;}
 .card{border-radius:24px;border:1px solid rgba(201,213,206,.88);box-shadow:var(--shadow-card);padding:22px 20px 20px;background:rgba(255,255,255,.95);} 
 .panel-desc{border-radius:16px;border-left:none;border:1px solid #dce8e0;background:linear-gradient(180deg,#f7fbf8,#edf5ef);padding:14px 15px;font-size:13px;line-height:1.9;color:#48564d;}
 .group{border-radius:18px;background:linear-gradient(180deg,#faf9f7,#f5f1eb);border:1px solid #e8e1d7;padding:16px 16px;margin-bottom:12px;}
@@ -863,7 +863,7 @@ body::before{
   .home-body{padding:22px 14px 56px;}
   .home-header{padding:20px 18px 18px;border-radius:26px;}
   .home-header h1{font-size:28px;}
-  .screen-lead{padding:16px 16px 14px;border-radius:20px;}
+  .screen-lead{padding:0 0 2px;}
   .screen-lead h1{font-size:22px;}
   .tool-nav{padding:12px 14px 14px;}
   .tool-nav-title{font-size:16px;}
@@ -2052,6 +2052,86 @@ body::before{
   #tank2mm-screen .tm2-footer-note{font-size:11px !important;}
 }
 
+
+
+/* ===== UI整理 5.4 / action-surface limit patch 2026-04-16 ===== */
+#warimizu .wrapper > [id^="Wpanel"] > .card,
+#suion .wrapper > .t-panel > .card,
+#ekisu .wrapper > .card,
+#moto .wrapper > .card,
+#jumai .wrapper > .card,
+#tank2mm-screen .wrapper > .card{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+}
+#home-screen .home-bulk-panel{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+#history-screen .history-filter-wrap,
+#history-screen .history-compare-draft-panel,
+#history-compare-screen .history-compare-screen-head{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+#tank2mm-screen .tm2-info-band{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+#tank2mm-screen .tm2-current-card,
+#tank2mm-screen .tm2-share-card,
+#tank2mm-screen .tm2-status,
+#tank2mm-screen .tm2-list-nearby{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+#tank2mm-screen .tm2-info-band > * + *,
+#tank2mm-screen .tm2-share-body,
+#tank2mm-screen .tm2-detail-panel,
+#tank2mm-screen .tm2-list-nearby,
+#history-screen .history-compare-draft-actions,
+#history-compare-screen .history-compare-screen-base{
+  border-top:1px solid #e4e9e5 !important;
+  padding-top:10px !important;
+}
+#tank2mm-screen .tm2-detail-panel{
+  margin-top:10px !important;
+  background:transparent !important;
+  border-left:none !important;
+  border-right:none !important;
+  border-bottom:none !important;
+  border-radius:0 !important;
+}
+#tank2mm-screen .tm2-share-body{
+  margin-top:2px !important;
+}
+#history-screen .history-filter-wrap,
+#history-screen .history-compare-draft-panel{
+  gap:10px !important;
+  margin:0 0 14px !important;
+}
+#history-compare-screen .history-compare-screen-head{
+  gap:8px !important;
+}
+@media(max-width:640px){
+  #history-screen .history-filter-wrap,
+  #history-screen .history-compare-draft-panel{margin:0 0 12px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -2532,7 +2612,7 @@ body::before{
 
 <div class="tool-nav-place"><span class="tool-nav-title">水温温度計算</span></div></div>
 <div class="tool-body">
-<div class="screen-lead"><h1>水温温度計算</h1></div>
+<div class="screen-lead"><h1>水温温度計算</h1><p>2種類の水を混ぜる計算と、目標の水温・水量から逆算する計算を、同じ画面で切り替えて使えます。</p></div>
 <div class="wrapper">
 <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
 <div class="unit-bar" id="T-fml-bar"><div class="unit-bar-formula"><span class="fml-main" id="Tfml_main">① 混合後水温 ＝（水温① × 水量① ＋ 水温② × 水量②）÷（水量① ＋ 水量②）</span><span class="fml-note" id="Tfml_sub">② 混合後水量 ＝ 水量① ＋ 水量②</span></div></div>
@@ -2660,7 +2740,7 @@ body::before{
 
 <div class="tool-nav-place"><span class="tool-nav-title">エキス分計算</span></div></div>
 <div class="tool-body">
-<div class="screen-lead"><h1>エキス分計算</h1></div>
+<div class="screen-lead"><h1>エキス分計算</h1><p>アルコール分と日本酒度またはボーメ度から、エキス分と原エキス分を確認できます。</p></div>
 <div class="wrapper">
 <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
 <div class="unit-bar" id="E-fml-bar"><div class="unit-bar-formula"><span class="fml-main" id="Efml_main">① エキス分 ＝ 日本酒度とアルコール分から算出</span><span class="fml-note" id="Efml_sub">② 原エキス分 ＝ エキス分 ＋ アルコール分 × 1.5894</span></div></div>
@@ -2822,7 +2902,7 @@ body::before{
 
 <div class="tool-nav-place"><span class="tool-nav-title">酛仕込温度計算</span></div></div>
 <div class="tool-body">
-<div class="screen-lead"><h1>酛仕込温度計算</h1></div>
+<div class="screen-lead"><h1>酛仕込温度計算</h1><p>水麹温度から、通常の温度帯と四段仕込用 55〜60℃ の蒸米温度を一覧で確認できます。</p></div>
 <div class="wrapper">
 <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
 <div class="unit-bar">
@@ -2884,7 +2964,7 @@ body::before{
 
 <div class="tool-nav-place"><span class="tool-nav-title">醪仕込温度計算</span></div></div>
 <div class="tool-body">
-<div class="screen-lead"><h1>醪仕込温度計算</h1></div>
+<div class="screen-lead"><h1>醪仕込温度計算</h1><p>水麹温度と工程（添・仲・留）をもとに、使う蒸米温度を一覧で確認できます。</p></div>
 <div class="wrapper">
 <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
 <div class="unit-bar">
@@ -2937,7 +3017,7 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-15 22:12 JST',
+  builtAt: '2026-04-16 01:58 JST',
   betaNotes: [
     '2026-04-15 UI整理 3手目: 説明・補足・考え方の囲みを弱め、結果枠の内側小箱と2mm表上部の箱感を軽くしました。',
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
