@@ -1396,10 +1396,15 @@ body::before{
 #tank2mm-screen .tm2-current-row span{display:inline-block;min-width:auto;color:#617066;}
 #tank2mm-screen .tm2-current-note{margin-top:8px;font-size:12px;line-height:1.8;color:#657268;text-align:left;}
 #tank2mm-screen .tm2-share-card{padding:14px;border-radius:14px;border:1px solid #d8e2dc;background:#fbfcfb;display:grid;gap:10px;}
+#tank2mm-screen .tm2-share-card.is-open{background:#f8fbf8;}
 #tank2mm-screen .tm2-share-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
 #tank2mm-screen .tm2-share-title{font-size:13px;font-weight:800;line-height:1.6;color:#23372d;}
 #tank2mm-screen .tm2-share-note{font-size:11px;line-height:1.7;color:#657268;}
-#tank2mm-screen .tm2-share-clear-btn{width:auto;min-height:40px;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.35;white-space:nowrap;flex:0 0 auto;}
+#tank2mm-screen .tm2-share-toggle-btn{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;}
+#tank2mm-screen .tm2-share-toggle-btn::after{content:'▼';font-size:12px;color:#617066;flex:0 0 auto;}
+#tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"]::after{content:'▲';}
+#tank2mm-screen .tm2-share-body{display:grid;gap:10px;}
+#tank2mm-screen .tm2-share-clear-btn{width:auto;min-height:40px;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.35;white-space:nowrap;justify-self:end;}
 #tank2mm-screen .tm2-share-input{width:100%;min-height:144px;border:1px solid #d8e1da;border-radius:14px;background:#fff;padding:12px 13px;font:inherit;line-height:1.7;color:#27352d;resize:vertical;box-sizing:border-box;}
 #tank2mm-screen .tm2-share-input:focus{outline:none;border-color:#2a5c3f;box-shadow:0 0 0 3px rgba(42,92,63,.08);}
 #tank2mm-screen .tm2-mode-group-title{font-size:12px;font-weight:800;line-height:1.6;color:#4b5f52;margin-bottom:10px;}
@@ -1419,18 +1424,22 @@ body::before{
 #tank2mm-screen .tm2-result-value{margin-top:6px;font-size:28px;font-weight:800;line-height:1.3;color:#13241b;word-break:break-word;}
 #tank2mm-screen .tm2-subnote{margin-top:10px;font-size:13px;line-height:1.8;color:#5b665d;}
 #tank2mm-screen .tm2-subnote.is-guide{padding:10px 12px;border-radius:12px;border:1px solid #cfe3d4;background:#edf7ef;color:#2a5c3f;}
-#tank2mm-screen .tm2-status{margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid #d7ddd7;background:#f8fbf8;}
+#tank2mm-screen .tm2-status{margin-top:12px;padding:8px 10px;border-radius:12px;border:1px solid #d7ddd7;background:#f8fbf8;display:grid;gap:4px;}
 #tank2mm-screen .tm2-status.is-idle{color:#657268;}
-#tank2mm-screen .tm2-status.is-ok{border-color:#cfe3d4;background:#eef7f0;}
+#tank2mm-screen .tm2-status.is-ok{border-color:#d6e4da;background:#f5faf6;}
 #tank2mm-screen .tm2-status.is-caution{border-color:#e7d19a;background:#fff6e3;}
-#tank2mm-screen .tm2-status-title{font-size:14px;font-weight:800;line-height:1.6;}
-#tank2mm-screen .tm2-status-note{margin-top:4px;font-size:13px;line-height:1.8;}
+#tank2mm-screen .tm2-status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+#tank2mm-screen .tm2-status-badge{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:2px 8px;border-radius:999px;background:#e8f0ea;color:#244333;font-size:11px;font-weight:800;line-height:1.4;}
+#tank2mm-screen .tm2-status.is-caution .tm2-status-badge{background:#f3d89b;color:#6a4b00;}
+#tank2mm-screen .tm2-status-title{font-size:13px;font-weight:800;line-height:1.6;}
+#tank2mm-screen .tm2-status-note{font-size:12px;line-height:1.7;color:#59675f;}
 #tank2mm-screen .tm2-detail-toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
 #tank2mm-screen .tm2-detail-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;}
 #tank2mm-screen .tm2-detail-btn::after{content:'▼';font-size:12px;color:#617066;flex:0 0 auto;}
 #tank2mm-screen .tm2-detail-btn[aria-expanded="true"]::after{content:'▲';}
 #tank2mm-screen .tm2-detail-panel{margin-top:10px;padding:12px 14px;border-radius:14px;border:1px dashed #c9d4c9;background:#fcfdfb;}
 #tank2mm-screen .tm2-docs-link-wrap{margin-top:12px;}
+#tank2mm-screen .tm2-docs-link-wrap.is-inside-panel{margin-top:10px;}
 #tank2mm-screen .tm2-docs-link-btn{width:100%;min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;white-space:normal;line-height:1.5;border:1.5px solid #d2ddd5;background:linear-gradient(180deg,#f7faf8 0%,#eef5f0 100%);color:#1f3b2c;}
 #tank2mm-screen .tm2-docs-link-btn::after{content:'→';font-size:16px;font-weight:900;color:#4b6854;flex:0 0 auto;}
 #tank2mm-screen .tm2-docs-link-btn:disabled,#tank2mm-screen .tm2-docs-link-btn.is-disabled{opacity:.58;background:#f6f8f6;color:#6c776f;pointer-events:none;}
@@ -1470,14 +1479,15 @@ body::before{
   #tank2mm-screen .tm2-list-head{display:block;}
   #tank2mm-screen .tm2-list-head h2{margin-bottom:4px;}
   #tank2mm-screen .tm2-detail-row{grid-template-columns:8.5em minmax(0,1fr);}
-  #tank2mm-screen .tm2-detail-toggle-grid{grid-template-columns:1fr 1fr;}
+  #tank2mm-screen .tm2-detail-toggle-grid{grid-template-columns:1fr;}
   #tank2mm-screen .tm2-detail-btn{min-height:56px;padding:10px 12px;font-size:13px;}
   #tank2mm-screen .tm2-input-row{grid-template-columns:minmax(0,1fr) auto;}
   #tank2mm-screen .tm2-mini-reset-btn{padding:10px 12px;font-size:13px;}
   #tank2mm-screen .tm2-current-head{align-items:flex-start;}
   #tank2mm-screen .tm2-current-open-btn{min-height:38px;padding:8px 10px;font-size:12px;}
   #tank2mm-screen .tm2-share-head{display:block;}
-  #tank2mm-screen .tm2-share-clear-btn{margin-top:8px;width:100%;justify-content:center;}
+  #tank2mm-screen .tm2-share-toggle-btn{min-height:52px;padding:10px 12px;font-size:13px;}
+  #tank2mm-screen .tm2-share-clear-btn{width:100%;justify-content:center;}
 }
 
 </style>
@@ -2173,15 +2183,18 @@ body::before{
 <div class="tm2-current-note" data-tm2-role="current-note">先にタンクを選ぶと、この下で尺から見るかLから見るかを選べます。</div>
 </div>
 </div>
-<div class="tm2-share-card">
+<div class="tm2-share-card" data-tm2-role="share-card">
 <div class="tm2-share-head">
 <div>
 <div class="tm2-share-title">共有文メモ（最新1件）</div>
 <div class="tm2-share-note">各計算機の「2mm表に送る」で上書きされます。数量は下で手入力してください。</div>
 </div>
+</div>
+<button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">共有文メモを開く</button>
+<div class="tm2-share-body" data-tm2-role="share-body" hidden>
+<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の「2mm表に送る」で入った内容をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
 <button class="back-btn reset-btn tm2-share-clear-btn" data-action="clear-tm2-share-memo" type="button">メモを消す</button>
 </div>
-<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の「2mm表に送る」で入った内容をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
 </div>
 <div class="group">
 <div class="tm2-mode-group-title">見る内容を選ぶ</div>
@@ -2221,8 +2234,7 @@ body::before{
 <button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-audit" disabled type="button">登録値を見る</button>
 </div>
 <div class="tm2-detail-panel" data-tm2-role="reason-panel" hidden><div class="tm2-detail-grid" data-tm2-role="reason-grid"></div></div>
-<div class="tm2-detail-panel" data-tm2-role="audit-panel" hidden><div class="tm2-detail-grid" data-tm2-role="audit-grid"></div></div>
-<div class="tm2-docs-link-wrap"><a aria-disabled="true" class="back-btn tm2-docs-link-btn is-disabled" data-tm2-role="docs-link" href="./tm2-docs-view.html" tabindex="-1">タンク登録の確認を開く</a></div>
+<div class="tm2-detail-panel" data-tm2-role="audit-panel" hidden><div class="tm2-detail-grid" data-tm2-role="audit-grid"></div><div class="tm2-docs-link-wrap is-inside-panel"><a aria-disabled="true" class="back-btn tm2-docs-link-btn is-disabled" data-tm2-role="docs-link" href="./tm2-docs-view.html" tabindex="-1">タンク登録の確認を開く</a></div></div>
 <div class="tm2-error" data-tm2-role="error" hidden></div>
 </div>
 <div class="card" data-tm2-panel="list" hidden>
@@ -2612,6 +2624,9 @@ function toggleEl(target, visible, display='block'){
     currentVolumeRange: $('[data-tm2-role="current-volume-range"]'),
     currentStepVolume: $('[data-tm2-role="current-step-volume"]'),
     currentNote: $('[data-tm2-role="current-note"]'),
+    shareCard: $('[data-tm2-role="share-card"]'),
+    shareBody: $('[data-tm2-role="share-body"]'),
+    shareToggle: $('[data-tm2-action="toggle-share"]'),
     gaugeField: $('[data-tm2-field="gauge"]'),
     volumeField: $('[data-tm2-field="volume"]'),
     gaugeInput: $('[data-tm2-role="gauge"]'),
@@ -2668,7 +2683,8 @@ function toggleEl(target, visible, display='block'){
     scrollTargetGauge:null,
     lastReasonCandidates:[],
     auditOpen:false,
-    reasonOpen:false
+    reasonOpen:false,
+    shareOpen:false
   };
   function getTm2Screen(){
     return root.closest('.screen');
@@ -2698,6 +2714,9 @@ function toggleEl(target, visible, display='block'){
     const listOpen = Object.prototype.hasOwnProperty.call(overrides, 'listOpen')
       ? normalizeTm2Boolean(overrides.listOpen)
       : Boolean(els.listPanel && !els.listPanel.hidden && els.mainPanel && els.mainPanel.hidden);
+    const shareOpen = Object.prototype.hasOwnProperty.call(overrides, 'shareOpen')
+      ? normalizeTm2Boolean(overrides.shareOpen)
+      : Boolean(state.shareOpen);
     return {
       screen: TM2_SCREEN_ID,
       groupKey,
@@ -2708,6 +2727,7 @@ function toggleEl(target, visible, display='block'){
       volumeValue,
       activeGauge,
       listOpen,
+      shareOpen,
       scrollTargetGauge,
       selectedGroup: groupKey,
       selectedTankNo: tankNo
@@ -2726,6 +2746,7 @@ function toggleEl(target, visible, display='block'){
       volumeValue: raw.volumeValue ?? raw.tm2volume ?? '',
       activeGauge: raw.activeGauge ?? raw.tm2activegauge ?? '',
       listOpen: raw.listOpen ?? raw.tm2list ?? false,
+      shareOpen: raw.shareOpen ?? raw.tm2shareopen ?? false,
       scrollTargetGauge: raw.scrollTargetGauge ?? raw.tm2scrollgauge ?? raw.activeGauge ?? raw.tm2activegauge ?? '',
       inputValue: raw.inputValue ?? ''
     });
@@ -2737,6 +2758,7 @@ function toggleEl(target, visible, display='block'){
       normalized.listOpen ||
       normalized.activeGauge ||
       normalized.scrollTargetGauge ||
+      normalized.shareOpen ||
       normalized.mode === 'volume'
     );
     return hasPayload ? normalized : null;
@@ -2788,6 +2810,7 @@ function getTankDocsUrl(tank){
     tm2gauge:tm2State.gaugeValue,
     tm2volume:tm2State.volumeValue,
     tm2list:tm2State.listOpen ? '1' : '0',
+    tm2shareopen:tm2State.shareOpen ? '1' : '0',
     tm2activegauge:tm2State.activeGauge,
     tm2scrollgauge:tm2State.scrollTargetGauge,
     tm2input:tm2State.inputValue
@@ -2806,7 +2829,7 @@ function getTankDocsUrl(tank){
   const backParams = new URLSearchParams();
   backParams.set('screen', TM2_SCREEN_ID);
   backParams.set('tm2return', '1');
-  ['tm2group','tm2tank','tm2mode','tm2gauge','tm2volume','tm2list','tm2activegauge','tm2scrollgauge','tm2input'].forEach(key => {
+  ['tm2group','tm2tank','tm2mode','tm2gauge','tm2volume','tm2list','tm2shareopen','tm2activegauge','tm2scrollgauge','tm2input'].forEach(key => {
     const value = params.get(key);
     if(value) backParams.set(key, value);
   });
@@ -2816,7 +2839,7 @@ function getTankDocsUrl(tank){
 function getTm2StateFromUrl(){
   try{
     const params = new URLSearchParams(location.search);
-    const hasTm2Params = ['tm2group','tm2tank','tm2mode','tm2gauge','tm2volume','tm2list','tm2activegauge','tm2scrollgauge','tm2input'].some(key => params.has(key));
+    const hasTm2Params = ['tm2group','tm2tank','tm2mode','tm2gauge','tm2volume','tm2list','tm2shareopen','tm2activegauge','tm2scrollgauge','tm2input'].some(key => params.has(key));
     const screen = params.get('screen') || '';
     const isTm2Return = params.get('tm2return') === '1';
     if(screen !== TM2_SCREEN_ID && !isTm2Return && !hasTm2Params) return null;
@@ -2829,6 +2852,7 @@ function getTm2StateFromUrl(){
       gaugeValue: params.get('tm2gauge') || '',
       volumeValue: params.get('tm2volume') || '',
       listOpen: params.get('tm2list') || false,
+      shareOpen: params.get('tm2shareopen') || false,
       activeGauge: params.get('tm2activegauge') || '',
       scrollTargetGauge: params.get('tm2scrollgauge') || params.get('tm2activegauge') || '',
       inputValue: params.get('tm2input') || ''
@@ -2868,6 +2892,7 @@ function resetTm2UiState(options={}){
   state.scrollTargetGauge = null;
   state.auditOpen = false;
   state.reasonOpen = false;
+  state.shareOpen = false;
   state.lastReasonCandidates = [];
   if(els.groupSelect) els.groupSelect.value = '';
   populateTanks('');
@@ -2881,6 +2906,7 @@ function resetTm2UiState(options={}){
   }
   renderReasonGrid([]);
   syncReasonToggle();
+  syncShareToggle();
   updateAuditView(null);
   setError('');
   updateInputAvailability();
@@ -2935,8 +2961,10 @@ function applyTm2UiState(rawState, options={}){
   state.lastValidGauge = Number.isFinite(resolvedGauge) ? resolvedGauge : null;
   state.scrollTargetGauge = Number.isFinite(resolvedGauge) ? resolvedGauge : null;
   state.reasonOpen = false;
+  state.shareOpen = Boolean(saved.shareOpen);
   state.lastReasonCandidates = [];
   setMode(saved.mode, {save:false});
+  syncShareToggle();
   if(saved.listOpen && getSelectedTank()) openList({save:false, scheduleScroll:false});
   else closeList({save:false});
   if(saved.listOpen && getSelectedTank()){
@@ -3070,18 +3098,37 @@ function syncDocsLink(tank){
   function calculateReferencePerMm(tank){
     return (tank.full_l - tank.bottom_l) / tank.center_mm;
   }
+  function formatApproxStepValue(value, digits=1){
+    const num = Number(value);
+    if(!Number.isFinite(num)) return '—';
+    return num.toFixed(digits).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
+  }
   function formatTwoMmPerStep(tank){
     if(isSegmentTank(tank)){
-      const actuals = tank.segments.map(getSegmentActualPerMm);
-      const decimals = Math.max(3, ...actuals.map(countDecimals));
-      const minValue = Math.min(...actuals);
-      const maxValue = Math.max(...actuals);
-      const low = Number(minValue * 2).toFixed(decimals);
-      const high = Number(maxValue * 2).toFixed(decimals);
-      return low === high ? `${low}L` : `${low}〜${high}L`;
+      const perMmValues = tank.segments
+        .map(segment => Number(getSegmentFormulaPerMm(tank, segment)))
+        .filter(value => Number.isFinite(value));
+      if(!perMmValues.length) return '—';
+      const low = formatApproxStepValue(Math.min(...perMmValues) * 2, 1);
+      const high = formatApproxStepValue(Math.max(...perMmValues) * 2, 1);
+      return low === high ? `約${low}L` : `約${low}〜${high}L`;
     }
     const decimals = countDecimals(tank.per_mm_l);
     return `${Number(tank.per_mm_l * 2).toFixed(decimals)}L`;
+  }
+  function syncShareToggle(){
+    const open = Boolean(state.shareOpen);
+    if(els.shareCard) els.shareCard.classList.toggle('is-open', open);
+    if(els.shareBody) els.shareBody.hidden = !open;
+    if(els.shareToggle){
+      els.shareToggle.textContent = open ? '共有文メモを閉じる' : '共有文メモを開く';
+      els.shareToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+  }
+  function setShareOpen(open, options={}){
+    state.shareOpen = Boolean(open);
+    syncShareToggle();
+    if(options.save !== false) saveTm2UiState({updateHistory: options.updateHistory !== false});
   }
   function calculateRawVolume(tank, gaugeMm){
     if(isSegmentTank(tank)){
@@ -3112,7 +3159,7 @@ function buildCandidateFormulaText(tank, gaugeMm, rawVolume, displayedL){
 }
 function buildAuditInfo(tank){
   if(!tank || tank.audit_enabled === false){
-    return { status:'idle', title:'確認用: 情報なし', note:'', detailGroups:[] };
+    return { status:'idle', title:'監査状態', summary:'未選択', note:'', detailGroups:[] };
   }
   const detailRows = [];
   if(isSegmentTank(tank)){
@@ -3120,7 +3167,8 @@ function buildAuditInfo(tank){
     detailRows.push({ label:'区間登録値', value:'区間ごとの開始容量と記載1mm当は、「タンク登録の確認」で見られます。' });
     return {
       status:'ok',
-      title:'確認用: 登録値',
+      title:'監査状態',
+      summary:'登録値あり',
       note:'',
       detailGroups:[{ heading:'使う元の値', rows:detailRows }]
     };
@@ -3134,8 +3182,9 @@ function buildAuditInfo(tank){
   if(!isMatch) detailRows.push({ label:'点検メモ', value:`記載1mm当 ${recordedRounded} / 検算値 ${referenceRounded}` });
   return {
     status: isMatch ? 'ok' : 'caution',
-    title: '確認用: 登録値',
-    note:'',
+    title: '監査状態',
+    summary: isMatch ? '登録値あり' : '注意あり',
+    note: isMatch ? '' : '記載1mm当と検算値に差があります。',
     detailGroups:[{ heading:'使う元の値', rows:detailRows }]
   };
 }
@@ -3228,7 +3277,7 @@ function buildAuditInfo(tank){
   function updateAuditView(tank){
     if(!tank){
       els.auditStatus.className = 'tm2-status is-idle';
-      els.auditStatus.innerHTML = '<div class="tm2-status-title">監査状態: タンク未選択</div><div class="tm2-status-note">タンクを選ぶと監査状態を表示します。</div>';
+      els.auditStatus.innerHTML = '<div class="tm2-status-row"><span class="tm2-status-badge">監査状態</span><div class="tm2-status-title">タンク未選択</div></div>';
       els.auditGrid.innerHTML = '';
       state.auditOpen = false;
       syncAuditToggle(null);
@@ -3236,7 +3285,7 @@ function buildAuditInfo(tank){
     }
     const audit = buildAuditInfo(tank);
     els.auditStatus.className = `tm2-status ${audit.status === 'caution' ? 'is-caution' : 'is-ok'}`;
-    els.auditStatus.innerHTML = `<div class="tm2-status-title">${audit.title}</div>`;
+    els.auditStatus.innerHTML = `<div class="tm2-status-row"><span class="tm2-status-badge">${audit.title}</span><div class="tm2-status-title">${audit.summary || ''}</div></div>${audit.note ? `<div class="tm2-status-note">${audit.note}</div>` : ''}`;
     renderAuditGrid(audit);
     syncAuditToggle(tank);
   }
@@ -3390,8 +3439,7 @@ function buildAuditInfo(tank){
       state.scrollTargetGauge = validation.gaugeMm;
       renderReasonGrid(state.lastReasonCandidates);
       syncReasonToggle();
-      const guideMessage = isSegmentTank(tank) && usesRecordedPerMmSegmentCalc(tank) ? `${tank.label} は区間の記載1mm当をそのまま使う方式です。` : '';
-      setResultSubtext(guideMessage, guideMessage ? 'guide' : '');
+      setResultSubtext('', '');
       setError('');
       return;
     }
@@ -3437,7 +3485,6 @@ function buildAuditInfo(tank){
     const notes = [];
     if(Number.isInteger(validation.targetVolume) && !hasExactDisplayedVolumeCandidate(tank, validation.targetVolume)) notes.push('入力した数量に一致する表示Lがないため、近い候補を目安として表示しています。');
     if(primaryCandidates.length > 1) notes.push('表示Lが同じ候補が複数あるため、並べて表示しています。');
-    if(isSegmentTank(tank) && usesRecordedPerMmSegmentCalc(tank)) notes.push(`${tank.label} は区間の記載1mm当をそのまま使う方式です。`);
     renderReasonGrid(candidates);
     syncReasonToggle();
     setResultSubtext(notes.join(' '), notes.length ? 'guide' : '');
@@ -3607,6 +3654,7 @@ function buildAuditInfo(tank){
     if(action === 'open-list') openList();
     if(action === 'close-list') closeList();
     if(action === 'open-docs') openTankDocs();
+    if(action === 'toggle-share') setShareOpen(!state.shareOpen);
     if(action === 'toggle-reason'){
       if(state.lastReasonCandidates.length === 0) return;
       state.reasonOpen = !state.reasonOpen;
@@ -3676,6 +3724,12 @@ function buildAuditInfo(tank){
     if(rawState) return applyTm2UiState(rawState, options);
     return restoreTm2UiState(options);
   };
+  window.setTank2mmShareMemoOpen = function(open, options={}){
+    setShareOpen(open, options);
+  };
+  window.saveTank2mmUiState = function(options={}){
+    return saveTm2UiState(options);
+  };
   window.refreshTank2mmScreen = refreshTank2mmScreen;
   els.gaugeInput.addEventListener('input', () => { updateResult(); saveTm2UiState(); });
   els.volumeInput.addEventListener('input', () => { updateResult(); saveTm2UiState(); });
@@ -3684,6 +3738,7 @@ function buildAuditInfo(tank){
   updateAuditView(null);
   renderReasonGrid([]);
   syncReasonToggle();
+  syncShareToggle();
   closeList({save:false});
   restoreTm2UiState({save:false, updateHistory:false});
 })();
@@ -4669,16 +4724,19 @@ function Jcalc(){
     const input=getTank2mmShareMemoInput();
     if(input) input.value = String(text || '');
     saveInputs();
+    if(options.open !== false && typeof window.setTank2mmShareMemoOpen==='function') window.setTank2mmShareMemoOpen(true, {save:false, updateHistory:false});
     if(options.navigate!==false){
       window.showScreen('tank2mm-screen');
       saveUIState();
     }
+    try{ if(typeof window.saveTank2mmUiState==='function') window.saveTank2mmUiState({updateHistory:false}); }catch{}
     return String(text || '');
   }
   function clearTank2mmShareMemo(notify){
     const input=getTank2mmShareMemoInput();
     if(input) input.value='';
     saveInputs();
+    if(typeof window.setTank2mmShareMemoOpen==='function') window.setTank2mmShareMemoOpen(false, {updateHistory:false});
     if(notify) toast('2mm表の共有文メモを消しました');
   }
   document.addEventListener('input', event=>{
