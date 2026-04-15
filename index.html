@@ -155,9 +155,12 @@ body > *{position:relative;z-index:1;}
 .share-role-card.is-receive{background:#fbf8f2;border-color:#e6ddd0;}
 .share-role-kicker{font-size:11px;font-weight:800;letter-spacing:.04em;color:#5f6b63;}
 .share-role-title{font-size:13px;font-weight:800;line-height:1.6;color:#23372d;}
-.share-transfer-btn{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;padding:10px 14px !important;text-align:left !important;}
-.share-transfer-btn .btn-main{font-size:14px;font-weight:800;line-height:1.35;color:inherit;}
-.share-transfer-btn .btn-sub{font-size:11px;font-weight:700;line-height:1.5;color:#6a756d;}
+.share-transfer-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 14px !important;text-align:center !important;}
+.share-transfer-btn .btn-main{display:block;width:100%;font-size:14px;font-weight:800;line-height:1.35;color:inherit;text-align:center;}
+.share-transfer-btn .btn-sub{display:block;width:100%;font-size:11px;font-weight:700;line-height:1.5;color:#6a756d;text-align:center;}
+.history-action-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;width:100%;padding:10px 14px !important;text-align:center !important;}
+.history-action-btn .btn-main{display:block;width:100%;font-size:14px;font-weight:800;line-height:1.35;color:inherit;text-align:center;}
+.history-action-btn .btn-sub{display:block;width:100%;font-size:11px;font-weight:700;line-height:1.5;color:#6a756d;text-align:center;}
 @media(max-width:520px){.share-role-grid{grid-template-columns:1fr;}}
 .release-list{margin:0;padding-left:1.2em;color:#444;line-height:1.9;font-size:12px;}
 .release-list li+li{margin-top:3px;}
@@ -438,6 +441,7 @@ input::placeholder{color:#c4bdb5;}
 .history-shortcut-panel .inline-tools-note{max-width:none;}
 .history-shortcut-panel .inline-tools-actions{grid-template-columns:repeat(2,minmax(0,1fr));}
 .history-shortcut-panel .inline-tools-actions .back-btn,.history-shortcut-panel .inline-tools-actions .calc-btn{min-width:0;white-space:normal;line-height:1.45;text-align:center;}
+.history-shortcut-panel .inline-tools-actions .history-action-btn{border-radius:15px;align-items:center;justify-content:center;}
 .history-shortcut-panel .inline-tools-actions .danger-btn{display:none !important;}
 
 .history-card{
@@ -1583,7 +1587,11 @@ body::before{
   color:var(--ui-role-disclosure-fg) !important;
   box-shadow:none !important;
 }
-.ui-disclosure-action .disclosure-icon,
+.ui-disclosure-action .disclosure-icon{
+  color:#fff !important;
+  background:#355842 !important;
+  border-radius:999px;
+}
 .ui-disclosure-action::after{
   color:#516157 !important;
 }
@@ -1958,6 +1966,92 @@ body::before{
   }
 }
 
+
+/* ===== UI整理 5手目 / helper text unification patch 2026-04-15 ===== */
+.panel-desc.ui-help-surface{
+  padding:0 0 5px !important;
+  margin-bottom:5px !important;
+  color:#4f5a54 !important;
+  font-size:12.5px !important;
+  font-weight:600 !important;
+  line-height:1.75 !important;
+  letter-spacing:0 !important;
+}
+.panel-desc.ui-help-surface strong{
+  color:#24362c !important;
+  font-weight:700 !important;
+}
+.calc-help.ui-help-surface,
+.mix-count-note,
+.inline-tools-note,
+#tank2mm-screen .tm2-current-note,
+#tank2mm-screen .tm2-share-note,
+#tank2mm-screen .tm2-status-note,
+#tank2mm-screen .tm2-list-note,
+#tank2mm-screen .tm2-footer-note,
+#tank2mm-screen .tm2-subnote:not(.is-guide),
+#history-screen .history-screen-empty-note,
+#history-compare-screen .history-compare-screen-note{
+  color:#707a74 !important;
+  font-size:11.5px !important;
+  line-height:1.75 !important;
+}
+.calc-help.ui-help-surface,
+.mix-count-note,
+.inline-tools-note,
+.note{
+  max-width:60em;
+}
+.field .hint,
+#tank2mm-screen .hint{
+  color:#7b857f !important;
+  font-size:10.5px !important;
+  line-height:1.6 !important;
+  margin-top:2px !important;
+}
+.note{
+  margin-top:9px !important;
+  color:#7a847d !important;
+  font-size:10.8px !important;
+  line-height:1.7 !important;
+}
+.mix-count-note{
+  margin:2px 0 8px !important;
+}
+.mix-approx-note{
+  margin:8px 0 10px !important;
+  padding:8px 0 0 !important;
+  background:transparent !important;
+  border:none !important;
+  border-top:1px dashed #d9dfda !important;
+  border-radius:0 !important;
+  color:#6e7771 !important;
+}
+.inline-tools-note{
+  margin-top:2px !important;
+}
+#tank2mm-screen .tm2-current-note,
+#tank2mm-screen .tm2-share-note,
+#tank2mm-screen .tm2-status-note{
+  margin-top:6px !important;
+}
+#tank2mm-screen .tm2-list-note,
+#tank2mm-screen .tm2-footer-note{
+  margin-top:8px !important;
+}
+@media(max-width:640px){
+  .panel-desc.ui-help-surface{font-size:12px !important;}
+  .calc-help.ui-help-surface,
+  .mix-count-note,
+  .inline-tools-note,
+  .note,
+  #tank2mm-screen .tm2-current-note,
+  #tank2mm-screen .tm2-share-note,
+  #tank2mm-screen .tm2-status-note,
+  #tank2mm-screen .tm2-list-note,
+  #tank2mm-screen .tm2-footer-note{font-size:11px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -2044,7 +2138,7 @@ body::before{
 <summary class="home-disclosure-summary"><span class="disclosure-label"><span class="home-disclosure-heading">
 <span class="home-disclosure-title">注意点</span>
 <span class="home-disclosure-note">保存・共有・近似計算の扱いを短く確認できます。</span>
-</span></span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary>
+</span></span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
 <div class="home-disclosure-body">
 <ul class="release-list" id="app-beta-notes-list"></ul>
 </div>
@@ -2053,7 +2147,7 @@ body::before{
 <summary class="home-disclosure-summary"><span class="disclosure-label"><span class="home-disclosure-heading">
 <span class="home-disclosure-title">復元用コードを読込</span>
 <span class="home-disclosure-note">受け取った文字列をこの端末へ反映します。渡す時は各画面や履歴のコピーを使います。</span>
-</span></span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary>
+</span></span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
 <div class="home-disclosure-body share-disclosure-body">
 <div class="share-panel-note">復元用コードは自動送信されません。貼り付けて「復元用コードを読込」を押した時だけ、この端末へ反映します。</div>
 <div class="share-role-grid" aria-hidden="true">
@@ -2110,7 +2204,7 @@ body::before{
 <div class="field"><label>数量（目標）</label><span class="hint">→ 計算で求まります</span><div class="unknown-badge">計算結果で表示</div></div>
 </div>
 </div>
-<div class="calc-help">表示は入力中に自動更新されます。</div>
+<div class="calc-help">表示は自動更新、履歴保存はボタンで確定です。</div>
 
 <div class="result-card" id="Wwr0"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">割水量（加える水の量）</div><div class="result-value" id="Wwr0_wv">—<span class="result-unit">L</span></div></div>
@@ -2148,7 +2242,7 @@ body::before{
 <div class="field"><label>数量（目標）</label><div class="input-wrap"><input data-input-call="WcalcW1" id="Ww1_tv" inputmode="decimal" placeholder="例：292" step="0.1" type="number"/><span class="iunit">L</span></div></div>
 </div>
 </div>
-<div class="calc-help">結果は自動で更新されます。比較したい条件だけ、このボタンで履歴に残してください。</div>
+<div class="calc-help">表示は自動更新、履歴保存はボタンで確定です。比較したい条件だけ残してください。</div>
 
 <div class="result-card" id="Wwr1"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">割水前の必要数量</div><div class="result-value" id="Wwr1_cv">—<span class="result-unit">L</span></div></div>
@@ -2186,7 +2280,7 @@ body::before{
 <div class="field"><label>数量（目標）</label><div class="input-wrap"><input data-input-call="WcalcW2" id="Ww2_tv" inputmode="decimal" placeholder="例：292" step="0.1" type="number"/><span class="iunit">L</span></div></div>
 </div>
 </div>
-<div class="calc-help">現在数量が固定で、目標数量まで水を足す前提です。履歴には確定した比較条件だけ残ります。</div>
+<div class="calc-help">現在数量を固定して逆算する画面です。表示は自動更新、履歴保存はボタンで確定です。</div>
 
 <div class="result-card" id="Wwr2"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">必要な割水前の成分値</div><div class="result-value" id="Wwr2_cc">—<span class="result-unit Wu">%</span></div></div>
@@ -2224,7 +2318,7 @@ body::before{
 <div class="field"><label>数量（目標）</label><div class="input-wrap"><input data-input-call="WcalcW3" id="Ww3_tv" inputmode="decimal" placeholder="例：292" step="0.1" type="number"/><span class="iunit">L</span></div></div>
 </div>
 </div>
-<div class="calc-help">目標数量を先に決める場合の比較用です。結果の成分は自動更新、履歴保存はボタン操作に分けています。</div>
+<div class="calc-help">目標数量を先に決める比較用です。表示は自動更新、履歴保存はボタンで確定です。</div>
 
 <div class="result-card" id="Wwr3"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">割水後の成分値</div><div class="result-value" id="Wwr3_tc">—<span class="result-unit Wu">%</span></div></div>
@@ -2257,7 +2351,7 @@ body::before{
 <button class="mix-count-btn mix-primary-btn active" data-action="wset-mix-mode" data-mode="2" id="Wmix_mode2" type="button">2種混合</button>
 </div>
 <details class="mix-extra-details" id="Wmix_extra_details">
-<summary><span class="mix-extra-summary-main"><span class="mix-extra-summary-title" id="Wmix_extra_summary_text">3〜5種混合を開く</span><span class="mix-extra-summary-state" id="Wmix_current_mode">現在：2種混合</span></span><span aria-hidden="true" class="disclosure-icon">⌄</span></summary>
+<summary><span class="mix-extra-summary-main"><span class="mix-extra-summary-title" id="Wmix_extra_summary_text">3〜5種混合を開く</span><span class="mix-extra-summary-state" id="Wmix_current_mode">現在：2種混合</span></span><span aria-hidden="true" class="disclosure-icon">▾</span></summary>
 <div class="mix-extra-body">
 <div aria-label="多種混合の選択" class="mix-count-switch mix-count-switch-extra">
 <button class="mix-count-btn" data-action="wset-mix-mode" data-mode="3" id="Wmix_mode3" type="button">3種混合</button>
@@ -2274,16 +2368,16 @@ body::before{
 <table class="mix-table">
 <thead><tr><th></th><th><span id="Wmix_value_label">成分値</span></th><th>数量（L）</th></tr></thead>
 <tbody id="Wmix_body">
-<tr data-mix-row="1"><td class="row-label">①</td><td><input data-input-call="WcalcMix" id="Wm_c1" inputmode="decimal" placeholder="15.5" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v1" inputmode="decimal" min="0" placeholder="254" step="0.1" type="number"/></td></tr>
-<tr data-mix-row="2"><td class="row-label">②</td><td><input data-input-call="WcalcMix" id="Wm_c2" inputmode="decimal" placeholder="0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v2" inputmode="decimal" min="0" placeholder="38" step="0.1" type="number"/></td></tr>
-<tr data-mix-row="3"><td class="row-label">③</td><td><input data-input-call="WcalcMix" id="Wm_c3" inputmode="decimal" placeholder="15.0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v3" inputmode="decimal" min="0" placeholder="100" step="0.1" type="number"/></td></tr>
-<tr data-mix-row="4"><td class="row-label">④</td><td><input data-input-call="WcalcMix" id="Wm_c4" inputmode="decimal" placeholder="13.0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v4" inputmode="decimal" min="0" placeholder="50" step="0.1" type="number"/></td></tr>
-<tr data-mix-row="5"><td class="row-label">⑤</td><td><input data-input-call="WcalcMix" id="Wm_c5" inputmode="decimal" placeholder="10.0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v5" inputmode="decimal" min="0" placeholder="20" step="0.1" type="number"/></td></tr>
+<tr data-mix-row="1"><td class="row-label">①</td><td><input data-input-call="WcalcMix" id="Wm_c1" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v1" inputmode="decimal" min="0" placeholder="例：254" step="0.1" type="number"/></td></tr>
+<tr data-mix-row="2"><td class="row-label">②</td><td><input data-input-call="WcalcMix" id="Wm_c2" inputmode="decimal" placeholder="例：0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v2" inputmode="decimal" min="0" placeholder="例：38" step="0.1" type="number"/></td></tr>
+<tr data-mix-row="3"><td class="row-label">③</td><td><input data-input-call="WcalcMix" id="Wm_c3" inputmode="decimal" placeholder="例：15.0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v3" inputmode="decimal" min="0" placeholder="例：100" step="0.1" type="number"/></td></tr>
+<tr data-mix-row="4"><td class="row-label">④</td><td><input data-input-call="WcalcMix" id="Wm_c4" inputmode="decimal" placeholder="例：13.0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v4" inputmode="decimal" min="0" placeholder="例：50" step="0.1" type="number"/></td></tr>
+<tr data-mix-row="5"><td class="row-label">⑤</td><td><input data-input-call="WcalcMix" id="Wm_c5" inputmode="decimal" placeholder="例：10.0" step="0.1" type="number"/></td><td><input data-input-call="WcalcMix" id="Wm_v5" inputmode="decimal" min="0" placeholder="例：20" step="0.1" type="number"/></td></tr>
 </tbody>
 </table>
 
 </div>
-<div class="calc-help">表示は入力中に自動更新します。履歴には、あとで比較したい配合だけを残してください。</div>
+<div class="calc-help">表示は自動更新、履歴保存はボタンで確定です。比較したい配合だけ残してください。</div>
 
 <div class="result-card" id="Wmr4"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label" id="Wmr4_mc_label">混合後の値</div><div class="result-value" id="Wmr4_mc">—</div></div>
@@ -2325,7 +2419,7 @@ body::before{
 <div class="field"><label>目標成分（添加後） <span class="unit-hint">%</span></label><div class="input-wrap"><input data-input-call="AalcCalc0" id="Aalc0_tc" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"/><span class="iunit">%</span></div></div>
 </div>
 </div>
-<div class="calc-help">表示は自動更新、履歴保存はボタンで確定です。添加条件の比較に使えます。</div>
+<div class="calc-help">表示は自動更新、履歴保存はボタンで確定です。</div>
 
 <div class="result-card" id="Aalc_r0"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">添加量</div><div class="result-value" id="Aalc_r0_av">—<span class="result-unit">L</span></div></div>
@@ -2366,7 +2460,7 @@ body::before{
 <div class="field"><label>目標数量（添加後） <span class="unit-hint">L</span></label><div class="input-wrap"><input data-input-call="AalcCalc1" id="Aalc1_tv" inputmode="decimal" placeholder="例：320" step="0.1" type="number"/><span class="iunit">L</span></div></div>
 </div>
 </div>
-<div class="calc-help">最終数量を先に決めるとき用です。確定した条件だけ履歴に残します。</div>
+<div class="calc-help">最終数量を先に決める画面です。表示は自動更新、履歴保存はボタンで確定です。</div>
 <div class="formula-guide"><strong>考え方</strong>：目標数量の中に含まれるべき成分量から、添加前に必要な酒の数量を逆算しています。</div>
 <div class="result-card" id="Aalc_r1"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">添加前の必要数量</div><div class="result-value" id="Aalc_r1_cv">—<span class="result-unit">L</span></div></div>
@@ -2404,7 +2498,7 @@ body::before{
 <div class="field"><label>添加量 <span class="unit-hint">L</span></label><div class="input-wrap"><input data-input-call="AalcCalc2" id="Aalc2_av" inputmode="decimal" placeholder="例：20.0" step="0.1" type="number"/><span class="iunit">L</span></div></div>
 </div>
 </div>
-<div class="calc-help">添加量が決まっている場合の確認用です。表示は自動、履歴はボタンで保存します。</div>
+<div class="calc-help">添加量が決まっている時の確認用です。表示は自動更新、履歴保存はボタンで確定です。</div>
 <div class="formula-guide"><strong>考え方</strong>：現在の酒の成分量と、加えるアルコールの成分量を足し、合計数量で割って添加後の成分値を出します。</div>
 <div class="result-card" id="Aalc_r2"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">添加後の成分値</div><div class="result-value" id="Aalc_r2_tc">—<span class="result-unit">%</span></div></div>
@@ -2596,6 +2690,7 @@ body::before{
 <div class="convert-badge" id="Ebm_conv">ボーメ度を入力すると日本酒度に自動換算します</div>
 </div>
 </div>
+<div class="calc-help">表示は自動更新、履歴保存はボタンで確定です。</div>
 
 <div class="result-card" id="Eresult"><div class="result-title">計算結果</div><div class="result-grid r2">
 <div><div class="result-label">エキス分</div><div class="result-value" id="Eex_val">—<span class="result-unit">%</span></div></div>
@@ -2648,13 +2743,13 @@ body::before{
 <div class="tm2-current-row"><span>容量目安</span><strong data-tm2-role="current-volume-range">—</strong></div>
 <div class="tm2-current-row"><span>2mm当の目安</span><strong data-tm2-role="current-step-volume">—</strong></div>
 </div>
-<div class="tm2-current-note" data-tm2-role="current-note">先にタンクを選ぶと、この下で尺から見るかLから見るかを選べます。</div>
+<div class="tm2-current-note" data-tm2-role="current-note">先にタンクを選ぶと、この下で見る内容を選べます。</div>
 </div>
 <div class="tm2-share-card" data-tm2-role="share-card">
 <div class="tm2-share-head">
 <div>
 <div class="tm2-share-title">共有文メモ（最新1件）</div>
-<div class="tm2-share-note">各計算機の「2mm表に送る」で上書きされます。数量は下で手入力してください。</div>
+<div class="tm2-share-note">各計算機の「2mm表に送る」で上書きされます。数量は下で手入力します。</div>
 </div>
 </div>
 <button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">共有文メモを開く</button>
@@ -2682,14 +2777,14 @@ body::before{
 <div class="field">
 <label>検尺値 <span class="unit-hint">mm</span></label>
 <div class="tm2-input-row"><div class="input-wrap"><input data-tm2-role="gauge" disabled id="tm2_gauge_input" inputmode="numeric" placeholder="例：244" step="1" type="number"/></div><button class="back-btn reset-btn tm2-mini-reset-btn" data-tm2-action="reset" type="button">入力値をリセット</button></div>
-<div class="hint" data-tm2-role="gauge-help">タンクを選ぶと入力範囲を表示します。</div>
+<div class="hint" data-tm2-role="gauge-help">タンクを選ぶと入力できる範囲の目安を表示します。</div>
 </div>
 </div>
 <div class="group" data-tm2-field="volume" hidden>
 <div class="field">
 <label>目標数量 <span class="unit-hint">L</span></label>
 <div class="tm2-input-row"><div class="input-wrap"><input data-tm2-role="volume" disabled id="tm2_volume_input" inputmode="decimal" placeholder="例：291.6" step="0.1" type="number"/></div><button class="back-btn reset-btn tm2-mini-reset-btn" data-tm2-action="reset" type="button">入力値をリセット</button></div>
-<div class="hint" data-tm2-role="volume-help">タンクを選ぶと入力範囲の目安を表示します。</div>
+<div class="hint" data-tm2-role="volume-help">タンクを選ぶと入力できる範囲の目安を表示します。</div>
 </div>
 </div>
 <div class="tm2-result-box" aria-live="polite">
@@ -2707,7 +2802,7 @@ body::before{
 </div>
 <div class="card" data-tm2-panel="list" hidden>
 <div class="tm2-list-top"><button class="back-btn" data-tm2-action="close-list" type="button">入力画面へ戻る</button></div>
-<div class="tm2-list-head"><h2 data-tm2-role="list-title">2mm表</h2><div class="tm2-list-note">再生成した2mm表（2mm刻み）</div></div>
+<div class="tm2-list-head"><h2 data-tm2-role="list-title">2mm表</h2><div class="tm2-list-note">再生成した2mm表（2mm刻み表示）</div></div>
 <div class="tm2-list-nearby" data-tm2-role="list-nearby" hidden></div>
 <div class="tm2-table-wrap">
 <table class="tm2-table">
@@ -2715,7 +2810,7 @@ body::before{
 <tbody data-tm2-role="list-body"><tr><td colspan="2">タンクを選ぶと2mm表を表示します。</td></tr></tbody>
 </table>
 </div>
-<div class="tm2-footer-note">この一覧は、タンクの登録内容から再生成した2mm表です。</div>
+<div class="tm2-footer-note">この一覧は、タンク登録値から再生成した2mm表です。</div>
 </div>
 </div>
 </div>
@@ -2762,7 +2857,7 @@ body::before{
 </div>
 <p class="note note-gap">※ 仕込予定温度 18〜30℃（1℃刻み）の蒸米温度を一覧表示</p>
 <details class="moto-optional-details" id="Moto_yondan_details">
-<summary><span class="disclosure-label">四段仕込用 55〜60℃ を表示</span><span aria-hidden="true" class="disclosure-icon">⌄</span></summary>
+<summary><span class="disclosure-label">四段仕込用 55〜60℃ を表示</span><span aria-hidden="true" class="disclosure-icon">▾</span></summary>
 <div class="moto-optional-body">
 <p class="moto-optional-note">四段仕込みを行う時だけ開いて確認できます。55〜60℃を1℃刻みで表示します。</p>
 <div class="table-scroll">
@@ -3714,7 +3809,7 @@ function buildAuditInfo(tank){
       els.currentRange.textContent = '—';
       els.currentVolumeRange.textContent = '—';
       els.currentStepVolume.textContent = '—';
-      els.currentNote.textContent = '先にタンクを選ぶと、この下で尺から見るかLから見るかを選べます。';
+      els.currentNote.textContent = '先にタンクを選ぶと、この下で見る内容を選べます。';
       return;
     }
     els.currentCard.classList.remove('is-empty');
@@ -3770,8 +3865,8 @@ function buildAuditInfo(tank){
       els.gaugeHelp.textContent = `入力範囲: 0〜${tank.center_mm}mm の偶数`;
       els.volumeHelp.textContent = `入力目安: ${tank.bottom_l}〜${tank.full_l}L`;
     }else{
-      els.gaugeHelp.textContent = 'タンクを選ぶと入力範囲を表示します。';
-      els.volumeHelp.textContent = 'タンクを選ぶと入力範囲の目安を表示します。';
+      els.gaugeHelp.textContent = 'タンクを選ぶと入力できる範囲の目安を表示します。';
+      els.volumeHelp.textContent = 'タンクを選ぶと入力できる範囲の目安を表示します。';
     }
   }
   function validateGaugeInput(rawValue, tank){
@@ -4818,7 +4913,7 @@ function Jcalc(){
 
 <div class="history-manage-panel">
 <details class="history-manage-details">
-<summary><span class="disclosure-label">整理・削除</span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary>
+<summary><span class="disclosure-label">整理・削除</span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
 <div class="history-manage-inner">
 
 <div class="history-manage-actions">
@@ -6183,7 +6278,7 @@ function ensureConditionCopyButtons(){
     if(!parent || parent.classList.contains('history-shortcut-panel')) return;
     const button=document.createElement('button');
     button.type='button';
-    button.className='back-btn share-copy-btn share-transfer-btn ui-utility-action';
+    button.className='back-btn share-copy-btn share-transfer-btn history-action-btn ui-utility-action';
     button.dataset.action='copy-current-condition';
     button.innerHTML='<span class="btn-main">共有</span><span class="btn-sub">共有文 / 復元用コード</span>';
     const historyButton=actions.querySelector('[data-action="run-tool-history"],[data-action="run-active-mix-history"]');
@@ -6236,7 +6331,7 @@ function simplifyUiStep4(root){
     const bodyHtml = (el.innerHTML || '').trim();
     const details = document.createElement('details');
     details.className = 'compact-guide-disclosure';
-    details.innerHTML = `<summary><span class="disclosure-label">考え方を見る</span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary><div class="compact-guide-body">${bodyHtml}</div>`;
+    details.innerHTML = `<summary><span class="disclosure-label">考え方を見る</span><span class="disclosure-icon" aria-hidden="true">▾</span></summary><div class="compact-guide-body">${bodyHtml}</div>`;
     el.dataset.compactGuideDone = '1';
     el.replaceWith(details);
   });
@@ -6253,10 +6348,10 @@ function setupHistoryShortcutPanels(){
       : (panel.dataset.historyDynamic==='mix' ? `warimizu:mix:${getMixMode()}` : normalizeHistoryToolKey(panel.dataset.historyKey||''));
     const cfg=configFor(toolKey);
     if(title) title.textContent = cfg ? `${cfg.label}の保存・連携` : '保存・連携';
-    if(note) note.textContent = '2mm表へ送る時はこの画面から。入力欄へ戻す・比較する時は「総合計算履歴を見る」から行います。';
+    if(note) note.textContent = '2mm表へ送る時はこの画面から。入力欄へ戻す・比較・削除は「総合計算履歴を見る」から行います。';
     if(addButton){
-      addButton.textContent='総合計算履歴に追加';
-      addButton.classList.add('history-add-btn','ui-primary-action');
+      addButton.innerHTML='<span class="btn-main">総合計算履歴に追加</span><span class="btn-sub">この結果を保存します</span>';
+      addButton.classList.add('history-add-btn','history-action-btn','ui-primary-action');
     }
     if(actions){
       actions.querySelectorAll('[data-action="clear-tool-history"]').forEach(btn=>btn.remove());
@@ -6264,7 +6359,7 @@ function setupHistoryShortcutPanels(){
       if(!sendButton){
         sendButton=document.createElement('button');
         sendButton.type='button';
-        sendButton.className='back-btn tank2mm-send-btn share-transfer-btn';
+        sendButton.className='back-btn tank2mm-send-btn share-transfer-btn history-action-btn';
         sendButton.dataset.action='send-current-to-tm2';
       }
       sendButton.innerHTML='<span class="btn-main">2mm表に送る</span><span class="btn-sub">この端末の2mm表メモへ入れます</span>';
@@ -6272,7 +6367,7 @@ function setupHistoryShortcutPanels(){
       if(!copyButton){
         copyButton=document.createElement('button');
         copyButton.type='button';
-        copyButton.className='back-btn share-copy-btn share-transfer-btn';
+        copyButton.className='back-btn share-copy-btn share-transfer-btn history-action-btn';
         copyButton.dataset.action='copy-current-condition';
       }
       copyButton.innerHTML='<span class="btn-main">共有</span><span class="btn-sub">共有文 / 復元用コード</span>';
@@ -6282,8 +6377,8 @@ function setupHistoryShortcutPanels(){
         openButton.type='button';
         openButton.dataset.navScreen='history-screen';
       }
-      openButton.className='back-btn reset-btn history-view-btn';
-      openButton.textContent='総合計算履歴を見る';
+      openButton.className='back-btn reset-btn history-view-btn history-action-btn';
+      openButton.innerHTML='<span class="btn-main">総合計算履歴を見る</span><span class="btn-sub">入力欄へ戻す・比較する</span>';
       const groupMeta = getHistoryGroupMeta({toolKey});
       const variantMeta = getHistoryVariantMetaByToolKey(toolKey);
       openButton.dataset.historyFilter = groupMeta.key || 'all';
@@ -6417,7 +6512,7 @@ function setupHistoryShortcutPanels(){
     return cardView.showVariantChip ? `<span class="history-variant-chip">${escapeHtml(cardView.variantLabel)}</span>` : '';
   }
   function detailSummaryMarkup(label){
-    return `<summary aria-label="${escapeHtml(label)}"><span class="disclosure-label">${escapeHtml(label)}</span><span class="disclosure-icon" aria-hidden="true">⌄</span></summary>`;
+    return `<summary aria-label="${escapeHtml(label)}"><span class="disclosure-label">${escapeHtml(label)}</span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>`;
   }
   function renderHistorySelectButton(cardView){
     const control=cardView.selectControl;
@@ -6471,7 +6566,7 @@ function setupHistoryShortcutPanels(){
     const title=q('.inline-tools-title', panel);
     if(title) title.textContent=isShortcutPanel?`${cfg.label}を総合計算履歴に追加`:`${cfg.label}の総合計算履歴`;
     const note=q('.inline-tools-note', panel);
-    if(note && isShortcutPanel) note.textContent='入力欄への反映や削除、比較したい時は総合計算履歴で行います。';
+    if(note && isShortcutPanel) note.textContent='入力欄へ戻す・比較・削除は「総合計算履歴を見る」から行います。';
     if(isShortcutPanel) return;
     const empty=q('.inline-history-empty', panel), list=q('.inline-history-list', panel);
     if(empty) toggleEl(empty, !items.length);
