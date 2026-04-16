@@ -2408,6 +2408,338 @@ body::before{
   #warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{margin-top:14px !important; padding-top:12px !important;}
 }
 
+
+/* ===== UI整理 5.11 / outer-frame reduction patch 2026-04-16 ===== */
+#warimizu #Wpanel0 > .card,
+#warimizu #Wpanel1 > .card,
+#warimizu #Wpanel3 > .card{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  margin-top:0 !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .panel-desc.ui-help-surface,
+#warimizu #Wpanel1 > .card > .mix-count-note,
+#warimizu #Wpanel1 > .card > .mix-approx-note,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .panel-desc.ui-help-surface,
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .calc-help.ui-help-surface,
+#warimizu #Wpanel1 > .card > .calc-help.ui-help-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .calc-help.ui-help-surface{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card.ui-result-surface,
+#warimizu #Wpanel1 > .card > .result-card.ui-result-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card.ui-result-surface,
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card,
+#warimizu #Wpanel1 > .card > .result-card,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card{
+  background:transparent !important;
+  border:none !important;
+  border-top:1px solid #dfe7e1 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:12px 0 0 !important;
+  margin-top:14px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-title,
+#warimizu #Wpanel1 > .card > .result-card .result-title,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-title{
+  margin-bottom:10px !important;
+  color:#6e7a73 !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-grid,
+#warimizu #Wpanel1 > .card > .result-card .result-grid,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-grid{
+  gap:0 18px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-grid > div,
+#warimizu #Wpanel1 > .card > .result-card .result-grid > div,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-grid > div{
+  border-top:none !important;
+  padding:0 0 2px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-value,
+#warimizu #Wpanel1 > .card > .result-card .result-value,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-value{
+  font-size:24px !important;
+}
+#warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
+#warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
+#warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{
+  background:transparent !important;
+  border:none !important;
+  border-top:1px solid #e3e9e4 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  margin-top:12px !important;
+  padding:10px 0 0 !important;
+}
+#warimizu #Wpanel0 .inline-tools-header,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-header,
+#warimizu #Wpanel3 .inline-tools-header{
+  gap:4px !important;
+}
+#warimizu #Wpanel0 .inline-tools-title,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-title,
+#warimizu #Wpanel3 .inline-tools-title{
+  font-size:11.5px !important;
+  font-weight:700 !important;
+  color:#68756e !important;
+}
+#warimizu #Wpanel0 .inline-tools-note,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-note,
+#warimizu #Wpanel3 .inline-tools-note{
+  color:#8a938e !important;
+  font-size:10.5px !important;
+  line-height:1.6 !important;
+}
+#warimizu #Wpanel0 .inline-tools-actions,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-actions,
+#warimizu #Wpanel3 .inline-tools-actions{
+  margin-top:6px !important;
+}
+#warimizu #Wpanel1 > .card > .mix-extra-details{
+  border-color:#dde5df !important;
+  background:#fcfdfc !important;
+}
+#warimizu #Wpanel1 > .card > .mix-extra-details > summary{
+  background:#fafcfb !important;
+}
+@media(max-width:640px){
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card,
+  #warimizu #Wpanel1 > .card > .result-card,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card{
+    padding-top:10px !important;
+    margin-top:12px !important;
+  }
+  #warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
+  #warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
+  #warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{
+    margin-top:10px !important;
+    padding-top:9px !important;
+  }
+  #warimizu #Wpanel0 .inline-tools-title,
+  #warimizu #Wpanel1 + .compact-tools-panel .inline-tools-title,
+  #warimizu #Wpanel3 .inline-tools-title{
+    font-size:11px !important;
+  }
+  #warimizu #Wpanel0 .inline-tools-note,
+  #warimizu #Wpanel1 + .compact-tools-panel .inline-tools-note,
+  #warimizu #Wpanel3 .inline-tools-note{
+    font-size:10.2px !important;
+  }
+}
+
+/* ===== UI整理 5.10 / helper quieting & light result-history patch 2026-04-16 ===== */
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .panel-desc.ui-help-surface,
+#warimizu #Wpanel1 > .card > .mix-count-note,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .panel-desc.ui-help-surface{
+  max-width:50em !important;
+  padding:0 0 5px !important;
+  margin-bottom:8px !important;
+  color:#707a74 !important;
+  font-size:11.5px !important;
+  font-weight:500 !important;
+  line-height:1.75 !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .field-reset-row,
+#warimizu #Wpanel1 > .card > .field-reset-row,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .field-reset-row{
+  margin-bottom:12px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .calc-help.ui-help-surface,
+#warimizu #Wpanel1 > .card > .calc-help.ui-help-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .calc-help.ui-help-surface{
+  max-width:50em !important;
+  margin-top:10px !important;
+  padding-top:8px !important;
+  border-top:1px dashed #e5eae6 !important;
+  color:#8b9490 !important;
+  font-size:10.8px !important;
+  line-height:1.7 !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card.ui-result-surface,
+#warimizu #Wpanel1 > .card > .result-card.ui-result-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card.ui-result-surface,
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card,
+#warimizu #Wpanel1 > .card > .result-card,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card{
+  background:#fbfcfb !important;
+  border:1px solid #e2e8e3 !important;
+  border-top:1px solid #e2e8e3 !important;
+  border-radius:14px !important;
+  padding:12px 14px 11px !important;
+  margin-top:14px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-title,
+#warimizu #Wpanel1 > .card > .result-card .result-title,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-title{
+  display:block !important;
+  padding:0 !important;
+  margin-bottom:8px !important;
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  color:#66756e !important;
+  font-size:10.5px !important;
+  font-weight:800 !important;
+  letter-spacing:.04em !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-grid,
+#warimizu #Wpanel1 > .card > .result-card .result-grid,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-grid{
+  gap:0 16px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-grid > div,
+#warimizu #Wpanel1 > .card > .result-card .result-grid > div,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-grid > div{
+  border-top:1px solid #e5ebe7 !important;
+  padding:10px 0 8px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-grid > div:nth-child(-n+2),
+#warimizu #Wpanel1 > .card > .result-card .result-grid > div:nth-child(-n+2),
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-grid > div:nth-child(-n+2){
+  padding-top:2px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card .result-label,
+#warimizu #Wpanel1 > .card > .result-card .result-label,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card .result-label{
+  color:#77817c !important;
+  margin-bottom:4px !important;
+}
+#warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
+#warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
+#warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{
+  margin-top:14px !important;
+  padding-top:12px !important;
+  border-top:1px solid #e5ebe7 !important;
+}
+#warimizu #Wpanel0 .inline-tools-header,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-header,
+#warimizu #Wpanel3 .inline-tools-header{
+  gap:5px !important;
+  margin-bottom:0 !important;
+}
+#warimizu #Wpanel0 .inline-tools-title,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-title,
+#warimizu #Wpanel3 .inline-tools-title{
+  font-size:12px !important;
+  font-weight:700 !important;
+  color:#55625b !important;
+}
+#warimizu #Wpanel0 .inline-tools-note,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-note,
+#warimizu #Wpanel3 .inline-tools-note{
+  max-width:48em !important;
+  margin-top:1px !important;
+  color:#808983 !important;
+  font-size:10.8px !important;
+  line-height:1.65 !important;
+}
+#warimizu #Wpanel0 .inline-tools-badge,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-badge,
+#warimizu #Wpanel3 .inline-tools-badge{
+  background:#f8faf8 !important;
+  border-color:#e5ebe7 !important;
+  color:#7c8781 !important;
+}
+#warimizu #Wpanel0 .inline-tools-actions,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-actions,
+#warimizu #Wpanel3 .inline-tools-actions{
+  margin-top:4px !important;
+  gap:8px !important;
+}
+#warimizu #Wpanel0 .inline-tools-actions .back-btn,
+#warimizu #Wpanel0 .inline-tools-actions .calc-btn,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-actions .back-btn,
+#warimizu #Wpanel1 + .compact-tools-panel .inline-tools-actions .calc-btn,
+#warimizu #Wpanel3 .inline-tools-actions .back-btn,
+#warimizu #Wpanel3 .inline-tools-actions .calc-btn{
+  min-height:46px !important;
+}
+#warimizu #Wpanel0 > .card > .sub-tabs,
+#warimizu #Wpanel3 > .card > .sub-tabs{
+  margin-bottom:12px !important;
+  gap:8px !important;
+}
+#warimizu #Wpanel0 > .card > .sub-tabs .sub-tab,
+#warimizu #Wpanel3 > .card > .sub-tabs .sub-tab{
+  background:#fff !important;
+  border-color:#dbe3de !important;
+  box-shadow:none !important;
+}
+#warimizu #Wpanel0 > .card > .sub-tabs .sub-tab.active,
+#warimizu #Wpanel3 > .card > .sub-tabs .sub-tab.active{
+  background:linear-gradient(180deg,#f4faf6,#ecf4ef) !important;
+  border-color:#bfd1c4 !important;
+  box-shadow:none !important;
+}
+#warimizu #Wpanel1 > .card > .mix-primary-row{
+  margin-bottom:10px !important;
+}
+#warimizu #Wpanel1 > .card > .mix-extra-details{
+  margin-bottom:10px !important;
+  border:1px solid #e3e8e4 !important;
+  border-radius:14px !important;
+  background:#fff !important;
+  box-shadow:none !important;
+}
+#warimizu #Wpanel1 > .card > .mix-extra-details > summary{
+  padding:12px 14px !important;
+  background:#fafcfb !important;
+}
+#warimizu #Wpanel1 > .card > .mix-extra-details .disclosure-icon{
+  width:24px !important;
+  height:24px !important;
+  font-size:14px !important;
+}
+#warimizu #Wpanel1 > .card > .mix-approx-note{
+  margin:0 0 12px !important;
+  padding-top:8px !important;
+  color:#7a847e !important;
+}
+@media(max-width:640px){
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .panel-desc.ui-help-surface,
+  #warimizu #Wpanel1 > .card > .mix-count-note,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .panel-desc.ui-help-surface{
+    font-size:11px !important;
+    margin-bottom:7px !important;
+  }
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .calc-help.ui-help-surface,
+  #warimizu #Wpanel1 > .card > .calc-help.ui-help-surface,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .calc-help.ui-help-surface{
+    font-size:10.5px !important;
+    margin-top:8px !important;
+    padding-top:7px !important;
+  }
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card,
+  #warimizu #Wpanel1 > .card > .result-card,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card{
+    padding:11px 12px 10px !important;
+    margin-top:12px !important;
+  }
+  #warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
+  #warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
+  #warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{
+    margin-top:12px !important;
+    padding-top:10px !important;
+  }
+  #warimizu #Wpanel0 .inline-tools-title,
+  #warimizu #Wpanel1 + .compact-tools-panel .inline-tools-title,
+  #warimizu #Wpanel3 .inline-tools-title{font-size:11.5px !important;}
+  #warimizu #Wpanel0 .inline-tools-note,
+  #warimizu #Wpanel1 + .compact-tools-panel .inline-tools-note,
+  #warimizu #Wpanel3 .inline-tools-note{font-size:10.5px !important;}
+  #warimizu #Wpanel0 > .card > .sub-tabs,
+  #warimizu #Wpanel3 > .card > .sub-tabs{margin-bottom:10px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -2570,8 +2902,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:wari:0" data-history-limit="12" data-history-title="割水計算：割水量・目標数量">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水量・目標数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:0" type="button">総合計算履歴に追加</button>
@@ -2608,8 +2940,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:wari:1" data-history-limit="12" data-history-title="割水計算：割水前の必要数量">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水前の必要数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:1" type="button">総合計算履歴に追加</button>
@@ -2646,8 +2978,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:wari:2" data-history-limit="12" data-history-title="割水計算：割水前の成分値">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水前の成分値を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:2" type="button">総合計算履歴に追加</button>
@@ -2684,8 +3016,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:wari:3" data-history-limit="12" data-history-title="割水計算：割水後の成分値・割水量">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水後の成分値・割水量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:3" type="button">総合計算履歴に追加</button>
@@ -2744,8 +3076,8 @@ body::before{
 <div class="compact-tools-panel mix-history-actions history-shortcut-panel">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">総合計算履歴への保存</div></div>
-<div class="inline-tools-note">混合計算タブでは履歴カードを表示しません。保存した履歴はホームから開く「総合計算履歴」で確認できます。2種・3種・4種・5種の履歴はこれまで通り別々に保存されます。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この配合を総合計算履歴に残す</div></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。2〜5種は別管理です。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-active-mix-history" type="button">総合計算履歴に追加</button>
@@ -2785,8 +3117,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:alcohol:0" data-history-limit="12" data-history-title="アルコール添加計算：添加量・添加後数量">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">アルコール添加計算：添加量・添加後数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:alcohol:0" type="button">総合計算履歴に追加</button>
@@ -2826,8 +3158,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:alcohol:1" data-history-limit="12" data-history-title="アルコール添加計算：添加前の必要数量">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">アルコール添加計算：添加前の必要数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。目標数量から逆算した条件比較に使えます。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。目標数量から逆算した条件比較に使えます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:alcohol:1" type="button">総合計算履歴に追加</button>
@@ -2864,8 +3196,8 @@ body::before{
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="warimizu:alcohol:2" data-history-limit="12" data-history-title="アルコール添加計算：添加後の成分値・数量">
 <div class="inline-tools-header">
 <div>
-<div class="inline-tools-title-row"><div class="inline-tools-title">アルコール添加計算：添加後の成分値・数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。添加量を変えた時の比較用です。</div>
+<div class="inline-tools-title-row"><div class="inline-tools-title">この条件を総合計算履歴に残す</div><span class="inline-tools-badge">0件</span></div>
+<div class="inline-tools-note">保存は追加ボタンで確定です。比較は「総合計算履歴」で行います。添加量を変えた時の比較用です。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:alcohol:2" type="button">総合計算履歴に追加</button>
@@ -3293,8 +3625,10 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 10:12 JST',
+  builtAt: '2026-04-16 11:05 JST',
   betaNotes: [
+    '2026-04-16 UI整理 5.11: 割水計算・混合計算・アルコール添加計算で、外側カードと結果・保存帯の白枠感をさらに減らしました。',
+    '2026-04-16 UI整理 5.10: 割水計算・混合計算・アルコール添加計算で、説明帯を静かにし、結果欄と履歴保存帯の箱感をさらに弱めました。',
     '2026-04-16 UI整理 5.9: 割水計算・混合計算・アルコール添加計算で、読む帯と操作帯の間隔を広げ、入力欄と結果欄が先に見えるよう余白差を強めました。',
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
