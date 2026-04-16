@@ -15,46 +15,56 @@ body{font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;background:line
 a{color:inherit;}
 button,input,select{font:inherit;}
 .page{max-width:1180px;margin:0 auto;padding:18px 16px 48px;padding-bottom:max(48px, calc(env(safe-area-inset-bottom) + 24px));}
-.nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:14px 16px;padding-top:max(16px, calc(env(safe-area-inset-top) + 12px));padding-bottom:14px;background:rgba(251,252,250,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,220,214,.9);box-shadow:0 10px 24px rgba(27,38,31,.06);}
-.back-btn,.ghost-btn,.apply-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:16px;border:1.5px solid #d7ddd7;background:#fff;color:#445047;font-size:14px;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease, color .12s ease;box-shadow:0 8px 18px rgba(35,78,55,.10);}
+.nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:14px 16px;padding-top:max(16px, calc(env(safe-area-inset-top) + 12px));padding-bottom:14px;background:rgba(251,252,250,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(212,220,214,.82);box-shadow:0 8px 20px rgba(27,38,31,.05);}
+.back-btn,.ghost-btn,.apply-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:16px;border:1.5px solid #d7ddd7;background:#fff;color:#445047;font-size:14px;font-weight:800;text-decoration:none;cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease, color .12s ease;box-shadow:0 6px 14px rgba(35,78,55,.08);}
 .back-btn:active,.ghost-btn:active,.apply-btn:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(53,88,66,.10);}
 .back-btn:hover,.ghost-btn:hover,.apply-btn:hover{border-color:#b8c8bf;color:#244732;}
 .nav-title{font-size:18px;font-weight:800;line-height:1.35;min-width:0;}
-.card{margin-top:12px;border-radius:24px;border:1px solid rgba(201,213,206,.88);background:rgba(255,255,255,.95);box-shadow:0 8px 24px rgba(29,44,36,.07);padding:16px 14px;}
-.search-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;}
+.card{margin-top:12px;border-radius:24px;border:1px solid rgba(201,213,206,.78);background:rgba(255,255,255,.92);box-shadow:0 6px 18px rgba(29,44,36,.06);padding:16px 14px;}
+.controls-card{display:grid;gap:16px;border:none;background:transparent;box-shadow:none;padding:0;margin-top:12px;}
+.zone{display:grid;gap:10px;}
+.zone + .zone{padding-top:10px;border-top:1px solid rgba(214,222,216,.82);}
+.zone-head{display:grid;gap:4px;padding:0 1px;}
+.zone-label{font-size:12px;font-weight:900;letter-spacing:.04em;color:#274737;}
+.zone-copy{font-size:12px;line-height:1.7;color:#66756d;}
+.zone-input .zone-label{color:#1f5038;}
+.zone-read .zone-label{color:#516158;}
+.search-controls,.page-controls{display:grid;gap:10px;align-items:end;padding:0;border-radius:0;}
+.search-controls{grid-template-columns:repeat(2,minmax(0,1fr));border:none;background:transparent;box-shadow:none;}
 .search-actions{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:stretch;}
 .search-actions .apply-btn{width:100%;}
 .compact-reset-btn{min-width:142px;min-height:48px;padding:12px 14px;white-space:nowrap;}
 .compact-reset-btn::before{content:'↺ ';font-weight:900;}
-.page-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:end;margin-top:10px;}
+.page-controls{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0;border:none;background:transparent;box-shadow:none;}
 .page-controls .field{grid-column:1 / -1;}
 .field{display:grid;gap:4px;}
 .field label{font-size:12px;font-weight:800;color:#334039;}
-.input,.select{width:100%;height:48px;border-radius:14px;border:1.5px solid #d6ddd7;background:#fff;font-size:16px;font-weight:800;padding:0 14px;color:#1a1a1a;}
+.input,.select{width:100%;height:48px;border-radius:14px;border:1.5px solid #c5d5cb;background:#fff;font-size:16px;font-weight:800;padding:0 14px;color:#1a1a1a;box-shadow:0 2px 8px rgba(21,34,26,.03) inset;}
+.zone-input .input,.zone-input .select{border-color:#9eb9a9;box-shadow:0 0 0 3px rgba(66,121,87,.05), 0 2px 8px rgba(21,34,26,.03) inset;}
 .input::placeholder{color:#8b968f;font-weight:600;}
 .apply-btn{width:100%;white-space:nowrap;min-height:48px;padding:12px 18px;background:#355842;border:2px solid #355842;color:#fff;box-shadow:0 8px 18px rgba(35,78,55,.14);}
 .apply-btn:hover{background:#2f4d3a;border-color:#2f4d3a;color:#fff;}
-.meta{padding:12px 14px;border-radius:18px;background:linear-gradient(180deg,#f8fbf9 0%,#f2f7f3 100%);border:1px solid #dce4de;display:grid;gap:8px;}
-.meta-main{font-size:14px;font-weight:800;color:#21352b;line-height:1.7;}
-.meta-sub{font-size:12px;line-height:1.8;color:#5d6c61;}
-.status-row{display:flex;flex-wrap:wrap;gap:8px;}
-.status-pill{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:8px 12px;border-radius:999px;background:#eff5f0;border:1px solid #d5dfd8;color:#284031;font-size:13px;font-weight:800;}
-.status-pill span{font-weight:700;color:#5b6a61;}
+.meta{padding:0;border-radius:0;background:transparent;border:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;}
+.status-row{display:flex;flex-wrap:wrap;align-items:center;gap:0;}
+.status-inline{font-size:12px;line-height:1.8;color:#58675f;font-weight:700;white-space:nowrap;}
+.status-inline.is-hidden{display:none;}
 .error{display:none;margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid #efcbc4;background:#fff6f4;color:#8a4337;font-size:12px;line-height:1.8;}
 .error.show{display:block;}
-.notice-box{margin-top:10px;padding:12px 14px;border-radius:14px;background:#fff8e8;border:1px solid #e7d7a8;color:#5c4712;line-height:1.7;font-size:14px;}
-.notice-box strong{display:block;margin-bottom:4px;font-size:14px;}
+.notice-box{margin-top:0;padding:0 1px;border-radius:0;background:transparent;border:none;color:#6c5821;line-height:1.7;font-size:12px;box-shadow:none;}
+.notice-box strong{display:block;margin-bottom:4px;font-size:12px;}
 .notice-box p + p{margin-top:6px;}
 @media (max-width:640px){
-  .notice-box{font-size:13px;padding:11px 12px;}
+  .notice-box{font-size:12px;}
 }
-.viewer-card{padding:0;overflow:hidden;}
-.image-toolbar{display:grid;gap:10px;padding:14px;border-bottom:1px solid #e2e8e3;background:#f8fbf9;}
-.image-toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.viewer-meta{border-top:1px solid #e2e8e3;}
-.guide-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 14px;border-radius:999px;border:1.5px solid #cfd9d2;background:#fff;color:#294031;font-size:13px;font-weight:800;cursor:pointer;}
+.viewer-card{padding:0;overflow:visible;border:none;background:transparent;box-shadow:none;}
+.viewer-topnote{display:none;}
+.image-toolbar{display:flex;align-items:center;gap:14px 34px;flex-wrap:wrap;padding:0 0 10px;border:none;background:transparent;}
+.image-toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:0 0 auto;}
+.status-inline{font-size:14px;font-weight:600;color:#41534a;line-height:1.8;}
+.viewer-meta{border:none;padding-top:0;flex:0 1 auto;min-width:0;display:flex;align-items:center;}
+.guide-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 14px;border-radius:999px;border:1.5px solid #d7e0da;background:#fff;color:#294031;font-size:13px;font-weight:800;cursor:pointer;box-shadow:none;}
 .guide-btn.active{background:#234734;color:#fff;border-color:#234734;}
-.image-wrap{overflow:auto;background:#eef1ed;touch-action:pan-x pan-y pinch-zoom;}
+.image-wrap{overflow:auto;background:#eef1ed;border:1px solid rgba(214,223,217,.88);border-radius:18px;touch-action:pan-x pan-y pinch-zoom;}
 .image-stage{position:relative;min-width:100%;padding:16px;display:flex;justify-content:flex-start;align-items:flex-start;}
 .doc-image{display:block;position:relative;z-index:1;max-width:none;height:auto;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(27,38,31,.08);}
 .guide-overlay{position:absolute;z-index:2;display:none;pointer-events:none;}
@@ -79,6 +89,11 @@ button,input,select{font:inherit;}
   .guide-handle-v{top:-28px;min-width:46px;height:22px;font-size:10px;}
   .guide-handle-h{left:-34px;width:22px;min-height:46px;font-size:10px;}
 }
+@media(max-width:560px){
+  .search-controls{grid-template-columns:1fr;}
+  .search-actions{grid-template-columns:1fr;}
+  .compact-reset-btn{min-width:0;width:100%;}
+}
 @media(max-width:420px){
   .back-btn,.ghost-btn,.apply-btn{padding:10px 12px;font-size:13px;}
   .nav{gap:8px;padding-left:12px;padding-right:12px;}
@@ -94,48 +109,48 @@ button,input,select{font:inherit;}
 </div>
 <div class="page">
   <div class="card controls-card">
-    <div class="search-controls">
-      <div class="field">
-        <label for="abvInput">測定度数</label>
-        <input id="abvInput" class="input" inputmode="decimal" placeholder="例 15.5" />
+    <section class="zone zone-input" aria-label="入力する所">
+      <div class="search-controls">
+        <div class="field">
+          <label for="abvInput">測定度数</label>
+          <input id="abvInput" class="input" inputmode="decimal" placeholder="例 15.5" />
+        </div>
+        <div class="field">
+          <label for="tempInput">温度</label>
+          <input id="tempInput" class="input" inputmode="decimal" placeholder="例 10.0" />
+        </div>
+        <div class="search-actions">
+          <button id="applyBtn" class="apply-btn" type="button">表示位置を合わせる</button>
+          <button id="resetInputsBtn" class="ghost-btn compact-reset-btn" type="button">入力値をリセット</button>
+        </div>
       </div>
-      <div class="field">
-        <label for="tempInput">温度</label>
-        <input id="tempInput" class="input" inputmode="decimal" placeholder="例 10.0" />
+    </section>
+    <section class="zone zone-read" aria-label="読む所">
+      <div class="page-controls">
+        <div class="field">
+          <label for="pageSelect">アルコール帯</label>
+          <select id="pageSelect" class="select"></select>
+        </div>
+        <button id="prevBtn" class="ghost-btn" type="button">← 前ページ</button>
+        <button id="nextBtn" class="ghost-btn" type="button">次ページ →</button>
       </div>
-      <div class="search-actions">
-        <button id="applyBtn" class="apply-btn" type="button">この条件で開く</button>
-        <button id="resetInputsBtn" class="ghost-btn compact-reset-btn" type="button">入力値をリセット</button>
+      <div id="errorBox" class="error"></div>
+      <div class="notice-box" role="note" aria-label="自動補助線の注意">
+        <strong>補助線は補助表示です</strong>
+        <p>自動補助線は、入力した測定度数と温度に合わせて表示されますが、画像のスキャン条件や余白位置の差により、実際の交点と少しズレる場合があります。</p>
+        <p>必ずご自身で、測定温度と測定度数の位置を換算表上で確認してください。</p>
       </div>
-    </div>
-    <div class="page-controls">
-      <div class="field">
-        <label for="pageSelect">アルコール帯</label>
-        <select id="pageSelect" class="select"></select>
-      </div>
-      <button id="prevBtn" class="ghost-btn" type="button">← 前ページ</button>
-      <button id="nextBtn" class="ghost-btn" type="button">次ページ →</button>
-    </div>
-    <div id="errorBox" class="error"></div>
-
-    <div class="notice-box" role="note" aria-label="自動補助線の注意">
-      <strong>補助線は目安です</strong>
-      <p>自動補助線は、入力した測定度数と温度に合わせて表示されますが、画像のスキャン条件や余白位置の差により、実際の交点と少しズレる場合があります。</p>
-      <p>必ずご自身で、測定温度と測定度数の位置を換算表上で確認してください。</p>
-    </div>
+    </section>
   </div>
   <div class="card viewer-card">
     <div class="image-toolbar">
       <div class="image-toolbar-actions">
-        <button id="toggleGuideBtn" class="guide-btn" type="button" aria-pressed="false">補助線を使う</button>
+        <button id="toggleGuideBtn" class="guide-btn" type="button" aria-pressed="false">補助線として使う</button>
       </div>
       <div class="meta viewer-meta">
-        <div id="metaText" class="meta-main">表示準備中…</div>
         <div class="status-row">
-          <div id="abvStatus" class="status-pill"><span>測定度数</span><strong>未入力</strong></div>
-          <div id="tempStatus" class="status-pill"><span>温度</span><strong>未入力</strong></div>
+          <div id="abvStatus" class="status-inline">入力値　測定度数 未入力　温度 未入力</div>
         </div>
-        <div id="pageNote" class="meta-sub"></div>
       </div>
     </div>
     <div id="imageWrap" class="image-wrap">
@@ -172,8 +187,6 @@ button,input,select{font:inherit;}
   const docImage = document.getElementById('docImage');
   const imageWrap = document.getElementById('imageWrap');
   const imageStage = document.getElementById('imageStage');
-  const metaText = document.getElementById('metaText');
-  const pageNote = document.getElementById('pageNote');
   const errorBox = document.getElementById('errorBox');
   const backLink = document.getElementById('backLink');
   const abvInput = document.getElementById('abvInput');
@@ -186,8 +199,7 @@ button,input,select{font:inherit;}
   const guideHorizontal = document.getElementById('guideHorizontal');
   const guideVerticalHandle = document.getElementById('guideVerticalHandle');
   const guideHorizontalHandle = document.getElementById('guideHorizontalHandle');
-  const abvStatus = document.getElementById('abvStatus').querySelector('strong');
-  const tempStatus = document.getElementById('tempStatus').querySelector('strong');
+  const abvStatus = document.getElementById('abvStatus');
   const requestedBack = params.get('back');
   const requestedPage = params.get('page');
   const requestedAbv = normalizeDecimal(params.get('abv'));
@@ -234,8 +246,10 @@ button,input,select{font:inherit;}
     if (!Number.isFinite(num)) return '';
     return num.toFixed(1).replace(/\.0$/, '.0');
   }
-  function setStatusText(target, value, emptyText){
-    target.textContent = value ? value : emptyText;
+  function updateInputSummary(){
+    const abvLabel = abvInput.value ? (normalizeDecimal(abvInput.value) + '%') : '未入力';
+    const tempLabel = tempInput.value ? (normalizeDecimal(tempInput.value) + '℃') : '未入力';
+    abvStatus.textContent = '入力値　測定度数 ' + abvLabel + '　温度 ' + tempLabel;
   }
   function getGuideCalibration(page){
     return Object.assign({}, GUIDE_CALIBRATION, page && page.guideCalibration ? page.guideCalibration : {});
@@ -309,7 +323,7 @@ button,input,select{font:inherit;}
     guideOverlay.classList.toggle('active', guideEnabled);
     toggleGuideBtn.classList.toggle('active', guideEnabled);
     toggleGuideBtn.setAttribute('aria-pressed', guideEnabled ? 'true' : 'false');
-    toggleGuideBtn.textContent = guideEnabled ? '補助線を消す' : '補助線を使う';
+    toggleGuideBtn.textContent = guideEnabled ? '補助線を消す' : '補助線として使う';
     syncGuideOverlay();
     saveViewState();
   }
@@ -370,11 +384,6 @@ button,input,select{font:inherit;}
     const page = pages[currentIndex];
     pageSelect.value = String(currentIndex);
     errorBox.classList.remove('show');
-    metaText.hidden = false;
-    metaText.textContent = (page.title || page.label || ('ページ ' + (currentIndex + 1))) + ' を表示中';
-    const noteText = page.note || '';
-    pageNote.textContent = noteText;
-    pageNote.style.display = noteText ? '' : 'none';
     docImage.src = page.file;
     docImage.alt = page.title || page.label || 'アルコール分温度換算表資料';
     syncGuideOverlay();
@@ -400,7 +409,6 @@ button,input,select{font:inherit;}
     errorBox.classList.remove('show');
     if (normalizedAbv) {
       abvInput.value = normalizedAbv;
-      setStatusText(abvStatus, normalizedAbv + '%', '未入力');
       const idx = findPageIndexByAbv(abvNum);
       if (idx >= 0) {
         targetPage = pages[idx];
@@ -409,15 +417,11 @@ button,input,select{font:inherit;}
         errorBox.textContent = '測定度数に合うページが見つかりませんでした。1.0〜100.0 の範囲で確認してください。';
         errorBox.classList.add('show');
       }
-    } else {
-      setStatusText(abvStatus, '', '未入力');
     }
     if (normalizedTemp) {
       tempInput.value = normalizedTemp;
-      setStatusText(tempStatus, normalizedTemp + '℃', '未入力');
-    } else {
-      setStatusText(tempStatus, '', '未入力');
     }
+    updateInputSummary();
     const moved = applyGuideFromInputs(abvNum, tempNum, targetPage, {abv: normalizedAbv, temp: normalizedTemp});
     if (moved) setGuideEnabled(true);
     saveViewState();
@@ -429,8 +433,7 @@ button,input,select{font:inherit;}
     guideXRatio = 0.5;
     guideYRatio = 0.5;
     showViewError('');
-    setStatusText(abvStatus, '', '未入力');
-    setStatusText(tempStatus, '', '未入力');
+    updateInputSummary();
     updateGuideHandleLabels('', '');
     syncGuideOverlay();
     setGuideEnabled(false);
@@ -514,8 +517,6 @@ button,input,select{font:inherit;}
   function initializeDocumentView(){
     backLink.href = resolveBackHref(requestedBack);
     if (!pages.length) {
-      metaText.textContent='表示できる資料がありません。';
-      pageNote.textContent='data/document-pages.js を確認してください。';
       prevBtn.disabled=true; nextBtn.disabled=true; pageSelect.disabled=true;
       showViewError('資料一覧が空です。');
       return;
@@ -524,8 +525,7 @@ button,input,select{font:inherit;}
     const saved = safeLoadState();
     restoreInitialViewState(saved);
     render(currentIndex);
-    setStatusText(abvStatus, abvInput.value ? normalizeDecimal(abvInput.value) + '%' : '', '未入力');
-    setStatusText(tempStatus, tempInput.value ? normalizeDecimal(tempInput.value) + '℃' : '', '未入力');
+    updateInputSummary();
     applyFitView();
     syncInitialGuideFromInputs();
     setGuideEnabled(guideEnabled);
