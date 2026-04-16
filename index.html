@@ -2252,6 +2252,7 @@ body::before{
   .share-role-title{font-size:10.8px !important;}
 }
 
+
 /* ===== UI整理 5.8 / warimizu outer-card soften patch 2026-04-16 ===== */
 #warimizu #W-content > [id^="Wpanel"] > .card{
   padding:0 !important;
@@ -2292,6 +2293,119 @@ body::before{
   #warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
   #warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
   #warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{margin-top:9px !important;}
+}
+
+/* ===== UI整理 5.9 / read-action whitespace deepen patch 2026-04-16 ===== */
+#warimizu .formula-label-nav,
+#warimizu #W-fml-bar{
+  margin-bottom:12px !important;
+}
+#warimizu #Wpanel0 > .card > .sub-tabs,
+#warimizu #Wpanel3 > .card > .sub-tabs{
+  margin-bottom:14px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .panel-desc.ui-help-surface,
+#warimizu #Wpanel1 > .card > .mix-count-note,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .panel-desc.ui-help-surface{
+  max-width:52em !important;
+  padding:0 0 7px !important;
+  margin-bottom:10px !important;
+  color:#64706a !important;
+  font-size:12px !important;
+  font-weight:500 !important;
+  line-height:1.85 !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .field-reset-row,
+#warimizu #Wpanel1 > .card > .field-reset-row,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .field-reset-row{
+  margin-bottom:14px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .group.ui-input-surface,
+#warimizu #Wpanel1 > .card > .group.ui-input-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .group.ui-input-surface{
+  padding:14px 0 12px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .group.ui-input-surface + .group.ui-input-surface,
+#warimizu #Wpanel1 > .card > .group.ui-input-surface + .group.ui-input-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .group.ui-input-surface + .group.ui-input-surface{
+  margin-top:8px !important;
+  padding-top:18px !important;
+  border-top:1px solid #dde4df !important;
+}
+#warimizu #Wpanel0 > .card .group.ui-input-surface .group-title,
+#warimizu #Wpanel1 > .card .group.ui-input-surface .group-title,
+#warimizu #Wpanel3 > .card .group.ui-input-surface .group-title{
+  margin-bottom:12px !important;
+}
+#warimizu #Wpanel0 > .card .group.ui-input-surface .field-row,
+#warimizu #Wpanel1 > .card .group.ui-input-surface .field-row,
+#warimizu #Wpanel3 > .card .group.ui-input-surface .field-row{
+  gap:14px !important;
+}
+#warimizu #Wpanel0 > .card .group.ui-input-surface .field,
+#warimizu #Wpanel1 > .card .group.ui-input-surface .field,
+#warimizu #Wpanel3 > .card .group.ui-input-surface .field{
+  gap:6px !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .calc-help.ui-help-surface,
+#warimizu #Wpanel1 > .card > .calc-help.ui-help-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .calc-help.ui-help-surface{
+  max-width:52em !important;
+  margin-top:12px !important;
+  padding-top:11px !important;
+  border-top:1px dashed #dfe5e1 !important;
+  color:#79837d !important;
+}
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card.ui-result-surface,
+#warimizu #Wpanel1 > .card > .result-card.ui-result-surface,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card.ui-result-surface,
+#warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card,
+#warimizu #Wpanel1 > .card > .result-card,
+#warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card{
+  margin-top:16px !important;
+}
+#warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
+#warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
+#warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{
+  margin-top:16px !important;
+  padding-top:14px !important;
+}
+#warimizu #Wpanel1 > .card > .mix-primary-row{
+  margin-bottom:12px !important;
+}
+#warimizu #Wpanel1 > .card > .mix-extra-details{
+  margin-bottom:12px !important;
+}
+#warimizu #Wpanel1 > .card > .mix-approx-note{
+  margin:0 0 14px !important;
+  padding-top:10px !important;
+}
+@media(max-width:640px){
+  #warimizu .formula-label-nav,
+  #warimizu #W-fml-bar{margin-bottom:10px !important;}
+  #warimizu #Wpanel0 > .card > .sub-tabs,
+  #warimizu #Wpanel3 > .card > .sub-tabs{margin-bottom:12px !important;}
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .panel-desc.ui-help-surface,
+  #warimizu #Wpanel1 > .card > .mix-count-note,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .panel-desc.ui-help-surface{font-size:11.5px !important; margin-bottom:9px !important;}
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .field-reset-row,
+  #warimizu #Wpanel1 > .card > .field-reset-row,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .field-reset-row{margin-bottom:12px !important;}
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .group.ui-input-surface,
+  #warimizu #Wpanel1 > .card > .group.ui-input-surface,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .group.ui-input-surface{padding:12px 0 10px !important;}
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .group.ui-input-surface + .group.ui-input-surface,
+  #warimizu #Wpanel1 > .card > .group.ui-input-surface + .group.ui-input-surface,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .group.ui-input-surface + .group.ui-input-surface{margin-top:6px !important; padding-top:15px !important;}
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .calc-help.ui-help-surface,
+  #warimizu #Wpanel1 > .card > .calc-help.ui-help-surface,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .calc-help.ui-help-surface{margin-top:10px !important; padding-top:9px !important;}
+  #warimizu #Wpanel0 > .card [id^="Wwp"] > .result-card,
+  #warimizu #Wpanel1 > .card > .result-card,
+  #warimizu #Wpanel3 > .card [id^="Aalc_p"] > .result-card{margin-top:14px !important;}
+  #warimizu #Wpanel0 .inline-tools-panel.history-shortcut-panel,
+  #warimizu #Wpanel1 + .compact-tools-panel.mix-history-actions,
+  #warimizu #Wpanel3 .inline-tools-panel.history-shortcut-panel{margin-top:14px !important; padding-top:12px !important;}
 }
 
 </style>
@@ -3179,9 +3293,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 09:51 JST',
+  builtAt: '2026-04-16 10:12 JST',
   betaNotes: [
-    '2026-04-16 UI整理 5.8: 割水計算・混合計算・アルコール添加計算で、外側カードの余白感をさらに薄くし、触る所だけが先に見えるよう寄せました。',
+    '2026-04-16 UI整理 5.9: 割水計算・混合計算・アルコール添加計算で、読む帯と操作帯の間隔を広げ、入力欄と結果欄が先に見えるよう余白差を強めました。',
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
     '日本酒度とボーメ度の混合計算は近似です。',
