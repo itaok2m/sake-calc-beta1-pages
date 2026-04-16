@@ -7309,11 +7309,24 @@ function Jcalc(){
     if(!isBootstrapping && !isHandlingPopState) syncBrowserHistory('history-screen', true);
   }
 
-  function getPrimaryUiSnapshot(screenOverride){
-    const currentScreen = screenOverride || q('.screen.active')?.id || 'home-screen';
-    const tm2State = typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: currentScreen}) : null;
+  function getResumeScope(screenOverride){
+    const screenId = String(screenOverride || q('.screen.active')?.id || 'home-screen');
     return {
-      screen: currentScreen,
+      screen: screenId,
+      keepHistoryScreenState: screenId==='history-screen' || screenId==='history-compare-screen',
+      keepCompareScreenState: screenId==='history-compare-screen',
+      keepTank2mmState: screenId==='tank2mm-screen'
+    };
+  }
+  function getScopedTm2ResumeState(screenOverride){
+    const scope = getResumeScope(screenOverride);
+    if(!scope.keepTank2mmState || typeof window.captureTank2mmState !== 'function') return null;
+    return window.captureTank2mmState({screen: scope.screen}) || null;
+  }
+  function getPrimaryUiSnapshot(screenOverride){
+    const scope = getResumeScope(screenOverride);
+    return {
+      screen: scope.screen,
       mixMode: Number(window.WMixMode || 2) || 2,
       ekisuMode: EcurrentMode==='bm' ? 'bm' : 'sm',
       ekisuHistoryView: EcurrentMode==='bm' ? 'bm' : 'sm',
@@ -7321,7 +7334,7 @@ function Jcalc(){
       warimizuView: getCurrentWarimizuView(),
       warimizuMode: Number(WwMode || 0) || 0,
       aalcMode: Number(AalcMode || 0) || 0,
-      tm2State
+      tm2State: getScopedTm2ResumeState(scope.screen)
     };
   }
   function getHistoryAuxiliaryUiSnapshot(){
@@ -7336,16 +7349,18 @@ function Jcalc(){
       historyCompareScreen: getHistoryCompareScreen()
     };
   }
-  function getAuxiliaryUiSnapshot(){
-    return {
-      ...getHistoryAuxiliaryUiSnapshot(),
-      ...getCompareAuxiliaryUiSnapshot()
-    };
+  function getAuxiliaryUiSnapshot(screenOverride){
+    const scope = getResumeScope(screenOverride);
+    const snapshot = {};
+    if(scope.keepHistoryScreenState) Object.assign(snapshot, getHistoryAuxiliaryUiSnapshot());
+    if(scope.keepCompareScreenState) Object.assign(snapshot, getCompareAuxiliaryUiSnapshot());
+    return snapshot;
   }
   function getUiSnapshot(screenOverride){
+    const primaryState = getPrimaryUiSnapshot(screenOverride);
     return {
-      ...getPrimaryUiSnapshot(screenOverride),
-      ...getAuxiliaryUiSnapshot()
+      ...primaryState,
+      ...getAuxiliaryUiSnapshot(primaryState.screen)
     };
   }
   function getStoredUiState(){
@@ -7360,25 +7375,18 @@ function Jcalc(){
     return safeObjectParse(STORAGE.ui);
   }
   function getResumeSnapshot(screenOverride){
-    const state = getPrimaryUiSnapshot(screenOverride);
-    if(state.screen==='history-screen'){
-      return {
-        ...state,
-        ...getHistoryAuxiliaryUiSnapshot()
-      };
-    }
-    if(state.screen==='history-compare-screen'){
-      return {
-        ...state,
-        ...getHistoryAuxiliaryUiSnapshot(),
-        ...getCompareAuxiliaryUiSnapshot()
-      };
-    }
-    return state;
+    return getUiSnapshot(screenOverride);
+  }
+  function clearResumeState(){
+    storageRemove(STORAGE.resume);
+    return null;
   }
   function saveResumeState(screenOverride){
     const state = getResumeSnapshot(screenOverride);
-    if(!state.screen || state.screen==='home-screen') return safeObjectParse(STORAGE.resume);
+    if(!state.screen || state.screen==='home-screen'){
+      clearResumeState();
+      return null;
+    }
     writeCachedJson(STORAGE.resume, 'lastSavedResumeJson', state);
     return state;
   }
@@ -7432,13 +7440,14 @@ function Jcalc(){
   }
   function saveUIState(){
     const primaryState = getPrimaryUiSnapshot();
-    const auxiliaryState = getAuxiliaryUiSnapshot();
+    const auxiliaryState = getAuxiliaryUiSnapshot(primaryState.screen);
     const state = {...primaryState, ...auxiliaryState};
     if(isBootstrapping) return state;
     writeCachedJson(STORAGE.uiMain, 'lastSavedUiMainJson', primaryState);
     writeCachedJson(STORAGE.uiAux, 'lastSavedUiAuxJson', auxiliaryState);
     writeCachedText(STORAGE.screen, 'lastSavedScreen', state.screen);
     if(state.screen !== 'home-screen') saveResumeState(state.screen);
+    else clearResumeState();
     if(!isHandlingPopState && typeof window.syncCurrentBrowserHistoryState === 'function'){
       try{ window.syncCurrentBrowserHistoryState(); }catch{}
     }
@@ -8613,6 +8622,7 @@ function clearInputsByTool(toolKey){
   function persistScreenState(screenId){
     writeCachedText(STORAGE.screen, 'lastSavedScreen', screenId);
     if(screenId && screenId !== 'home-screen') saveResumeState(screenId);
+    else clearResumeState();
   }
   function updateScreenWithPersistence(screenId, options){
     const opts = options || {};
