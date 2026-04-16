@@ -1016,9 +1016,10 @@ body::before{
 .history-preview-section.history-results,.history-base-summary-card .history-preview-section.history-results{background:#f7faf8;border-color:#dce7df;}
 .history-preview-title{font-size:11px;font-weight:900;color:#44554b;letter-spacing:.04em;}
 .history-preview-list{display:grid;gap:6px;}
-.history-preview-row{display:grid;grid-template-columns:minmax(6.6em,1fr) auto;gap:8px;align-items:start;}
+.history-preview-row{display:flex;flex-wrap:wrap;gap:.24em .38em;align-items:baseline;}
 .history-preview-label{font-size:11.5px;line-height:1.45;color:#5b665f;font-weight:700;min-width:0;overflow-wrap:anywhere;}
-.history-preview-value{font-size:13.5px;line-height:1.35;color:#20352a;font-weight:900;text-align:right;min-width:0;overflow-wrap:anywhere;}
+.history-preview-sep{font-size:11.5px;line-height:1.45;color:#7b867f;font-weight:700;}
+.history-preview-value{font-size:13.5px;line-height:1.35;color:#20352a;font-weight:900;text-align:left;min-width:0;overflow-wrap:anywhere;}
 .history-preview-more{font-size:10.5px;line-height:1.4;color:#6c766f;font-weight:700;}
 .history-card-quick{padding:0 14px 14px;}
 .history-card-controls,.history-base-card-controls{margin-top:10px;}
@@ -1032,7 +1033,7 @@ body::before{
 @media(max-width:640px){
   .history-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
   .history-preview-section{padding:9px 10px;}
-  .history-preview-row{grid-template-columns:minmax(0,1fr);gap:4px;}
+  .history-preview-row{gap:.18em .32em;}
   .history-preview-value{text-align:left;}
   .history-meta-top{display:grid;grid-template-columns:1fr;}
   .history-card-mini-actions{justify-content:flex-end;}
@@ -1075,6 +1076,61 @@ body::before{
   background:#fff8f6 !important;
   border:1.5px solid #e4cfc8 !important;
   color:#8a4337 !important;
+}
+.history-meta-actions .history-entry-send2mm{
+  background:#eef6f0 !important;
+  border:1.5px solid #cfe0d3 !important;
+  color:#244732 !important;
+}
+.history-action-groups{
+  display:grid;
+  gap:12px;
+}
+.history-action-group{
+  display:grid;
+  gap:7px;
+}
+.history-action-group-title{
+  font-size:10.5px;
+  font-weight:900;
+  line-height:1.4;
+  color:#5d6b62;
+  letter-spacing:.05em;
+}
+.history-action-group.is-danger .history-action-group-title{
+  color:#8a4337;
+}
+.history-action-grid{
+  display:grid;
+  gap:8px;
+}
+.history-action-group.is-primary .history-action-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.history-action-group.is-utility .history-action-grid,
+.history-action-group.is-danger .history-action-grid{
+  grid-template-columns:1fr;
+}
+.history-card-controls .history-card-detail-body,
+.history-base-card-controls .history-base-summary-body,
+.history-compare-detail-body{
+  padding-top:12px;
+}
+.history-manage-panel{
+  margin-top:16px;
+  background:transparent;
+  border:none;
+  padding:0;
+}
+#history-screen .history-filter-wrap{
+  margin-bottom:16px;
+}
+#history-screen .history-filter-meta{
+  margin-top:2px;
+}
+#history-screen .history-compare-draft-panel{
+  margin-top:0;
+  margin-bottom:16px;
 }
 .history-card-controls .history-card-details>summary,
 .history-base-card-controls .history-base-summary-details>summary{
@@ -1178,8 +1234,7 @@ body::before{
   font-weight:900;
 }
 
-/* 青系の補助注意を緑系へ寄せて意味を統一 */
-/* 比較表の外部操作バーを少しだけ読みやすく */
+/* 比較中画面は構造を増やさず、色味だけを全体の役割色へ寄せる */
 .history-compare-table-basebar,
 .history-compare-table-actionbar{
   margin-top:10px;
@@ -1187,7 +1242,7 @@ body::before{
 .history-compare-table-basebar{margin-bottom:6px;}
 .history-compare-table-actionbar{
   padding-top:6px;
-  border-top:1px dashed #d9e3dc;
+  border-top:1px dashed var(--semantic-neutral-line);
 }
 .history-compare-table-basecell{
   padding:0 4px;
@@ -1196,38 +1251,36 @@ body::before{
   min-height:36px;
   font-size:11px;
   font-weight:900;
-}
-.history-compare-table-basecell .history-compare-screen-base-btn{
   background:#fff;
-  border:1.5px solid #c7d6cb;
-  color:#274333;
+  border:1.5px solid var(--semantic-neutral-line);
+  color:var(--semantic-primary-text);
 }
 .history-compare-table-basecell.is-base{
-  background:#f3f8f5;
+  background:var(--semantic-primary-soft);
 }
 .history-compare-table-actionbar-label{
-  background:linear-gradient(180deg,#fbfcfb 0%,#f2f7f4 100%);
-  border:1px solid #cfdcd3;
-  color:#31473b;
+  background:linear-gradient(180deg,#fbfcfb 0%,var(--semantic-neutral) 100%);
+  border:1px solid var(--semantic-neutral-line);
+  color:var(--semantic-primary-text);
   font-size:11px;
   font-weight:900;
 }
 .history-compare-table-actioncell .history-compare-table-details>summary{
   background:#fff;
-  border:1.5px solid #c7d6cb;
-  color:#274333;
+  border:1.5px solid var(--semantic-neutral-line);
+  color:var(--semantic-primary-text);
   box-shadow:none;
 }
 .history-compare-table-actioncell.is-base{
-  background:#f3f8f5;
+  background:var(--semantic-primary-soft);
 }
 .history-compare-table-actioncell.is-base .history-compare-table-details>summary{
   background:var(--semantic-primary-soft);
-  border-color:#a7c0af;
+  border-color:var(--semantic-primary-line);
   color:var(--semantic-primary-text);
 }
 
-/* 差分色の意味を全体で固定 */
+/* 差分だけは暖色で残し、それ以外は緑系で統一 */
 .history-compare-table-cell.is-changed,
 .history-compare-more,
 .history-base-value{
@@ -1253,8 +1306,8 @@ body::before{
   gap:8px;
   padding:14px 16px;
   border-radius:18px;
-  border:1px solid #dce4de;
-  background:#f8fbf9;
+  border:1px solid var(--semantic-neutral-line);
+  background:linear-gradient(180deg,#fbfcfb 0%,var(--semantic-neutral) 100%);
 }
 #history-compare-screen .history-compare-screen-meta{
   display:block;
@@ -1280,7 +1333,7 @@ body::before{
   gap:8px;
   padding:14px 14px 12px;
   border-radius:20px;
-  border:1px solid #e4ded3;
+  border:1px solid var(--semantic-neutral-line);
   background:#fff;
   --history-compare-group-width:44px;
   --history-compare-label-width:104px;
@@ -1290,7 +1343,7 @@ body::before{
   padding-bottom:0;
 }
 #history-compare-screen .history-compare-table{
-  border:1px solid #ddd6cb;
+  border:1px solid var(--semantic-neutral-line);
   border-radius:16px;
 }
 #history-compare-screen .history-compare-table thead th{
@@ -1304,7 +1357,7 @@ body::before{
 #history-compare-screen .history-compare-table-action-row .history-compare-table-sticky,
 #history-compare-screen .history-compare-table-base-row .history-compare-table-sticky-group,
 #history-compare-screen .history-compare-table-base-row .history-compare-table-sticky{
-  background:#faf9f7;
+  background:var(--semantic-neutral);
 }
 #history-compare-screen .history-compare-table-sticky-group,
 #history-compare-screen .history-compare-table-sticky,
@@ -1315,40 +1368,40 @@ body::before{
 #history-compare-screen .history-compare-table-group-cell.is-detail,
 #history-compare-screen .history-compare-table-row-label.is-detail,
 #history-compare-screen .history-compare-table-detail-cell{
-  background:#faf9f7;
+  background:var(--semantic-neutral);
 }
 #history-compare-screen .history-compare-table-col.is-base,
 #history-compare-screen .history-compare-table-cell.is-base,
 #history-compare-screen .history-compare-table-detail-cell.is-base,
 #history-compare-screen .history-compare-table-actionfoot.is-base{
-  background:#edf6ef;
+  background:var(--semantic-primary-soft);
 }
 #history-compare-screen .history-compare-table-basehead.is-base{
-  background:linear-gradient(180deg,#dcefe2 0%,#eaf5ed 100%);
+  background:linear-gradient(180deg,#e1f1e6 0%,var(--semantic-primary-soft) 100%);
 }
 #history-compare-screen .history-compare-table-col.is-base{
-  background:linear-gradient(180deg,#dcefe2 0%,#edf6ef 100%);
+  background:linear-gradient(180deg,#e1f1e6 0%,var(--semantic-primary-soft) 100%);
 }
 #history-compare-screen .history-compare-table-col.is-base,
 #history-compare-screen .history-compare-table-cell.is-base,
 #history-compare-screen .history-compare-table-detail-cell.is-base,
 #history-compare-screen .history-compare-table-basehead.is-base,
 #history-compare-screen .history-compare-table-actionfoot.is-base{
-  border-left:1px solid #d7e4da !important;
-  border-right:1px solid #d7e4da !important;
+  border-left:1px solid var(--semantic-primary-line) !important;
+  border-right:1px solid var(--semantic-primary-line) !important;
 }
 #history-compare-screen .history-compare-table-basehead.is-base{
-  border-top:1px solid #d7e4da !important;
+  border-top:1px solid var(--semantic-primary-line) !important;
 }
 #history-compare-screen .history-compare-table-actionfoot.is-base,
 #history-compare-screen .history-compare-table tbody tr:last-child .history-compare-table-cell.is-base{
-  border-bottom:1px solid #d7e4da !important;
+  border-bottom:1px solid var(--semantic-primary-line) !important;
 }
 #history-compare-screen .history-compare-table th.history-compare-table-basehead.is-base:last-child,
 #history-compare-screen .history-compare-table th.history-compare-table-col.is-base:last-child,
 #history-compare-screen .history-compare-table td.history-compare-table-cell.is-base:last-child,
 #history-compare-screen .history-compare-table td.history-compare-table-actionfoot.is-base:last-child{
-  border-right:1px solid #d7e4da !important;
+  border-right:1px solid var(--semantic-primary-line) !important;
 }
 #history-compare-screen .history-compare-table-col.is-base .history-compare-table-headlabel{
   color:#2f4c3a;
@@ -1360,12 +1413,12 @@ body::before{
   color:#446250;
 }
 #history-compare-screen .history-compare-table-cell.is-changed{
-  background:#fff1d6 !important;
-  border-color:#e4c476 !important;
+  background:var(--semantic-diff) !important;
+  border-color:var(--semantic-diff-line) !important;
 }
 #history-compare-screen .history-compare-table-subvalue .history-compare-table-diff-tag{
-  background:#ffe3a7;
-  border:1px solid #dfbf63;
+  background:#fff1cf;
+  border:1px solid var(--semantic-diff-line);
   color:#6b5000;
 }
 @media(max-width:640px){
@@ -1381,6 +1434,163 @@ body::before{
 }
 
 .history-status-badge{pointer-events:none;user-select:none;}
+
+/* ===== ui commonize step 5.11.11.2 ===== */
+#history-screen .history-card-details>summary,
+#history-screen .history-base-summary-details>summary,
+#history-screen .history-compare-details>summary,
+#history-compare-screen .history-compare-table-details>summary{
+  color:#31453a !important;
+}
+#history-screen .history-card-details>summary .disclosure-label,
+#history-screen .history-base-summary-details>summary .disclosure-label,
+#history-screen .history-compare-details>summary .disclosure-label,
+#history-compare-screen .history-compare-table-details>summary .disclosure-label{
+  letter-spacing:.01em;
+}
+#history-screen .history-action-group-title,
+#history-compare-screen .history-action-group-title{
+  font-size:10px;
+  color:#6a746e;
+}
+#history-compare-screen .history-compare-screen-stage{
+  gap:12px;
+}
+#history-compare-screen .history-compare-screen-head{
+  gap:6px;
+  padding:12px 14px;
+  border-radius:16px;
+  border:1px solid #e2e7e3;
+  background:#fbfcfb;
+}
+#history-compare-screen .history-compare-screen-meta{
+  color:#31453a;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.55;
+}
+#history-compare-screen .history-compare-screen-empty{
+  border-color:#e3ddd2;
+  background:#fbfaf8;
+}
+#history-compare-screen .history-compare-screen-table-card{
+  gap:6px;
+  padding:12px 12px 10px;
+  border-radius:18px;
+  border:1px solid #e1e6e2;
+  background:#fcfcfb;
+}
+#history-compare-screen .history-compare-table{
+  border-color:#d8dfd9;
+}
+#history-compare-screen .history-compare-table-sticky-group,
+#history-compare-screen .history-compare-table-sticky,
+#history-compare-screen .history-compare-table-group-cell,
+#history-compare-screen .history-compare-table-row-label{
+  color:#42544b;
+}
+#history-compare-screen .history-compare-table-col.is-base,
+#history-compare-screen .history-compare-table-cell.is-base,
+#history-compare-screen .history-compare-table-detail-cell.is-base,
+#history-compare-screen .history-compare-table-actionfoot.is-base{
+  background:#f8fbf8;
+}
+#history-compare-screen .history-compare-table-basehead.is-base,
+#history-compare-screen .history-compare-table-col.is-base{
+  background:#f8fbf8;
+}
+#history-compare-screen .history-compare-table-col.is-base,
+#history-compare-screen .history-compare-table-cell.is-base,
+#history-compare-screen .history-compare-table-detail-cell.is-base,
+#history-compare-screen .history-compare-table-basehead.is-base,
+#history-compare-screen .history-compare-table-actionfoot.is-base{
+  border-left:1px solid #d6e1d8 !important;
+  border-right:1px solid #d6e1d8 !important;
+}
+#history-compare-screen .history-compare-table-basehead.is-base{
+  border-top:1px solid #d6e1d8 !important;
+}
+#history-compare-screen .history-compare-table-actionfoot.is-base,
+#history-compare-screen .history-compare-table tbody tr:last-child .history-compare-table-cell.is-base{
+  border-bottom:1px solid #d6e1d8 !important;
+}
+#history-compare-screen .history-compare-table-basehead.is-base .history-compare-screen-base-btn{
+  background:#355842 !important;
+  border-color:#355842 !important;
+  color:#fff !important;
+}
+#history-compare-screen .history-compare-table-cell.is-changed{
+  background:#fffaf1 !important;
+  border-color:#eadfbc !important;
+}
+#history-compare-screen .history-compare-table-subvalue{
+  color:#6a5a2b;
+}
+#history-compare-screen .history-compare-table-subvalue .history-compare-table-diff-tag{
+  background:#fff4d8;
+  border-color:#eadfbc;
+  color:#745a11;
+}
+#history-compare-screen .history-compare-table-actionfoot,
+#history-compare-screen .history-compare-table-detail-cell{
+  background:#fafbfa;
+}
+#history-compare-screen .history-compare-table-details{
+  gap:5px;
+}
+#history-compare-screen .history-compare-table-details>summary{
+  min-height:30px;
+  padding:5px 7px;
+  border-color:#d4ddd6;
+  background:#fff;
+  color:#31453a;
+}
+#history-compare-screen .history-compare-table-detail-body{
+  gap:6px;
+}
+#history-compare-screen .history-meta-actions{
+  gap:6px;
+}
+#history-compare-screen .history-meta-actions button{
+  min-height:36px;
+  font-size:11px;
+}
+#history-compare-screen .history-entry-restore{
+  background:#f8fbf9 !important;
+  border-color:#d7e2da !important;
+  color:#2f4b3a !important;
+}
+#history-compare-screen .history-entry-send2mm{
+  background:#eef6f0 !important;
+  border-color:#d2e2d6 !important;
+  color:#254834 !important;
+}
+#history-compare-screen .history-entry-copy{
+  background:#fff !important;
+  border-color:#d9e3dc !important;
+  color:#355642 !important;
+}
+#history-compare-screen .history-entry-delete{
+  background:#fff8f6 !important;
+  border-color:#e5d4cf !important;
+  color:#8a4337 !important;
+}
+@media(max-width:640px){
+  #history-compare-screen .history-compare-screen-head{
+    padding:11px 12px;
+  }
+  #history-compare-screen .history-compare-screen-meta{
+    font-size:13px;
+  }
+  #history-compare-screen .history-compare-screen-table-card{
+    padding:11px 10px 9px;
+  }
+  #history-compare-screen .history-meta-actions button{
+    min-height:34px;
+    font-size:10.5px;
+  }
+}
+
 
 
 
@@ -3135,6 +3345,57 @@ body::before{
   padding-top:0;
 }
 
+
+/* history normal card quieting: keep outer card, merge input/result into one quiet block */
+#history-screen .history-card-preview .history-preview-grid{
+  gap:12px 16px;
+  border:none;
+  border-radius:0;
+  overflow:visible;
+  background:transparent;
+}
+#history-screen .history-card-preview .history-preview-section{
+  background:transparent;
+  border:none;
+  border-radius:0;
+  padding:0;
+  gap:6px;
+  box-shadow:none;
+}
+#history-screen .history-card-preview .history-preview-section + .history-preview-section{
+  border-left:none;
+}
+#history-screen .history-card-preview .history-preview-section.history-results{
+  background:transparent;
+}
+#history-screen .history-card-preview .history-preview-title{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.03em;
+  color:#627067;
+}
+#history-screen .history-card-preview .history-preview-list{
+  gap:6px;
+}
+#history-screen .history-card-preview .history-preview-row{
+  gap:.22em .34em;
+}
+#history-screen .history-card-preview .history-preview-label{
+  font-size:11px;
+  color:#66736b;
+}
+#history-screen .history-card-preview .history-preview-value{
+  font-size:13px;
+}
+@media(max-width:640px){
+  #history-screen .history-card-preview .history-preview-grid{
+    gap:10px;
+  }
+  #history-screen .history-card-preview .history-preview-section{
+    padding:0;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4020,8 +4281,10 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 16:02 JST',
+  builtAt: '2026-04-16 18:52 JST',
   betaNotes: [
+    '2026-04-16 UI整理 5.11.11.1: 総合計算履歴の比較中画面は構造を変えず、基準列・補助操作・差分表示の色味だけを全体の役割色へ寄せました。',
+    '2026-04-16 UI整理 5.11.11.5: 通常履歴一覧は内側の小枠線をやめ、入力値と計算結果を一行で読める静かな明細表示へ寄せました。',
     '2026-04-16 UI整理 5.11.10: 酛仕込温度計算の四段表示で、折りたたみ上側が二重線っぽく見える状態を解消し、開閉帯を1本に見える形へ整えました。',
     '2026-04-16 UI整理 5.11.5: アルコール分温度換算表で、資料上の操作帯を一列寄りに整理し、状態表示の丸囲いをやめて文字だけにしました。',
     '2026-04-16 UI整理 5.11.4: アルコール分温度換算表で、下の資料だけを囲い、上側は入力欄・ボタン・プルダウンだけが立つ見え方へ整理しました。',
@@ -4112,7 +4375,7 @@ function showScreen(id){
       });
     });
   }
-  if(typeof window.renderHistory === 'function') window.renderHistory();
+  if(typeof window.renderHistoryForScreen === 'function') window.renderHistoryForScreen(); else if(typeof window.renderHistory === 'function') window.renderHistory();
   window.scrollTo(0,0);
 }
 
@@ -5552,7 +5815,7 @@ function WsetMixMode(n){
   if(details) details.open = WMixMode > 2;
   WsyncMixModeUI();
   WcalcMix();
-  if(typeof window.renderHistory === 'function') window.renderHistory();
+  if(typeof window.renderHistoryForScreen === 'function') window.renderHistoryForScreen(); else if(typeof window.renderHistory === 'function') window.renderHistory();
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const details = document.getElementById('Wmix_extra_details');
@@ -5598,7 +5861,7 @@ function WshowPanel(n){
     document.getElementById('Wfml_sub').textContent=f.sub;
     WsetMixMode(WMixMode || 2);
   }
-  if(typeof window.renderHistory === 'function') window.renderHistory();
+  if(typeof window.renderHistoryForScreen === 'function') window.renderHistoryForScreen(); else if(typeof window.renderHistory === 'function') window.renderHistory();
   window.scrollTo(0,0);
 }
 let WwMode=0;
@@ -5720,7 +5983,7 @@ function Tswitchtab(n){
   if(n===0) Tcalc0();
   else if(n===1) Tcalc1();
   else if(n===2) Tcalc2();
-  if(typeof window.renderHistory === 'function') window.renderHistory();
+  if(typeof window.renderHistoryForScreen === 'function') window.renderHistoryForScreen(); else if(typeof window.renderHistory === 'function') window.renderHistory();
 }
 function Tg(id){const el=document.getElementById(id);return el?parseFloat(el.value):NaN;}
 function TshowErr(n,msg){
@@ -5795,7 +6058,7 @@ function EsetMode(mode){
   EupdateBmConv();
   Ecalc();
   EsetHistoryView(EcurrentMode);
-  if(typeof window.renderHistory === 'function') window.renderHistory();
+  if(typeof window.renderHistoryForScreen === 'function') window.renderHistoryForScreen(); else if(typeof window.renderHistory === 'function') window.renderHistory();
 }
 function EsetHistoryView(mode){
   EhistoryView=mode==='bm' ? 'bm' : 'sm';
@@ -5998,23 +6261,11 @@ function Jcalc(){
 
 <div class="tool-nav-place"><span class="tool-nav-title">総合計算履歴</span></div></div>
 <div class="tool-body">
-<div class="screen-lead screen-lead-history"><h1>総合計算履歴</h1><p>比較や入力反映に使う履歴を選びます。</p></div>
+<div class="screen-lead screen-lead-history"><h1>総合計算履歴</h1><p>使いたい履歴を選びます。</p></div>
 <div class="wrapper">
 
-<div class="history-manage-panel">
-<details class="history-manage-details">
-<summary><span class="disclosure-label">整理・削除</span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
-<div class="history-manage-inner">
-
-<div class="history-manage-actions">
-<button class="back-btn reset-btn" data-action="reset-all-inputs" type="button">全計算機の入力値をリセット</button>
-<button class="back-btn danger-btn" data-action="clear-all-history-confirm" type="button">総合計算履歴を全削除</button>
-</div>
-</div>
-</details>
-</div>
 <div class="history-filter-wrap">
-<div class="history-filter-head">見たい履歴を選ぶ</div>
+<div class="history-filter-head">表示を絞る</div>
 <div class="history-filter-field">
 <div class="input-wrap">
 <select data-change-action="history-screen-filter-change" id="history-screen-filter-select">
@@ -6037,14 +6288,14 @@ function Jcalc(){
 <div class="history-compare-draft-panel" id="history-compare-draft-panel" hidden>
 <div class="history-compare-draft-head">
 <div>
-<div class="history-compare-draft-title">比較候補（2〜3件）</div>
-<div class="history-compare-draft-note">比較したい履歴を2〜3件選びます。選んだ後に表で比較できます。</div>
+<div class="history-compare-draft-title">比較候補</div>
+<div class="history-compare-draft-note">2〜3件そろうと表で比較できます。</div>
 </div>
 <div class="history-compare-draft-meta" id="history-compare-draft-meta">候補なし</div>
 </div>
 <div class="history-compare-draft-actions">
-<button class="back-btn reset-btn" data-action="clear-history-compare-draft" id="history-compare-draft-clear" type="button">クリア</button>
-<button class="calc-btn" data-action="apply-history-compare-draft" id="history-compare-draft-apply" type="button">表で比較</button>
+<button class="back-btn reset-btn" data-action="clear-history-compare-draft" id="history-compare-draft-clear" type="button">選択をクリア</button>
+<button class="calc-btn" data-action="apply-history-compare-draft" id="history-compare-draft-apply" type="button">比較表を開く</button>
 </div>
 </div>
 <div class="result-card" id="history-empty">
@@ -6052,6 +6303,18 @@ function Jcalc(){
 <div class="history-screen-empty-note" id="history-empty-note">履歴保存に対応している計算機で「総合計算履歴に追加」を押した内容だけが記録されます。</div>
 </div>
 <div id="history-list"></div>
+
+<div class="history-manage-panel">
+<details class="history-manage-details">
+<summary><span class="disclosure-label">整理・削除</span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
+<div class="history-manage-inner">
+<div class="history-manage-actions">
+<button class="back-btn reset-btn" data-action="reset-all-inputs" type="button">全計算機の入力値をリセット</button>
+<button class="back-btn danger-btn" data-action="clear-all-history-confirm" type="button">総合計算履歴を全削除</button>
+</div>
+</div>
+</details>
+</div>
 
 </div>
 </div>
@@ -6061,7 +6324,7 @@ function Jcalc(){
 <button class="back-btn" data-action="history-compare-back" type="button">← 戻る</button>
 <div class="tool-nav-place"><span class="tool-nav-title">履歴比較</span></div></div>
 <div class="tool-body">
-<div class="screen-lead screen-lead-history"><h1>履歴比較</h1><p>履歴で選んだ内容を、そのまま表で見比べます。</p></div>
+<div class="screen-lead screen-lead-history"><h1>履歴比較</h1><p>表で見比べます。</p></div>
 <div class="wrapper">
 <div class="history-compare-screen-stage" id="history-compare-screen-stage">
 <div class="history-compare-screen-head">
@@ -6114,11 +6377,33 @@ function Jcalc(){
 <script>
 (function(){
   // 共通保存キー。将来の追加計算機でも、保存・復元はここを起点にそろえる。
-  const STORAGE = {inputs:'sake-tools-inputs-v4',history:'sake-tools-history-v10',pins:'sake-tools-history-pins-v3',bases:'sake-tools-history-bases-v3',ui:'sake-tools-ui-state-v1',screen:'sake-tools-last-screen-v2',resume:'sake-tools-resume-state-v1'};
+  const STORAGE = {inputs:'sake-tools-inputs-v4',history:'sake-tools-history-v10',pins:'sake-tools-history-pins-v3',bases:'sake-tools-history-bases-v3',uiMain:'sake-tools-ui-main-v1',uiAux:'sake-tools-ui-aux-v1',ui:'sake-tools-ui-state-v1',screen:'sake-tools-last-screen-v2',resume:'sake-tools-resume-state-v1'};
+  // 機能の主従をここで固定する。計算機本体は主役、履歴・比較・共有は補助機能として独立管理する。
+  const FEATURE_FLAGS = Object.freeze({
+    history:true,
+    historyCompare:true,
+    shareChoice:true,
+    restoreCode:true,
+    tank2mmTransfer:true
+  });
   const INLINE_LIMIT = 12;
   const MAX_COMPARE_ITEMS = 3;
   const MAX_HISTORY_ITEMS = 120;
-  const navStack = [];
+  const RUNTIME = {
+    navStack:[],
+    lastSavedInputsJson:'',
+    lastSavedHistoryJson:'',
+    lastSavedPinsJson:'',
+    lastSavedBasesJson:'',
+    lastSavedUiMainJson:'',
+    lastSavedUiAuxJson:'',
+    lastSavedUiJson:'',
+    lastSavedResumeJson:'',
+    lastSavedScreen:'',
+    queuedUiRefresh:null,
+    uiRefreshTimer:0
+  };
+  const navStack = RUNTIME.navStack;
   let isBootstrapping = true;
   let isHandlingPopState = false;
   const q = (selector, root=document) => root ? root.querySelector(selector) : null;
@@ -6136,6 +6421,20 @@ function Jcalc(){
   })();
   function storageUnavailableMessage(){
     return 'この端末・ブラウザでは保存機能が使えないため、入力値や履歴は保持されません。ブラウザ設定やプライベートモードを確認してください。';
+  }
+  function runtimeCacheKeyForStorageKey(key){
+    switch(String(key||'')){
+      case STORAGE.inputs: return 'lastSavedInputsJson';
+      case STORAGE.history: return 'lastSavedHistoryJson';
+      case STORAGE.pins: return 'lastSavedPinsJson';
+      case STORAGE.bases: return 'lastSavedBasesJson';
+      case STORAGE.uiMain: return 'lastSavedUiMainJson';
+      case STORAGE.uiAux: return 'lastSavedUiAuxJson';
+      case STORAGE.ui: return 'lastSavedUiJson';
+      case STORAGE.screen: return 'lastSavedScreen';
+      case STORAGE.resume: return 'lastSavedResumeJson';
+      default: return '';
+    }
   }
   function storageWriteFailureMessage(){
     return '端末保存に書き込めませんでした。履歴件数を減らすか、ブラウザ設定を確認してください。';
@@ -6162,6 +6461,8 @@ function Jcalc(){
     }
     try{
       localStorage.setItem(key, value);
+      const cacheKey=runtimeCacheKeyForStorageKey(key);
+      if(cacheKey) RUNTIME[cacheKey]=String(value ?? '');
       return true;
     }catch(_){
       renderStorageAlert(storageWriteFailureMessage());
@@ -6170,7 +6471,49 @@ function Jcalc(){
   }
   function storageRemove(key){
     if(!storageState.available) return false;
-    try{ localStorage.removeItem(key); return true; }catch{ return false; }
+    try{
+      localStorage.removeItem(key);
+      const cacheKey=runtimeCacheKeyForStorageKey(key);
+      if(cacheKey) RUNTIME[cacheKey]='';
+      return true;
+    }catch{ return false; }
+  }
+  function isFeatureEnabled(name){
+    return FEATURE_FLAGS[name] !== false;
+  }
+  function canUseHistory(){
+    return isFeatureEnabled('history');
+  }
+  function canUseHistoryCompare(){
+    return canUseHistory() && isFeatureEnabled('historyCompare');
+  }
+  function canUseShareChoice(){
+    return isFeatureEnabled('shareChoice');
+  }
+  function canUseRestoreCode(){
+    return canUseShareChoice() && isFeatureEnabled('restoreCode');
+  }
+  function canUseTank2mmTransfer(){
+    return isFeatureEnabled('tank2mmTransfer');
+  }
+  function writeCachedText(storageKey, cacheKey, nextText){
+    const text=String(nextText ?? '');
+    const cached=typeof RUNTIME[cacheKey]==='string' ? RUNTIME[cacheKey] : '';
+    const stored=cached || String(storageGet(storageKey) ?? '');
+    if(stored===text){
+      RUNTIME[cacheKey]=text;
+      return {ok:true, changed:false};
+    }
+    const ok=storageSet(storageKey, text);
+    if(ok) RUNTIME[cacheKey]=text;
+    return {ok, changed:ok};
+  }
+  function writeCachedJson(storageKey, cacheKey, value){
+    try{
+      return writeCachedText(storageKey, cacheKey, JSON.stringify(value));
+    }catch(_){
+      return {ok:false, changed:false};
+    }
   }
   function safeParse(key, fallback){
     try{
@@ -6228,11 +6571,11 @@ function Jcalc(){
       .slice(0, MAX_HISTORY_ITEMS);
   }
   const getHistory = () => normalizeStoredHistory(safeParse(STORAGE.history, []));
-  const saveHistory = value => saveJson(STORAGE.history, normalizeStoredHistory(value));
+  const saveHistory = value => writeCachedJson(STORAGE.history, 'lastSavedHistoryJson', normalizeStoredHistory(value)).ok;
   const getPins = () => sanitizeHistoryPins(safeObjectParse(STORAGE.pins));
-  const savePins = value => saveJson(STORAGE.pins, sanitizeHistoryPins(value));
+  const savePins = value => writeCachedJson(STORAGE.pins, 'lastSavedPinsJson', sanitizeHistoryPins(value)).ok;
   const getBases = () => sanitizeHistoryBases(safeObjectParse(STORAGE.bases));
-  const saveBases = value => saveJson(STORAGE.bases, sanitizeHistoryBases(value));
+  const saveBases = value => writeCachedJson(STORAGE.bases, 'lastSavedBasesJson', sanitizeHistoryBases(value)).ok;
   function normalizeText(value){
     return String(value ?? '').replace(/\s+/g, ' ').trim();
   }
@@ -6499,6 +6842,7 @@ function Jcalc(){
     setShareChoiceHelp(mode==='restore' ? 'コピーできない時は、下のプレビューを選択してこのツール用の復元用コードを手動でコピーできます。' : 'コピーできない時は、下のプレビューを長押しまたは選択して手動でコピーできます。');
   }
   function openShareChoice(context){
+    if(!canUseShareChoice()){ toast('共有機能は現在停止中です'); return; }
     const modal=getShareChoiceModal();
     if(!modal) return;
     const next=isPlainObject(context) ? {...context} : {type:'',toolKey:'',historyId:''};
@@ -6533,6 +6877,7 @@ function Jcalc(){
     openShareChoice({type:'history', toolKey:item.toolKey, historyId:item.id});
   }
   function executeShareChoiceRestoreCopy(){
+    if(!canUseRestoreCode()){ toast('復元用コードは現在停止中です'); return; }
     updateShareChoicePreview('restore');
     const code=buildRestoreCodeFromContext(ShareChoiceState);
     if(!code){ toast('復元用コードを作成できませんでした'); return; }
@@ -6546,6 +6891,7 @@ function Jcalc(){
     });
   }
   function executeShareChoiceHumanCopy(){
+    if(!canUseShareChoice()){ toast('共有機能は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     if(!text){ toast('共有文を作成できませんでした'); return; }
@@ -6559,6 +6905,7 @@ function Jcalc(){
     });
   }
   function sendCurrentConditionToTank2mmFromTrigger(el){
+    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     const toolKey=resolveToolKeyFromTrigger(el);
     if(!toolKey || !configFor(toolKey)){
       toast('この画面では2mm表へ送る条件が見つかりません');
@@ -6579,6 +6926,7 @@ function Jcalc(){
     });
   }
   function sendHistoryConditionToTank2mm(id){
+    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     const item=getHistory().find(entry=>entry.id===id);
     if(!item || !configFor(item.toolKey)){
       toast('2mm表へ送る履歴が見つかりません');
@@ -6599,6 +6947,7 @@ function Jcalc(){
     });
   }
   function executeShareChoiceSendToTank2mm(){
+    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     if(!text){ toast('2mm表へ送る共有文を作成できませんでした'); return; }
@@ -6607,6 +6956,7 @@ function Jcalc(){
     toast('2mm表へ共有文を送りました');
   }
   function sendShareChoiceToTank2mm(){
+    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     if(!text){ toast('2mm表へ送る共有文を作成できませんでした'); return; }
@@ -6617,6 +6967,7 @@ function Jcalc(){
     });
   }
   function copyShareChoiceRestore(){
+    if(!canUseRestoreCode()){ toast('復元用コードは現在停止中です'); return; }
     updateShareChoicePreview('restore');
     openActionConfirm({
       title:'復元用コードをコピーしますか？',
@@ -6625,6 +6976,7 @@ function Jcalc(){
     });
   }
   function copyShareChoiceHuman(){
+    if(!canUseShareChoice()){ toast('共有機能は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     if(!text){ toast('共有文を作成できませんでした'); return; }
@@ -6820,6 +7172,7 @@ function Jcalc(){
     return `${groupLabel} / ${rawVariantLabel}を比較中`;
   }
   function toggleHistoryCompareDraftItem(id,notify){
+    if(!canUseHistoryCompare()){ if(notify) toast('比較機能は現在停止中です'); return; }
     const item=getHistory().find(x=>x.id===id);
     if(!item) return;
     const draft=getHistoryCompareDraft();
@@ -6881,6 +7234,7 @@ function Jcalc(){
     return HistoryCompareScreen;
   }
   function applyHistoryCompareDraft(notify){
+    if(!canUseHistoryCompare()){ if(notify) toast('比較機能は現在停止中です'); return; }
     const draft=getHistoryCompareDraft();
     const ids=Array.isArray(draft.ids)?draft.ids.slice():[];
     const toolKey=String(draft.toolKey||'');
@@ -6900,6 +7254,7 @@ function Jcalc(){
     if(notify) toast('比較表を開きました');
   }
   function setHistoryCompareScreenBase(id, notify){
+    if(!canUseHistoryCompare()){ if(notify) toast('比較機能は現在停止中です'); return; }
     const state=getHistoryCompareScreen();
     const targetId=String(id||'');
     if(!targetId || !Array.isArray(state.ids) || !state.ids.includes(targetId)) return;
@@ -6911,6 +7266,7 @@ function Jcalc(){
     if(notify) toast('比較の基準を切り替えました');
   }
   function historyCompareBack(){
+    if(!canUseHistoryCompare()){ window.historyBack(); return; }
     const state=getHistoryCompareScreen();
     setHistoryScreenFilter(state.historyFilter || 'all', {
       save:false,
@@ -6928,7 +7284,7 @@ function Jcalc(){
     if(!isBootstrapping && !isHandlingPopState) syncBrowserHistory('history-screen', true);
   }
 
-  function getUiSnapshot(screenOverride){
+  function getPrimaryUiSnapshot(screenOverride){
     const currentScreen = screenOverride || q('.screen.active')?.id || 'home-screen';
     const tm2State = typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: currentScreen}) : null;
     return {
@@ -6936,21 +7292,52 @@ function Jcalc(){
       mixMode: Number(window.WMixMode || 2) || 2,
       ekisuMode: EcurrentMode==='bm' ? 'bm' : 'sm',
       ekisuHistoryView: EcurrentMode==='bm' ? 'bm' : 'sm',
-      historyScreenFilter: normalizeHistoryScreenFilter(HistoryScreenFilter),
-      historyScreenVariantFilter: normalizeHistoryScreenVariant(HistoryScreenVariantFilter, HistoryScreenFilter),
       suionTab: getCurrentSuionTab(),
       warimizuView: getCurrentWarimizuView(),
       warimizuMode: Number(WwMode || 0) || 0,
       aalcMode: Number(AalcMode || 0) || 0,
-      historyCompareDraft: getHistoryCompareDraft(),
-      historyCompareScreen: getHistoryCompareScreen(),
       tm2State
     };
   }
+  function getAuxiliaryUiSnapshot(){
+    return {
+      historyScreenFilter: normalizeHistoryScreenFilter(HistoryScreenFilter),
+      historyScreenVariantFilter: normalizeHistoryScreenVariant(HistoryScreenVariantFilter, HistoryScreenFilter),
+      historyCompareDraft: getHistoryCompareDraft(),
+      historyCompareScreen: getHistoryCompareScreen()
+    };
+  }
+  function getUiSnapshot(screenOverride){
+    return {
+      ...getPrimaryUiSnapshot(screenOverride),
+      ...getAuxiliaryUiSnapshot()
+    };
+  }
+  function getStoredUiState(){
+    const primary = safeObjectParse(STORAGE.uiMain);
+    const auxiliary = safeObjectParse(STORAGE.uiAux);
+    if(isPlainObject(primary) || isPlainObject(auxiliary)){
+      return {
+        ...(isPlainObject(primary) ? primary : {}),
+        ...(isPlainObject(auxiliary) ? auxiliary : {})
+      };
+    }
+    return safeObjectParse(STORAGE.ui);
+  }
+  function getResumeSnapshot(screenOverride){
+    const state = getPrimaryUiSnapshot(screenOverride);
+    if(state.screen==='history-screen' || state.screen==='history-compare-screen'){
+      return {
+        ...state,
+        ...getAuxiliaryUiSnapshot()
+      };
+    }
+    return state;
+  }
   function saveResumeState(screenOverride){
-    const state = getUiSnapshot(screenOverride);
+    const state = getResumeSnapshot(screenOverride);
     if(!state.screen || state.screen==='home-screen') return safeObjectParse(STORAGE.resume);
-    saveJson(STORAGE.resume, state);
+    writeCachedJson(STORAGE.resume, 'lastSavedResumeJson', state);
     return state;
   }
   function bindDeclarativeUi(){
@@ -6997,14 +7384,18 @@ function Jcalc(){
     qa('input[id], select[id], textarea[id]').forEach(el => {
       payload[el.id] = rawFieldValue(el);
     });
-    saveJson(STORAGE.inputs, payload);
-    renderHomeStatus();
+    const saved = writeCachedJson(STORAGE.inputs, 'lastSavedInputsJson', payload);
+    if(saved.changed) renderHomeStatus();
+    return saved.ok;
   }
   function saveUIState(){
-    const state = getUiSnapshot();
+    const primaryState = getPrimaryUiSnapshot();
+    const auxiliaryState = getAuxiliaryUiSnapshot();
+    const state = {...primaryState, ...auxiliaryState};
     if(isBootstrapping) return state;
-    saveJson(STORAGE.ui, state);
-    storageSet(STORAGE.screen, state.screen);
+    writeCachedJson(STORAGE.uiMain, 'lastSavedUiMainJson', primaryState);
+    writeCachedJson(STORAGE.uiAux, 'lastSavedUiAuxJson', auxiliaryState);
+    writeCachedText(STORAGE.screen, 'lastSavedScreen', state.screen);
     if(state.screen !== 'home-screen') saveResumeState(state.screen);
     if(!isHandlingPopState && typeof window.syncCurrentBrowserHistoryState === 'function'){
       try{ window.syncCurrentBrowserHistoryState(); }catch{}
@@ -7013,7 +7404,7 @@ function Jcalc(){
     return state;
   }
   function applyUIState(){
-    const state = safeObjectParse(STORAGE.ui);
+    const state = getStoredUiState();
     if(Number(state.mixMode)){
       window.WMixMode = Number(state.mixMode);
     }
@@ -7433,8 +7824,9 @@ function simplifyUiStep4(root){
   });
 }
 
-function setupHistoryShortcutPanels(){
-  qa('.history-shortcut-panel').forEach(panel=>{
+function setupHistoryShortcutPanels(root){
+  const scope = root && typeof root.querySelectorAll==='function' ? root : document;
+  qa('.history-shortcut-panel', scope).forEach(panel=>{
     const actions=q('.inline-tools-actions', panel);
     const title=q('.inline-tools-title', panel);
     const note=q('.inline-tools-note', panel);
@@ -7444,10 +7836,14 @@ function setupHistoryShortcutPanels(){
       : (panel.dataset.historyDynamic==='mix' ? `warimizu:mix:${getMixMode()}` : normalizeHistoryToolKey(panel.dataset.historyKey||''));
     const cfg=configFor(toolKey);
     if(title) title.textContent = cfg ? `${cfg.label}の保存・連携` : '保存・連携';
-    if(note) note.textContent = '2mm表へ送る時はこの画面から。入力欄へ戻す・比較・削除は「総合計算履歴を見る」から行います。';
+    const shortcutMessages=[];
+    if(canUseTank2mmTransfer()) shortcutMessages.push('2mm表へ送る時はこの画面から');
+    if(canUseHistory()) shortcutMessages.push(canUseHistoryCompare() ? '入力欄へ戻す・比較・削除は「総合計算履歴を見る」から行います' : '入力欄へ戻す・削除は「総合計算履歴を見る」から行います');
+    if(note) note.textContent = shortcutMessages.join('。') + (shortcutMessages.length ? '。' : '');
     if(addButton){
       addButton.innerHTML='<span class="btn-main">総合計算履歴に追加</span><span class="btn-sub">この結果を保存します</span>';
       addButton.classList.add('history-add-btn','history-action-btn','ui-primary-action');
+      addButton.hidden = !canUseHistory();
     }
     if(actions){
       actions.querySelectorAll('[data-action="clear-tool-history"]').forEach(btn=>btn.remove());
@@ -7459,6 +7855,7 @@ function setupHistoryShortcutPanels(){
         sendButton.dataset.action='send-current-to-tm2';
       }
       sendButton.innerHTML='<span class="btn-main">2mm表に送る</span><span class="btn-sub">この端末の2mm表メモへ入れます</span>';
+      sendButton.hidden = !canUseTank2mmTransfer();
       let copyButton=actions.querySelector('[data-action="copy-current-condition"]');
       if(!copyButton){
         copyButton=document.createElement('button');
@@ -7467,6 +7864,7 @@ function setupHistoryShortcutPanels(){
         copyButton.dataset.action='copy-current-condition';
       }
       copyButton.innerHTML='<span class="btn-main">共有</span><span class="btn-sub">共有文 / 復元用コード</span>';
+      copyButton.hidden = !canUseShareChoice();
       let openButton=actions.querySelector('[data-nav-screen="history-screen"]');
       if(!openButton){
         openButton=document.createElement('button');
@@ -7474,7 +7872,10 @@ function setupHistoryShortcutPanels(){
         openButton.dataset.navScreen='history-screen';
       }
       openButton.className='back-btn reset-btn history-view-btn history-action-btn';
-      openButton.innerHTML='<span class="btn-main">総合計算履歴を見る</span><span class="btn-sub">入力欄へ戻す・比較する</span>';
+      openButton.innerHTML=canUseHistoryCompare()
+        ? '<span class="btn-main">総合計算履歴を見る</span><span class="btn-sub">入力欄へ戻す・比較する</span>'
+        : '<span class="btn-main">総合計算履歴を見る</span><span class="btn-sub">入力欄へ戻す・削除する</span>';
+      openButton.hidden = !canUseHistory();
       const groupMeta = getHistoryGroupMeta({toolKey});
       const variantMeta = getHistoryVariantMetaByToolKey(toolKey);
       openButton.dataset.historyFilter = groupMeta.key || 'all';
@@ -7523,10 +7924,10 @@ function setupHistoryShortcutPanels(){
   }
   function buildHistoryActionViews(item,{pinned,isBase,compareScreen=false}){
     const actions=[];
-    actions.push(createHistoryActionView('history-entry-restore','この条件を入力欄に反映', 'restore-history-item', item.id));
-    actions.push(createHistoryActionView('history-entry-send2mm','2mm表に送る', 'send-history-to-tm2', item.id));
-    actions.push(createHistoryActionView('history-entry-copy','共有', 'copy-history-condition', item.id));
-    actions.push(createHistoryActionView('history-entry-delete','この履歴を削除', 'delete-history-item', item.id));
+    actions.push(createHistoryActionView('history-entry-restore','入力へ戻す', 'restore-history-item', item.id));
+    if(canUseTank2mmTransfer()) actions.push(createHistoryActionView('history-entry-send2mm','2mm表に送る', 'send-history-to-tm2', item.id));
+    if(canUseShareChoice()) actions.push(createHistoryActionView('history-entry-copy','共有', 'copy-history-condition', item.id));
+    actions.push(createHistoryActionView('history-entry-delete','削除', 'delete-history-item', item.id));
     return actions;
   }
   function buildHistoryLineView(item,baseMap,showCompare){
@@ -7583,7 +7984,7 @@ function setupHistoryShortcutPanels(){
       showVariantChip:display.showVariantChip!==false,
       time:getHistoryDisplayTime(item),
       toolKey:item.toolKey,
-      actionSummaryLabel:compareScreen ? 'この結果の操作' : 'この履歴の操作',
+      actionSummaryLabel:'操作',
       actions:buildHistoryActionViews(item,{pinned,isBase,compareScreen}),
       sections,
       isBase,
@@ -7594,6 +7995,25 @@ function setupHistoryShortcutPanels(){
   }
   function renderHistoryActionButton(action){
     return `<button class="${action.className}" type="button" data-action="${action.action}" data-history-id="${escapeHtml(action.id)}">${action.label}</button>`;
+  }
+  function getHistoryActionGroups(actions){
+    const grouped={primary:[],utility:[],danger:[]};
+    (actions||[]).forEach(action=>{
+      const className=String(action?.className||'');
+      if(/\bhistory-entry-delete\b/.test(className)){ grouped.danger.push(action); return; }
+      if(/\bhistory-entry-copy\b/.test(className)){ grouped.utility.push(action); return; }
+      grouped.primary.push(action);
+    });
+    return [
+      grouped.primary.length ? {title:'反映・送る', className:'is-primary', actions:grouped.primary} : null,
+      grouped.utility.length ? {title:'共有', className:'is-utility', actions:grouped.utility} : null,
+      grouped.danger.length ? {title:'削除', className:'is-danger', actions:grouped.danger} : null
+    ].filter(Boolean);
+  }
+  function renderHistoryActionGroups(actions){
+    const groups=getHistoryActionGroups(actions);
+    if(!groups.length) return '';
+    return `<div class="history-action-groups">${groups.map(group=>`<section class="history-action-group ${group.className}"><div class="history-action-group-title">${escapeHtml(group.title)}</div><div class="history-action-grid">${group.actions.map(renderHistoryActionButton).join('')}</div></section>`).join('')}</div>`;
   }
   function renderHistoryCompareHighlights(cardView){
     const changed=cardView.compareHighlights||[];
@@ -7613,11 +8033,14 @@ function setupHistoryShortcutPanels(){
   function renderHistorySelectButton(cardView){
     const control=cardView.selectControl;
     if(!control) return '';
-    return `<button class="history-select-toggle history-select-toggle-mini ${control.selected?'is-selected':''}" type="button" data-action="toggle-history-compare-draft" data-history-id="${escapeHtml(control.id)}">${control.selected?'選択中':'選ぶ'}</button>`;
+    return `<button class="history-select-toggle history-select-toggle-mini ${control.selected?'is-selected':''}" type="button" data-action="toggle-history-compare-draft" data-history-id="${escapeHtml(control.id)}">${control.selected?'比較中':'比較に追加'}</button>`;
   }
   function renderHistoryPreviewRows(lines,maxVisible=3){
     const rows=(lines||[]).filter(Boolean);
-    const visible=rows.slice(0, maxVisible).map(line=>`<div class="history-preview-row"><span class="history-preview-label">${escapeHtml(line.label)}</span><span class="history-preview-value">${escapeHtml(line.currentValue||line.value||'')}</span></div>`).join('');
+    const visible=rows.slice(0, maxVisible).map(line=>{
+      const shortLabel=shortenHistoryCompareLabel(line.label);
+      return `<div class="history-preview-row"><span class="history-preview-label">${escapeHtml(shortLabel)}</span><span class="history-preview-sep">：</span><span class="history-preview-value">${escapeHtml(line.currentValue||line.value||'')}</span></div>`;
+    }).join('');
     const more=rows.length>maxVisible ? `<div class="history-preview-more">ほか${rows.length-maxVisible}項目</div>` : '';
     return `${visible}${more}`;
   }
@@ -7637,16 +8060,16 @@ function setupHistoryShortcutPanels(){
   function renderHistoryCompactCompareCard(cardView){
     const changedCount=(cardView.compareHighlights||[]).length;
     const countLabel=changedCount ? `差分 ${changedCount}項目` : '差分なし';
-    return `<div class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-compare-card-shell"><div class="history-compare-card-top"><div class="history-compare-card-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-compare-card-status">${escapeHtml(countLabel)}</span></div><div class="history-compare-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-compare-chip-row">${renderHistoryCompareHighlights(cardView)}</div><details class="history-compare-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-compare-detail-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div>`;
+    return `<div class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-compare-card-shell"><div class="history-compare-card-top"><div class="history-compare-card-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-compare-card-status">${escapeHtml(countLabel)}</span></div><div class="history-compare-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-compare-chip-row">${renderHistoryCompareHighlights(cardView)}</div><details class="history-compare-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-compare-detail-body history-action-only-body">${renderHistoryActionGroups(cardView.actions)}</div></details></div></div>`;
   }
   function renderHistoryBaseSummaryCard(cardView){
-    return `<div class="history-base-summary-card" data-history-id="${escapeHtml(cardView.id)}"><div class="history-base-summary-head"><div class="history-base-summary-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-base-summary-tag">基準</span></div><div class="history-base-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-base-card-controls"><details class="history-base-summary-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-base-summary-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div>`;
+    return `<div class="history-base-summary-card" data-history-id="${escapeHtml(cardView.id)}"><div class="history-base-summary-head"><div class="history-base-summary-main"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div><span class="history-base-summary-tag">基準</span></div><div class="history-base-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div><div class="history-base-card-controls"><details class="history-base-summary-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-base-summary-body history-action-only-body">${renderHistoryActionGroups(cardView.actions)}</div></details></div></div>`;
   }
   function renderHistoryCard(cardView){
     if(cardView.isCompareCard) return renderHistoryCompactCompareCard(cardView);
     if(cardView.isBase) return renderHistoryBaseSummaryCard(cardView);
     const selectButton=renderHistorySelectButton(cardView);
-    return `<article class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-meta"><div class="history-meta-top"><div class="history-meta-main"><div class="history-card-kicker"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div></div>${selectButton?`<div class="history-card-mini-actions">${selectButton}</div>`:''}</div><div class="history-card-read"><div class="history-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div></div></div><div class="history-card-quick"><div class="history-card-controls"><details class="history-card-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-card-detail-body history-action-only-body"><div class="history-meta-actions">${cardView.actions.map(renderHistoryActionButton).join('')}</div></div></details></div></div></article>`;
+    return `<article class="${cardView.classes.join(' ')}" data-history-id="${escapeHtml(cardView.id)}"><div class="history-meta"><div class="history-meta-top"><div class="history-meta-main"><div class="history-card-kicker"><span class="history-tool">${escapeHtml(cardView.tool)}</span>${renderHistoryVariantChip(cardView)}<span class="history-time">${escapeHtml(cardView.time)}</span></div></div>${selectButton?`<div class="history-card-mini-actions">${selectButton}</div>`:''}</div><div class="history-card-read"><div class="history-card-preview">${renderHistoryPreviewBlocks(cardView,3)}</div></div></div><div class="history-card-quick"><div class="history-card-controls"><details class="history-card-details">${detailSummaryMarkup(cardView.actionSummaryLabel || 'この履歴の操作')}<div class="history-card-detail-body history-action-only-body">${renderHistoryActionGroups(cardView.actions)}</div></details></div></div></article>`;
   }
   function renderSinglePanel(panel){
     if(!panel) return;
@@ -7777,7 +8200,7 @@ function setupHistoryShortcutPanels(){
   function renderHistoryCompareTableDetailCell(view, baseId){
     const isBase=view && view.id===baseId;
     const actions=(view?.actions||[]).map(renderHistoryActionButton).join('');
-    return `<td class="history-compare-table-detail-cell history-compare-table-actionfoot ${isBase?'is-base':''}"><details class="history-compare-table-details">${detailSummaryMarkup(view?.actionSummaryLabel || 'この結果の操作')}<div class="history-compare-table-detail-body"><div class="history-meta-actions">${actions}</div></div></details></td>`;
+    return `<td class="history-compare-table-detail-cell history-compare-table-actionfoot ${isBase?'is-base':''}"><details class="history-compare-table-details">${detailSummaryMarkup(view?.actionSummaryLabel || '操作')}<div class="history-compare-table-detail-body"><div class="history-meta-actions">${actions}</div></div></details></td>`;
   }
   function renderHistoryCompareTableActionBar(views, baseId){
     const cells=views.map(view=>renderHistoryCompareTableDetailCell(view, baseId)).join('');
@@ -7936,8 +8359,8 @@ function setupHistoryShortcutPanels(){
     const draftClear=q('#history-compare-draft-clear');
     const draftApply=q('#history-compare-draft-apply');
     if(draftPanel){
-      draftPanel.hidden=!items.length;
       const count=draft.ids.length;
+      draftPanel.hidden=!items.length || !count;
       if(draftMeta){
         draftMeta.textContent = !count
           ? '未選択'
@@ -7990,8 +8413,33 @@ function setupHistoryShortcutPanels(){
         : homeHistoryNote.dataset.defaultText;
     }
   }
-  function renderHistory(){ qa('.inline-tools-panel').forEach(renderSinglePanel); setupHistoryShortcutPanels(); applyUiCommonRoles(); renderHistoryScreen(); renderHistoryCompareScreen(); renderHomeStatus(); updateStorageDependentUi(); }
+  function renderInlineHistoryPanelsForScreen(screenId){
+    const targetId = screenId || q('.screen.active')?.id || '';
+    const screen = targetId ? document.getElementById(targetId) : null;
+    const scope = screen || document;
+    qa('.inline-tools-panel', scope).forEach(renderSinglePanel);
+    setupHistoryShortcutPanels(scope);
+    applyUiCommonRoles(scope);
+  }
+  function renderHistoryForScreen(screenId){
+    const targetId = screenId || q('.screen.active')?.id || 'home-screen';
+    renderInlineHistoryPanelsForScreen(targetId);
+    if(targetId==='history-screen') renderHistoryScreen();
+    if(targetId==='history-compare-screen') renderHistoryCompareScreen();
+    renderHomeStatus();
+    updateStorageDependentUi();
+  }
+  function renderHistory(){
+    qa('.inline-tools-panel').forEach(renderSinglePanel);
+    setupHistoryShortcutPanels();
+    applyUiCommonRoles();
+    renderHistoryScreen();
+    renderHistoryCompareScreen();
+    renderHomeStatus();
+    updateStorageDependentUi();
+  }
   window.renderHistory=renderHistory;
+  window.renderHistoryForScreen=renderHistoryForScreen;
   function deleteHistoryItemInternal(id){ saveHistory(getHistory().filter(i=>i.id!==id)); const pins=getPins(); Object.keys(pins).forEach(key=>{ pins[key]=(Array.isArray(pins[key])?pins[key]:[]).filter(x=>x!==id); if(!pins[key].length) delete pins[key]; }); savePins(pins); }
   window.deleteHistoryItem=function(id,notify){ deleteHistoryItemInternal(id); const bases=getBases(); Object.keys(bases).forEach(key=>{ if(bases[key]===id) delete bases[key]; }); saveBases(bases); renderHistory(); if(notify) toast('この履歴を削除しました'); };
   window.clearHistoryForTool=function(toolKey,notify){ toolKey=normalizeHistoryToolKey(toolKey); saveHistory(getHistory().filter(i=>i.toolKey!==toolKey)); const pins=getPins(); delete pins[toolKey]; savePins(pins); const bases=getBases(); delete bases[toolKey]; saveBases(bases); renderHistory(); if(notify) toast('この計算機の履歴を全削除しました'); };
@@ -8062,19 +8510,41 @@ function clearInputsByTool(toolKey){
   window.runCalculationAndCommit=function(toolKey){ toolKey=normalizeHistoryToolKey(toolKey); if(!isHistoryEnabledToolKey(toolKey)){ toast('この計算機は履歴保存に対応していません'); return; } const cfg=configFor(toolKey); if(!cfg) return; cfg.activate(); const calcResult=runToolCalculation(toolKey); const summaryData=buildSummaryData(toolKey,calcResult); if(!summaryData){ toast('入力値または計算結果が不足しているため保存できません'); return; } const now=Date.now(); const inputState=collectInputState(toolKey); const item={id:createId(),ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:summaryText(summaryData),summaryData}; const history=getHistory(); const duplicated=findDuplicateHistoryItem(history,item); const nextHistory=duplicated ? [{...duplicated,ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:item.summary,summaryData},...history.filter(entry=>entry.id!==duplicated.id)] : [item,...history]; const saved=saveHistory(nextHistory); renderHistory(); if(!saved){ toast(storageState.available ? '端末保存に失敗したため、履歴へ追加できませんでした' : 'この端末では保存できないため、履歴へ追加できません'); return; } toast(duplicated ? '同じ条件の履歴を先頭へ移動しました' : '総合計算履歴に追加しました'); };
   window.restoreHistoryItem=function(id,notify){ const item=getHistory().find(x=>x.id===id); if(!item) return; applyInputState(item.toolKey,item.inputState||{}); renderHistory(); if(notify) toast('選択した履歴の条件を入力欄に反映しました'); };
   const originalShowScreen=window.showScreen;
-  function refreshUiStateAndHistory(){
+  function refreshUiStateAndHistory(options={}){
+    const screenId = options.screenId || q('.screen.active')?.id || 'home-screen';
     saveUIState();
-    renderHistory();
+    if(options.fullHistory===true) renderHistory();
+    else renderHistoryForScreen(screenId);
+  }
+  function queueUiRefresh(options={}){
+    const next = RUNTIME.queuedUiRefresh || {save:true, renderHistory:true, renderHome:false, fullHistory:false};
+    if(options.save===false) next.save=false; else if(options.save===true) next.save=true;
+    if(options.renderHistory===false) next.renderHistory=false; else if(options.renderHistory===true) next.renderHistory=true;
+    if(options.renderHome===true) next.renderHome=true;
+    if(options.fullHistory===true) next.fullHistory=true;
+    RUNTIME.queuedUiRefresh = next;
+    if(RUNTIME.uiRefreshTimer) return;
+    RUNTIME.uiRefreshTimer = requestAnimationFrame(()=>{
+      const pending = RUNTIME.queuedUiRefresh || {save:true, renderHistory:true, renderHome:false, fullHistory:false};
+      RUNTIME.uiRefreshTimer = 0;
+      RUNTIME.queuedUiRefresh = null;
+      if(pending.save) saveUIState();
+      if(pending.renderHistory){
+        if(pending.fullHistory) renderHistory();
+        else renderHistoryForScreen();
+      }
+      if(pending.renderHome) renderHomeStatus();
+    });
   }
   function persistScreenState(screenId){
-    storageSet(STORAGE.screen, screenId);
+    writeCachedText(STORAGE.screen, 'lastSavedScreen', screenId);
     if(screenId && screenId !== 'home-screen') saveResumeState(screenId);
   }
   function updateScreenWithPersistence(screenId, options){
     const opts = options || {};
     originalShowScreen(screenId);
     persistScreenState(screenId);
-    refreshUiStateAndHistory();
+    refreshUiStateAndHistory({screenId});
     if(opts.syncHistory !== false && !isBootstrapping && !isHandlingPopState && opts.previousScreen !== screenId){
       syncBrowserHistory(screenId, false);
     }
@@ -8111,7 +8581,7 @@ function clearInputsByTool(toolKey){
       if(typeof fn!=='function') return;
       window[name]=function(){
         const out=fn.apply(this,arguments);
-        refreshUiStateAndHistory();
+        queueUiRefresh({save:true, renderHistory:true, renderHome:true});
         return out;
       };
     });
@@ -8139,7 +8609,7 @@ function clearInputsByTool(toolKey){
     cleanupDisabledHistoryData();
     setupHistoryShortcutPanels();
     applyUiCommonRoles();
-    const bootState=applyUIState() || safeObjectParse(STORAGE.ui);
+    const bootState=applyUIState() || getStoredUiState();
     restoreInputs();
     runInitialCalculations();
     const forcedScreen = getForcedScreenFromUrl();
@@ -8148,7 +8618,7 @@ function clearInputsByTool(toolKey){
     restoreScreenSubState(bootState, last);
     isBootstrapping = false;
     syncBrowserHistory(q('.screen.active')?.id || 'home-screen', true);
-    refreshUiStateAndHistory();
+    refreshUiStateAndHistory({screenId:last});
     renderHomeStatus();
   }
   window.showScreen=function(id){
@@ -8167,12 +8637,22 @@ function clearInputsByTool(toolKey){
     originalShowScreen(screenId);
     restoreScreenSubState(event.state?.uiState || event.state || null, screenId);
     persistScreenState(screenId);
-    refreshUiStateAndHistory();
+    refreshUiStateAndHistory({screenId});
     renderHomeStatus();
     isHandlingPopState = false;
   });
   window.addEventListener('beforeunload', ()=>{
-    try{ saveUIState(); }catch{}
+    try{
+      if(RUNTIME.uiRefreshTimer){
+        cancelAnimationFrame(RUNTIME.uiRefreshTimer);
+        RUNTIME.uiRefreshTimer = 0;
+        const pending = RUNTIME.queuedUiRefresh || {save:true, renderHistory:false, renderHome:false, fullHistory:false};
+        RUNTIME.queuedUiRefresh = null;
+        if(pending.save) saveUIState();
+      }else{
+        saveUIState();
+      }
+    }catch{}
   });
   bindUiStatePersistenceWrappers();
   bindInputPersistence();
@@ -8184,6 +8664,8 @@ function clearInputsByTool(toolKey){
     qa('.screen').forEach(clearOutputDisplay);
     resetUiModesToDefaults();
     rerunDefaultReferenceCalculations();
+    storageRemove(STORAGE.uiMain);
+    storageRemove(STORAGE.uiAux);
     storageRemove(STORAGE.ui);
     if(typeof window.resetTank2mmUiState==='function'){
       try{ window.resetTank2mmUiState({save:false, clearStorage:true}); }catch{}
