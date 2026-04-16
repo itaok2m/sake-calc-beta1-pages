@@ -2740,6 +2740,159 @@ body::before{
   #warimizu #Wpanel3 > .card > .sub-tabs{margin-bottom:10px !important;}
 }
 
+
+/* ===== UI整理 5.11.1 / no-history screen retry patch 2026-04-16 ===== */
+#suion .t-panel > .card,
+#ekisu .wrapper > .card,
+#moto .wrapper > .card,
+#jumai .wrapper > .card,
+#tank2mm-screen [data-tm2-panel="main"],
+#tank2mm-screen [data-tm2-panel="list"]{
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  margin-top:0 !important;
+}
+#suion .formula-label-nav,
+#ekisu .formula-label-nav,
+#moto .formula-label-nav,
+#jumai .formula-label-nav{
+  margin-bottom:3px !important;
+}
+#suion .unit-bar,
+#ekisu .unit-bar,
+#moto .unit-bar,
+#jumai .unit-bar{
+  margin-bottom:12px !important;
+}
+#suion .panel-desc.ui-help-surface,
+#ekisu .calc-help.ui-help-surface{
+  max-width:52em !important;
+  padding:0 0 5px !important;
+  margin-bottom:7px !important;
+  color:#66716b !important;
+  font-size:11.5px !important;
+  line-height:1.8 !important;
+}
+#ekisu .convert-badge{
+  max-width:52em !important;
+  margin-top:7px !important;
+  padding-top:6px !important;
+  color:#7a847f !important;
+  font-size:10.5px !important;
+}
+#suion .field-reset-row,
+#ekisu .field-reset-row,
+#moto .field-reset-row,
+#jumai .field-reset-row{
+  margin-top:0 !important;
+  margin-bottom:12px !important;
+}
+#suion .group.ui-input-surface,
+#ekisu .group.ui-input-surface,
+#moto .group.ui-input-surface,
+#jumai .group.ui-input-surface{
+  padding:13px 0 11px !important;
+}
+#suion .group.ui-input-surface + .group.ui-input-surface,
+#ekisu .group.ui-input-surface + .group.ui-input-surface,
+#moto .group.ui-input-surface + .group.ui-input-surface,
+#jumai .group.ui-input-surface + .group.ui-input-surface{
+  margin-top:6px !important;
+  padding-top:16px !important;
+  border-top:1px solid #dfe5e0 !important;
+}
+#suion .result-card.ui-result-surface,
+#ekisu .result-card.ui-result-surface,
+#tank2mm-screen .tm2-result-box.ui-result-surface{
+  background:#fff !important;
+  border:1px solid #dce4de !important;
+  border-top:3px solid #8ba896 !important;
+  border-radius:15px !important;
+  padding:12px 14px 12px !important;
+}
+#suion .result-card.ui-result-surface,
+#ekisu .result-card.ui-result-surface{
+  margin-top:14px !important;
+}
+#suion .result-card.ui-result-surface .result-grid,
+#ekisu .result-card.ui-result-surface .result-grid{
+  gap:0 16px !important;
+}
+#suion .result-card.ui-result-surface .result-grid > div,
+#ekisu .result-card.ui-result-surface .result-grid > div{
+  padding:10px 0 9px !important;
+}
+#ekisu .result-card .result-sub{
+  margin-top:8px !important;
+  padding-top:8px !important;
+  border-top:1px dashed #dfe5e1 !important;
+}
+#moto #Moto_table_wrap,
+#jumai #J_table_wrap{
+  margin-top:14px !important;
+  padding-top:12px !important;
+  border-top:1px solid #e1e7e2 !important;
+}
+#moto #Moto_table_wrap .note,
+#jumai #J_table_wrap .note{
+  color:#748079 !important;
+  font-size:11px !important;
+}
+#moto .moto-optional-details{
+  margin-top:12px !important;
+  border-top:1px solid #e3e8e4 !important;
+  padding-top:10px !important;
+}
+#moto .moto-optional-details>summary{
+  padding:11px 13px !important;
+  border:1px solid #dae3dc !important;
+  background:#fff !important;
+  box-shadow:none !important;
+}
+#moto .moto-optional-details .disclosure-icon{
+  width:24px !important;
+  height:24px !important;
+  background:#f4f7f5 !important;
+  border:1px solid #d7e0d9 !important;
+  color:#355043 !important;
+}
+#tank2mm-screen .tm2-list-head{
+  gap:3px !important;
+}
+#tank2mm-screen .tm2-list-note,
+#tank2mm-screen .tm2-footer-note{
+  color:#768079 !important;
+  font-size:11px !important;
+}
+@media(max-width:640px){
+  #suion .unit-bar,
+  #ekisu .unit-bar,
+  #moto .unit-bar,
+  #jumai .unit-bar{margin-bottom:10px !important;}
+  #suion .panel-desc.ui-help-surface,
+  #ekisu .calc-help.ui-help-surface{font-size:11px !important;}
+  #suion .field-reset-row,
+  #ekisu .field-reset-row,
+  #moto .field-reset-row,
+  #jumai .field-reset-row{margin-bottom:10px !important;}
+  #suion .group.ui-input-surface,
+  #ekisu .group.ui-input-surface,
+  #moto .group.ui-input-surface,
+  #jumai .group.ui-input-surface{padding:11px 0 9px !important;}
+  #suion .group.ui-input-surface + .group.ui-input-surface,
+  #ekisu .group.ui-input-surface + .group.ui-input-surface,
+  #moto .group.ui-input-surface + .group.ui-input-surface,
+  #jumai .group.ui-input-surface + .group.ui-input-surface{padding-top:14px !important;}
+  #suion .result-card.ui-result-surface,
+  #ekisu .result-card.ui-result-surface,
+  #tank2mm-screen .tm2-result-box.ui-result-surface{padding:11px 12px 11px !important;}
+  #moto #Moto_table_wrap,
+  #jumai #J_table_wrap{margin-top:12px !important; padding-top:10px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -3625,8 +3778,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 11:05 JST',
+  builtAt: '2026-04-16 12:28 JST',
   betaNotes: [
+    '2026-04-16 UI整理 5.11.1: 水温温度計算・エキス分計算・酛仕込温度計算・醪仕込温度計算・2mm表で、外側カードと説明・結果帯の白い箱感をもう一段静かにしました。',
     '2026-04-16 UI整理 5.11: 割水計算・混合計算・アルコール添加計算で、外側カードと結果・保存帯の白枠感をさらに減らしました。',
     '2026-04-16 UI整理 5.10: 割水計算・混合計算・アルコール添加計算で、説明帯を静かにし、結果欄と履歴保存帯の箱感をさらに弱めました。',
     '2026-04-16 UI整理 5.9: 割水計算・混合計算・アルコール添加計算で、読む帯と操作帯の間隔を広げ、入力欄と結果欄が先に見えるよう余白差を強めました。',
