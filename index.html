@@ -2133,28 +2133,28 @@ body::before{
 }
 
 
-
-/* ===== UI整理 5.6 / read-vs-action separation patch 2026-04-16 ===== */
-.section-subnav.sublevel-nav{
-  margin-bottom:8px !important;
-  padding:0 !important;
-  border:none !important;
-  background:transparent !important;
+/* ===== UI整理 5.7 / read-action split deepen patch 2026-04-16 ===== */
+.section-subnav.sublevel-nav,
+.formula-label-nav{
+  margin-top:2px !important;
+  margin-bottom:4px !important;
+  gap:6px !important;
 }
-.section-subnav-title{
+.section-subnav.sublevel-nav .section-subnav-title,
+.formula-label-nav .section-subnav-title{
   font-size:12px !important;
-  font-weight:800 !important;
-  color:#69756d !important;
-  letter-spacing:.02em !important;
+  font-weight:700 !important;
+  color:#6a746e !important;
+  letter-spacing:0 !important;
 }
 .unit-bar{
-  margin:0 0 10px !important;
-  padding:8px 0 0 !important;
   background:transparent !important;
   border:none !important;
-  border-top:1px solid #e2e8e3 !important;
+  border-top:1px solid #e3e8e4 !important;
   border-radius:0 !important;
   box-shadow:none !important;
+  padding:8px 0 6px !important;
+  margin-bottom:10px !important;
 }
 .unit-bar-formula{
   gap:4px !important;
@@ -2162,89 +2162,96 @@ body::before{
 .unit-bar-formula .fml-main,
 .unit-bar-formula .fml-note{
   font-size:12.5px !important;
-  line-height:1.75 !important;
-  color:#42514a !important;
   font-weight:700 !important;
+  color:#445049 !important;
+  line-height:1.75 !important;
 }
 .convert-badge{
   margin-top:8px !important;
-  padding:8px 0 0 !important;
+  padding:7px 0 0 !important;
   min-height:0 !important;
   background:transparent !important;
   border:none !important;
-  border-top:1px dashed #d9dfda !important;
+  border-top:1px dashed #dfe5e1 !important;
   border-radius:0 !important;
-  color:#617068 !important;
-  font-size:11.5px !important;
+  color:#73807a !important;
+  font-size:11px !important;
   font-weight:700 !important;
 }
 .inline-tools-panel,
 .compact-tools-panel{
-  margin:12px 0 0 !important;
-  padding:10px 0 0 !important;
   background:transparent !important;
   border:none !important;
-  border-top:1px solid #e2e8e3 !important;
+  border-top:1px solid #e2e7e3 !important;
   border-radius:0 !important;
   box-shadow:none !important;
+  padding:10px 0 0 !important;
+  margin:12px 0 0 !important;
 }
 .inline-tools-header{
-  gap:10px !important;
-  margin-bottom:4px !important;
+  gap:6px !important;
+  margin-bottom:6px !important;
 }
 .inline-tools-title{
   font-size:13px !important;
-  color:#31433a !important;
+  color:#39453e !important;
 }
 .inline-tools-badge{
-  min-width:0 !important;
-  padding:0 !important;
-  border:none !important;
-  border-radius:0 !important;
-  background:transparent !important;
-  color:#7a847d !important;
-  font-size:11px !important;
+  min-width:22px !important;
+  padding:1px 6px !important;
+  background:#f5f7f5 !important;
+  border:1px solid #e3e8e4 !important;
+  color:#6f7a74 !important;
+  font-size:10px !important;
 }
 .inline-tools-note{
-  margin-top:0 !important;
-  color:#6f7b73 !important;
-}
-.share-panel-note{
-  margin-top:10px !important;
-  color:#66736b !important;
+  font-size:11px !important;
+  line-height:1.7 !important;
+  color:#748079 !important;
 }
 .share-role-grid{
+  grid-template-columns:1fr !important;
   gap:8px !important;
 }
 .share-role-card{
-  padding:7px 0 0 !important;
   background:transparent !important;
   border:none !important;
-  border-top:1px solid #e2e8e3 !important;
   border-radius:0 !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  gap:2px !important;
+}
+.share-role-grid .share-role-card + .share-role-card{
+  border-top:1px solid #e3e8e4 !important;
+  padding-top:8px !important;
 }
 .share-role-kicker{
-  font-size:10.5px !important;
-  color:#7a847d !important;
+  font-size:10px !important;
+  color:#7b857f !important;
 }
 .share-role-title{
   font-size:12px !important;
-  color:#364740 !important;
+  line-height:1.7 !important;
+  color:#53605a !important;
 }
-#home-screen .home-bulk-note,
-.home-disclosure-note{
-  color:#66726b !important;
+.home-disclosure-note,
+.share-panel-note{
+  color:#6f7b74 !important;
+  font-size:11.5px !important;
 }
 @media(max-width:640px){
-  .section-subnav-title{font-size:11.5px !important;}
-  .unit-bar{margin:0 0 9px !important;padding-top:7px !important;}
+  .section-subnav.sublevel-nav,
+  .formula-label-nav{margin-bottom:3px !important;}
+  .unit-bar{padding:7px 0 5px !important;}
   .unit-bar-formula .fml-main,
   .unit-bar-formula .fml-note{font-size:12px !important;}
   .inline-tools-panel,
-  .compact-tools-panel{margin-top:10px !important;padding-top:9px !important;}
-  .convert-badge{font-size:11px !important;}
-  .share-role-title{font-size:11.5px !important;}
+  .compact-tools-panel{padding-top:9px !important;}
+  .inline-tools-title{font-size:12.5px !important;}
+  .inline-tools-note,
+  .share-role-title{font-size:10.8px !important;}
 }
+
 </style>
 </head>
 <body>
@@ -2315,7 +2322,7 @@ body::before{
 </div>
 <div class="home-bulk-panel home-surface">
 <div class="home-bulk-title">保存条件の確認・比較</div>
-<div class="home-bulk-note">保存した条件の見直し、入力反映、比較、全体リセット、履歴削除はここから行います。</div>
+<div class="home-bulk-note">保存した条件の見直しや入力欄への反映、必要な時だけ行う比較、全計算機の入力値リセット、総合計算履歴の削除は、すべてここから行います。</div>
 <div class="history-entry-card" data-nav-screen="history-screen" role="button" tabindex="0">
 <div class="history-entry-card-main">
 <div class="history-entry-card-text">
@@ -2330,7 +2337,7 @@ body::before{
 <details class="home-disclosure home-surface">
 <summary class="home-disclosure-summary"><span class="disclosure-label"><span class="home-disclosure-heading">
 <span class="home-disclosure-title">注意点</span>
-<span class="home-disclosure-note">保存・共有・近似計算の扱いを確認できます。</span>
+<span class="home-disclosure-note">保存・共有・近似計算の扱いを短く確認できます。</span>
 </span></span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
 <div class="home-disclosure-body">
 <ul class="release-list" id="app-beta-notes-list"></ul>
@@ -2342,7 +2349,7 @@ body::before{
 <span class="home-disclosure-note">受け取った文字列をこの端末へ反映します。渡す時は各画面や履歴のコピーを使います。</span>
 </span></span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
 <div class="home-disclosure-body share-disclosure-body">
-<div class="share-panel-note">貼り付けて「復元用コードを読込」を押した時だけ、この端末へ反映します。</div>
+<div class="share-panel-note">復元用コードは自動送信されません。貼り付けて「復元用コードを読込」を押した時だけ、この端末へ反映します。</div>
 <div class="share-role-grid" aria-hidden="true">
 <div class="share-role-card is-send"><div class="share-role-kicker">渡す時</div><div class="share-role-title">各画面や履歴のコピーを使う</div></div>
 <div class="share-role-card is-receive"><div class="share-role-kicker">受け取る時</div><div class="share-role-title">ここへ貼り付けて読込</div></div>
@@ -2408,7 +2415,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水量・目標数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">このボタンを押した時点の入力値と計算結果を保存します。比較や入力反映は総合計算履歴で行います。</div>
+<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:0" type="button">総合計算履歴に追加</button>
@@ -2446,7 +2453,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水前の必要数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">このボタンを押した時点の入力値と計算結果を保存します。比較や入力反映は総合計算履歴で行います。</div>
+<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:1" type="button">総合計算履歴に追加</button>
@@ -2484,7 +2491,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水前の成分値を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">このボタンを押した時点の入力値と計算結果を保存します。比較や入力反映は総合計算履歴で行います。</div>
+<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:2" type="button">総合計算履歴に追加</button>
@@ -2522,7 +2529,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水後の成分値・割水量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">このボタンを押した時点の入力値と計算結果を保存します。比較や入力反映は総合計算履歴で行います。</div>
+<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:3" type="button">総合計算履歴に追加</button>
@@ -3130,11 +3137,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 15:33 JST',
+  builtAt: '2026-04-16 15:43 JST',
   betaNotes: [
-    '2026-04-16 UI整理 5.6: 計算式表示帯・履歴追加帯・共有役割カードをさらに線と余白中心へ寄せ、読む所と押す所の差を広げました。',
-    '2026-04-16 UI整理 5.5: 計算式表示帯・履歴ショートカット帯・共有内案内の箱感をさらに下げ、読む所と押す所の差を広げました。',
-    '2026-04-15 UI整理 3手目: 説明・補足・考え方の囲みを弱め、結果枠の内側小箱と2mm表上部の箱感を軽くしました。',
+    '2026-04-16 UI整理 5.7: 読む所をさらに線と余白中心へ寄せ、式表示帯・履歴追加帯・共有内の役割説明の箱感をもう一段下げました。',
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
     '日本酒度とボーメ度の混合計算は近似です。',
