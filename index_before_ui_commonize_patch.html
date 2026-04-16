@@ -2893,135 +2893,6 @@ body::before{
   #jumai #J_table_wrap{margin-top:12px !important; padding-top:10px !important;}
 }
 
-
-
-/* ===== UI役割の共通化 / safe common-role patch 2026-04-16 ===== */
-.ui-choice-action{
-  border-color:#dbe3dd !important;
-  background:#fff !important;
-  color:#55625a !important;
-  box-shadow:none !important;
-}
-.ui-choice-action.active,
-.ui-choice-action.is-active,
-.ui-choice-action[aria-pressed="true"]{
-  border-color:#a4b9aa !important;
-  background:linear-gradient(180deg,#f4f8f5 0%,#e9f1eb 100%) !important;
-  color:#1e412d !important;
-  box-shadow:none !important;
-}
-.ui-choice-action:disabled{
-  opacity:.6 !important;
-  box-shadow:none !important;
-}
-.ui-choice-action:focus-visible{
-  outline:2px solid rgba(53,88,66,.22);
-  outline-offset:2px;
-}
-.toggle-group{
-  background:#f7f9f7 !important;
-  border:1px solid #e1e7e2 !important;
-  border-radius:14px !important;
-  padding:4px !important;
-}
-.toggle-btn.ui-choice-action{
-  border:1px solid transparent !important;
-  border-radius:10px !important;
-  min-height:42px !important;
-}
-.sub-tab.ui-choice-action,
-.mix-count-btn.ui-choice-action{
-  border-radius:12px !important;
-}
-.tab.ui-choice-action,
-.tm2-mode-btn.ui-choice-action{
-  border-radius:16px !important;
-}
-.sub-tab.ui-choice-action .sub-known{
-  border-top-color:#d9e2dc !important;
-  color:#77817a !important;
-}
-.sub-tab.ui-choice-action.active .sub-known,
-.sub-tab.ui-choice-action.is-active .sub-known{
-  border-top-color:#c8d6cc !important;
-  color:#5f6d64 !important;
-}
-.mix-extra-details,
-#history-screen .history-manage-panel,
-#history-screen .history-filter-wrap,
-#history-screen .history-compare-draft-panel,
-#history-compare-screen .history-compare-screen-head{
-  box-shadow:none !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty){
-  background:transparent !important;
-  border:none !important;
-  border-top:1px solid #dfe7e1 !important;
-  border-radius:0 !important;
-  box-shadow:none !important;
-  padding:12px 0 0 !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty) .result-title{
-  margin-bottom:10px !important;
-  color:#6d7972 !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty) .result-grid{
-  gap:0 16px !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty) .result-grid > div{
-  background:transparent !important;
-  border:none !important;
-  border-top:1px solid #e1e7e3 !important;
-  border-radius:0 !important;
-  padding:11px 0 10px !important;
-  box-shadow:none !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty) .result-grid > div:nth-child(-n+2){
-  border-top:none !important;
-  padding-top:4px !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty) .result-label{
-  color:#657169 !important;
-  margin-bottom:5px !important;
-}
-.tool-body .result-card.ui-result-surface:not(#history-empty) .result-value{
-  color:#20342a !important;
-}
-#history-screen #history-empty{
-  background:#fbfcfb !important;
-  border:1px solid #e1e7e2 !important;
-  border-radius:16px !important;
-  padding:14px 15px !important;
-}
-#history-screen .history-empty-note,
-#history-screen .history-filter-meta,
-#history-compare-screen .history-compare-screen-meta{
-  color:#6f7a74 !important;
-}
-.history-meta-actions button,
-.history-compare-table-control-col button{
-  box-shadow:none !important;
-}
-.history-entry-restore,
-.history-entry-send2mm,
-.history-entry-copy,
-.history-entry-delete{
-  border-width:1.5px !important;
-  border-radius:12px !important;
-  min-height:42px !important;
-  font-weight:800 !important;
-}
-.share-choice-btn{
-  box-shadow:none !important;
-}
-@media(max-width:640px){
-  .tool-body .result-card.ui-result-surface:not(#history-empty){padding-top:11px !important;}
-  .tool-body .result-card.ui-result-surface:not(#history-empty) .result-grid{gap:0 12px !important;}
-  .tool-body .result-card.ui-result-surface:not(#history-empty) .result-grid > div{padding:10px 0 9px !important;}
-  .tab.ui-choice-action,
-  .tm2-mode-btn.ui-choice-action{min-height:64px !important;}
-}
-
 </style>
 </head>
 <body>
@@ -7272,7 +7143,6 @@ function applyUiCommonRoles(root){
   pick('.panel-desc, .calc-help').forEach(el=>el.classList.add('ui-help-surface'));
   pick('.formula-guide, #tank2mm-screen .tm2-subnote.is-guide').forEach(el=>el.classList.add('ui-guide-surface'));
   pick('.tm2-status').forEach(el=>el.classList.add('ui-status-surface'));
-  pick('.tab, .sub-tab, .toggle-btn, .tm2-mode-btn, .mix-count-btn, .history-select-toggle').forEach(el=>el.classList.add('ui-choice-action'));
   pick('.danger-btn, .history-entry-delete').forEach(el=>{
     el.classList.remove('ui-primary-action','ui-secondary-action','ui-utility-action','ui-disclosure-action');
     el.classList.add('ui-danger-action');
@@ -7289,12 +7159,12 @@ function applyUiCommonRoles(root){
     el.classList.remove('ui-primary-action','ui-secondary-action','ui-danger-action','ui-disclosure-action');
     el.classList.add('ui-utility-action');
   });
-  pick('.tank2mm-send-btn, .history-entry-send2mm').forEach(el=>{
-    el.classList.remove('ui-primary-action','ui-utility-action','ui-danger-action','ui-disclosure-action');
+  pick('.back-btn, .history-select-toggle, .history-compare-screen-base-btn').forEach(el=>{
+    if(el.classList.contains('ui-primary-action') || el.classList.contains('ui-utility-action') || el.classList.contains('ui-danger-action') || el.classList.contains('ui-disclosure-action')) return;
     el.classList.add('ui-secondary-action');
   });
-  pick('.back-btn, .history-select-toggle, .history-compare-screen-base-btn').forEach(el=>{
-    if(el.classList.contains('ui-primary-action') || el.classList.contains('ui-secondary-action') || el.classList.contains('ui-utility-action') || el.classList.contains('ui-danger-action') || el.classList.contains('ui-disclosure-action')) return;
+  pick('.tank2mm-send-btn').forEach(el=>{
+    el.classList.remove('ui-primary-action','ui-utility-action','ui-danger-action','ui-disclosure-action');
     el.classList.add('ui-secondary-action');
   });
   simplifyUiStep4(scope);
