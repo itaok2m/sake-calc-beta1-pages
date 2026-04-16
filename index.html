@@ -2132,6 +2132,156 @@ body::before{
   #history-screen .history-compare-draft-panel{margin:0 0 12px !important;}
 }
 
+
+/* ===== UI整理 5.5 / non-action surface reduction patch 2026-04-16 ===== */
+#warimizu .section-subnav,
+#suion .section-subnav,
+#ekisu .section-subnav,
+#moto .section-subnav,
+#jumai .section-subnav{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  padding:0 !important;
+  margin:4px 0 4px !important;
+}
+#warimizu .section-subnav-title,
+#suion .section-subnav-title,
+#ekisu .section-subnav-title,
+#moto .section-subnav-title,
+#jumai .section-subnav-title{
+  font-size:11.5px !important;
+  font-weight:700 !important;
+  color:#6a7670 !important;
+}
+#warimizu .unit-bar,
+#suion .unit-bar,
+#ekisu .unit-bar,
+#moto .unit-bar,
+#jumai .unit-bar{
+  background:transparent !important;
+  border:none !important;
+  border-top:1px dashed #d9dfda !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:8px 0 0 !important;
+  margin:0 0 10px !important;
+}
+#warimizu .unit-bar-formula .fml-main,
+#suion .unit-bar-formula .fml-main,
+#ekisu .unit-bar-formula .fml-main,
+#moto .unit-bar-formula .fml-main,
+#jumai .unit-bar-formula .fml-main{
+  color:#4f5d56 !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  line-height:1.7 !important;
+}
+#warimizu .unit-bar-formula .fml-note,
+#suion .unit-bar-formula .fml-note,
+#ekisu .unit-bar-formula .fml-note,
+#moto .unit-bar-formula .fml-note,
+#jumai .unit-bar-formula .fml-note{
+  color:#6c7771 !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  line-height:1.7 !important;
+}
+#warimizu .inline-tools-panel,
+#warimizu .compact-tools-panel,
+#suion .inline-tools-panel,
+#ekisu .inline-tools-panel{
+  background:transparent !important;
+  border:none !important;
+  border-top:1px solid #e4e9e5 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  padding:10px 0 0 !important;
+  margin:12px 0 0 !important;
+}
+#warimizu .inline-tools-header,
+#suion .inline-tools-header,
+#ekisu .inline-tools-header{
+  margin-bottom:6px !important;
+}
+#warimizu .inline-tools-title,
+#suion .inline-tools-title,
+#ekisu .inline-tools-title{
+  font-size:13px !important;
+  color:#2f3d35 !important;
+}
+#warimizu .inline-tools-badge,
+#suion .inline-tools-badge,
+#ekisu .inline-tools-badge{
+  background:#f6f8f6 !important;
+  border-color:#dce3de !important;
+  color:#55635b !important;
+}
+#warimizu .inline-history-box,
+#suion .inline-history-box,
+#ekisu .inline-history-box{
+  padding-top:8px !important;
+}
+#warimizu .inline-history-empty,
+#suion .inline-history-empty,
+#ekisu .inline-history-empty{
+  color:#748078 !important;
+  font-size:11px !important;
+  line-height:1.7 !important;
+}
+#ekisu .convert-badge{
+  margin-top:8px !important;
+  min-height:0 !important;
+  padding:8px 0 0 !important;
+  background:transparent !important;
+  border:none !important;
+  border-top:1px dashed #d9dfda !important;
+  border-radius:0 !important;
+  color:#66736c !important;
+  font-size:11px !important;
+  font-weight:700 !important;
+}
+#home-screen .home-bulk-note,
+#home-screen .share-panel-note,
+#home-screen .home-disclosure-note,
+#moto .moto-optional-note,
+#history-screen .history-screen-empty-note,
+#history-compare-screen .history-compare-screen-note{
+  color:#6e7972 !important;
+  font-size:11.5px !important;
+  line-height:1.75 !important;
+}
+#home-screen .share-role-card{
+  background:transparent !important;
+  border:none !important;
+  border-top:1px dashed #d9dfda !important;
+  border-radius:0 !important;
+  padding:8px 0 0 !important;
+}
+#home-screen .share-role-grid{
+  gap:8px !important;
+}
+@media(max-width:640px){
+  #warimizu .section-subnav-title,
+  #suion .section-subnav-title,
+  #ekisu .section-subnav-title,
+  #moto .section-subnav-title,
+  #jumai .section-subnav-title{font-size:11px !important;}
+  #warimizu .unit-bar-formula .fml-main,
+  #suion .unit-bar-formula .fml-main,
+  #ekisu .unit-bar-formula .fml-main,
+  #moto .unit-bar-formula .fml-main,
+  #jumai .unit-bar-formula .fml-main{font-size:11.5px !important;}
+  #warimizu .unit-bar-formula .fml-note,
+  #suion .unit-bar-formula .fml-note,
+  #ekisu .unit-bar-formula .fml-note,
+  #moto .unit-bar-formula .fml-note,
+  #jumai .unit-bar-formula .fml-note{font-size:10.5px !important;}
+  #warimizu .inline-tools-title,
+  #suion .inline-tools-title,
+  #ekisu .inline-tools-title{font-size:12px !important;}
+}
+
 </style>
 </head>
 <body>
@@ -2202,7 +2352,7 @@ body::before{
 </div>
 <div class="home-bulk-panel home-surface">
 <div class="home-bulk-title">保存条件の確認・比較</div>
-<div class="home-bulk-note">保存した条件の見直しや入力欄への反映、必要な時だけ行う比較、全計算機の入力値リセット、総合計算履歴の削除は、すべてここから行います。</div>
+<div class="home-bulk-note">保存条件の確認・比較、入力欄への反映、全入力リセット、総合計算履歴の削除はここから行えます。</div>
 <div class="history-entry-card" data-nav-screen="history-screen" role="button" tabindex="0">
 <div class="history-entry-card-main">
 <div class="history-entry-card-text">
@@ -2229,7 +2379,7 @@ body::before{
 <span class="home-disclosure-note">受け取った文字列をこの端末へ反映します。渡す時は各画面や履歴のコピーを使います。</span>
 </span></span><span class="disclosure-icon" aria-hidden="true">▾</span></summary>
 <div class="home-disclosure-body share-disclosure-body">
-<div class="share-panel-note">復元用コードは自動送信されません。貼り付けて「復元用コードを読込」を押した時だけ、この端末へ反映します。</div>
+<div class="share-panel-note">貼り付けて「復元用コードを読込」を押した時だけ、この端末へ反映します。</div>
 <div class="share-role-grid" aria-hidden="true">
 <div class="share-role-card is-send"><div class="share-role-kicker">渡す時</div><div class="share-role-title">各画面や履歴のコピーを使う</div></div>
 <div class="share-role-card is-receive"><div class="share-role-kicker">受け取る時</div><div class="share-role-title">ここへ貼り付けて読込</div></div>
@@ -2295,7 +2445,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水量・目標数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。最大12件です。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:0" type="button">総合計算履歴に追加</button>
@@ -2333,7 +2483,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水前の必要数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。最大12件です。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:1" type="button">総合計算履歴に追加</button>
@@ -2371,7 +2521,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水前の成分値を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。最大12件です。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:2" type="button">総合計算履歴に追加</button>
@@ -2409,7 +2559,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">割水計算：割水後の成分値・割水量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この条件で確定保存した履歴だけを表示します。履歴には、このボタンを押した時点の入力値と計算結果だけを保存します。新しい順に最大12件まで表示します。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。最大12件です。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:wari:3" type="button">総合計算履歴に追加</button>
@@ -2438,7 +2588,7 @@ body::before{
 <button class="mix-count-btn" data-action="wset-mix-mode" data-mode="4" id="Wmix_mode4" type="button">4種混合</button>
 <button class="mix-count-btn" data-action="wset-mix-mode" data-mode="5" id="Wmix_mode5" type="button">5種混合</button>
 </div>
-<div class="mix-count-note" id="Wmix_extra_note">3〜5種は必要な時だけ開いて使えます。履歴は本数ごとに別管理です。</div>
+<div class="mix-count-note" id="Wmix_extra_note">3〜5種は必要な時だけ開けます。履歴は本数ごとに別管理です。</div>
 </div>
 </details>
 <div class="mix-count-note mix-approx-note">日本酒度とボーメ度の混合計算は近似です。</div>
@@ -2469,7 +2619,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">総合計算履歴への保存</div></div>
-<div class="inline-tools-note">混合計算タブでは履歴カードを表示しません。保存した履歴はホームから開く「総合計算履歴」で確認できます。2種・3種・4種・5種の履歴はこれまで通り別々に保存されます。</div>
+<div class="inline-tools-note">保存した履歴は総合計算履歴で確認します。2種・3種・4種・5種は別々に保存されます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-active-mix-history" type="button">総合計算履歴に追加</button>
@@ -2510,7 +2660,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">アルコール添加計算：添加量・添加後数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:alcohol:0" type="button">総合計算履歴に追加</button>
@@ -2551,7 +2701,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">アルコール添加計算：添加前の必要数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。目標数量から逆算した条件比較に使えます。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。目標数量から逆算した比較に使えます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:alcohol:1" type="button">総合計算履歴に追加</button>
@@ -2589,7 +2739,7 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">アルコール添加計算：添加後の成分値・数量を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。添加量を変えた時の比較用です。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。添加量を変えた比較に使えます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="warimizu:alcohol:2" type="button">総合計算履歴に追加</button>
@@ -2647,14 +2797,14 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">水温温度計算：混合後の水温を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。混合前条件の比較に使えます。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。混合前条件の比較に使えます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="suion:混合後の水温" type="button">総合計算履歴に追加</button>
 <button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="suion:混合後の水温" type="button">この計算機の履歴を全削除</button>
 </div>
 </div>
-<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。確定した条件だけ保存してください。</div><div class="inline-history-list"></div></div>
+<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。必要な条件だけ保存してください。</div><div class="inline-history-list"></div></div>
 </div>
 </div>
 </div>
@@ -2684,14 +2834,14 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">水温温度計算：追加水の条件を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。追加水の条件検討に使えます。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。追加水の条件検討に使えます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="suion:追加水の条件" type="button">総合計算履歴に追加</button>
 <button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="suion:追加水の条件" type="button">この計算機の履歴を全削除</button>
 </div>
 </div>
-<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。確定した条件だけ保存してください。</div><div class="inline-history-list"></div></div>
+<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。必要な条件だけ保存してください。</div><div class="inline-history-list"></div></div>
 </div>
 </div>
 </div>
@@ -2721,14 +2871,14 @@ body::before{
 <div class="inline-tools-header">
 <div>
 <div class="inline-tools-title-row"><div class="inline-tools-title">水温温度計算：配合量の計算を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div>
-<div class="inline-tools-note">この計算で確定保存した履歴だけを表示します。配合量の比較に使えます。</div>
+<div class="inline-tools-note">この計算で保存した履歴だけを表示します。配合量の比較に使えます。</div>
 </div>
 <div class="inline-tools-actions">
 <button class="calc-btn" data-action="run-tool-history" data-tool-key="suion:配合量の計算" type="button">総合計算履歴に追加</button>
 <button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="suion:配合量の計算" type="button">この計算機の履歴を全削除</button>
 </div>
 </div>
-<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。確定した条件だけ保存してください。</div><div class="inline-history-list"></div></div>
+<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。必要な条件だけ保存してください。</div><div class="inline-history-list"></div></div>
 </div>
 </div>
 </div>
@@ -2780,12 +2930,12 @@ body::before{
 </div>
 <div class="err" id="Eerr"></div>
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="ekisu:日本酒度入力" data-history-limit="12" data-history-title="エキス分計算：日本酒度入力" id="Ehistory_sm_panel">
-<div class="inline-tools-header"><div><div class="inline-tools-title-row"><div class="inline-tools-title">エキス分計算：日本酒度入力を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div><div class="inline-tools-note">日本酒度入力で確定保存した履歴だけを表示します。</div></div><div class="inline-tools-actions"><button class="calc-btn" data-action="run-tool-history" data-tool-key="ekisu:日本酒度入力" type="button">総合計算履歴に追加</button><button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="ekisu:日本酒度入力" type="button">この計算機の履歴を全削除</button></div></div>
-<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。確定した条件だけ保存してください。</div><div class="inline-history-list"></div></div>
+<div class="inline-tools-header"><div><div class="inline-tools-title-row"><div class="inline-tools-title">エキス分計算：日本酒度入力を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div><div class="inline-tools-note">日本酒度入力で保存した履歴だけを表示します。</div></div><div class="inline-tools-actions"><button class="calc-btn" data-action="run-tool-history" data-tool-key="ekisu:日本酒度入力" type="button">総合計算履歴に追加</button><button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="ekisu:日本酒度入力" type="button">この計算機の履歴を全削除</button></div></div>
+<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。必要な条件だけ保存してください。</div><div class="inline-history-list"></div></div>
 </div>
 <div class="inline-tools-panel history-shortcut-panel" data-history-key="ekisu:ボーメ度入力" data-history-limit="12" data-history-title="エキス分計算：ボーメ度入力" id="Ehistory_bm_panel" style="display:none">
-<div class="inline-tools-header"><div><div class="inline-tools-title-row"><div class="inline-tools-title">エキス分計算：ボーメ度入力を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div><div class="inline-tools-note">ボーメ度入力で確定保存した履歴だけを表示します。</div></div><div class="inline-tools-actions"><button class="calc-btn" data-action="run-tool-history" data-tool-key="ekisu:ボーメ度入力" type="button">総合計算履歴に追加</button><button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="ekisu:ボーメ度入力" type="button">この計算機の履歴を全削除</button></div></div>
-<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。確定した条件だけ保存してください。</div><div class="inline-history-list"></div></div>
+<div class="inline-tools-header"><div><div class="inline-tools-title-row"><div class="inline-tools-title">エキス分計算：ボーメ度入力を総合計算履歴に追加</div><span class="inline-tools-badge">0件</span></div><div class="inline-tools-note">ボーメ度入力で保存した履歴だけを表示します。</div></div><div class="inline-tools-actions"><button class="calc-btn" data-action="run-tool-history" data-tool-key="ekisu:ボーメ度入力" type="button">総合計算履歴に追加</button><button class="back-btn danger-btn" data-action="clear-tool-history" data-tool-key="ekisu:ボーメ度入力" type="button">この計算機の履歴を全削除</button></div></div>
+<div class="inline-history-box"><div class="inline-history-empty">履歴はまだありません。必要な条件だけ保存してください。</div><div class="inline-history-list"></div></div>
 </div>
 </div>
 </div></div>
@@ -3017,9 +3167,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 01:58 JST',
+  builtAt: '2026-04-16 15:08 JST',
   betaNotes: [
-    '2026-04-15 UI整理 3手目: 説明・補足・考え方の囲みを弱め、結果枠の内側小箱と2mm表上部の箱感を軽くしました。',
+    '2026-04-16 UI整理 5.5: 計算式表示帯と履歴ショートカット帯の外枠を弱め、補助説明をさらに静かにしました。',
     '入力値と履歴は、この端末のブラウザ保存です。削除やシークレットモードでは消えることがあります。',
     '共有は「共有文」と「復元用コード」に分けています。正式記録は帳票や実測値で確認してください。',
     '日本酒度とボーメ度の混合計算は近似です。',
@@ -4516,7 +4666,7 @@ function WsyncMixModeUI(){
   if(extraNote){
     extraNote.textContent = WMixMode > 2
       ? `${WMixMode}種混合を選択中です。履歴は${WMixMode}種混合として別管理します。`
-      : '3〜5種は必要な時だけ開いて使えます。履歴は本数ごとに別管理です。';
+      : '3〜5種は必要な時だけ開けます。履歴は本数ごとに別管理です。';
   }
 }
 function WsetMixMode(n){
