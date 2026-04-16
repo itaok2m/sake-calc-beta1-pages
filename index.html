@@ -3022,6 +3022,104 @@ body::before{
   .tm2-mode-btn.ui-choice-action{min-height:64px !important;}
 }
 
+
+
+/* ===== ui commonize step 5.11.9 ===== */
+.ui-screen-head{
+  display:grid;
+  gap:2px;
+  padding-bottom:4px;
+}
+.ui-section-divider{
+  align-items:flex-end !important;
+  gap:10px !important;
+  margin:8px 0 14px !important;
+  padding-top:10px !important;
+  border-top:1px solid #e4ece7;
+}
+.ui-section-divider .section-subnav-title{
+  font-size:13px !important;
+  font-weight:800 !important;
+  color:#45554c !important;
+  letter-spacing:.02em;
+}
+.ui-note-copy{
+  color:#5c695f !important;
+  line-height:1.85 !important;
+}
+.ui-disclosure-block{
+  border:1px solid #dbe4de !important;
+  border-radius:18px !important;
+  background:#fbfcfb !important;
+  overflow:hidden;
+  box-shadow:none !important;
+}
+.ui-disclosure-block > .ui-soft-disclosure,
+.ui-soft-disclosure{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  min-height:54px;
+  padding:13px 14px !important;
+  background:linear-gradient(180deg,#fbfdfb,#f3f7f4) !important;
+  border:0 !important;
+  border-bottom:1px solid #e3ebe5 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  color:#24382d !important;
+}
+.ui-soft-disclosure .disclosure-label{
+  min-width:0;
+  display:grid;
+  gap:3px;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.5;
+}
+.ui-soft-disclosure .disclosure-icon{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  font-size:14px;
+  box-shadow:none !important;
+}
+.ui-disclosure-block > :not(summary){
+  padding:12px 14px 14px;
+}
+.history-manage-details.ui-disclosure-block > :not(summary){
+  padding-top:14px;
+}
+.moto-optional-details.ui-disclosure-block .moto-optional-body,
+.mix-extra-details.ui-disclosure-block .mix-extra-body,
+.history-manage-details.ui-disclosure-block .history-manage-inner{
+  padding-top:0;
+}
+.moto-optional-details.ui-disclosure-block,
+.mix-extra-details.ui-disclosure-block,
+.history-manage-details.ui-disclosure-block{
+  margin-top:14px;
+}
+@media(max-width:640px){
+  .ui-section-divider{
+    margin:6px 0 12px !important;
+    padding-top:8px !important;
+  }
+  .ui-section-divider .section-subnav-title{
+    font-size:12px !important;
+  }
+  .ui-soft-disclosure{
+    min-height:50px;
+    padding:12px 13px !important;
+  }
+  .ui-disclosure-block > :not(summary){
+    padding:11px 12px 12px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -7270,8 +7368,13 @@ function applyUiCommonRoles(root){
   pick('.group').forEach(el=>el.classList.add('ui-input-surface'));
   pick('.result-card, .tm2-result-box').forEach(el=>el.classList.add('ui-result-surface'));
   pick('.panel-desc, .calc-help').forEach(el=>el.classList.add('ui-help-surface'));
+  pick('.screen-lead').forEach(el=>el.classList.add('ui-screen-head'));
+  pick('.section-subnav').forEach(el=>el.classList.add('ui-section-divider'));
   pick('.formula-guide, #tank2mm-screen .tm2-subnote.is-guide').forEach(el=>el.classList.add('ui-guide-surface'));
   pick('.tm2-status').forEach(el=>el.classList.add('ui-status-surface'));
+  pick('.mix-extra-details, .moto-optional-details, .history-manage-details').forEach(el=>el.classList.add('ui-disclosure-block'));
+  pick('.mix-extra-details > summary, .moto-optional-details > summary, .history-manage-details > summary').forEach(el=>el.classList.add('ui-soft-disclosure'));
+  pick('.home-disclosure-note, .share-panel-note, .mix-count-note, .mix-approx-note, .inline-tools-note, .note, .history-screen-empty-note, #history-compare-screen .history-compare-screen-note, #tank2mm-screen .tm2-current-note, #tank2mm-screen .tm2-share-note, #tank2mm-screen .tm2-status-note, #tank2mm-screen .tm2-list-note, #tank2mm-screen .tm2-footer-note, #tank2mm-screen .tm2-subnote:not(.is-guide)').forEach(el=>el.classList.add('ui-note-copy'));
   pick('.tab, .sub-tab, .toggle-btn, .tm2-mode-btn, .mix-count-btn, .history-select-toggle').forEach(el=>el.classList.add('ui-choice-action'));
   pick('.danger-btn, .history-entry-delete').forEach(el=>{
     el.classList.remove('ui-primary-action','ui-secondary-action','ui-utility-action','ui-disclosure-action');
