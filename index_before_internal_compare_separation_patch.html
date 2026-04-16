@@ -6904,35 +6904,6 @@ function Jcalc(){
       toast('自動コピーできなかったため、下のプレビューを手動でコピーしてください');
     });
   }
-  function sendTextToTank2mm(text, options={}){
-    if(!canUseTank2mmTransfer()){
-      toast('2mm表へ送る機能は現在停止中です');
-      return false;
-    }
-    const normalized=String(text||'').trim();
-    if(!normalized){
-      toast('2mm表へ送る共有文を作成できませんでした');
-      return false;
-    }
-    setTank2mmShareMemo(normalized, {navigate:options.navigate!==false});
-    return true;
-  }
-  function confirmSendTextToTank2mm(text, options={}){
-    const normalized=String(text||'').trim();
-    if(!normalized){
-      toast(options.emptyMessage || '2mm表へ送る共有文を作成できませんでした');
-      return;
-    }
-    openActionConfirm({
-      title:'2mm表に送りますか？',
-      note:String(options.note || 'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。'),
-      onConfirm:()=>{
-        if(!sendTextToTank2mm(normalized, {navigate:true})) return;
-        if(typeof options.afterSend==='function') options.afterSend();
-        toast(options.successMessage || '2mm表へ共有文を送りました');
-      }
-    });
-  }
   function sendCurrentConditionToTank2mmFromTrigger(el){
     if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     const toolKey=resolveToolKeyFromTrigger(el);
@@ -6941,10 +6912,17 @@ function Jcalc(){
       return;
     }
     const text=buildCurrentHumanShareText(toolKey);
-    confirmSendTextToTank2mm(text, {
+    if(!text){
+      toast('2mm表へ送る共有文を作成できませんでした');
+      return;
+    }
+    openActionConfirm({
+      title:'2mm表に送りますか？',
       note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
-      successMessage:'2mm表へ共有文を送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした'
+      onConfirm:()=>{
+        setTank2mmShareMemo(text, {navigate:true});
+        toast('2mm表へ共有文を送りました');
+      }
     });
   }
   function sendHistoryConditionToTank2mm(id){
@@ -6955,17 +6933,25 @@ function Jcalc(){
       return;
     }
     const text=buildHistoryHumanShareText(item.id);
-    confirmSendTextToTank2mm(text, {
+    if(!text){
+      toast('2mm表へ送る共有文を作成できませんでした');
+      return;
+    }
+    openActionConfirm({
+      title:'2mm表に送りますか？',
       note:'この履歴の共有文で、この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
-      successMessage:'この履歴を2mm表へ送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした'
+      onConfirm:()=>{
+        setTank2mmShareMemo(text, {navigate:true});
+        toast('この履歴を2mm表へ送りました');
+      }
     });
   }
   function executeShareChoiceSendToTank2mm(){
     if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
-    if(!sendTextToTank2mm(text, {navigate:true})) return;
+    if(!text){ toast('2mm表へ送る共有文を作成できませんでした'); return; }
+    setTank2mmShareMemo(text, {navigate:true});
     closeShareChoice();
     toast('2mm表へ共有文を送りました');
   }
@@ -6973,10 +6959,11 @@ function Jcalc(){
     if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
-    confirmSendTextToTank2mm(text, {
+    if(!text){ toast('2mm表へ送る共有文を作成できませんでした'); return; }
+    openActionConfirm({
+      title:'2mm表に送りますか？',
       note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
-      successMessage:'2mm表へ共有文を送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした'
+      onConfirm:executeShareChoiceSendToTank2mm
     });
   }
   function copyShareChoiceRestore(){
@@ -7163,18 +7150,6 @@ function Jcalc(){
   function getHistoryCompareDraft(){
     return sanitizeHistoryCompareDraft();
   }
-  function reconcileHistoryAuxiliaryState(){
-    sanitizeHistoryCompareDraft();
-    const compareState=sanitizeHistoryCompareScreen();
-    if(Array.isArray(compareState.ids) && compareState.ids.length<2){
-      HistoryCompareScreen={toolKey:'', ids:[], baseId:'', historyFilter:normalizeHistoryScreenFilter(HistoryScreenFilter), historyVariant:'all'};
-      sanitizeHistoryCompareScreen();
-    }
-    return {
-      historyCompareDraft:getHistoryCompareDraft(),
-      historyCompareScreen:getHistoryCompareScreen()
-    };
-  }
   function clearHistoryCompareDraft(opts={}){
     HistoryCompareDraft={toolKey:'', ids:[]};
     if(opts.render!==false) renderHistoryScreen();
@@ -7324,22 +7299,12 @@ function Jcalc(){
       tm2State
     };
   }
-  function getHistoryAuxiliaryUiSnapshot(){
+  function getAuxiliaryUiSnapshot(){
     return {
       historyScreenFilter: normalizeHistoryScreenFilter(HistoryScreenFilter),
       historyScreenVariantFilter: normalizeHistoryScreenVariant(HistoryScreenVariantFilter, HistoryScreenFilter),
-      historyCompareDraft: getHistoryCompareDraft()
-    };
-  }
-  function getCompareAuxiliaryUiSnapshot(){
-    return {
+      historyCompareDraft: getHistoryCompareDraft(),
       historyCompareScreen: getHistoryCompareScreen()
-    };
-  }
-  function getAuxiliaryUiSnapshot(){
-    return {
-      ...getHistoryAuxiliaryUiSnapshot(),
-      ...getCompareAuxiliaryUiSnapshot()
     };
   }
   function getUiSnapshot(screenOverride){
@@ -7361,17 +7326,10 @@ function Jcalc(){
   }
   function getResumeSnapshot(screenOverride){
     const state = getPrimaryUiSnapshot(screenOverride);
-    if(state.screen==='history-screen'){
+    if(state.screen==='history-screen' || state.screen==='history-compare-screen'){
       return {
         ...state,
-        ...getHistoryAuxiliaryUiSnapshot()
-      };
-    }
-    if(state.screen==='history-compare-screen'){
-      return {
-        ...state,
-        ...getHistoryAuxiliaryUiSnapshot(),
-        ...getCompareAuxiliaryUiSnapshot()
+        ...getAuxiliaryUiSnapshot()
       };
     }
     return state;
@@ -7483,30 +7441,6 @@ function Jcalc(){
       window.restoreTank2mmState(state.tm2State || null, {save:false, updateHistory:false});
       return;
     }
-    if(screenId==='history-screen'){
-      setHistoryScreenFilter(state.historyScreenFilter || 'all', {
-        save:false,
-        render:false,
-        variant: state.historyScreenVariantFilter || 'all',
-        keepDraft:true
-      });
-      HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : {toolKey:'', ids:[]};
-      sanitizeHistoryCompareDraft();
-      return;
-    }
-    if(screenId==='history-compare-screen'){
-      setHistoryScreenFilter(state.historyScreenFilter || 'all', {
-        save:false,
-        render:false,
-        variant: state.historyScreenVariantFilter || 'all',
-        keepDraft:true
-      });
-      HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : {toolKey:'', ids:[]};
-      sanitizeHistoryCompareDraft();
-      HistoryCompareScreen = isPlainObject(state.historyCompareScreen) ? {...state.historyCompareScreen} : {toolKey:'', ids:[], baseId:'', historyFilter:'all', historyVariant:'all'};
-      sanitizeHistoryCompareScreen();
-      return;
-    }
     if(screenId==='suion' && typeof Tswitchtab==='function'){
       const suionTab = Number(state.suionTab);
       Tswitchtab([0,1,2].includes(suionTab) ? suionTab : 0);
@@ -7535,7 +7469,7 @@ function Jcalc(){
     }
   }
   function buildBrowserHistoryState(screenId){
-    const uiState = getResumeSnapshot(screenId);
+    const uiState = getUiSnapshot(screenId);
     const tm2State = uiState.tm2State || (typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: screenId}) : null);
     return {app:'sake-tools', screen:screenId, uiState, tm2State};
   }
@@ -8504,20 +8438,12 @@ function setupHistoryShortcutPanels(root){
     renderHomeStatus();
     updateStorageDependentUi();
   }
-  function refreshHistoryAfterMutation(options={}){
-    reconcileHistoryAuxiliaryState();
-    const targetScreen=options.screenId || q('.screen.active')?.id || 'home-screen';
-    renderHistoryForScreen(targetScreen);
-    if(options.refreshHistoryScreen===true && targetScreen!=='history-screen') renderHistoryScreen();
-    if(options.refreshCompareScreen===true && targetScreen!=='history-compare-screen') renderHistoryCompareScreen();
-    if(options.save!==false && !isBootstrapping) saveUIState();
-  }
   window.renderHistory=renderHistory;
   window.renderHistoryForScreen=renderHistoryForScreen;
   function deleteHistoryItemInternal(id){ saveHistory(getHistory().filter(i=>i.id!==id)); const pins=getPins(); Object.keys(pins).forEach(key=>{ pins[key]=(Array.isArray(pins[key])?pins[key]:[]).filter(x=>x!==id); if(!pins[key].length) delete pins[key]; }); savePins(pins); }
-  window.deleteHistoryItem=function(id,notify){ deleteHistoryItemInternal(id); const bases=getBases(); Object.keys(bases).forEach(key=>{ if(bases[key]===id) delete bases[key]; }); saveBases(bases); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true}); if(notify) toast('この履歴を削除しました'); };
-  window.clearHistoryForTool=function(toolKey,notify){ toolKey=normalizeHistoryToolKey(toolKey); saveHistory(getHistory().filter(i=>i.toolKey!==toolKey)); const pins=getPins(); delete pins[toolKey]; savePins(pins); const bases=getBases(); delete bases[toolKey]; saveBases(bases); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true}); if(notify) toast('この計算機の履歴を全削除しました'); };
-  window.clearHistory=function(notify){ storageRemove(STORAGE.history); storageRemove(STORAGE.pins); storageRemove(STORAGE.bases); reconcileHistoryAuxiliaryState(); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true, save:true}); if(notify) toast('総合計算履歴を全削除しました'); };
+  window.deleteHistoryItem=function(id,notify){ deleteHistoryItemInternal(id); const bases=getBases(); Object.keys(bases).forEach(key=>{ if(bases[key]===id) delete bases[key]; }); saveBases(bases); renderHistory(); if(notify) toast('この履歴を削除しました'); };
+  window.clearHistoryForTool=function(toolKey,notify){ toolKey=normalizeHistoryToolKey(toolKey); saveHistory(getHistory().filter(i=>i.toolKey!==toolKey)); const pins=getPins(); delete pins[toolKey]; savePins(pins); const bases=getBases(); delete bases[toolKey]; saveBases(bases); renderHistory(); if(notify) toast('この計算機の履歴を全削除しました'); };
+  window.clearHistory=function(notify){ storageRemove(STORAGE.history); storageRemove(STORAGE.pins); storageRemove(STORAGE.bases); renderHistory(); if(notify) toast('総合計算履歴を全削除しました'); };
 
   window.confirmClearAllHistory=function(){ if(confirm('総合計算履歴を全削除します。元に戻せません。よろしいですか？')) clearHistory(true); };
   function rerunDerivedOutputForTool(toolKey){
@@ -8581,8 +8507,8 @@ function clearInputsByTool(toolKey){
     if(notify) toast('入力値をリセットしました');
   };
   window.confirmResetAllInputs=function(){ if(confirm('すべての計算機に保存されている入力値を消去します。よろしいですか？')) clearSavedInputs(true); };
-  window.runCalculationAndCommit=function(toolKey){ toolKey=normalizeHistoryToolKey(toolKey); if(!isHistoryEnabledToolKey(toolKey)){ toast('この計算機は履歴保存に対応していません'); return; } const cfg=configFor(toolKey); if(!cfg) return; cfg.activate(); const calcResult=runToolCalculation(toolKey); const summaryData=buildSummaryData(toolKey,calcResult); if(!summaryData){ toast('入力値または計算結果が不足しているため保存できません'); return; } const now=Date.now(); const inputState=collectInputState(toolKey); const item={id:createId(),ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:summaryText(summaryData),summaryData}; const history=getHistory(); const duplicated=findDuplicateHistoryItem(history,item); const nextHistory=duplicated ? [{...duplicated,ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:item.summary,summaryData},...history.filter(entry=>entry.id!==duplicated.id)] : [item,...history]; const saved=saveHistory(nextHistory); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true}); if(!saved){ toast(storageState.available ? '端末保存に失敗したため、履歴へ追加できませんでした' : 'この端末では保存できないため、履歴へ追加できません'); return; } toast(duplicated ? '同じ条件の履歴を先頭へ移動しました' : '総合計算履歴に追加しました'); };
-  window.restoreHistoryItem=function(id,notify){ const item=getHistory().find(x=>x.id===id); if(!item) return; applyInputState(item.toolKey,item.inputState||{}); refreshHistoryAfterMutation({save:true}); if(notify) toast('選択した履歴の条件を入力欄に反映しました'); };
+  window.runCalculationAndCommit=function(toolKey){ toolKey=normalizeHistoryToolKey(toolKey); if(!isHistoryEnabledToolKey(toolKey)){ toast('この計算機は履歴保存に対応していません'); return; } const cfg=configFor(toolKey); if(!cfg) return; cfg.activate(); const calcResult=runToolCalculation(toolKey); const summaryData=buildSummaryData(toolKey,calcResult); if(!summaryData){ toast('入力値または計算結果が不足しているため保存できません'); return; } const now=Date.now(); const inputState=collectInputState(toolKey); const item={id:createId(),ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:summaryText(summaryData),summaryData}; const history=getHistory(); const duplicated=findDuplicateHistoryItem(history,item); const nextHistory=duplicated ? [{...duplicated,ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:item.summary,summaryData},...history.filter(entry=>entry.id!==duplicated.id)] : [item,...history]; const saved=saveHistory(nextHistory); renderHistory(); if(!saved){ toast(storageState.available ? '端末保存に失敗したため、履歴へ追加できませんでした' : 'この端末では保存できないため、履歴へ追加できません'); return; } toast(duplicated ? '同じ条件の履歴を先頭へ移動しました' : '総合計算履歴に追加しました'); };
+  window.restoreHistoryItem=function(id,notify){ const item=getHistory().find(x=>x.id===id); if(!item) return; applyInputState(item.toolKey,item.inputState||{}); renderHistory(); if(notify) toast('選択した履歴の条件を入力欄に反映しました'); };
   const originalShowScreen=window.showScreen;
   function refreshUiStateAndHistory(options={}){
     const screenId = options.screenId || q('.screen.active')?.id || 'home-screen';
