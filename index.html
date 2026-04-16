@@ -3120,6 +3120,21 @@ body::before{
   }
 }
 
+
+/* ===== ui commonize step 5.11.10 ===== */
+#moto .moto-optional-details.ui-disclosure-block{
+  border-top:none !important;
+  padding-top:0 !important;
+  margin-top:12px !important;
+}
+#moto .moto-optional-details.ui-disclosure-block > .ui-soft-disclosure{
+  min-height:52px;
+  align-items:center;
+}
+#moto .moto-optional-details.ui-disclosure-block .moto-optional-body{
+  padding-top:0;
+}
+
 </style>
 </head>
 <body>
@@ -4005,8 +4020,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 14:46 JST',
+  builtAt: '2026-04-16 16:02 JST',
   betaNotes: [
+    '2026-04-16 UI整理 5.11.10: 酛仕込温度計算の四段表示で、折りたたみ上側が二重線っぽく見える状態を解消し、開閉帯を1本に見える形へ整えました。',
     '2026-04-16 UI整理 5.11.5: アルコール分温度換算表で、資料上の操作帯を一列寄りに整理し、状態表示の丸囲いをやめて文字だけにしました。',
     '2026-04-16 UI整理 5.11.4: アルコール分温度換算表で、下の資料だけを囲い、上側は入力欄・ボタン・プルダウンだけが立つ見え方へ整理しました。',
     '2026-04-16 UI整理 5.11.2: アルコール分温度換算表で、入力帯を主役にしつつ、注意文と状態表示の箱感を弱めて見やすさを整えました。',
