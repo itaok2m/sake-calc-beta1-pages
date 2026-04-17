@@ -4281,8 +4281,9 @@ body::before{
 <script>
 const APP_META = {
   version: 'ベータ1',
-  builtAt: '2026-04-16 18:52 JST',
+  builtAt: '2026-04-17 15:35 JST',
   betaNotes: [
+    '2026-04-17 内部整理 5.12.2: 共有から2mm表へ送った時は、前回の一覧表示や資料戻り状態を引きずらず、2mm表の入力画面から安全に再開するよう整理しました。',
     '2026-04-16 UI整理 5.11.11.1: 総合計算履歴の比較中画面は構造を変えず、基準列・補助操作・差分表示の色味だけを全体の役割色へ寄せました。',
     '2026-04-16 UI整理 5.11.11.5: 通常履歴一覧は内側の小枠線をやめ、入力値と計算結果を一行で読める静かな明細表示へ寄せました。',
     '2026-04-16 UI整理 5.11.10: 酛仕込温度計算の四段表示で、折りたたみ上側が二重線っぽく見える状態を解消し、開閉帯を1本に見える形へ整えました。',
@@ -5550,6 +5551,23 @@ function buildAuditInfo(tank){
     delete els.listPanel.dataset.tm2ScrollGauge;
     if(options.save !== false) saveTm2UiState();
   }
+  function prepareTank2mmForIncomingShare(options={}){
+    const tank = getSelectedTank();
+    state.reasonOpen = false;
+    state.lastReasonCandidates = [];
+    renderReasonGrid([]);
+    syncReasonToggle();
+    state.auditOpen = false;
+    syncAuditToggle(tank);
+    if(els.auditPanel) els.auditPanel.hidden = true;
+    if(els.listPanel && !els.listPanel.hidden) closeList({save:false});
+    else if(els.mainPanel) els.mainPanel.hidden = false;
+    if(options.openShare !== false) setShareOpen(true, {save:false, updateHistory:false});
+    else setShareOpen(false, {save:false, updateHistory:false});
+    if(options.clearReturn !== false) clearTm2ReturnState();
+    try{ syncDocsLink(tank); }catch{}
+    if(options.save !== false) saveTm2UiState({updateHistory: options.updateHistory !== false});
+  }
   if(els.docsLinkBtn){
     els.docsLinkBtn.addEventListener('click', event => {
       const tank = getSelectedTank();
@@ -5643,6 +5661,9 @@ function buildAuditInfo(tank){
   };
   window.setTank2mmShareMemoOpen = function(open, options={}){
     setShareOpen(open, options);
+  };
+  window.prepareTank2mmForIncomingShare = function(options={}){
+    prepareTank2mmForIncomingShare(options);
   };
   window.saveTank2mmUiState = function(options={}){
     return saveTm2UiState(options);
@@ -6684,6 +6705,42 @@ function Jcalc(){
     if(typeof handler==='function') handler(el);
   }
   let ShareChoiceState={type:'',toolKey:'',historyId:'',triggerToolKey:''};
+  function resetShareChoiceState(){
+    ShareChoiceState={type:'',toolKey:'',historyId:'',triggerToolKey:''};
+    return ShareChoiceState;
+  }
+  function normalizeShareChoiceState(rawState){
+    const raw=isPlainObject(rawState) ? {...rawState} : {};
+    const emptyState={type:'',toolKey:'',historyId:'',triggerToolKey:''};
+    const type=raw.type==='history' ? 'history' : (raw.type==='current' ? 'current' : '');
+    if(type==='history'){
+      const historyId=String(raw.historyId || '');
+      const item=historyId ? getHistory().find(entry=>entry.id===historyId) : null;
+      if(!item || !configFor(item.toolKey)) return emptyState;
+      return {type:'history', toolKey:item.toolKey, historyId:item.id, triggerToolKey:''};
+    }
+    const toolKey=normalizeHistoryToolKey(raw.toolKey || raw.triggerToolKey || resolveToolKeyFromTrigger(raw.triggerEl));
+    if(!toolKey || !configFor(toolKey)) return emptyState;
+    return {type:'current', toolKey, historyId:'', triggerToolKey:toolKey};
+  }
+  function clearDetachedShareChoiceState(options={}){
+    const modal=getShareChoiceModal();
+    resetShareChoiceState();
+    if(options.close!==false && modal && !modal.hidden) closeShareChoice();
+    return ShareChoiceState;
+  }
+  function sanitizeShareChoiceState(options={}){
+    const previous=ShareChoiceState;
+    const normalized=normalizeShareChoiceState(previous);
+    const wasActive=!!(previous && previous.type);
+    const isInvalid=wasActive && !normalized.type;
+    ShareChoiceState=normalized;
+    if(isInvalid && options.closeWhenInvalid){
+      clearDetachedShareChoiceState({close:true});
+      if(options.notify) toast(String(options.notifyMessage || '参照元がなくなったため共有画面を閉じました'));
+    }
+    return ShareChoiceState;
+  }
   let ActionConfirmState={onConfirm:null};
   function getActionConfirmModal(){ return q('#action-confirm-modal'); }
   function getActionConfirmTitle(){ return q('#action-confirm-title'); }
@@ -6718,16 +6775,28 @@ function Jcalc(){
   function getShareChoiceSourceText(){ return q('#share-choice-source-text'); }
   function getTank2mmShareMemoInput(){ return q('#tm2_share_memo'); }
   function setTank2mmShareMemo(text, options={}){
+    const memoText = String(text || '');
     const input=getTank2mmShareMemoInput();
-    if(input) input.value = String(text || '');
+    if(input) input.value = memoText;
     saveInputs();
-    if(options.open !== false && typeof window.setTank2mmShareMemoOpen==='function') window.setTank2mmShareMemoOpen(true, {save:false, updateHistory:false});
+    try{
+      if(typeof window.prepareTank2mmForIncomingShare==='function'){
+        window.prepareTank2mmForIncomingShare({
+          openShare: options.open !== false,
+          save:false,
+          updateHistory:false,
+          clearReturn:true
+        });
+      }else if(options.open !== false && typeof window.setTank2mmShareMemoOpen==='function'){
+        window.setTank2mmShareMemoOpen(true, {save:false, updateHistory:false});
+      }
+    }catch{}
     if(options.navigate!==false){
       window.showScreen('tank2mm-screen');
       saveUIState();
     }
     try{ if(typeof window.saveTank2mmUiState==='function') window.saveTank2mmUiState({updateHistory:false}); }catch{}
-    return String(text || '');
+    return memoText;
   }
   function clearTank2mmShareMemo(notify){
     const input=getTank2mmShareMemoInput();
@@ -6815,28 +6884,37 @@ function Jcalc(){
     });
   }
   function buildRestoreCodeFromContext(ctx){
-    if(!ctx) return '';
-    if(ctx.type==='history'){
-      const item=getHistory().find(entry=>entry.id===ctx.historyId);
+    const context=normalizeShareChoiceState(ctx);
+    if(!context.type) return '';
+    if(context.type==='history'){
+      const item=getHistory().find(entry=>entry.id===context.historyId);
       if(!item || !configFor(item.toolKey)) return '';
       const payload=buildSharePayload(item.toolKey, item.inputState || {});
       return payload ? encodeSharePayload(payload) : '';
     }
-    const toolKey=normalizeHistoryToolKey(ctx.toolKey || resolveToolKeyFromTrigger(ctx.triggerEl));
+    const toolKey=normalizeHistoryToolKey(context.toolKey || resolveToolKeyFromTrigger(context.triggerEl));
     if(!toolKey || !configFor(toolKey)) return '';
     const payload=buildSharePayload(toolKey, collectInputState(toolKey));
     return payload ? encodeSharePayload(payload) : '';
   }
   function buildHumanTextFromContext(ctx){
-    if(!ctx) return '';
-    if(ctx.type==='history') return buildHistoryHumanShareText(ctx.historyId);
-    return buildCurrentHumanShareText(ctx.toolKey || resolveToolKeyFromTrigger(ctx.triggerEl));
+    const context=normalizeShareChoiceState(ctx);
+    if(!context.type) return '';
+    if(context.type==='history') return buildHistoryHumanShareText(context.historyId);
+    return buildCurrentHumanShareText(context.toolKey || resolveToolKeyFromTrigger(context.triggerEl));
   }
   function updateShareChoicePreview(mode){
     const preview=getShareChoicePreview();
     const label=getShareChoicePreviewLabel();
     if(!preview || !label) return;
-    const text=mode==='restore' ? buildRestoreCodeFromContext(ShareChoiceState) : buildHumanTextFromContext(ShareChoiceState);
+    const context=sanitizeShareChoiceState();
+    if(!context.type){
+      label.textContent = mode==='restore' ? '復元用コードのプレビュー' : '共有文のプレビュー';
+      preview.value = '';
+      setShareChoiceHelp('共有できる条件が見つかりませんでした。必要ならもう一度開いてください。', true);
+      return;
+    }
+    const text=mode==='restore' ? buildRestoreCodeFromContext(context) : buildHumanTextFromContext(context);
     label.textContent = mode==='restore' ? '復元用コードのプレビュー' : '共有文のプレビュー';
     preview.value = text || '';
     setShareChoiceHelp(mode==='restore' ? 'コピーできない時は、下のプレビューを選択してこのツール用の復元用コードを手動でコピーできます。' : 'コピーできない時は、下のプレビューを長押しまたは選択して手動でコピーできます。');
@@ -6845,8 +6923,11 @@ function Jcalc(){
     if(!canUseShareChoice()){ toast('共有機能は現在停止中です'); return; }
     const modal=getShareChoiceModal();
     if(!modal) return;
-    const next=isPlainObject(context) ? {...context} : {type:'',toolKey:'',historyId:''};
-    if(next.type==='current' && !next.toolKey && next.triggerEl) next.toolKey=resolveToolKeyFromTrigger(next.triggerEl);
+    const next=normalizeShareChoiceState(context);
+    if(!next.type){
+      toast('共有できる条件が見つかりません');
+      return;
+    }
     ShareChoiceState=next;
     const sourceBadge=getShareChoiceSourceBadge();
     const sourceText=getShareChoiceSourceText();
@@ -6865,6 +6946,7 @@ function Jcalc(){
     const modal=getShareChoiceModal();
     if(!modal) return;
     modal.hidden=true;
+    resetShareChoiceState();
   }
   function openCurrentShareChoiceFromTrigger(el){
     const toolKey=resolveToolKeyFromTrigger(el);
@@ -6976,7 +7058,8 @@ function Jcalc(){
     confirmSendTextToTank2mm(text, {
       note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
       successMessage:'2mm表へ共有文を送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした'
+      emptyMessage:'2mm表へ送る共有文を作成できませんでした',
+      afterSend:()=>clearDetachedShareChoiceState({close:true})
     });
   }
   function copyShareChoiceRestore(){
@@ -7128,7 +7211,7 @@ function Jcalc(){
     syncHistoryScreenVariantUi(groupKey);
     const select=q('#history-screen-variant-select');
     if(select && select.value!==HistoryScreenVariantFilter) select.value=HistoryScreenVariantFilter;
-    if(opts.keepDraft!==true) clearHistoryCompareDraft({render:false});
+    if(opts.keepDraft!==true) clearHistoryCompareDraft({render:false, save:false});
     if(opts.render!==false) renderHistoryScreen();
     if(opts.save!==false && !isBootstrapping) saveUIState();
     return HistoryScreenVariantFilter;
@@ -7140,34 +7223,70 @@ function Jcalc(){
     const nextVariant=Object.prototype.hasOwnProperty.call(opts,'variant') ? opts.variant : HistoryScreenVariantFilter;
     setHistoryScreenVariantFilter(nextVariant, {groupKey:HistoryScreenFilter, save:false, render:false, keepDraft:opts.keepDraft===true});
     syncHistoryScreenVariantUi(HistoryScreenFilter);
-    if(opts.keepDraft!==true) clearHistoryCompareDraft({render:false});
+    if(opts.keepDraft!==true) clearHistoryCompareDraft({render:false, save:false});
     if(opts.render!==false) renderHistoryScreen();
     if(opts.save!==false && !isBootstrapping) saveUIState();
     return HistoryScreenFilter;
   }
 
-  let HistoryCompareDraft={toolKey:'', ids:[]};
-  function sanitizeHistoryCompareDraft(){
-    const historyIds=new Set(getHistory().map(item=>item.id));
-    const toolKey=String((HistoryCompareDraft && HistoryCompareDraft.toolKey) || '');
-    const ids=(Array.isArray(HistoryCompareDraft && HistoryCompareDraft.ids)?HistoryCompareDraft.ids:[]).filter(id=>historyIds.has(id));
-    const toolItems=toolKey?getHistory().filter(item=>item.toolKey===toolKey):[];
+  function createEmptyHistoryCompareDraftState(){
+    return {toolKey:'', ids:[]};
+  }
+  function createEmptyHistoryCompareScreenState(historyFilter='all', historyVariant='all'){
+    const fallbackFilter=normalizeHistoryScreenFilter(historyFilter || 'all');
+    const fallbackVariant=fallbackFilter==='all'
+      ? 'all'
+      : normalizeHistoryScreenVariant(historyVariant || 'all', fallbackFilter);
+    return {toolKey:'', ids:[], baseId:'', historyFilter:fallbackFilter, historyVariant:fallbackVariant};
+  }
+  let HistoryCompareDraft=createEmptyHistoryCompareDraftState();
+  function normalizeHistoryCompareDraftState(rawValue){
+    const history=getHistory();
+    const historyIds=new Set(history.map(item=>item.id));
+    const raw=isPlainObject(rawValue) ? rawValue : {};
+    const toolKey=String(raw.toolKey||'');
+    const ids=(Array.isArray(raw.ids)?raw.ids:[]).filter(id=>historyIds.has(id));
+    const toolItems=toolKey?history.filter(item=>item.toolKey===toolKey):[];
     const validIds=ids.filter(id=>toolItems.some(item=>item.id===id)).slice(0,MAX_COMPARE_ITEMS);
-    if(!toolKey || !validIds.length){
-      HistoryCompareDraft={toolKey:'', ids:[]};
-      return HistoryCompareDraft;
-    }
-    HistoryCompareDraft={toolKey, ids:validIds};
+    if(!toolKey || !validIds.length) return createEmptyHistoryCompareDraftState();
+    return {toolKey, ids:validIds};
+  }
+  function sanitizeHistoryCompareDraft(){
+    HistoryCompareDraft=normalizeHistoryCompareDraftState(HistoryCompareDraft);
     return HistoryCompareDraft;
   }
   function getHistoryCompareDraft(){
+    return sanitizeHistoryCompareDraft();
+  }
+  function syncHistoryCompareDraftFromCompareScreen(){
+    const compareState=getHistoryCompareScreen();
+    const ids=Array.isArray(compareState.ids) ? compareState.ids.filter(Boolean) : [];
+    const baseId=String(compareState.baseId||'');
+    if(!compareState.toolKey || !ids.length){
+      HistoryCompareDraft=createEmptyHistoryCompareDraftState();
+      return sanitizeHistoryCompareDraft();
+    }
+    const orderedIds=baseId && ids.includes(baseId)
+      ? [baseId, ...ids.filter(id=>id!==baseId)]
+      : ids.slice();
+    HistoryCompareDraft={toolKey:String(compareState.toolKey||''), ids:orderedIds.slice(0,MAX_COMPARE_ITEMS)};
     return sanitizeHistoryCompareDraft();
   }
   function reconcileHistoryAuxiliaryState(){
     sanitizeHistoryCompareDraft();
     const compareState=sanitizeHistoryCompareScreen();
     if(Array.isArray(compareState.ids) && compareState.ids.length<2){
-      HistoryCompareScreen={toolKey:'', ids:[], baseId:'', historyFilter:normalizeHistoryScreenFilter(HistoryScreenFilter), historyVariant:'all'};
+      const fallbackFilter=normalizeHistoryScreenFilter(compareState.historyFilter || HistoryScreenFilter);
+      const fallbackVariant=fallbackFilter==='all'
+        ? 'all'
+        : normalizeHistoryScreenVariant(compareState.historyVariant || HistoryScreenVariantFilter, fallbackFilter);
+      setHistoryScreenFilter(fallbackFilter, {
+        save:false,
+        render:false,
+        keepDraft:true,
+        variant:fallbackVariant
+      });
+      HistoryCompareScreen=createEmptyHistoryCompareScreenState(fallbackFilter, fallbackVariant);
       sanitizeHistoryCompareScreen();
     }
     return {
@@ -7176,9 +7295,39 @@ function Jcalc(){
     };
   }
   function clearHistoryCompareDraft(opts={}){
-    HistoryCompareDraft={toolKey:'', ids:[]};
+    HistoryCompareDraft=createEmptyHistoryCompareDraftState();
     if(opts.render!==false) renderHistoryScreen();
+    if(opts.save!==false && !isBootstrapping) saveUIState();
     if(opts.notify) toast('比較候補をクリアしました');
+  }
+  function clearTransientOverlayState(){
+    // 共有ポップアップ / 2mm表送信確認のような一時ダイアログは、
+    // 画面本体や履歴補助状態とは切り離して扱う。
+    // 比較中画面から履歴一覧・ホームへ離脱する時も再開対象にしない。
+    // 将来ダイアログを追加する時も、閉じ処理はまずここへ集約する。
+    clearDetachedShareChoiceState({close:true});
+    closeActionConfirm();
+  }
+  function finalizeCompareScreenExit(targetScreen){
+    // 比較中画面を離れる時は、一時ダイアログを持ち越さない。
+    // 比較候補下書きや履歴一覧の絞り込みは必要に応じて残してよいが、
+    // 比較中画面そのものの成立状態と、共有ポップアップ / 2mm表送信確認はその場限りで切る。
+    clearTransientOverlayState();
+    const fallbackFilter=normalizeHistoryScreenFilter((HistoryCompareScreen && HistoryCompareScreen.historyFilter) || HistoryScreenFilter || 'all');
+    const fallbackVariant=fallbackFilter==='all'
+      ? 'all'
+      : normalizeHistoryScreenVariant((HistoryCompareScreen && HistoryCompareScreen.historyVariant) || HistoryScreenVariantFilter || 'all', fallbackFilter);
+    HistoryCompareScreen=createEmptyHistoryCompareScreenState(fallbackFilter, fallbackVariant);
+    sanitizeHistoryCompareScreen();
+    return resolveResumeScreenId(targetScreen || 'history-screen');
+  }
+  function clearHistoryAuxiliaryStateForHome(){
+    setHistoryScreenFilter('all', {save:false, render:false, keepDraft:true, variant:'all'});
+    HistoryCompareDraft=createEmptyHistoryCompareDraftState();
+    sanitizeHistoryCompareDraft();
+    HistoryCompareScreen=createEmptyHistoryCompareScreenState();
+    sanitizeHistoryCompareScreen();
+    clearTransientOverlayState();
   }
   function getHistoryCompareHeading(toolKey){
     const normalizedKey=normalizeHistoryToolKey(toolKey);
@@ -7208,6 +7357,7 @@ function Jcalc(){
       currentIds.splice(idx,1);
       HistoryCompareDraft={toolKey:currentIds.length?item.toolKey:'', ids:currentIds};
       renderHistoryScreen();
+      if(!isBootstrapping) saveUIState();
       if(notify) toast('比較対象から外しました');
       return;
     }
@@ -7222,16 +7372,17 @@ function Jcalc(){
     currentIds.push(id);
     HistoryCompareDraft={toolKey:item.toolKey, ids:currentIds};
     renderHistoryScreen();
+    if(!isBootstrapping) saveUIState();
     if(notify){
       const remain=Math.max(0,2-currentIds.length);
       toast(remain?`比較対象に追加しました。あと${remain}件です`:'3件そろいました。「表で比較」で開けます');
     }
   }
-  let HistoryCompareScreen={toolKey:'', ids:[], baseId:'', historyFilter:'all', historyVariant:'all'};
-  function sanitizeHistoryCompareScreen(){
+  let HistoryCompareScreen=createEmptyHistoryCompareScreenState();
+  function normalizeHistoryCompareScreenState(rawValue){
     const history=getHistory();
     const historyIds=new Set(history.map(item=>item.id));
-    const raw=isPlainObject(HistoryCompareScreen) ? HistoryCompareScreen : {};
+    const raw=isPlainObject(rawValue) ? rawValue : {};
     const toolKey=String(raw.toolKey||'');
     const ids=(Array.isArray(raw.ids)?raw.ids:[]).filter(id=>historyIds.has(id));
     const toolItems=toolKey?history.filter(item=>item.toolKey===toolKey):[];
@@ -7242,17 +7393,30 @@ function Jcalc(){
     const rawBaseId=String(raw.baseId||'');
     const baseId=validIds.includes(rawBaseId) ? rawBaseId : (validIds[0] || '');
     if(!toolKey || !validIds.length){
-      HistoryCompareScreen={toolKey:'', ids:[], baseId:'', historyFilter, historyVariant:'all'};
-      return HistoryCompareScreen;
+      return {toolKey:'', ids:[], baseId:'', historyFilter, historyVariant:'all'};
     }
-    HistoryCompareScreen={toolKey, ids:validIds, baseId, historyFilter, historyVariant};
+    return {toolKey, ids:validIds, baseId, historyFilter, historyVariant};
+  }
+  function sanitizeHistoryCompareScreen(){
+    HistoryCompareScreen=normalizeHistoryCompareScreenState(HistoryCompareScreen);
     return HistoryCompareScreen;
   }
   function getHistoryCompareScreen(){
     return sanitizeHistoryCompareScreen();
   }
+  function canResumeHistoryCompareScreen(rawValue){
+    const state=normalizeHistoryCompareScreenState(rawValue===undefined ? HistoryCompareScreen : rawValue);
+    return !!(state.toolKey && Array.isArray(state.ids) && state.ids.length>=2);
+  }
+  function resolveResumeScreenId(screenOverride, stateOverride){
+    const requestedScreen=String(screenOverride || q('.screen.active')?.id || 'home-screen');
+    if(requestedScreen!=='history-compare-screen') return requestedScreen;
+    const compareState=isPlainObject(stateOverride) ? (stateOverride.historyCompareScreen || stateOverride) : HistoryCompareScreen;
+    if(canResumeHistoryCompareScreen(compareState)) return 'history-compare-screen';
+    return getHistory().length ? 'history-screen' : 'home-screen';
+  }
   function setHistoryCompareScreen(value, opts={}){
-    HistoryCompareScreen=isPlainObject(value) ? {...value} : {toolKey:'', ids:[], baseId:'', historyFilter:'all', historyVariant:'all'};
+    HistoryCompareScreen=isPlainObject(value) ? {...value} : createEmptyHistoryCompareScreenState();
     sanitizeHistoryCompareScreen();
     if(opts.render!==false) renderHistoryCompareScreen();
     if(opts.save!==false && !isBootstrapping) saveUIState();
@@ -7287,7 +7451,9 @@ function Jcalc(){
       if(notify) toast('この履歴が現在の基準です');
       return;
     }
-    setHistoryCompareScreen({...state, baseId:targetId}, {render:true, save:true});
+    setHistoryCompareScreen({...state, baseId:targetId}, {render:true, save:false});
+    syncHistoryCompareDraftFromCompareScreen();
+    if(!isBootstrapping) saveUIState();
     if(notify) toast('比較の基準を切り替えました');
   }
   function historyCompareBack(){
@@ -7299,18 +7465,23 @@ function Jcalc(){
       keepDraft:true,
       variant:(state.historyFilter || 'all')==='all' ? 'all' : (state.historyVariant || 'all')
     });
-    if(navStack[navStack.length-1]==='history-screen') navStack.pop();
-    originalShowScreen('history-screen');
-    storageSet(STORAGE.screen,'history-screen');
-    saveResumeState('history-screen');
+    const targetScreen=finalizeCompareScreenExit('history-screen');
+    if(navStack[navStack.length-1]===targetScreen) navStack.pop();
+    originalShowScreen(targetScreen);
+    persistScreenState(targetScreen);
     saveUIState();
-    renderHistory();
+    renderHistoryForScreen(targetScreen);
     renderHomeStatus();
-    if(!isBootstrapping && !isHandlingPopState) syncBrowserHistory('history-screen', true);
+    if(!isBootstrapping && !isHandlingPopState) syncBrowserHistory(targetScreen, true);
   }
 
-  function getResumeScope(screenOverride){
-    const screenId = String(screenOverride || q('.screen.active')?.id || 'home-screen');
+  function getResumeScope(screenOverride, stateOverride){
+    // 再開保存でどの分類まで持ってよいかを、画面単位で固定する。
+    // keepHistoryScreenState = 履歴一覧画面の補助状態まで。
+    // keepCompareScreenState = 比較中画面の補助状態まで。
+    // 一時ダイアログはここで対象に含めない。
+    let screenId = resolveResumeScreenId(screenOverride, stateOverride);
+    if(screenId==='history-screen' && !getHistory().length) screenId='home-screen';
     return {
       screen: screenId,
       keepHistoryScreenState: screenId==='history-screen' || screenId==='history-compare-screen',
@@ -7323,8 +7494,8 @@ function Jcalc(){
     if(!scope.keepTank2mmState || typeof window.captureTank2mmState !== 'function') return null;
     return window.captureTank2mmState({screen: scope.screen}) || null;
   }
-  function getPrimaryUiSnapshot(screenOverride){
-    const scope = getResumeScope(screenOverride);
+  function getPrimaryUiSnapshot(screenOverride, stateOverride){
+    const scope = getResumeScope(screenOverride, stateOverride);
     return {
       screen: scope.screen,
       mixMode: Number(window.WMixMode || 2) || 2,
@@ -7338,6 +7509,8 @@ function Jcalc(){
     };
   }
   function getHistoryAuxiliaryUiSnapshot(){
+    // 履歴一覧画面の補助状態だけを保存する。
+    // 履歴本体や一時ダイアログはここへ混ぜない。
     return {
       historyScreenFilter: normalizeHistoryScreenFilter(HistoryScreenFilter),
       historyScreenVariantFilter: normalizeHistoryScreenVariant(HistoryScreenVariantFilter, HistoryScreenFilter),
@@ -7345,43 +7518,56 @@ function Jcalc(){
     };
   }
   function getCompareAuxiliaryUiSnapshot(){
+    // 比較中画面の補助状態だけを保存する。
+    // 履歴一覧画面の補助や一時ダイアログはここへ混ぜない。
     return {
       historyCompareScreen: getHistoryCompareScreen()
     };
   }
-  function getAuxiliaryUiSnapshot(screenOverride){
-    const scope = getResumeScope(screenOverride);
+  function getAuxiliaryUiSnapshot(screenOverride, stateOverride){
+    // 画面ごとに必要な補助状態だけを束ねる。
+    // 履歴一覧画面と比較中画面の補助状態は、ここで同じ箱に無条件で入れない。
+    const scope = getResumeScope(screenOverride, stateOverride);
     const snapshot = {};
     if(scope.keepHistoryScreenState) Object.assign(snapshot, getHistoryAuxiliaryUiSnapshot());
     if(scope.keepCompareScreenState) Object.assign(snapshot, getCompareAuxiliaryUiSnapshot());
     return snapshot;
   }
-  function getUiSnapshot(screenOverride){
-    const primaryState = getPrimaryUiSnapshot(screenOverride);
+  function getUiSnapshot(screenOverride, stateOverride){
+    const primaryState = getPrimaryUiSnapshot(screenOverride, stateOverride);
     return {
       ...primaryState,
-      ...getAuxiliaryUiSnapshot(primaryState.screen)
+      ...getAuxiliaryUiSnapshot(primaryState.screen, stateOverride)
     };
   }
   function getStoredUiState(){
-    const primary = safeObjectParse(STORAGE.uiMain);
-    const auxiliary = safeObjectParse(STORAGE.uiAux);
+    // 保存済みの「再開してよい状態」だけを読む。
+    // 共有ポップアップ / 2mm表送信確認のような一時状態は、保存源を別に持たない前提。
+    const primary = safeParse(STORAGE.uiMain, null);
+    const auxiliary = safeParse(STORAGE.uiAux, null);
+    const resume = safeParse(STORAGE.resume, null);
+    const legacy = safeParse(STORAGE.ui, null);
     if(isPlainObject(primary) || isPlainObject(auxiliary)){
       return {
         ...(isPlainObject(primary) ? primary : {}),
         ...(isPlainObject(auxiliary) ? auxiliary : {})
       };
     }
-    return safeObjectParse(STORAGE.ui);
+    // 分離保存がまだ無い時は、再開専用の保存内容を次の予備入口にする。
+    // ここも一時ダイアログを含まない前提のため、起動直後復帰の保険として使ってよい。
+    if(isPlainObject(resume)) return resume;
+    return isPlainObject(legacy) ? legacy : {};
   }
-  function getResumeSnapshot(screenOverride){
-    return getUiSnapshot(screenOverride);
+  function getResumeSnapshot(screenOverride, stateOverride){
+    return getUiSnapshot(screenOverride, stateOverride);
   }
   function clearResumeState(){
     storageRemove(STORAGE.resume);
     return null;
   }
   function saveResumeState(screenOverride){
+    // 再開保存へ入れるのは、画面本体 + その画面で再開に必要な補助状態まで。
+    // 一時ダイアログや確認系UIはここへ保存しない。
     const state = getResumeSnapshot(screenOverride);
     if(!state.screen || state.screen==='home-screen'){
       clearResumeState();
@@ -7455,6 +7641,8 @@ function Jcalc(){
     return state;
   }
   function applyUIState(){
+    // ここでは保存済み状態を読み込むだけに留める。
+    // どの画面でどこまで復元するかの最終判断は restoreScreenSubState() 側で行う。
     const state = getStoredUiState();
     if(Number(state.mixMode)){
       window.WMixMode = Number(state.mixMode);
@@ -7465,9 +7653,9 @@ function Jcalc(){
     if(typeof EsetHistoryView==='function') EsetHistoryView(ekisuMode);
     else EhistoryView = ekisuMode;
     setHistoryScreenFilter(state.historyScreenFilter || 'all', {save:false, render:false, variant: state.historyScreenVariantFilter || 'all', keepDraft:true});
-    HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : {toolKey:'', ids:[]};
+    HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : createEmptyHistoryCompareDraftState();
     sanitizeHistoryCompareDraft();
-    HistoryCompareScreen = isPlainObject(state.historyCompareScreen) ? {...state.historyCompareScreen} : {toolKey:'', ids:[], baseId:'', historyFilter:'all', historyVariant:'all'};
+    HistoryCompareScreen = isPlainObject(state.historyCompareScreen) ? {...state.historyCompareScreen} : createEmptyHistoryCompareScreenState();
     sanitizeHistoryCompareScreen();
     return state;
   }
@@ -7486,33 +7674,72 @@ function Jcalc(){
     });
     return activePanel || 'Wpanel0';
   }
+  function getFallbackHistoryCompareDraft(rawState, compareState){
+    const rawDraft=normalizeHistoryCompareDraftState(isPlainObject(rawState) ? rawState.historyCompareDraft : null);
+    if(rawDraft.toolKey && Array.isArray(rawDraft.ids) && rawDraft.ids.length) return rawDraft;
+    return normalizeHistoryCompareDraftState({
+      toolKey:String((compareState && compareState.toolKey) || ''),
+      ids:Array.isArray(compareState && compareState.ids) ? compareState.ids : []
+    });
+  }
+  function getFallbackRestoreState(requestedScreen, resolvedScreen, rawState){
+    if(requestedScreen!=='history-compare-screen' || resolvedScreen==='history-compare-screen') return rawState;
+    const liveState=getUiSnapshot(resolvedScreen);
+    if(resolvedScreen==='history-screen'){
+      const rawCompareState=isPlainObject(rawState) ? (rawState.historyCompareScreen || rawState) : null;
+      const compareState=normalizeHistoryCompareScreenState(rawCompareState);
+      const fallbackFilter=normalizeHistoryScreenFilter(compareState.historyFilter || liveState.historyScreenFilter || HistoryScreenFilter);
+      const fallbackVariant=fallbackFilter==='all'
+        ? 'all'
+        : normalizeHistoryScreenVariant(compareState.historyVariant || liveState.historyScreenVariantFilter || HistoryScreenVariantFilter, fallbackFilter);
+      return {
+        ...liveState,
+        historyScreenFilter:fallbackFilter,
+        historyScreenVariantFilter:fallbackVariant,
+        historyCompareDraft:getFallbackHistoryCompareDraft(rawState, compareState)
+      };
+    }
+    return liveState;
+  }
   function restoreScreenSubState(state, screenId){
     if(!state || !screenId) return;
+    // 画面ごとに戻してよい補助状態だけを復元する。
+    // 一時ダイアログは clearTransientOverlayState() 側で先に切る。
+    if(screenId==='home-screen'){
+      clearHistoryAuxiliaryStateForHome();
+      return;
+    }
     if(screenId==='tank2mm-screen' && typeof window.restoreTank2mmState === 'function'){
       window.restoreTank2mmState(state.tm2State || null, {save:false, updateHistory:false});
       return;
     }
     if(screenId==='history-screen'){
+      // 履歴一覧画面へ戻る時は、履歴一覧の補助状態だけ戻す。
+      // 比較中画面そのものの成立状態は空へ戻し、裏に残さない。
       setHistoryScreenFilter(state.historyScreenFilter || 'all', {
         save:false,
         render:false,
         variant: state.historyScreenVariantFilter || 'all',
         keepDraft:true
       });
-      HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : {toolKey:'', ids:[]};
+      HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : createEmptyHistoryCompareDraftState();
       sanitizeHistoryCompareDraft();
+      HistoryCompareScreen = createEmptyHistoryCompareScreenState(state.historyScreenFilter || 'all', state.historyScreenVariantFilter || 'all');
+      sanitizeHistoryCompareScreen();
       return;
     }
     if(screenId==='history-compare-screen'){
+      // 比較中画面へ戻る時だけ、履歴一覧の補助状態 + 比較中画面の補助状態を組で戻す。
+      // 一時ダイアログはこの直前に clearTransientOverlayState() で切っている前提。
       setHistoryScreenFilter(state.historyScreenFilter || 'all', {
         save:false,
         render:false,
         variant: state.historyScreenVariantFilter || 'all',
         keepDraft:true
       });
-      HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : {toolKey:'', ids:[]};
+      HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : createEmptyHistoryCompareDraftState();
       sanitizeHistoryCompareDraft();
-      HistoryCompareScreen = isPlainObject(state.historyCompareScreen) ? {...state.historyCompareScreen} : {toolKey:'', ids:[], baseId:'', historyFilter:'all', historyVariant:'all'};
+      HistoryCompareScreen = isPlainObject(state.historyCompareScreen) ? {...state.historyCompareScreen} : createEmptyHistoryCompareScreenState();
       sanitizeHistoryCompareScreen();
       return;
     }
@@ -7815,6 +8042,7 @@ function loadSharedConditionFromText(text, notify){
     if(notify) toast('この復元用コードには反映できる入力値がありません');
     return false;
   }
+  clearDetachedShareChoiceState();
   applyInputState(toolKey, sanitizedState);
   if(notify) toast('復元用コードの条件を反映しました');
   return true;
@@ -8327,6 +8555,32 @@ function setupHistoryShortcutPanels(root){
     const history=getHistory();
     const selectedItems=(state.ids||[]).map(id=>history.find(entry=>entry.id===id)).filter(Boolean);
     if(selectedItems.length<2){
+      const activeScreen=q('.screen.active')?.id || '';
+      const fallbackScreen=resolveResumeScreenId('history-compare-screen', {historyCompareScreen:state});
+      if(activeScreen==='history-compare-screen' && fallbackScreen!=='history-compare-screen'){
+        if(fallbackScreen==='history-screen'){
+          const fallbackFilter=normalizeHistoryScreenFilter(state.historyFilter || HistoryScreenFilter);
+          const fallbackVariant=fallbackFilter==='all'
+            ? 'all'
+            : normalizeHistoryScreenVariant(state.historyVariant || HistoryScreenVariantFilter, fallbackFilter);
+          setHistoryScreenFilter(fallbackFilter, {
+            save:false,
+            render:false,
+            keepDraft:true,
+            variant:fallbackVariant
+          });
+          HistoryCompareScreen=createEmptyHistoryCompareScreenState(fallbackFilter, fallbackVariant);
+          sanitizeHistoryCompareScreen();
+        }else{
+          HistoryCompareScreen=createEmptyHistoryCompareScreenState();
+        }
+        const collapsedScreen=finalizeCompareScreenExit(fallbackScreen);
+        originalShowScreen(collapsedScreen);
+        persistScreenState(collapsedScreen);
+        renderHistoryForScreen(collapsedScreen);
+        if(!isBootstrapping) saveUIState();
+        return;
+      }
       meta.textContent = '比較対象なし';
       note.hidden = false;
       note.textContent = '総合計算履歴で同じ方式の履歴を2〜3件選んでください';
@@ -8515,7 +8769,10 @@ function setupHistoryShortcutPanels(root){
   }
   function refreshHistoryAfterMutation(options={}){
     reconcileHistoryAuxiliaryState();
-    const targetScreen=options.screenId || q('.screen.active')?.id || 'home-screen';
+    sanitizeShareChoiceState({closeWhenInvalid:true});
+    const requestedScreen=options.screenId || q('.screen.active')?.id || 'home-screen';
+    const targetScreen=resolveResumeScreenId(requestedScreen);
+    if(targetScreen!==requestedScreen && document.getElementById(targetScreen)) originalShowScreen(targetScreen);
     renderHistoryForScreen(targetScreen);
     if(options.refreshHistoryScreen===true && targetScreen!=='history-screen') renderHistoryScreen();
     if(options.refreshCompareScreen===true && targetScreen!=='history-compare-screen') renderHistoryCompareScreen();
@@ -8523,10 +8780,104 @@ function setupHistoryShortcutPanels(root){
   }
   window.renderHistory=renderHistory;
   window.renderHistoryForScreen=renderHistoryForScreen;
-  function deleteHistoryItemInternal(id){ saveHistory(getHistory().filter(i=>i.id!==id)); const pins=getPins(); Object.keys(pins).forEach(key=>{ pins[key]=(Array.isArray(pins[key])?pins[key]:[]).filter(x=>x!==id); if(!pins[key].length) delete pins[key]; }); savePins(pins); }
-  window.deleteHistoryItem=function(id,notify){ deleteHistoryItemInternal(id); const bases=getBases(); Object.keys(bases).forEach(key=>{ if(bases[key]===id) delete bases[key]; }); saveBases(bases); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true}); if(notify) toast('この履歴を削除しました'); };
-  window.clearHistoryForTool=function(toolKey,notify){ toolKey=normalizeHistoryToolKey(toolKey); saveHistory(getHistory().filter(i=>i.toolKey!==toolKey)); const pins=getPins(); delete pins[toolKey]; savePins(pins); const bases=getBases(); delete bases[toolKey]; saveBases(bases); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true}); if(notify) toast('この計算機の履歴を全削除しました'); };
-  window.clearHistory=function(notify){ storageRemove(STORAGE.history); storageRemove(STORAGE.pins); storageRemove(STORAGE.bases); reconcileHistoryAuxiliaryState(); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true, save:true}); if(notify) toast('総合計算履歴を全削除しました'); };
+  function pruneHistorySelectionStateAfterRemoval(removedIds){
+    const removedSet=new Set((Array.isArray(removedIds)?removedIds:[]).filter(Boolean));
+    if(!removedSet.size) return reconcileHistoryAuxiliaryState();
+    const draftState=getHistoryCompareDraft();
+    if(Array.isArray(draftState.ids) && draftState.ids.some(id=>removedSet.has(id))){
+      HistoryCompareDraft={toolKey:String(draftState.toolKey||''), ids:draftState.ids.filter(id=>!removedSet.has(id))};
+      sanitizeHistoryCompareDraft();
+    }
+    const compareState=getHistoryCompareScreen();
+    if(Array.isArray(compareState.ids) && (compareState.ids.some(id=>removedSet.has(id)) || (compareState.baseId && removedSet.has(compareState.baseId)))){
+      const fallbackFilter=normalizeHistoryScreenFilter(compareState.historyFilter || HistoryScreenFilter);
+      const fallbackVariant=fallbackFilter==='all'
+        ? 'all'
+        : normalizeHistoryScreenVariant(compareState.historyVariant || HistoryScreenVariantFilter, fallbackFilter);
+      HistoryCompareScreen={
+        toolKey:String(compareState.toolKey||''),
+        ids:compareState.ids.filter(id=>!removedSet.has(id)),
+        baseId:removedSet.has(String(compareState.baseId||'')) ? '' : String(compareState.baseId||''),
+        historyFilter:fallbackFilter,
+        historyVariant:fallbackVariant
+      };
+      sanitizeHistoryCompareScreen();
+      if((HistoryCompareScreen.ids||[]).length<2){
+        setHistoryScreenFilter(fallbackFilter, {
+          save:false,
+          render:false,
+          keepDraft:true,
+          variant:fallbackVariant
+        });
+        HistoryCompareScreen=createEmptyHistoryCompareScreenState(fallbackFilter, fallbackVariant);
+        sanitizeHistoryCompareScreen();
+      }else{
+        syncHistoryCompareDraftFromCompareScreen();
+      }
+    }
+    return reconcileHistoryAuxiliaryState();
+  }
+  function removeHistoryItemsByMatcher(matcher){
+    const history=getHistory();
+    const nextHistory=history.filter(item=>!(typeof matcher==='function' && matcher(item)));
+    const nextIds=new Set(nextHistory.map(item=>item.id));
+    const removedIds=history.map(item=>item.id).filter(id=>!nextIds.has(id));
+    if(!removedIds.length) return {removedIds:[], removedCount:0};
+    const removedSet=new Set(removedIds);
+    saveHistory(nextHistory);
+    const pins=getPins();
+    Object.keys(pins).forEach(key=>{
+      pins[key]=(Array.isArray(pins[key])?pins[key]:[]).filter(x=>!removedSet.has(x));
+      if(!pins[key].length) delete pins[key];
+    });
+    savePins(pins);
+    const bases=getBases();
+    Object.keys(bases).forEach(key=>{
+      if(removedSet.has(bases[key])) delete bases[key];
+    });
+    saveBases(bases);
+    pruneHistorySelectionStateAfterRemoval(removedIds);
+    return {removedIds, removedCount:removedIds.length};
+  }
+  function deleteHistoryItemInternal(id){
+    const targetId=String(id||'');
+    if(!targetId) return {removedIds:[], removedCount:0};
+    return removeHistoryItemsByMatcher(item=>item.id===targetId);
+  }
+  function finalizeDestructiveHistoryMutation(result, options={}){
+    const mutationResult=result && typeof result==='object' ? result : {removedIds:[], removedCount:0};
+    const removedCount=Number(mutationResult.removedCount||0);
+    if(removedCount>0){
+      // 履歴削除後は、共有ポップアップや2mm表送信確認のような一時操作面を戻さない。
+      // 履歴一覧画面 / 比較中画面は再描画で復元し、一時ダイアログはここで切る責務に寄せる。
+      clearTransientOverlayState();
+    }
+    refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true, save:true});
+    if(options.notify && removedCount>0 && options.message) toast(String(options.message));
+    return mutationResult;
+  }
+  window.deleteHistoryItem=function(id,notify){
+    const result=deleteHistoryItemInternal(id);
+    return finalizeDestructiveHistoryMutation(result, {
+      notify:notify,
+      message:'この履歴を削除しました'
+    });
+  };
+  window.clearHistoryForTool=function(toolKey,notify){
+    toolKey=normalizeHistoryToolKey(toolKey);
+    const result=removeHistoryItemsByMatcher(item=>item.toolKey===toolKey);
+    return finalizeDestructiveHistoryMutation(result, {
+      notify:notify,
+      message:'この計算機の履歴を全削除しました'
+    });
+  };
+  window.clearHistory=function(notify){
+    const result=removeHistoryItemsByMatcher(()=>true);
+    return finalizeDestructiveHistoryMutation(result, {
+      notify:notify,
+      message:'総合計算履歴を全削除しました'
+    });
+  };
 
   window.confirmClearAllHistory=function(){ if(confirm('総合計算履歴を全削除します。元に戻せません。よろしいですか？')) clearHistory(true); };
   function rerunDerivedOutputForTool(toolKey){
@@ -8591,7 +8942,7 @@ function clearInputsByTool(toolKey){
   };
   window.confirmResetAllInputs=function(){ if(confirm('すべての計算機に保存されている入力値を消去します。よろしいですか？')) clearSavedInputs(true); };
   window.runCalculationAndCommit=function(toolKey){ toolKey=normalizeHistoryToolKey(toolKey); if(!isHistoryEnabledToolKey(toolKey)){ toast('この計算機は履歴保存に対応していません'); return; } const cfg=configFor(toolKey); if(!cfg) return; cfg.activate(); const calcResult=runToolCalculation(toolKey); const summaryData=buildSummaryData(toolKey,calcResult); if(!summaryData){ toast('入力値または計算結果が不足しているため保存できません'); return; } const now=Date.now(); const inputState=collectInputState(toolKey); const item={id:createId(),ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:summaryText(summaryData),summaryData}; const history=getHistory(); const duplicated=findDuplicateHistoryItem(history,item); const nextHistory=duplicated ? [{...duplicated,ts:now,time:formatJstDate(now, false),tool:cfg.label,toolKey,inputState,summary:item.summary,summaryData},...history.filter(entry=>entry.id!==duplicated.id)] : [item,...history]; const saved=saveHistory(nextHistory); refreshHistoryAfterMutation({refreshHistoryScreen:true, refreshCompareScreen:true}); if(!saved){ toast(storageState.available ? '端末保存に失敗したため、履歴へ追加できませんでした' : 'この端末では保存できないため、履歴へ追加できません'); return; } toast(duplicated ? '同じ条件の履歴を先頭へ移動しました' : '総合計算履歴に追加しました'); };
-  window.restoreHistoryItem=function(id,notify){ const item=getHistory().find(x=>x.id===id); if(!item) return; applyInputState(item.toolKey,item.inputState||{}); refreshHistoryAfterMutation({save:true}); if(notify) toast('選択した履歴の条件を入力欄に反映しました'); };
+  window.restoreHistoryItem=function(id,notify){ const item=getHistory().find(x=>x.id===id); if(!item) return; clearDetachedShareChoiceState(); applyInputState(item.toolKey,item.inputState||{}); refreshHistoryAfterMutation({save:true}); if(notify) toast('選択した履歴の条件を入力欄に反映しました'); };
   const originalShowScreen=window.showScreen;
   function refreshUiStateAndHistory(options={}){
     const screenId = options.screenId || q('.screen.active')?.id || 'home-screen';
@@ -8626,11 +8977,13 @@ function clearInputsByTool(toolKey){
   }
   function updateScreenWithPersistence(screenId, options){
     const opts = options || {};
-    originalShowScreen(screenId);
-    persistScreenState(screenId);
-    refreshUiStateAndHistory({screenId});
-    if(opts.syncHistory !== false && !isBootstrapping && !isHandlingPopState && opts.previousScreen !== screenId){
-      syncBrowserHistory(screenId, false);
+    const targetScreen = resolveResumeScreenId(screenId);
+    originalShowScreen(targetScreen);
+    if(targetScreen==='home-screen') clearHistoryAuxiliaryStateForHome();
+    persistScreenState(targetScreen);
+    refreshUiStateAndHistory({screenId:targetScreen});
+    if(opts.syncHistory !== false && !isBootstrapping && !isHandlingPopState && opts.previousScreen !== targetScreen){
+      syncBrowserHistory(targetScreen, false);
     }
   }
   function resetUiModesToDefaults(){
@@ -8697,9 +9050,13 @@ function clearInputsByTool(toolKey){
     restoreInputs();
     runInitialCalculations();
     const forcedScreen = getForcedScreenFromUrl();
-    const last=(forcedScreen || bootState.screen || storageGet(STORAGE.screen) || 'home-screen');
+    const requestedLast=(forcedScreen || bootState.screen || storageGet(STORAGE.screen) || 'home-screen');
+    const last=resolveResumeScreenId(requestedLast, bootState);
+    const bootRestoreState=getFallbackRestoreState(requestedLast, last, bootState);
+    clearTransientOverlayState();
     if(last && document.getElementById(last)) originalShowScreen(last);
-    restoreScreenSubState(bootState, last);
+    restoreScreenSubState(bootRestoreState, last);
+    sanitizeShareChoiceState({closeWhenInvalid:true});
     isBootstrapping = false;
     syncBrowserHistory(q('.screen.active')?.id || 'home-screen', true);
     refreshUiStateAndHistory({screenId:last});
@@ -8715,11 +9072,16 @@ function clearInputsByTool(toolKey){
     updateScreenWithPersistence(prev, { previousScreen: q('.screen.active')?.id });
   };
   window.addEventListener('popstate', event=>{
-    const screenId = event.state && event.state.app==='sake-tools' ? event.state.screen : null;
+    const rawState = event.state?.uiState || event.state || null;
+    const requestedScreen = event.state && event.state.app==='sake-tools' ? event.state.screen : null;
+    const screenId = resolveResumeScreenId(requestedScreen, rawState);
+    const restoreState = getFallbackRestoreState(requestedScreen, screenId, rawState);
     if(!screenId || !document.getElementById(screenId)) return;
     isHandlingPopState = true;
+    clearTransientOverlayState();
     originalShowScreen(screenId);
-    restoreScreenSubState(event.state?.uiState || event.state || null, screenId);
+    restoreScreenSubState(restoreState, screenId);
+    sanitizeShareChoiceState({closeWhenInvalid:true});
     persistScreenState(screenId);
     refreshUiStateAndHistory({screenId});
     renderHomeStatus();
