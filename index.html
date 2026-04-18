@@ -19,7 +19,7 @@
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{
   font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;
-  background:#f4f2ee;color:#1a1a1a;min-height:100vh;
+  background:#f4f4f3;color:#1a1a1a;min-height:100vh;
   min-height:100dvh;
   overscroll-behavior:none;
   -webkit-font-smoothing:antialiased;
@@ -37,11 +37,11 @@ body > *{position:relative;z-index:1;}
 /* ===== ナビヘッダー（各ツール） ===== */
 .tool-nav{
   position:sticky;top:0;z-index:100;
-  background:linear-gradient(180deg,#ffffff 0%,#f3f7f4 100%);border-bottom:1px solid #d7ddd7;
+  background:#fafaf9;border-bottom:1px solid #d8d8d5;
   display:flex;align-items:center;gap:10px;
   padding:12px 16px;
   padding-top:max(16px, calc(env(safe-area-inset-top) + 12px));
-  box-shadow:0 3px 12px rgba(42,92,63,0.05);
+  box-shadow:0 3px 12px rgba(0,0,0,0.04);
 }
 .back-btn{
   display:flex;align-items:center;gap:5px;
@@ -3398,6 +3398,177 @@ body::before{
     padding:0;
   }
 }
+
+
+
+/* ===== UI整理 2mm背景単色化 + 未選択表示静音化 patch 2026-04-18 ===== */
+body{
+  background:#f6f8f6 !important;
+}
+body::before{
+  display:none !important;
+  background:none !important;
+  opacity:0 !important;
+}
+#tank2mm-screen .tm2-info-band{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+#tank2mm-screen .tm2-current-card.is-empty{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  padding:0 !important;
+}
+
+
+/* 2026-04-18: gradient removal + darker neutral background */
+body{
+  background:#e6e6e2 !important;
+  background-image:none !important;
+}
+body::before{
+  content:none !important;
+  background:none !important;
+}
+.tool-nav{
+  background:#ecece8 !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  border-bottom:1px solid #d4d4d0 !important;
+  box-shadow:0 4px 10px rgba(0,0,0,.04) !important;
+}
+.home-header,
+.install-guide-card,
+.history-entry-card,
+.history-compare-screen-head,
+.history-compare-screen-table-card,
+.history-compare-highlight,
+.history-compare-more,
+.history-compare-nochange,
+.history-variant-chip,
+.inline-tools-badge,
+.history-group-count,
+.history-compare-draft-meta,
+.history-compare-screen-meta,
+.panel-desc,
+.inline-tools-panel,
+.compact-tools-panel,
+.home-bulk-panel,
+.result-card,
+#tank2mm-screen .tm2-current-card,
+#tank2mm-screen .tm2-result-box,
+#tank2mm-screen .tm2-docs-link-btn,
+.share-choice-guide,
+.share-choice-btn,
+.share-choice-help,
+.action-confirm-kicker,
+.hero-status,
+.hero-status.is-ok,
+.segment-row.is-caution,
+.history-compare-col.is-base,
+.history-compare-table-detail-cell.is-base,
+.history-compare-table-group-header.is-base,
+.history-compare-table-header-button.is-base,
+.history-compare-table-cell.is-base,
+.history-compare-table-summary.is-base,
+.history-compare-table-sticky-group.is-base,
+.history-compare-table-sticky-group-header.is-base,
+.history-compare-table-sticky-group-summary.is-base,
+.history-compare-table-sticky-group-cell.is-base,
+.history-compare-table-sticky-group-actions.is-base,
+.history-compare-table-sticky-group-button.is-base,
+.history-compare-table-sticky-group-detail.is-base,
+.history-compare-table-sticky-group-detail-cell.is-base,
+.history-compare-table-sticky-group-summary-button.is-base,
+.history-compare-table-sticky-group-header-button.is-base,
+.history-compare-table-sticky-group-summary-cell.is-base,
+.history-compare-table-sticky-group-header-cell.is-base,
+.history-compare-table-sticky-group-label.is-base,
+.history-compare-table-sticky-group-value.is-base,
+.history-compare-table-sticky-group-note.is-base,
+.history-compare-table-sticky-group-meta.is-base,
+.history-compare-table-sticky-group-body.is-base,
+.history-compare-table-sticky-group-foot.is-base,
+.history-compare-table-sticky-group-head.is-base,
+.history-compare-table-sticky-group-top.is-base,
+.history-compare-table-sticky-group-bottom.is-base,
+.history-compare-table-sticky-group-row.is-base,
+.history-compare-table-sticky-group-col.is-base{
+  background-image:none !important;
+  background-color:#eff0ec !important;
+}
+.card,
+.home-surface,
+.home-disclosure,
+.history-card,
+.share-choice-sheet,
+.action-confirm-sheet,
+.share-choice-preview,
+.share-payload-input,
+.input-wrap input[type="number"],
+.input-wrap select,
+.history-compare-table-details>summary,
+.tab,
+.sub-tab,
+.toggle-btn.active,
+.back-btn,
+.tool-card,
+.inline-tools-actions .danger-btn,
+.inline-tools-actions .reset-btn,
+.history-compare-col,
+.history-compare-table-card,
+.history-compare-table-cell,
+.history-compare-table-detail-cell,
+.history-compare-table-header,
+.history-compare-table-summary,
+.history-compare-table-group-header,
+.history-compare-table-header-button,
+.history-compare-table-col-header{
+  background-image:none !important;
+  background-color:#fbfbfa !important;
+}
+.group,
+.formula-guide,
+.unit-bar,
+.history-manage-panel,
+.share-role-card,
+.share-role-card.is-send,
+.share-role-card.is-receive,
+.share-choice-footer,
+.storage-alert{
+  background-image:none !important;
+  background-color:#f2f0ea !important;
+}
+.tab.active,
+.sub-tab.active,
+.mix-count-btn.active,
+#tank2mm-screen .tm2-mode-btn.is-active,
+.toggle-group,
+.unknown-badge,
+.tool-card-arrow,
+.history-entry-card-arrow{
+  background-image:none !important;
+  background-color:#e2e6e1 !important;
+}
+.calc-btn{
+  background:#355842 !important;
+  background-image:none !important;
+}
+.inline-reset-btn{
+  background:#c67623 !important;
+  background-image:none !important;
+}
+#home-screen .tool-card::before{background:#2e6948 !important;}
+#home-screen .tool-card[data-action="goto-warimizu-wari"]::before{background:#2f6f93 !important;}
+#home-screen .tool-card[data-action="goto-warimizu-mix"]::before{background:#2f6884 !important;}
+#home-screen .tool-card[data-action="goto-warimizu-aalc"]::before{background:#415f9d !important;}
+#home-screen .tool-card[data-nav-screen="ekisu"]::before{background:#93712f !important;}
+#home-screen .tool-card[data-nav-screen="suion"]::before{background:#2f7b6e !important;}
+#home-screen .tool-card[data-nav-screen="moto"]::before{background:#6d4c8d !important;}
+#home-screen .tool-card[data-nav-screen="jumai"]::before{background:#6d7e31 !important;}
 
 </style>
 </head>
