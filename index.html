@@ -6070,8 +6070,9 @@ function buildAuditInfo(tank){
         supplementRows.push({ label:'記載1mm当と検算値の差', value:direction });
       }
     }
-    supplementRows.push({ label:'詳細確認', value:'区間登録値の詳細は「タンク登録詳細を開く」で確認できます。' });
-    groups.push({ heading:'補足', rows:supplementRows });
+    if(supplementRows.length > 0){
+      groups.push({ heading:'補足', rows:supplementRows });
+    }
     return groups;
   }
   function renderAuditGrid(tank, candidate){
@@ -6094,14 +6095,15 @@ function buildAuditInfo(tank){
       els.reasonGrid.innerHTML = '<div class="tm2-detail-row"><span>候補</span><div class="tm2-detail-value">表示できる近隣候補がありません。</div></div>';
       return;
     }
+    const firstTargetVolume = candidates.find(candidate => candidate && candidate.targetVolume != null);
+    const targetGroup = firstTargetVolume ? `<div class="tm2-detail-group"><div class="tm2-detail-row"><span>入力した数量</span><div class="tm2-detail-value">${firstTargetVolume.targetVolume}L</div></div></div>` : '';
     const candidateGroups = candidates.map(candidate => {
       const headingRow = candidate.heading ? `<div class="tm2-detail-heading">${candidate.heading}</div>` : '';
-      const targetRow = candidate.targetVolume != null ? `<div class="tm2-detail-row"><span>入力した数量</span><div class="tm2-detail-value">${candidate.targetVolume}L</div></div>` : '';
       const mmRow = candidate.mm != null ? `<div class="tm2-detail-row"><span>検尺（空積深）</span><div class="tm2-detail-value">${candidate.mm}mm</div></div>` : '';
       const displayedRow = candidate.displayedL != null ? `<div class="tm2-detail-row"><span>表示値</span><div class="tm2-detail-value">${candidate.displayedL}L</div></div>` : '';
-      return `<div class="tm2-detail-group">${headingRow}${targetRow}${mmRow}${displayedRow}</div>`;
+      return `<div class="tm2-detail-group">${headingRow}${mmRow}${displayedRow}</div>`;
     }).join('');
-    els.reasonGrid.innerHTML = candidateGroups;
+    els.reasonGrid.innerHTML = targetGroup + candidateGroups;
   }
   function syncReasonToggle(){
     const enabled = state.lastReasonCandidates.length > 0;
