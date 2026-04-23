@@ -5410,6 +5410,25 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2262, end_depth_mm:2280, start_l:7687, end_l:7707, recorded_per_mm_l:1.111 },
       { start_depth_mm:2280, end_depth_mm:2298, start_l:7707, end_l:7727, recorded_per_mm_l:1.111 }
     ] }
+,
+    { tank_no:150, label:'No.150', group_label:'141〜160', full_l:1112, bottom_l:102, center_mm:1108, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.150 は区間差分から1mm当を再計算する方式です。複数検定区画。ユーザー確認済み値: 全容量1112L / 底板面以下102L / 中心深1108mm。尺0の計算値は 1112L で、全容量1112L と一致します。', segments:[
+      { start_depth_mm:0, end_depth_mm:304, start_l:102, end_l:392, recorded_per_mm_l:0.953 },
+      { start_depth_mm:304, end_depth_mm:620, start_l:392, end_l:692, recorded_per_mm_l:0.949 },
+      { start_depth_mm:620, end_depth_mm:934, start_l:692, end_l:992, recorded_per_mm_l:0.955 },
+      { start_depth_mm:934, end_depth_mm:944, start_l:992, end_l:1002, recorded_per_mm_l:1.000 },
+      { start_depth_mm:944, end_depth_mm:954, start_l:1002, end_l:1012, recorded_per_mm_l:1.000 },
+      { start_depth_mm:954, end_depth_mm:964, start_l:1012, end_l:1022, recorded_per_mm_l:1.000 },
+      { start_depth_mm:964, end_depth_mm:976, start_l:1022, end_l:1032, recorded_per_mm_l:0.833 },
+      { start_depth_mm:976, end_depth_mm:986, start_l:1032, end_l:1042, recorded_per_mm_l:1.000 },
+      { start_depth_mm:986, end_depth_mm:996, start_l:1042, end_l:1052, recorded_per_mm_l:1.000 },
+      { start_depth_mm:996, end_depth_mm:1008, start_l:1052, end_l:1062, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1008, end_depth_mm:1020, start_l:1062, end_l:1072, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1020, end_depth_mm:1032, start_l:1072, end_l:1082, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1032, end_depth_mm:1048, start_l:1082, end_l:1092, recorded_per_mm_l:0.625 },
+      { start_depth_mm:1048, end_depth_mm:1074, start_l:1092, end_l:1102, recorded_per_mm_l:0.384 },
+      { start_depth_mm:1074, end_depth_mm:1108, start_l:1102, end_l:1112, recorded_per_mm_l:0.294 }
+    ] }
+
   ];
 
   const $ = sel => root.querySelector(sel);
