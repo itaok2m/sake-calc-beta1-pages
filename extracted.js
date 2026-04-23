@@ -147,7 +147,7 @@ function toggleEl(target, visible, display='block'){
     { tank_no:43, label:'No.43', group_label:'41〜60', full_l:7718, bottom_l:483, center_mm:1964, per_mm_l:3.68431, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 7235 の記載あり。全容量にチェックあり。1mm当の末尾 31 は書き足しに見える。' },
     { tank_no:45, label:'No.45', group_label:'41〜60', full_l:7695, bottom_l:470, center_mm:1954, per_mm_l:3.69766, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 7225 の記載あり。全容量にチェックあり。1mm当末尾 66 は追加に見える。' },
     { tank_no:46, label:'No.46', group_label:'41〜60', full_l:7700, bottom_l:453, center_mm:1960, per_mm_l:3.69766, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'7700 にチェックあり。うっすら 7247 の記載あり。1mm当末尾 66 は追加に見える。' },
-    { tank_no:59, label:'No.59', group_label:'41〜60', full_l:2275, bottom_l:105, center_mm:1352, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.59 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量2275L / 底板面以下105L / 中心深1352mm。1100〜1192mm の 1mm当は 1.830L ではなく 1.630L に修正済み。尺0の計算値は 2274L で、全容量2275L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:59, label:'No.59', group_label:'41〜60', full_l:2275, bottom_l:105, center_mm:1352, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.59 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量2275L / 底板面以下105L / 中心深1352mm。1100〜1192mm の 1mm当は 1.830L ではなく 1.630L に修正済み。尺0の計算値は 2274L で、全容量2275L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:184, start_l:105, end_l:405, recorded_per_mm_l:1.630 },
       { start_depth_mm:184, end_depth_mm:366, start_l:405, end_l:705, recorded_per_mm_l:1.648 },
       { start_depth_mm:366, end_depth_mm:734, start_l:705, end_l:1305, recorded_per_mm_l:1.630 },
@@ -180,7 +180,7 @@ function toggleEl(target, visible, display='block'){
     { tank_no:90, label:'No.90', group_label:'81〜100', full_l:663, bottom_l:17, center_mm:882, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:92, label:'No.92', group_label:'81〜100', full_l:660, bottom_l:17, center_mm:878, per_mm_l:0.73277, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:98, label:'No.98', group_label:'81〜100', full_l:653, bottom_l:26, center_mm:860, per_mm_l:0.72963, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
-    { tank_no:111, label:'No.111', group_label:'101〜120', full_l:2258, bottom_l:105, center_mm:1294, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.111 は区間の記載1mm当をそのまま使う方式です。複数検定区画。尺0の計算値は 2257L で、全容量2258L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:111, label:'No.111', group_label:'101〜120', full_l:2258, bottom_l:105, center_mm:1294, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.111 は区間の記載1mm当をそのまま使う方式です。複数検定区画。尺0の計算値は 2257L で、全容量2258L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:206, start_l:105, end_l:458, recorded_per_mm_l:1.713 },
       { start_depth_mm:206, end_depth_mm:388, start_l:458, end_l:758, recorded_per_mm_l:1.648 },
       { start_depth_mm:388, end_depth_mm:570, start_l:758, end_l:1058, recorded_per_mm_l:1.648 },
@@ -189,7 +189,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:930, end_depth_mm:1112, start_l:1658, end_l:1958, recorded_per_mm_l:1.648 },
       { start_depth_mm:1112, end_depth_mm:1294, start_l:1958, end_l:2258, recorded_per_mm_l:1.648 }
     ] },
-    { tank_no:112, label:'No.112', group_label:'101〜120', full_l:3225, bottom_l:189, center_mm:1786, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.112 は紙2mm表との差を見比べるため、区間の開始容量 + 記載1mm当 × 差分mm の方式を使っています。複数検定区画。ユーザー確認済み値: 全容量3225L / 底板面以下189L / 中心深1786mm。全深1816mm記載あり。30mm下を0とする旨の記載あり。紙表と1L差が残る点は手書き転記差の可能性あり。', segments:[
+    { tank_no:112, label:'No.112', group_label:'101〜120', full_l:3225, bottom_l:189, center_mm:1786, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.112 は紙2mm表との差を見比べるため、区間の開始容量 + 記載1mm当 × 差分mm の方式を使っています。複数検定区画。ユーザー確認済み値: 全容量3225L / 底板面以下189L / 中心深1786mm。全深1816mm記載あり。30mm下を0とする旨の記載あり。紙表と1L差が残る点は手書き転記差の可能性あり。', segments:[
       { start_depth_mm:0, end_depth_mm:34, start_l:189, end_l:245, recorded_per_mm_l:1.647 },
       { start_depth_mm:34, end_depth_mm:202, start_l:245, end_l:545, recorded_per_mm_l:1.785 },
       { start_depth_mm:202, end_depth_mm:372, start_l:545, end_l:845, recorded_per_mm_l:1.764 },
@@ -230,7 +230,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:1761, end_depth_mm:1786, start_l:3215, end_l:3225, recorded_per_mm_l:0.400 }
     ] },
     { tank_no:117, label:'No.117', group_label:'101〜120', full_l:642, bottom_l:7, center_mm:886, per_mm_l:0.71707, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
-    { tank_no:126, label:'No.126', group_label:'121〜140', full_l:10113, bottom_l:613, center_mm:2406, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.126 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10113L / 底板面以下613L / 中心深2406mm。容器検定簿は三帯構成で、左帯最下段 2192 / 9713 / 3.571 の続きが右帯 2208 / 9763 / 3.125 です。尺0の計算値は 10112L で、全容量10113L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:126, label:'No.126', group_label:'121〜140', full_l:10113, bottom_l:613, center_mm:2406, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.126 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10113L / 底板面以下613L / 中心深2406mm。容器検定簿は三帯構成で、左帯最下段 2192 / 9713 / 3.571 の続きが右帯 2208 / 9763 / 3.125 です。尺0の計算値は 10112L で、全容量10113L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:600, start_l:613, end_l:3113, recorded_per_mm_l:4.166 },
       { start_depth_mm:600, end_depth_mm:1318, start_l:3113, end_l:6113, recorded_per_mm_l:4.178 },
       { start_depth_mm:1318, end_depth_mm:2044, start_l:6113, end_l:9113, recorded_per_mm_l:4.132 },
@@ -255,7 +255,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2306, end_depth_mm:2340, start_l:10013, end_l:10063, recorded_per_mm_l:1.470 },
       { start_depth_mm:2340, end_depth_mm:2406, start_l:10063, end_l:10113, recorded_per_mm_l:0.757 }
     ] },
-    { tank_no:127, label:'No.127', group_label:'121〜140', full_l:10448, bottom_l:748, center_mm:2236, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.127 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10448L / 底板面以下748L / 中心深2236mm。容器検定簿の読取りで 1248mm は 1246mm に修正済みです。第1帯末尾 2046 / 10048 / 3.571 の続きが第2帯先頭 2060 / 10098 / 3.571 です。尺0の計算値は 10447L で、全容量10448L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:127, label:'No.127', group_label:'121〜140', full_l:10448, bottom_l:748, center_mm:2236, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.127 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10448L / 底板面以下748L / 中心深2236mm。容器検定簿の読取りで 1248mm は 1246mm に修正済みです。第1帯末尾 2046 / 10048 / 3.571 の続きが第2帯先頭 2060 / 10098 / 3.571 です。尺0の計算値は 10447L で、全容量10448L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:586, start_l:748, end_l:3448, recorded_per_mm_l:4.607 },
       { start_depth_mm:586, end_depth_mm:1246, start_l:3448, end_l:6448, recorded_per_mm_l:4.545 },
       { start_depth_mm:1246, end_depth_mm:1908, start_l:6448, end_l:9448, recorded_per_mm_l:4.531 },
@@ -280,8 +280,8 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2154, end_depth_mm:2184, start_l:10348, end_l:10398, recorded_per_mm_l:1.666 },
       { start_depth_mm:2184, end_depth_mm:2236, start_l:10398, end_l:10448, recorded_per_mm_l:0.961 }
     ] },
-    { tank_no:128, label:'No.128', group_label:'121〜140', full_l:10082, bottom_l:662, center_mm:2374, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_force_caution:true, audit_summary:'注意あり', audit_status_note:'原票記載どおりで登録しています。第1帯先頭 0〜552mm は、計算上の終点容量と原票の終点容量に差があるため要注意です。詳細はタンク登録詳細を開くで確認してください。', audit_note:'No.128 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10082L / 底板面以下662L / 中心深2374mm。容器検定簿記載どおり、第1帯先頭 552 / 2982 / 4.393 を採用します。ただし先頭区間は、552mm × 4.393L = 2,424.936L、これに開始容量 662L を足すと 3,086.936L となり、原票の終点容量 2,982L と約 104.936L の差が残るため、要注意タンクとして扱います。', segment_alerts:[
-      { start_depth_mm:0, end_depth_mm:552, note:'原票記載どおり 552 / 2982 / 4.393 を採用。552mm × 4.393L = 2,424.936L、そこに開始容量 662L を足すと 3,086.936L になり、原票の終点容量 2,982L と差が残ります。' }
+    { tank_no:128, label:'No.128', group_label:'121〜140', full_l:10082, bottom_l:662, center_mm:2374, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_force_caution:true, audit_summary:'注意あり', audit_status_note:'第1帯先頭 0〜552mm は、原票記載1mm当 4.393L と区間差分再計算 4.202899L に大きな差があるため要注意です。現在アプリは区間差分再計算を使います。詳細はタンク登録詳細を開くで確認してください。', audit_note:'No.128 は区間差分再計算を使う方式です。複数検定区画。ユーザー確認済み値: 全容量10082L / 底板面以下662L / 中心深2374mm。第1帯先頭 0〜552mm は、原票記載1mm当 4.393L と区間差分再計算 4.202899L に差が大きいため、要注意タンクとして扱います。', segment_alerts:[
+      { start_depth_mm:0, end_depth_mm:552, note:'第1帯先頭 0〜552mm は、原票記載1mm当 4.393L と区間差分再計算 4.202899L に差があります。現在アプリは区間差分再計算を採用し、この帯は要注意として表示します。' }
     ], segments:[
       { start_depth_mm:0, end_depth_mm:552, start_l:662, end_l:2982, recorded_per_mm_l:4.393 },
       { start_depth_mm:552, end_depth_mm:1276, start_l:2982, end_l:5982, recorded_per_mm_l:4.143 },
@@ -309,7 +309,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2292, end_depth_mm:2324, start_l:9982, end_l:10032, recorded_per_mm_l:1.562 },
       { start_depth_mm:2324, end_depth_mm:2374, start_l:10032, end_l:10082, recorded_per_mm_l:1.000 }
     ] },
-    { tank_no:129, label:'No.129', group_label:'121〜140', full_l:10458, bottom_l:658, center_mm:2286, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.129 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10458L / 底板面以下658L / 中心深2286mm。測定位置の手書きは「挟み口横」読取り候補ですが、今回差分では計算条件に使っていません。尺0の計算値は 10457L で、全容量10458L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:129, label:'No.129', group_label:'121〜140', full_l:10458, bottom_l:658, center_mm:2286, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.129 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10458L / 底板面以下658L / 中心深2286mm。測定位置の手書きは「挟み口横」読取り候補ですが、今回差分では計算条件に使っていません。尺0の計算値は 10457L で、全容量10458L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:616, start_l:658, end_l:3458, recorded_per_mm_l:4.545 },
       { start_depth_mm:616, end_depth_mm:1276, start_l:3458, end_l:6458, recorded_per_mm_l:4.545 },
       { start_depth_mm:1276, end_depth_mm:1938, start_l:6458, end_l:9458, recorded_per_mm_l:4.531 },
@@ -338,7 +338,7 @@ function toggleEl(target, visible, display='block'){
     { tank_no:131, label:'No.131', group_label:'121〜140', full_l:636, bottom_l:5, center_mm:896, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:132, label:'No.132', group_label:'121〜140', full_l:635, bottom_l:5, center_mm:894, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:133, label:'No.133', group_label:'121〜140', full_l:189, bottom_l:1, center_mm:670, per_mm_l:0.2806, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
-    { tank_no:141, label:'No.141', group_label:'141〜160', full_l:10138, bottom_l:538, center_mm:2436, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.141 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10138L / 底板面以下538L / 中心深2436mm。第1帯先頭 614 / 3088 / 4.153 はユーザー修正済み値を採用。尺0の計算値は 10137L で、全容量10138L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:141, label:'No.141', group_label:'141〜160', full_l:10138, bottom_l:538, center_mm:2436, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.141 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量10138L / 底板面以下538L / 中心深2436mm。第1帯先頭 614 / 3088 / 4.153 はユーザー修正済み値を採用。尺0の計算値は 10137L で、全容量10138L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:614, start_l:538, end_l:3088, recorded_per_mm_l:4.153 },
       { start_depth_mm:614, end_depth_mm:1336, start_l:3088, end_l:6088, recorded_per_mm_l:4.155 },
       { start_depth_mm:1336, end_depth_mm:2064, start_l:6088, end_l:9088, recorded_per_mm_l:4.120 },
@@ -365,7 +365,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2384, end_depth_mm:2436, start_l:10088, end_l:10138, recorded_per_mm_l:0.961 }
     ] }
 ,
-    { tank_no:142, label:'No.142', group_label:'141〜160', full_l:7727, bottom_l:387, center_mm:2298, source_note:'容器検定簿の区間別記載（記載1mm当採用）', segment_calc_mode:'recorded_per_mm', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.142 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量7727L / 底板面以下387L / 中心深2298mm。手書き修正値を差分計算で照合し、2170 / 7527 / 1.666 と 2180 / 7547 / 2.000 を採用。2294 は斜線扱いで、中心深は 2298 を採用。尺0の計算値は 7726L で、全容量7727L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
+    { tank_no:142, label:'No.142', group_label:'141〜160', full_l:7727, bottom_l:387, center_mm:2298, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.142 は区間の記載1mm当をそのまま使う方式です。複数検定区画。ユーザー確認済み値: 全容量7727L / 底板面以下387L / 中心深2298mm。手書き修正値を差分計算で照合し、2170 / 7527 / 1.666 と 2180 / 7547 / 2.000 を採用。2294 は斜線扱いで、中心深は 2298 を採用。尺0の計算値は 7726L で、全容量7727L とは 1L 差が残りますが、No.128 のような強い注意扱いにはしていません。', segments:[
       { start_depth_mm:0, end_depth_mm:240, start_l:387, end_l:1187, recorded_per_mm_l:3.333 },
       { start_depth_mm:240, end_depth_mm:844, start_l:1187, end_l:3187, recorded_per_mm_l:3.311 },
       { start_depth_mm:844, end_depth_mm:1446, start_l:3187, end_l:5187, recorded_per_mm_l:3.322 },
