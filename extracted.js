@@ -416,6 +416,55 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:1048, end_depth_mm:1074, start_l:1092, end_l:1102, recorded_per_mm_l:0.384 },
       { start_depth_mm:1074, end_depth_mm:1108, start_l:1102, end_l:1112, recorded_per_mm_l:0.294 }
     ] }
+,
+    { tank_no:151, label:'No.151', group_label:'141〜160', full_l:1112, bottom_l:82, center_mm:1130, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.151 は区間差分から1mm当を再計算する方式です。複数検定区画。今回登録値: 全容量1112L / 底板面以下82L / 中心深1130mm。尺0の計算値は 1112L で、全容量1112L と一致します。', segments:[
+      { start_depth_mm:0, end_depth_mm:10, start_l:82, end_l:92, recorded_per_mm_l:1.000 },
+      { start_depth_mm:10, end_depth_mm:326, start_l:92, end_l:392, recorded_per_mm_l:0.949 },
+      { start_depth_mm:326, end_depth_mm:642, start_l:392, end_l:692, recorded_per_mm_l:0.949 },
+      { start_depth_mm:642, end_depth_mm:956, start_l:692, end_l:992, recorded_per_mm_l:0.955 },
+      { start_depth_mm:956, end_depth_mm:966, start_l:992, end_l:1002, recorded_per_mm_l:1.000 },
+      { start_depth_mm:966, end_depth_mm:976, start_l:1002, end_l:1012, recorded_per_mm_l:1.000 },
+      { start_depth_mm:976, end_depth_mm:986, start_l:1012, end_l:1022, recorded_per_mm_l:1.000 },
+      { start_depth_mm:986, end_depth_mm:998, start_l:1022, end_l:1032, recorded_per_mm_l:0.833 },
+      { start_depth_mm:998, end_depth_mm:1008, start_l:1032, end_l:1042, recorded_per_mm_l:1.000 },
+      { start_depth_mm:1008, end_depth_mm:1018, start_l:1042, end_l:1052, recorded_per_mm_l:1.000 },
+      { start_depth_mm:1018, end_depth_mm:1028, start_l:1052, end_l:1062, recorded_per_mm_l:1.000 },
+      { start_depth_mm:1028, end_depth_mm:1040, start_l:1062, end_l:1072, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1040, end_depth_mm:1054, start_l:1072, end_l:1082, recorded_per_mm_l:0.714 },
+      { start_depth_mm:1054, end_depth_mm:1070, start_l:1082, end_l:1092, recorded_per_mm_l:0.625 },
+      { start_depth_mm:1070, end_depth_mm:1096, start_l:1092, end_l:1102, recorded_per_mm_l:0.384 },
+      { start_depth_mm:1096, end_depth_mm:1130, start_l:1102, end_l:1112, recorded_per_mm_l:0.294 }
+    ] }
+    ,
+    { tank_no:152, label:'No.152', group_label:'141〜160', full_l:2227, bottom_l:161, center_mm:1608, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.152 は区間差分から1mm当を再計算する方式です。複数検定区画。今回登録値: 全容量2227L / 底板面以下161L / 中心深1608mm。尺0の計算値は 2227L で、全容量2227L と一致します。', segments:[
+      { start_depth_mm:0, end_depth_mm:48, start_l:161, end_l:227, recorded_per_mm_l:1.375 },
+      { start_depth_mm:48, end_depth_mm:274, start_l:227, end_l:527, recorded_per_mm_l:1.327 },
+      { start_depth_mm:274, end_depth_mm:498, start_l:527, end_l:827, recorded_per_mm_l:1.339 },
+      { start_depth_mm:498, end_depth_mm:724, start_l:827, end_l:1127, recorded_per_mm_l:1.327 },
+      { start_depth_mm:724, end_depth_mm:950, start_l:1127, end_l:1427, recorded_per_mm_l:1.327 },
+      { start_depth_mm:950, end_depth_mm:1176, start_l:1427, end_l:1727, recorded_per_mm_l:1.327 },
+      { start_depth_mm:1176, end_depth_mm:1402, start_l:1727, end_l:2027, recorded_per_mm_l:1.327 },
+      { start_depth_mm:1402, end_depth_mm:1408, start_l:2027, end_l:2037, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1408, end_depth_mm:1416, start_l:2037, end_l:2047, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1416, end_depth_mm:1424, start_l:2047, end_l:2057, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1424, end_depth_mm:1432, start_l:2057, end_l:2067, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1432, end_depth_mm:1438, start_l:2067, end_l:2077, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1438, end_depth_mm:1446, start_l:2077, end_l:2087, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1446, end_depth_mm:1454, start_l:2087, end_l:2097, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1454, end_depth_mm:1462, start_l:2097, end_l:2107, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1462, end_depth_mm:1470, start_l:2107, end_l:2117, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1470, end_depth_mm:1478, start_l:2117, end_l:2127, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1478, end_depth_mm:1486, start_l:2127, end_l:2137, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1486, end_depth_mm:1494, start_l:2137, end_l:2147, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1494, end_depth_mm:1502, start_l:2147, end_l:2157, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1502, end_depth_mm:1510, start_l:2157, end_l:2167, recorded_per_mm_l:1.250 },
+      { start_depth_mm:1510, end_depth_mm:1520, start_l:2167, end_l:2177, recorded_per_mm_l:1.000 },
+      { start_depth_mm:1520, end_depth_mm:1532, start_l:2177, end_l:2187, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1532, end_depth_mm:1544, start_l:2187, end_l:2197, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1544, end_depth_mm:1562, start_l:2197, end_l:2207, recorded_per_mm_l:0.555 },
+      { start_depth_mm:1562, end_depth_mm:1584, start_l:2207, end_l:2217, recorded_per_mm_l:0.454 },
+      { start_depth_mm:1584, end_depth_mm:1608, start_l:2217, end_l:2227, recorded_per_mm_l:0.416 }
+    ] }
 
   ];
 
