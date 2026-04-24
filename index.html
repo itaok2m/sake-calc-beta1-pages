@@ -5166,7 +5166,7 @@ function toggleEl(target, visible, display='block'){
     { tank_no:43, label:'No.43', group_label:'41〜60', full_l:7718, bottom_l:483, center_mm:1964, per_mm_l:3.68431, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 7235 の記載あり。全容量にチェックあり。1mm当の末尾 31 は書き足しに見える。' },
     { tank_no:45, label:'No.45', group_label:'41〜60', full_l:7695, bottom_l:470, center_mm:1954, per_mm_l:3.69766, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'うっすら 7225 の記載あり。全容量にチェックあり。1mm当末尾 66 は追加に見える。' },
     { tank_no:46, label:'No.46', group_label:'41〜60', full_l:7700, bottom_l:453, center_mm:1960, per_mm_l:3.69766, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'7700 にチェックあり。うっすら 7247 の記載あり。1mm当末尾 66 は追加に見える。' },
-    { tank_no:59, label:'No.59', group_label:'41〜60', full_l:2275, bottom_l:105, center_mm:1352, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.59 は区間差分から1mm当を再計算する方式です。複数検定区画。ユーザー確認済み値: 全容量2275L / 底板面以下105L / 中心深1352mm。1100〜1192mm の 1mm当は 1.830L ではなく 1.630L に修正済みです。尺0の計算値は 2275L で、全容量2275L と一致します。', segments:[
+    { tank_no:59, label:'No.59', group_label:'41〜60', full_l:2275, bottom_l:105, center_mm:1352, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_note:'No.59 は区間差分から1mm当を再計算する方式です。複数検定区画。ユーザー確認済み値: 全容量2275L / 底板面以下105L / 中心深1352mm。容器検定簿の累計行をまとめず、紙面と同じ行単位で登録表示します。尺0の計算値は 2275L で、全容量2275L と一致します。', segments:[
       { start_depth_mm:0, end_depth_mm:184, start_l:105, end_l:405, recorded_per_mm_l:1.630 },
       { start_depth_mm:184, end_depth_mm:366, start_l:405, end_l:705, recorded_per_mm_l:1.648 },
       { start_depth_mm:366, end_depth_mm:550, start_l:705, end_l:1005, recorded_per_mm_l:1.630 },
@@ -5174,14 +5174,28 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:734, end_depth_mm:916, start_l:1305, end_l:1605, recorded_per_mm_l:1.648 },
       { start_depth_mm:916, end_depth_mm:1100, start_l:1605, end_l:1905, recorded_per_mm_l:1.630 },
       { start_depth_mm:1100, end_depth_mm:1192, start_l:1905, end_l:2055, recorded_per_mm_l:1.630 },
-      { start_depth_mm:1192, end_depth_mm:1258, start_l:2055, end_l:2165, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1192, end_depth_mm:1198, start_l:2055, end_l:2065, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1198, end_depth_mm:1204, start_l:2065, end_l:2075, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1204, end_depth_mm:1210, start_l:2075, end_l:2085, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1210, end_depth_mm:1216, start_l:2085, end_l:2095, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1216, end_depth_mm:1222, start_l:2095, end_l:2105, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1222, end_depth_mm:1228, start_l:2105, end_l:2115, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1228, end_depth_mm:1234, start_l:2115, end_l:2125, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1234, end_depth_mm:1240, start_l:2125, end_l:2135, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1240, end_depth_mm:1246, start_l:2135, end_l:2145, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1246, end_depth_mm:1252, start_l:2145, end_l:2155, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1252, end_depth_mm:1258, start_l:2155, end_l:2165, recorded_per_mm_l:1.666 },
       { start_depth_mm:1258, end_depth_mm:1266, start_l:2165, end_l:2175, recorded_per_mm_l:1.250 },
-      { start_depth_mm:1266, end_depth_mm:1284, start_l:2175, end_l:2205, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1266, end_depth_mm:1272, start_l:2175, end_l:2185, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1272, end_depth_mm:1278, start_l:2185, end_l:2195, recorded_per_mm_l:1.666 },
+      { start_depth_mm:1278, end_depth_mm:1284, start_l:2195, end_l:2205, recorded_per_mm_l:1.666 },
       { start_depth_mm:1284, end_depth_mm:1292, start_l:2205, end_l:2215, recorded_per_mm_l:1.250 },
       { start_depth_mm:1292, end_depth_mm:1298, start_l:2215, end_l:2225, recorded_per_mm_l:1.666 },
       { start_depth_mm:1298, end_depth_mm:1306, start_l:2225, end_l:2235, recorded_per_mm_l:1.250 },
       { start_depth_mm:1306, end_depth_mm:1316, start_l:2235, end_l:2245, recorded_per_mm_l:1.000 },
-      { start_depth_mm:1316, end_depth_mm:1352, start_l:2245, end_l:2275, recorded_per_mm_l:0.833 }
+      { start_depth_mm:1316, end_depth_mm:1328, start_l:2245, end_l:2255, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1328, end_depth_mm:1340, start_l:2255, end_l:2265, recorded_per_mm_l:0.833 },
+      { start_depth_mm:1340, end_depth_mm:1352, start_l:2265, end_l:2275, recorded_per_mm_l:0.833 }
     ] },
     { tank_no:60, label:'No.60', group_label:'41〜60', full_l:2275, bottom_l:115, center_mm:1280, per_mm_l:1.68782, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
     { tank_no:61, label:'No.61', group_label:'61〜80', full_l:2178, bottom_l:135, center_mm:1228, per_mm_l:1.66426, source_note:'原票記載の固定1mm当', audit_enabled:true, audit_note:'' },
@@ -6197,6 +6211,7 @@ function buildAuditInfo(tank){
     }
     if(tank.source_note) registerRows.push({ label:'元資料', value:tank.source_note });
     groups.push({ heading:'タンク登録値', rows:registerRows });
+
 
     const supplementRows = [];
     if(isSegmentTank(tank)){
