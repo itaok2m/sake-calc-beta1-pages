@@ -5292,13 +5292,13 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2154, end_depth_mm:2184, start_l:10348, end_l:10398, recorded_per_mm_l:1.666 },
       { start_depth_mm:2184, end_depth_mm:2236, start_l:10398, end_l:10448, recorded_per_mm_l:0.961 }
     ] },
-    { tank_no:128, label:'No.128', group_label:'121〜140', full_l:10082, bottom_l:662, center_mm:2374, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_force_caution:true, audit_summary:'注意あり', audit_status_note:'第1帯先頭 0〜552mm は、原票記載1mm当 4.393L と区間差分再計算 4.202899L に大きな差があるため要注意です。現在アプリは区間差分再計算を使います。詳細はタンク登録詳細を開くで確認してください。', audit_note:'No.128 は区間差分再計算を使う方式です。複数検定区画。ユーザー確認済み値: 全容量10082L / 底板面以下662L / 中心深2374mm。第1帯先頭 0〜552mm は、原票記載1mm当 4.393L と区間差分再計算 4.202899L に差が大きいため、要注意タンクとして扱います。', segment_alerts:[
-      { start_depth_mm:0, end_depth_mm:552, note:'第1帯先頭 0〜552mm は、原票記載1mm当 4.393L と区間差分再計算 4.202899L に差があります。現在アプリは区間差分再計算を採用し、この帯は要注意として表示します。' }
+    { tank_no:128, label:'No.128', group_label:'121〜140', full_l:10082, bottom_l:662, center_mm:2374, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_force_caution:true, audit_summary:'注意あり', audit_status_note:'第1帯先頭 0〜552mm は、記載1mm当4.393Lでは区間終点2982Lと合いません。紙2mm表には4.202への修正痕跡があり、現在アプリは区間始点662L・区間終点2982Lを優先して内部再計算します。中間区間の登録値 1988mm は 1998mm に修正済みです。詳細はタンク登録詳細を開くで確認してください。', audit_note:'No.128 は区間差分再計算を使う方式です。複数検定区画。ユーザー確認済み値: 全容量10082L / 底板面以下662L / 中心深2374mm。中間区間の登録値は 1988mm から 1998mm に修正済みです。第1帯先頭 0〜552mm は、記載1mm当4.393Lでは 662L + 552mm × 4.393 = 3086.936L となり、区間終点2982Lと約105L合いません。紙2mm表には4.202への修正痕跡があり、区間始点662L・区間終点2982Lからの再計算値4.202899L/mmと近いため、現在アプリは区間端点を優先して内部再計算します。', segment_alerts:[
+      { start_depth_mm:0, end_depth_mm:552, note:'第1帯先頭 0〜552mm は、記載1mm当4.393Lでは区間終点2982Lと約105L合いません。紙2mm表には4.202への修正痕跡があり、現在アプリは区間始点662L・区間終点2982Lを優先して内部再計算します。' }
     ], segments:[
       { start_depth_mm:0, end_depth_mm:552, start_l:662, end_l:2982, recorded_per_mm_l:4.393 },
       { start_depth_mm:552, end_depth_mm:1276, start_l:2982, end_l:5982, recorded_per_mm_l:4.143 },
-      { start_depth_mm:1276, end_depth_mm:1988, start_l:5982, end_l:8982, recorded_per_mm_l:4.155 },
-      { start_depth_mm:1988, end_depth_mm:2010, start_l:8982, end_l:9032, recorded_per_mm_l:4.166 },
+      { start_depth_mm:1276, end_depth_mm:1998, start_l:5982, end_l:8982, recorded_per_mm_l:4.155 },
+      { start_depth_mm:1998, end_depth_mm:2010, start_l:8982, end_l:9032, recorded_per_mm_l:4.166 },
       { start_depth_mm:2010, end_depth_mm:2022, start_l:9032, end_l:9082, recorded_per_mm_l:4.166 },
       { start_depth_mm:2022, end_depth_mm:2036, start_l:9082, end_l:9132, recorded_per_mm_l:3.571 },
       { start_depth_mm:2036, end_depth_mm:2050, start_l:9132, end_l:9182, recorded_per_mm_l:3.571 },
@@ -5908,12 +5908,15 @@ function syncDocsLink(tank){
     return Boolean(tank && tank.segment_boundary_mode === 'next_segment_on_end');
   }
   function getTankCalcMethodLabel(tank){
-    if(usesBoundaryRecalcSegmentCalc(tank) || isSegmentTank(tank)){
+    if(usesBoundaryRecalcSegmentCalc(tank)){
       return '区間の始点Lと終点Lから1mm当を再計算';
     }
-    return usesRecordedPerMmSegmentCalc(tank)
-      ? '区間の記載1mm当をそのまま使う計算'
-      : '区間の前後をまっすぐ結んで計算';
+    if(usesRecordedPerMmSegmentCalc(tank)){
+      return '区間の記載1mm当をそのまま使う計算';
+    }
+    return isSegmentTank(tank)
+      ? '区間の前後をまっすぐ結んで計算'
+      : '固定1mm当たり計算';
   }
   function getTankBoundaryLabel(tank){
     return usesNextSegmentBoundaryMode(tank)
