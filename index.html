@@ -912,7 +912,7 @@ body::before{
 .calc-btn,.history-select-toggle.is-selected,.history-entry-restore,.history-compare-screen-base-btn.current{background:#384655 !important;border:2px solid #384655 !important;color:#fff !important;}
 .inline-tools-actions [data-action="run-tool-history"],.inline-tools-actions [data-action="run-active-mix-history"]{background:#f7f8f9 !important;border:2px solid #ccd0d4 !important;color:#384655 !important;box-shadow:none !important;}
 .inline-tools-actions [data-action="run-tool-history"]:active,.inline-tools-actions [data-action="run-active-mix-history"]:active{box-shadow:none !important;}
-.history-shortcut-panel .inline-tools-actions .history-add-btn{background:#384655 !important;border:2px solid #384655 !important;color:#fff !important;box-shadow:none !important;}
+.history-shortcut-panel .inline-tools-actions .history-add-btn{background:#f0f2f4 !important;border:2px solid #cbced2 !important;color:#263240 !important;box-shadow:none !important;}
 .history-shortcut-panel .inline-tools-actions .history-view-btn{background:#f7f5f1 !important;border:2px solid #ddd5ca !important;color:#516170 !important;box-shadow:none !important;}
 .history-shortcut-panel .inline-tools-actions .tank2mm-send-btn{background:#f0f2f4 !important;border:2px solid #cbced2 !important;color:#263240 !important;box-shadow:none !important;}
 .history-select-toggle,.history-entry-copy,.history-compare-screen-base-btn{background:#fff;border:2px solid #cbced2;color:#293440;}
@@ -4129,6 +4129,22 @@ body::before{display:none !important;content:none !important;}
   min-height:44px !important;
   padding:10px 12px !important;
 }
+
+/* 2026-04-24: 総合計算履歴に追加ボタンを、主計算ボタンより一段静かな色に調整 */
+.history-shortcut-panel .inline-tools-actions .history-add-btn,
+.history-shortcut-panel .inline-tools-actions .history-add-btn.ui-primary-action{
+  background:#f0f2f4 !important;
+  background-image:none !important;
+  border:2px solid #cbced2 !important;
+  color:#263240 !important;
+  box-shadow:none !important;
+}
+.history-shortcut-panel .inline-tools-actions .history-add-btn:hover,
+.history-shortcut-panel .inline-tools-actions .history-add-btn.ui-primary-action:hover{
+  background:#e8ebef !important;
+  border-color:#bcc3ca !important;
+  color:#263240 !important;
+}
 </style>
 </head>
 <body>
@@ -4824,13 +4840,13 @@ body::before{display:none !important;content:none !important;}
 <div class="tm2-share-card" data-tm2-role="share-card">
 <div class="tm2-share-head">
 <div>
-<div class="tm2-share-title">共有文メモ（最新1件）</div>
-<div class="tm2-share-note">各計算機の「2mm表に送る」で上書きされます。数量は下で手入力します。</div>
+<div class="tm2-share-title">2mm表送信メモ</div>
+<div class="tm2-share-note">各計算機の「2mm表送信」で上書きされます。数量は下で手入力します。</div>
 </div>
 </div>
-<button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">共有文メモを開く</button>
+<button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">2mm表送信メモを開く</button>
 <div class="tm2-share-body" data-tm2-role="share-body" hidden>
-<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の「2mm表に送る」で入った内容をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
+<textarea class="tm2-share-input" id="tm2_share_memo" placeholder="各計算機の「2mm表送信」で入った内容をここに表示します。必要なら直接貼り付けても使えます。"></textarea>
 <button class="back-btn reset-btn tm2-share-clear-btn" data-action="clear-tm2-share-memo" type="button">メモを消す</button>
 </div>
 </div>
@@ -4870,7 +4886,7 @@ body::before{display:none !important;content:none !important;}
 </div>
 <div class="tm2-detail-toggle-grid">
 <button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-reason" disabled type="button">近隣候補を見る</button>
-<button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-audit" disabled type="button">計算・登録値を見る</button>
+<button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-audit" disabled type="button">登録値と換算内訳</button>
 </div>
 <div class="tm2-detail-panel" data-tm2-role="reason-panel" hidden><div class="tm2-detail-grid" data-tm2-role="reason-grid"></div></div>
 <div class="tm2-detail-panel" data-tm2-role="audit-panel" hidden><div class="tm2-detail-grid" data-tm2-role="audit-grid"></div><div class="tm2-docs-link-wrap is-inside-panel"><a aria-disabled="true" class="back-btn tm2-docs-link-btn is-disabled" data-tm2-role="docs-link" href="./tm2-docs-view.html" tabindex="-1">タンク登録詳細を開く</a></div></div>
@@ -6117,7 +6133,7 @@ function syncDocsLink(tank){
     if(els.shareCard) els.shareCard.classList.toggle('is-open', open);
     if(els.shareBody) els.shareBody.hidden = !open;
     if(els.shareToggle){
-      els.shareToggle.textContent = open ? '共有文メモを閉じる' : '共有文メモを開く';
+      els.shareToggle.textContent = open ? '2mm表送信メモを閉じる' : '2mm表送信メモを開く';
       els.shareToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }
@@ -6282,7 +6298,7 @@ function buildAuditInfo(tank){
   function syncAuditToggle(tank){
     const enabled = Boolean(tank);
     els.auditToggle.disabled = !enabled;
-    els.auditToggle.textContent = enabled ? (state.auditOpen ? '計算・登録値を閉じる' : '計算・登録値を見る') : '計算・登録値を見る';
+    els.auditToggle.textContent = enabled ? (state.auditOpen ? '登録値と換算内訳を閉じる' : '登録値と換算内訳') : '登録値と換算内訳';
     els.auditToggle.setAttribute('aria-expanded', state.auditOpen ? 'true' : 'false');
     els.auditPanel.hidden = !(enabled && state.auditOpen);
   }
@@ -6334,7 +6350,7 @@ function buildAuditInfo(tank){
   function buildTm2RoundedBeforeText(rawVolume){
     const display = formatTm2RawVolume(rawVolume);
     if(!display) return '';
-    return `丸め前 ${display}L / 表示Lは切り捨て`;
+    return `切り捨て前：${display}L`;
   }
   function composeResultSubtext(twoMmText, extraNotes=[]){
     const parts = [];
@@ -7985,7 +8001,7 @@ function Jcalc(){
     if(input) input.value='';
     saveInputs();
     if(typeof window.setTank2mmShareMemoOpen==='function') window.setTank2mmShareMemoOpen(false, {updateHistory:false});
-    if(notify) toast('2mm表の共有文メモを消しました');
+    if(notify) toast('2mm表送信メモを消しました');
   }
   document.addEventListener('input', event=>{
     if(event.target?.id==='tm2_share_memo') saveInputs();
@@ -8189,7 +8205,7 @@ function Jcalc(){
     }
     openActionConfirm({
       title:'2mm表に送りますか？',
-      note:String(options.note || 'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。'),
+      note:String(options.note || 'この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。'),
       onConfirm:()=>{
         if(!sendTextToTank2mm(normalized, {navigate:true})) return;
         if(typeof options.afterSend==='function') options.afterSend();
@@ -8206,7 +8222,7 @@ function Jcalc(){
     }
     const text=buildCurrentHumanShareText(toolKey);
     confirmSendTextToTank2mm(text, {
-      note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
+      note:'この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
       successMessage:'2mm表へ共有文を送りました',
       emptyMessage:'2mm表へ送る共有文を作成できませんでした'
     });
@@ -8220,7 +8236,7 @@ function Jcalc(){
     }
     const text=buildHistoryHumanShareText(item.id);
     confirmSendTextToTank2mm(text, {
-      note:'この履歴の共有文で、この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
+      note:'この履歴の共有文で、この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
       successMessage:'この履歴を2mm表へ送りました',
       emptyMessage:'2mm表へ送る共有文を作成できませんでした'
     });
@@ -8238,7 +8254,7 @@ function Jcalc(){
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     confirmSendTextToTank2mm(text, {
-      note:'この端末の2mm表にある共有文メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
+      note:'この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
       successMessage:'2mm表へ共有文を送りました',
       emptyMessage:'2mm表へ送る共有文を作成できませんでした',
       afterSend:()=>clearDetachedShareChoiceState({close:true})
@@ -9339,7 +9355,7 @@ function setupHistoryShortcutPanels(root){
         sendButton.className='back-btn tank2mm-send-btn share-transfer-btn history-action-btn';
         sendButton.dataset.action='send-current-to-tm2';
       }
-      sendButton.innerHTML='<span class="btn-main">2mm表に送る</span>';
+      sendButton.innerHTML='<span class="btn-main">2mm表送信</span>';
       sendButton.hidden = !canUseTank2mmTransfer();
       let copyButton=actions.querySelector('[data-action="copy-current-condition"]');
       if(!copyButton){
@@ -9408,7 +9424,7 @@ function setupHistoryShortcutPanels(root){
   function buildHistoryActionViews(item,{pinned,isBase,compareScreen=false}){
     const actions=[];
     actions.push(createHistoryActionView('history-entry-restore','入力へ戻す', 'restore-history-item', item.id));
-    if(canUseTank2mmTransfer()) actions.push(createHistoryActionView('history-entry-send2mm','2mm表に送る', 'send-history-to-tm2', item.id));
+    if(canUseTank2mmTransfer()) actions.push(createHistoryActionView('history-entry-send2mm','2mm表送信', 'send-history-to-tm2', item.id));
     if(canUseShareChoice()) actions.push(createHistoryActionView('history-entry-copy','共有', 'copy-history-condition', item.id));
     actions.push(createHistoryActionView('history-entry-delete','削除', 'delete-history-item', item.id));
     return actions;
