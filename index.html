@@ -5742,11 +5742,54 @@ function toggleEl(target, visible, display='block'){
     if(!str.includes('.')) return 0;
     return str.split('.')[1].length;
   }
+  const TM2_TANK_GROUP_RANGES = [
+    { start: 3, end: 49, label: '3〜49' },
+    { start: 50, end: 99, label: '50〜99' },
+    { start: 100, end: 159, label: '100〜159' }
+  ];
+  function getTankSelectGroupLabel(tank){
+    const tankNo = Number(tank?.tank_no);
+    if(Number.isFinite(tankNo)){
+      const matchedRange = TM2_TANK_GROUP_RANGES.find(range => tankNo >= range.start && tankNo <= range.end);
+      if(matchedRange) return matchedRange.label;
+      const start = Math.floor(tankNo / 10) * 10;
+      return `${start}〜${start + 9}`;
+    }
+    return String(tank?.group_label || '');
+  }
+  function normalizeTankGroupLabel(groupLabel){
+    const label = String(groupLabel || '').trim();
+    if(!label) return '';
+    if(TM2_TANK_GROUP_RANGES.some(range => range.label === label)) return label;
+    const start = Number(label.split('〜')[0]);
+    if(Number.isFinite(start)){
+      const matchedRange = TM2_TANK_GROUP_RANGES.find(range => start >= range.start && start <= range.end);
+      if(matchedRange) return matchedRange.label;
+    }
+    return label;
+  }
+  function getTankSelectGroupSortValue(groupLabel){
+    const normalized = normalizeTankGroupLabel(groupLabel);
+    const start = Number(String(normalized || '').split('〜')[0]);
+    return Number.isFinite(start) ? start : 999999;
+  }
   function getGroups(){
-    return [...new Set(TM2_TANKS.map(tank => tank.group_label))];
+    return [...new Set(TM2_TANKS.map(tank => getTankSelectGroupLabel(tank)))]
+      .sort((a,b) => getTankSelectGroupSortValue(a) - getTankSelectGroupSortValue(b));
   }
   function getTanksByGroup(groupLabel){
-    return TM2_TANKS.filter(tank => tank.group_label === groupLabel).sort((a,b) => a.tank_no - b.tank_no);
+    return TM2_TANKS
+      .filter(tank => getTankSelectGroupLabel(tank) === groupLabel)
+      .sort((a,b) => a.tank_no - b.tank_no);
+  }
+  function getTankGroupOptionLabel(groupLabel){
+    const count = getTanksByGroup(groupLabel).length;
+    return `${groupLabel}（${count}件）`;
+  }
+  function getTankSelectOptionLabel(tank){
+    const fullL = Number(tank?.full_l);
+    const fullText = Number.isFinite(fullL) ? ` / ${fullL}L` : '';
+    return `${tank.label}${fullText}`;
   }
   function getSelectedTank(){
     const tankNo = Number(state.selectedTankNo);
@@ -5925,7 +5968,8 @@ function applyTm2UiState(rawState, options={}){
   if(!saved) return false;
   const groups = getGroups();
   const tankFromNumber = TM2_TANKS.find(tank => String(tank.tank_no) === String(saved.tankNo || '')) || null;
-  const nextGroup = groups.includes(saved.groupKey) ? saved.groupKey : (tankFromNumber?.group_label || '');
+  const normalizedGroupKey = normalizeTankGroupLabel(saved.groupKey);
+  const nextGroup = groups.includes(normalizedGroupKey) ? normalizedGroupKey : (tankFromNumber ? getTankSelectGroupLabel(tankFromNumber) : '');
   state.selectedGroup = nextGroup;
   els.groupSelect.value = nextGroup;
   populateTanks(nextGroup);
@@ -6605,7 +6649,7 @@ function buildAuditInfo(tank){
     getGroups().forEach(group => {
       const option = document.createElement('option');
       option.value = group;
-      option.textContent = group;
+      option.textContent = getTankGroupOptionLabel(group);
       els.groupSelect.appendChild(option);
     });
   }
@@ -6627,7 +6671,7 @@ function buildAuditInfo(tank){
     tanks.forEach(tank => {
       const option = document.createElement('option');
       option.value = String(tank.tank_no);
-      option.textContent = tank.label;
+      option.textContent = getTankSelectOptionLabel(tank);
       els.tankSelect.appendChild(option);
     });
     els.tankSelect.disabled = false;
