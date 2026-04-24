@@ -234,6 +234,47 @@ body::before{display:none !important;content:none !important;}
     <div class="row-list" id="calc-steps"></div>
     <div class="row-list" id="calc-example"></div>
   </section>
+  <section class="card" id="tm2-integer-policy-card">
+    <div class="memo-callout">
+      <div class="memo-title">2mm表の整数表示について</div>
+      <div class="memo-lead">このアプリでは、容器検定簿の登録値をもとに容量を計算し、2mm表の表示Lは小数点以下を切り捨てています。紙2mm表・酒仙2mm表・新洋技研2mm表・このアプリでは、最後に整数Lへ表示する方法が異なる場合があります。</div>
+      <details class="memo-details">
+        <summary>詳しい根拠と実務上の注意</summary>
+        <div class="memo-body">
+          <div class="memo-box">
+            <div class="memo-box-title">確認できている根拠</div>
+            <div class="memo-box-text">容器検定簿には、全容量、中心深、測定区分ごとの深さ・容量、深さ1mm当たり容量などの記載があります。国税庁の容器容量申告書付表では、深さ1mm当たりの容量について、リットル未満の端数は第4位以下を切り捨て、第3位まで記載するとされています。</div>
+          </div>
+          <div class="memo-box">
+            <div class="memo-box-title">2mm表で差が出る理由</div>
+            <div class="memo-box-text">容器検定簿の値から現場用の2mm刻み空積深表を作る際、各行の整数Lを切り捨て・四捨五入・特定条件で繰り上げのどれにするかまでは、確認できた一次資料上、全国一律の指定までは確認できていません。そのため、同じ尺でも1L程度の差が出る場合があります。</div>
+          </div>
+          <div class="memo-box">
+            <div class="memo-box-title">このアプリの扱い</div>
+            <div class="memo-box-text">このアプリでは、紙2mm表・酒仙2mm表・新洋技研2mm表のどれかへ個別補正して寄せるのではなく、換算結果欄に丸め前の計算値を表示したうえで、表示Lは小数点以下を切り捨てます。</div>
+          </div>
+          <details class="memo-details">
+            <summary>1L差で起こりえる実務上の問題</summary>
+            <div class="memo-body">
+              <div class="memo-box">
+                <div class="memo-box-title">記録・照合での問題</div>
+                <div class="memo-box-text">1L差そのものが、すぐに酒質や作業を大きく崩すとは限りません。ただし、酒の移動簿、紙メモ、酒仙入力、このアプリの表示が1Lずれると、後から「どの数字を正本にしたか」を確認する手間が発生します。特に出前・出後、入前・入後の差で移動数量を見る場合、片側だけ1Lずれると移動量も1L変わります。</div>
+              </div>
+              <div class="memo-box">
+                <div class="memo-box-title">割水計算での度数差例</div>
+                <div class="memo-box-text">例として、15%の酒を13%付近へ割水する場合、252Lを291Lにすると 15 × 252 ÷ 291 = 約12.990% です。252Lを292Lにすると 約12.945% で、差は約0.045ポイントです。252Lを291Lにした場合と、253Lを292Lにした場合を比べると、約12.990% と約12.997% で、差は約0.007ポイントです。</div>
+              </div>
+              <div class="memo-box">
+                <div class="memo-box-title">実務上の考え方</div>
+                <div class="memo-box-text">度数差は小さい場合が多い一方で、帳簿・移動記録・酒仙入力との照合では、1L差でも理由を追えることが重要です。そのため、このアプリでは丸め前の値を見えるようにし、表示方針の違いとして扱います。</div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </details>
+    </div>
+  </section>
+
 
 
 </div>

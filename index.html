@@ -6326,10 +6326,20 @@ function buildAuditInfo(tank){
     els.resultSubtext.textContent = message || '';
     els.resultSubtext.classList.toggle('is-guide', kind === 'guide' && Boolean(message));
   }
+  function formatTm2RawVolume(value){
+    const num = Number(value);
+    if(!Number.isFinite(num)) return '';
+    return num.toFixed(3);
+  }
+  function buildTm2RoundedBeforeText(rawVolume){
+    const display = formatTm2RawVolume(rawVolume);
+    if(!display) return '';
+    return `丸め前 ${display}L / 表示Lは切り捨て`;
+  }
   function composeResultSubtext(twoMmText, extraNotes=[]){
     const parts = [];
-    if(twoMmText) parts.push(twoMmText);
     extraNotes.filter(Boolean).forEach(note => parts.push(note));
+    if(twoMmText) parts.push(twoMmText);
     return parts.join('\n');
   }
   function updateAuditView(tank){
@@ -6513,7 +6523,7 @@ function buildAuditInfo(tank){
       renderReasonGrid(state.lastReasonCandidates);
       renderAuditGrid(tank, state.lastCalcDetail);
       syncReasonToggle();
-      setResultSubtext(buildResultTwoMmText(tank, validation.gaugeMm), '');
+      setResultSubtext(composeResultSubtext(buildResultTwoMmText(tank, validation.gaugeMm), [buildTm2RoundedBeforeText(rawVolume)]), '');
       setError('');
       return;
     }
