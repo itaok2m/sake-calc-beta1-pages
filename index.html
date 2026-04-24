@@ -5299,7 +5299,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2154, end_depth_mm:2184, start_l:10348, end_l:10398, recorded_per_mm_l:1.666 },
       { start_depth_mm:2184, end_depth_mm:2236, start_l:10398, end_l:10448, recorded_per_mm_l:0.961 }
     ] },
-    { tank_no:128, label:'No.128', group_label:'121〜140', full_l:10082, bottom_l:662, center_mm:2374, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_force_caution:true, audit_summary:'注意あり', audit_status_note:'第1区間は、区間端点 662L→2982L から再計算した1mm当 4.202898L/mm で計算しています。記載1mm当 4.393L/mm を使うと 662 + 552 × 4.393 = 3086.936L となり、終点2982Lより104.936L多くなります。紙2mm表の下部には 4.202 への修正痕跡があります。おそらく容器検定簿または登録値側の記載ミス・古い値混在です。', audit_note:'No.128 は注意ありですが、アプリ内部の計算は区間端点を優先して整合しています。検証内容: 第1区間は入身深0mm/662Lから552mm/2982Lまで。区間端点から1mm当を出すと (2982 - 662) ÷ (552 - 0) = 2320 ÷ 552 = 4.2028985507...L/mm です。アプリはこの区間を4.2028985507...L/mmとして計算します。一方、容器検定簿・酒仙登録値側に残っている記載1mm当4.393L/mmを使うと 662 + 552 × 4.393 = 3086.936L となり、区間終点2982Lより104.936L多くなります。紙2mm表の下部には4.202への修正痕跡があります。したがって、第1区間はアプリの計算ロジック不具合ではなく、おそらくタンク登録簿側の記載ミス、または紙2mm表・容器検定簿・酒仙登録値の混在問題として扱います。中間区間1988mmは1998mmに修正済みです。', segment_alerts:[
+    { tank_no:128, label:'No.128', group_label:'121〜140', full_l:10082, bottom_l:662, center_mm:2374, source_note:'容器検定簿の区間別記載（区間差分から1mm当を再計算）', segment_calc_mode:'boundary_recalc', segment_boundary_mode:'next_segment_on_end', audit_enabled:true, audit_force_caution:true, audit_summary:'注意あり', audit_status_note:'第1区間は、区間端点 662L→2982L から再計算した1mm当 4.202898L/mm で計算しています。記載1mm当 4.393L/mm を使うと 662 + 552 × 4.393 = 3086.936L となり、終点2982Lより104.936L多くなります。紙2mm表の下部には 4.202 への修正痕跡があります。おそらく容器検定簿または登録値側の記載ミス・古い値混在です。', audit_note:'', segment_alerts:[
       { start_depth_mm:0, end_depth_mm:552, note:'第1区間は、区間端点 662L→2982L から再計算した1mm当 4.202898L/mm で計算しています。記載1mm当4.393L/mmを使うと 662 + 552 × 4.393 = 3086.936L となり、終点2982Lより104.936L多くなります。紙2mm表下部に4.202への修正痕跡があります。おそらくタンク登録簿側の記載ミス、または資料混在です。' }
     ], segments:[
       { start_depth_mm:0, end_depth_mm:552, start_l:662, end_l:2982, recorded_per_mm_l:4.393 },
@@ -5769,7 +5769,7 @@ function getTankDocsUrl(tank){
     if(alerts.length){
       params.set('segmentAlerts', encodeURIComponent(JSON.stringify(alerts)));
     }
-    if(tank.audit_force_caution === true && tank.audit_status_note){
+    if(tank.audit_force_caution === true && tank.audit_status_note && !alerts.length){
       params.set('auditStatusNote', tank.audit_status_note);
     }
   }
