@@ -6236,11 +6236,6 @@ function buildAuditInfo(tank){
     note: isSignificant ? (tank.audit_status_note || '記載1mm当と検算値に差があります。') : ''
   };
 }
-  function formatTm2DiffL(value, digits=3){
-    const num = Number(value);
-    if(!Number.isFinite(num)) return '—';
-    return num.toFixed(digits).replace(/\.0+$/,'').replace(/(\.\d*?)0+$/,'$1');
-  }
   function buildCombinedDetailGroups(tank, candidate){
     if(!tank) return [];
     const groups = [];
@@ -6281,17 +6276,6 @@ function buildAuditInfo(tank){
           label:'尺0の補足',
           value:'このタンクは、紙2mm表では尺0のみ全容量表記です。 この換算表は切り捨て計算のため、尺0では1L低く表示されます。'
         });
-      }
-    }else if(Number.isFinite(Number(tank.per_mm_l))){
-      const decimals = countDecimals(tank.per_mm_l);
-      const reference = calculateReferencePerMm(tank);
-      const recordedRounded = Number(tank.per_mm_l).toFixed(decimals);
-      const referenceRounded = Number(reference).toFixed(decimals);
-      const fullDepthDiffL = Math.abs(reference - Number(tank.per_mm_l)) * tank.center_mm;
-      if(recordedRounded !== referenceRounded){
-        const diffText = formatTm2DiffL(fullDepthDiffL, 3);
-        const direction = Number(tank.per_mm_l) > reference ? `記載1mm当で全深まで換算すると、検算値より約${diffText}L多く出ます。` : `記載1mm当で全深まで換算すると、検算値より約${diffText}L少なく出ます。`;
-        supplementRows.push({ label:'記載1mm当と検算値の差', value:direction });
       }
     }
     if(tank.audit_force_caution === true && tank.audit_note){
