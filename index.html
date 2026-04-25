@@ -8743,11 +8743,10 @@ function Jcalc(){
   function resolveResumeScreenId(screenOverride, stateOverride){
     const requestedScreen=String(screenOverride || q('.screen.active')?.id || 'home-screen');
     const screenId=isResumeScreenAllowed(requestedScreen) ? requestedScreen : 'home-screen';
-    if(screenId==='history-screen' && !getHistory().length) return 'home-screen';
     if(screenId!=='history-compare-screen') return screenId;
     const compareState=getRestorableHistoryCompareScreenState(stateOverride===undefined ? HistoryCompareScreen : stateOverride);
     if(canResumeHistoryCompareScreen(compareState)) return 'history-compare-screen';
-    return getHistory().length ? 'history-screen' : 'home-screen';
+    return 'history-screen';
   }
   function setHistoryCompareScreen(value, opts={}){
     HistoryCompareScreen=isPlainObject(value) ? {...value} : createEmptyHistoryCompareScreenState();
