@@ -4146,6 +4146,35 @@ body::before{display:none !important;content:none !important;}
   color:#2f4d70 !important;
 }
 </style>
+
+<style>
+/* 2026-04-25 JST: iOS 上端余白の最小補正。計算・履歴・共有・2mm表送信には影響しない表示専用。 */
+@supports (padding-top: max(0px)) {
+  .home-body{
+    padding-top:max(36px, calc(env(safe-area-inset-top) + 24px)) !important;
+    padding-bottom:max(60px, calc(env(safe-area-inset-bottom) + 40px)) !important;
+  }
+  .tool-nav{
+    padding-top:max(18px, calc(env(safe-area-inset-top) + 14px)) !important;
+  }
+  @media(max-width:720px){
+    .home-body{
+      padding-top:max(32px, calc(env(safe-area-inset-top) + 24px)) !important;
+    }
+    .tool-nav{
+      padding-top:max(22px, calc(env(safe-area-inset-top) + 16px)) !important;
+    }
+  }
+  @media(max-height:500px) and (orientation:landscape){
+    .home-body{
+      padding-top:max(20px, calc(env(safe-area-inset-top) + 14px)) !important;
+    }
+    .tool-nav{
+      padding-top:max(14px, calc(env(safe-area-inset-top) + 10px)) !important;
+    }
+  }
+}
+</style>
 </head>
 <body>
 <div class="screen active" id="home-screen">
