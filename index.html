@@ -7621,7 +7621,7 @@ function Jcalc(){
 <div class="share-choice-sheet" role="dialog" aria-modal="true" aria-labelledby="share-choice-title">
 <div class="share-choice-head">
 <div class="share-choice-title" id="share-choice-title">共有</div>
-<div class="share-choice-source"><span class="history-status-badge is-soft" id="share-choice-source-badge">試算</span><span class="share-choice-note" id="share-choice-source-text">共有文・復元用コードを選べます。</span></div>
+<div class="share-choice-source"><span class="history-status-badge is-soft" id="share-choice-source-badge">試算</span><span class="share-choice-note" id="share-choice-source-text">共有文 / 復元用コードを選べます。</span></div>
 <div class="share-choice-guide">
 <div class="share-choice-note">相手に見せる時は「共有文」、あとでこのツールに同じ条件を戻したい時は「復元用コード」を使います。</div>
 <div class="share-choice-note is-subtle">コピー前に確認画面が出ます。</div>
@@ -8196,7 +8196,7 @@ function Jcalc(){
       sourceBadge.textContent=statusLabel;
       sourceBadge.className=`history-status-badge ${statusLabel==='履歴'?'':'is-soft'}`;
     }
-    if(sourceText) sourceText.textContent = toolKey ? `${labels.groupLabel} / ${labels.variantLabel}` : '共有文・復元用コードを選べます。';
+    if(sourceText) sourceText.textContent = toolKey ? `${labels.groupLabel} / ${labels.variantLabel}` : '共有文 / 復元用コードを選べます。';
     modal.hidden=false;
     updateShareChoicePreview('human');
   }
@@ -8246,12 +8246,12 @@ function Jcalc(){
   }
   function sendTextToTank2mm(text, options={}){
     if(!canUseTank2mmTransfer()){
-      toast('2mm表へ送る機能は現在停止中です');
+      toast('2mm表送信は現在停止中です');
       return false;
     }
     const normalized=String(text||'').trim();
     if(!normalized){
-      toast('2mm表へ送る共有文を作成できませんでした');
+      toast('2mm表送信用の共有文を作成できませんでした');
       return false;
     }
     setTank2mmShareMemo(normalized, {navigate:options.navigate!==false});
@@ -8260,63 +8260,63 @@ function Jcalc(){
   function confirmSendTextToTank2mm(text, options={}){
     const normalized=String(text||'').trim();
     if(!normalized){
-      toast(options.emptyMessage || '2mm表へ送る共有文を作成できませんでした');
+      toast(options.emptyMessage || '2mm表送信用の共有文を作成できませんでした');
       return;
     }
     openActionConfirm({
-      title:'2mm表に送りますか？',
+      title:'2mm表送信しますか？',
       note:String(options.note || 'この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。'),
       onConfirm:()=>{
         if(!sendTextToTank2mm(normalized, {navigate:true})) return;
         if(typeof options.afterSend==='function') options.afterSend();
-        toast(options.successMessage || '2mm表へ共有文を送りました');
+        toast(options.successMessage || '2mm表送信メモへ共有文を送りました');
       }
     });
   }
   function sendCurrentConditionToTank2mmFromTrigger(el){
-    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
+    if(!canUseTank2mmTransfer()){ toast('2mm表送信は現在停止中です'); return; }
     const toolKey=resolveToolKeyFromTrigger(el);
     if(!toolKey || !configFor(toolKey)){
-      toast('この画面では2mm表へ送る条件が見つかりません');
+      toast('この画面では2mm表送信できる条件が見つかりません');
       return;
     }
     const text=buildCurrentHumanShareText(toolKey);
     confirmSendTextToTank2mm(text, {
       note:'この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
-      successMessage:'2mm表へ共有文を送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした'
+      successMessage:'2mm表送信メモへ共有文を送りました',
+      emptyMessage:'2mm表送信用の共有文を作成できませんでした'
     });
   }
   function sendHistoryConditionToTank2mm(id){
-    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
+    if(!canUseTank2mmTransfer()){ toast('2mm表送信は現在停止中です'); return; }
     const item=getHistory().find(entry=>entry.id===id);
     if(!item || !configFor(item.toolKey)){
-      toast('2mm表へ送る履歴が見つかりません');
+      toast('2mm表送信できる履歴が見つかりません');
       return;
     }
     const text=buildHistoryHumanShareText(item.id);
     confirmSendTextToTank2mm(text, {
       note:'この履歴の共有文で、この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
-      successMessage:'この履歴を2mm表へ送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした'
+      successMessage:'この履歴を2mm表送信メモへ送りました',
+      emptyMessage:'2mm表送信用の共有文を作成できませんでした'
     });
   }
   function executeShareChoiceSendToTank2mm(){
-    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
+    if(!canUseTank2mmTransfer()){ toast('2mm表送信は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     if(!sendTextToTank2mm(text, {navigate:true})) return;
     closeShareChoice();
-    toast('2mm表へ共有文を送りました');
+    toast('2mm表送信メモへ共有文を送りました');
   }
   function sendShareChoiceToTank2mm(){
-    if(!canUseTank2mmTransfer()){ toast('2mm表へ送る機能は現在停止中です'); return; }
+    if(!canUseTank2mmTransfer()){ toast('2mm表送信は現在停止中です'); return; }
     updateShareChoicePreview('human');
     const text=buildHumanTextFromContext(ShareChoiceState);
     confirmSendTextToTank2mm(text, {
       note:'この端末の2mm表送信メモを最新1件で上書きし、2mm表画面へ移動します。数量入力は2mm表で手入力します。',
-      successMessage:'2mm表へ共有文を送りました',
-      emptyMessage:'2mm表へ送る共有文を作成できませんでした',
+      successMessage:'2mm表送信メモへ共有文を送りました',
+      emptyMessage:'2mm表送信用の共有文を作成できませんでした',
       afterSend:()=>clearDetachedShareChoiceState({close:true})
     });
   }
@@ -9439,7 +9439,7 @@ function setupHistoryShortcutPanels(root){
     const cfg=configFor(toolKey);
     if(title) title.textContent = cfg ? `${cfg.label}の保存・連携` : '保存・連携';
     const shortcutMessages=[];
-    if(canUseTank2mmTransfer()) shortcutMessages.push('2mm表へ送る時はこの画面から行います');
+    if(canUseTank2mmTransfer()) shortcutMessages.push('2mm表送信はこの画面から行います');
     if(canUseHistory()) shortcutMessages.push(canUseHistoryCompare() ? '比較・戻す・削除は「総合計算履歴を見る」から行います' : '戻す・削除は「総合計算履歴を見る」から行います');
     if(note) note.textContent = shortcutMessages.join('。') + (shortcutMessages.length ? '。' : '');
     if(addButton){
@@ -9524,7 +9524,7 @@ function setupHistoryShortcutPanels(root){
   }
   function buildHistoryActionViews(item,{pinned,isBase,compareScreen=false}){
     const actions=[];
-    actions.push(createHistoryActionView('history-entry-restore','入力へ戻す', 'restore-history-item', item.id));
+    actions.push(createHistoryActionView('history-entry-restore','入力欄へ戻す', 'restore-history-item', item.id));
     if(canUseTank2mmTransfer()) actions.push(createHistoryActionView('history-entry-send2mm','2mm表送信', 'send-history-to-tm2', item.id));
     if(canUseShareChoice()) actions.push(createHistoryActionView('history-entry-copy','共有', 'copy-history-condition', item.id));
     actions.push(createHistoryActionView('history-entry-delete','削除', 'delete-history-item', item.id));

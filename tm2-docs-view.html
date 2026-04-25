@@ -380,9 +380,11 @@ body::before{display:none !important;content:none !important;}
     const liquidDepth = Number(centerMm) - activeGauge;
     if(calcMode === 'fixed'){
       if(!Number.isFinite(Number(bottomL)) || !Number.isFinite(Number(fullL)) || !Number.isFinite(Number(centerMm)) || Number(centerMm) === 0) return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 で容量を出します。`;
-      const formulaPerMm = Number.isFinite(Number(perMm)) ? Number(perMm) : ((Number(fullL) - Number(bottomL)) / Number(centerMm));
+      const hasRegisteredPerMm = Number.isFinite(Number(perMm)) && String(perMm).trim() !== '';
+      const formulaPerMm = hasRegisteredPerMm ? Number(perMm) : ((Number(fullL) - Number(bottomL)) / Number(centerMm));
+      const formulaPerMmLabel = hasRegisteredPerMm ? String(perMm).trim() : formulaPerMm.toFixed(6);
       const raw = Number(bottomL) + (liquidDepth * formulaPerMm);
-      return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 ${formulaPerMm.toFixed(4)}L = ${raw.toFixed(5)}L、表示は ${Math.floor(raw)}Lです。`;
+      return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 ${formulaPerMmLabel}L = ${raw.toFixed(5)}L、表示は ${Math.floor(raw)}Lです。`;
     }
     const segment = getSegmentForLiquidDepth(liquidDepth);
     if(!segment) return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。入身深が入る区間で容量を出します。`;
