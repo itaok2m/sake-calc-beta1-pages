@@ -8666,10 +8666,29 @@ function Jcalc(){
     const state=normalizeHistoryCompareScreenState(rawValue===undefined ? HistoryCompareScreen : rawValue);
     return !!(state.toolKey && Array.isArray(state.ids) && state.ids.length>=2);
   }
+  function getRestorableHistoryCompareScreenState(rawValue){
+    const rawObject=isPlainObject(rawValue) ? rawValue : {};
+    const primaryCompare=normalizeHistoryCompareScreenState(rawObject.historyCompareScreen || rawValue);
+    if(canResumeHistoryCompareScreen(primaryCompare)) return primaryCompare;
+    const draft=normalizeHistoryCompareDraftState(rawObject.historyCompareDraft || null);
+    if(draft.toolKey && Array.isArray(draft.ids) && draft.ids.length>=2){
+      const fallbackFilter=normalizeHistoryScreenFilter(rawObject.historyScreenFilter || primaryCompare.historyFilter || HistoryScreenFilter);
+      return normalizeHistoryCompareScreenState({
+        toolKey:draft.toolKey,
+        ids:draft.ids.slice(0,MAX_COMPARE_ITEMS),
+        baseId:draft.ids[0] || '',
+        historyFilter:fallbackFilter,
+        historyVariant:fallbackFilter==='all'
+          ? 'all'
+          : normalizeHistoryScreenVariant(rawObject.historyScreenVariantFilter || primaryCompare.historyVariant || HistoryScreenVariantFilter, fallbackFilter)
+      });
+    }
+    return primaryCompare;
+  }
   function resolveResumeScreenId(screenOverride, stateOverride){
     const requestedScreen=String(screenOverride || q('.screen.active')?.id || 'home-screen');
     if(requestedScreen!=='history-compare-screen') return requestedScreen;
-    const compareState=isPlainObject(stateOverride) ? (stateOverride.historyCompareScreen || stateOverride) : HistoryCompareScreen;
+    const compareState=getRestorableHistoryCompareScreenState(stateOverride===undefined ? HistoryCompareScreen : stateOverride);
     if(canResumeHistoryCompareScreen(compareState)) return 'history-compare-screen';
     return getHistory().length ? 'history-screen' : 'home-screen';
   }
@@ -8698,6 +8717,9 @@ function Jcalc(){
     }, {render:false, save:false});
     window.showScreen('history-compare-screen');
     renderHistoryCompareScreen();
+    if(!isBootstrapping && !isHandlingPopState && typeof window.syncCurrentBrowserHistoryState === 'function'){
+      try{ window.syncCurrentBrowserHistoryState(); }catch{}
+    }
     if(notify) toast('比較表を開きました');
   }
   function setHistoryCompareScreenBase(id, notify){
@@ -8988,6 +9010,7 @@ function Jcalc(){
     }
     if(screenId==='history-compare-screen'){
       // 比較中画面へ戻る時だけ、履歴一覧の補助状態 + 比較中画面の補助状態を組で戻す。
+      // ブラウザバック後の「進む」で比較本体が欠ける場合は、比較ドラフトから同じ比較条件を復元する。
       // 一時ダイアログはこの直前に clearTransientOverlayState() で切っている前提。
       setHistoryScreenFilter(state.historyScreenFilter || 'all', {
         save:false,
@@ -8997,7 +9020,7 @@ function Jcalc(){
       });
       HistoryCompareDraft = isPlainObject(state.historyCompareDraft) ? {...state.historyCompareDraft} : createEmptyHistoryCompareDraftState();
       sanitizeHistoryCompareDraft();
-      HistoryCompareScreen = isPlainObject(state.historyCompareScreen) ? {...state.historyCompareScreen} : createEmptyHistoryCompareScreenState();
+      HistoryCompareScreen = getRestorableHistoryCompareScreenState(state);
       sanitizeHistoryCompareScreen();
       return;
     }
@@ -9031,7 +9054,20 @@ function Jcalc(){
   function buildBrowserHistoryState(screenId){
     const uiState = getResumeSnapshot(screenId);
     const tm2State = uiState.tm2State || (typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: screenId}) : null);
-    return {app:'sake-tools', screen:screenId, uiState, tm2State};
+    const state = {app:'sake-tools', screen:screenId, uiState, tm2State};
+    if(screenId==='history-compare-screen'){
+      const compareState = getRestorableHistoryCompareScreenState(uiState);
+      if(canResumeHistoryCompareScreen(compareState)){
+        state.historyCompareScreen = compareState;
+        state.uiState = {...state.uiState, historyCompareScreen:compareState};
+      }
+      const draftState = getHistoryCompareDraft();
+      if(draftState && draftState.toolKey && Array.isArray(draftState.ids) && draftState.ids.length){
+        state.historyCompareDraft = draftState;
+        state.uiState = {...state.uiState, historyCompareDraft:draftState};
+      }
+    }
+    return state;
   }
   function syncBrowserHistory(screenId, replace, options={}){
     if(!screenId || typeof window.history === 'undefined') return;
@@ -10302,17 +10338,25 @@ function clearInputsByTool(toolKey){
       return '';
     }
   }
-  function getBrowserHistoryResumeState(){
+  function getBrowserHistoryUiPayload(state){
     try{
-      const state = window.history && window.history.state;
       if(!state || state.app !== 'sake-tools') return null;
       const uiState = isPlainObject(state.uiState) ? {...state.uiState} : {};
       if(state.screen) uiState.screen = state.screen;
+      if(isPlainObject(state.historyCompareScreen)) uiState.historyCompareScreen = {...state.historyCompareScreen};
+      if(isPlainObject(state.historyCompareDraft)) uiState.historyCompareDraft = {...state.historyCompareDraft};
       const tm2State = isPlainObject(state.tm2State)
         ? state.tm2State
         : (isPlainObject(uiState.tm2State) ? uiState.tm2State : null);
       if(tm2State) uiState.tm2State = tm2State;
       return isPlainObject(uiState) ? uiState : null;
+    }catch{
+      return null;
+    }
+  }
+  function getBrowserHistoryResumeState(){
+    try{
+      return getBrowserHistoryUiPayload(window.history && window.history.state);
     }catch{
       return null;
     }
@@ -10352,7 +10396,7 @@ function clearInputsByTool(toolKey){
     updateScreenWithPersistence(prev, { previousScreen: q('.screen.active')?.id });
   };
   window.addEventListener('popstate', event=>{
-    const rawState = event.state?.uiState || event.state || null;
+    const rawState = getBrowserHistoryUiPayload(event.state) || event.state?.uiState || event.state || null;
     const requestedScreen = event.state && event.state.app==='sake-tools' ? event.state.screen : null;
     const screenId = resolveResumeScreenId(requestedScreen, rawState);
     const restoreState = getFallbackRestoreState(requestedScreen, screenId, rawState);
