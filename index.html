@@ -5970,6 +5970,8 @@ function resetTm2UiState(options={}){
 }
 function getTm2StateFromHistory(historyState){
   try{
+    const entryScreen = String(historyState?.screen || historyState?.uiState?.screen || '');
+    if(entryScreen && entryScreen !== TM2_SCREEN_ID) return null;
     return normalizeTm2UiState(historyState?.tm2State || historyState?.uiState?.tm2State || null);
   }catch{
     return null;
@@ -9109,8 +9111,17 @@ function Jcalc(){
   }
   function buildBrowserHistoryState(screenId){
     const uiState = getResumeSnapshot(screenId);
-    const tm2State = uiState.tm2State || (typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: screenId}) : null);
-    const state = {app:'sake-tools', screen:screenId, uiState, tm2State};
+    const allowTm2State = getResumeScope(screenId, uiState).keepTank2mmState;
+    const tm2State = allowTm2State
+      ? (uiState.tm2State || (typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: screenId}) : null))
+      : null;
+    const state = {app:'sake-tools', screen:screenId, uiState:{...uiState}};
+    if(tm2State){
+      state.tm2State = tm2State;
+      state.uiState = {...state.uiState, tm2State};
+    }else{
+      delete state.uiState.tm2State;
+    }
     if(screenId==='history-compare-screen'){
       const compareState = getRestorableHistoryCompareScreenState(uiState);
       if(canResumeHistoryCompareScreen(compareState)){
@@ -10403,10 +10414,14 @@ function clearInputsByTool(toolKey){
       if(state.screen) uiState.screen = state.screen;
       if(isPlainObject(state.historyCompareScreen)) uiState.historyCompareScreen = {...state.historyCompareScreen};
       if(isPlainObject(state.historyCompareDraft)) uiState.historyCompareDraft = {...state.historyCompareDraft};
-      const tm2State = isPlainObject(state.tm2State)
-        ? state.tm2State
-        : (isPlainObject(uiState.tm2State) ? uiState.tm2State : null);
+      const payloadScreen = String(uiState.screen || '');
+      const tm2State = payloadScreen === 'tank2mm-screen'
+        ? (isPlainObject(state.tm2State)
+          ? state.tm2State
+          : (isPlainObject(uiState.tm2State) ? uiState.tm2State : null))
+        : null;
       if(tm2State) uiState.tm2State = tm2State;
+      else delete uiState.tm2State;
       return isPlainObject(uiState) ? uiState : null;
     }catch{
       return null;
