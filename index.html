@@ -1660,6 +1660,7 @@ body::before{
 #tank2mm-screen .tm2-docs-link-btn:disabled::after,#tank2mm-screen .tm2-docs-link-btn.is-disabled::after{color:#8a958d;}
 #tank2mm-screen .tm2-detail-grid{display:grid;gap:8px;}
 #tank2mm-screen .tm2-list-top{margin-bottom:12px;}
+#tank2mm-screen .tm2-list-bottom-action{display:none;}
 #tank2mm-screen .tm2-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;}
 #tank2mm-screen .tm2-mini-reset-btn{
   min-height:48px;padding:10px 14px;border-radius:14px;white-space:nowrap;
@@ -1705,6 +1706,15 @@ body::before{
   #tank2mm-screen .tm2-share-head{display:block;}
   #tank2mm-screen .tm2-share-toggle-btn{min-height:52px;padding:10px 12px;font-size:13px;}
   #tank2mm-screen .tm2-share-clear-btn{width:100%;justify-content:center;}
+  #tank2mm-screen .card[data-tm2-panel="list"]{padding-bottom:96px;}
+  #tank2mm-screen .tm2-list-top{display:none;}
+  #tank2mm-screen .tm2-list-bottom-action{display:block;position:fixed;left:50%;bottom:max(10px, calc(env(safe-area-inset-bottom) + 10px));transform:translateX(-50%);width:min(calc(100vw - 28px), 728px);z-index:130;pointer-events:none;}
+  #tank2mm-screen .tm2-list-bottom-action .back-btn{width:100%;min-height:54px;justify-content:center;border-radius:16px;border:2px solid #d0d2d5;background:#fff;color:#263240;box-shadow:0 12px 26px rgba(24,32,42,.18);pointer-events:auto;}
+  #tank2mm-screen .tm2-table-wrap{max-height:none;overflow:visible;}
+  #tank2mm-screen .tm2-table thead th{top:calc(env(safe-area-inset-top) + 64px);}
+  #tank2mm-screen .tm2-table th,#tank2mm-screen .tm2-table td{padding:10px 12px;font-size:14px;}
+  #tank2mm-screen .tm2-table tbody tr{scroll-margin-top:calc(env(safe-area-inset-top) + 96px);}
+  #tank2mm-screen .tm2-footer-note{padding-bottom:8px;}
 }
 
 
@@ -4932,6 +4942,7 @@ body::before{display:none !important;content:none !important;}
 </table>
 </div>
 <div class="tm2-footer-note">この一覧は、タンク登録値から再生成した2mm表です。</div>
+<div class="tm2-list-bottom-action"><button class="back-btn" data-tm2-action="close-list" type="button">2mm表入力画面へ戻る</button></div>
 </div>
 </div>
 </div>
@@ -6754,6 +6765,18 @@ function buildAuditInfo(tank){
     }
     if(!highlightRow){
       tableWrap.scrollTop = 0;
+      return;
+    }
+    const tableIsScrollable = tableWrap.scrollHeight > tableWrap.clientHeight + 2;
+    if(!tableIsScrollable){
+      try{
+        highlightRow.scrollIntoView({block:'center', inline:'nearest'});
+      }catch{
+        highlightRow.scrollIntoView();
+      }
+      if(attempt === 0){
+        setTimeout(() => scrollTm2ListToHighlight(25), 120);
+      }
       return;
     }
     const wrapRect = tableWrap.getBoundingClientRect();
