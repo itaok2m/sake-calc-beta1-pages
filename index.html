@@ -6789,6 +6789,9 @@ function buildAuditInfo(tank){
     els.listBody.innerHTML = rows.join('');
     els.mainPanel.hidden = true;
     els.listPanel.hidden = false;
+    if(options.pushHistory === true && typeof window.pushCurrentBrowserHistoryState === 'function'){
+      try{ window.pushCurrentBrowserHistoryState({force:true}); }catch{}
+    }
     if(options.save !== false) saveTm2UiState();
     if(options.scheduleScroll !== false){
       requestAnimationFrame(() => {
@@ -6839,7 +6842,7 @@ function buildAuditInfo(tank){
     const action = btn.dataset.tm2Action;
     if(action === 'mode') setMode(btn.dataset.tm2Mode || 'gauge');
     if(action === 'reset') resetInputs();
-    if(action === 'open-list') openList();
+    if(action === 'open-list') openList({pushHistory:true});
     if(action === 'close-list') closeList();
     if(action === 'open-docs') openTankDocs();
     if(action === 'toggle-share') setShareOpen(!state.shareOpen);
@@ -9030,7 +9033,7 @@ function Jcalc(){
     const tm2State = uiState.tm2State || (typeof window.captureTank2mmState === 'function' ? window.captureTank2mmState({screen: screenId}) : null);
     return {app:'sake-tools', screen:screenId, uiState, tm2State};
   }
-  function syncBrowserHistory(screenId, replace){
+  function syncBrowserHistory(screenId, replace, options={}){
     if(!screenId || typeof window.history === 'undefined') return;
     try{
       const currentState = window.history.state;
@@ -9039,7 +9042,7 @@ function Jcalc(){
         window.history.replaceState(nextState, '', location.href);
         return;
       }
-      if(currentState && currentState.app==='sake-tools' && currentState.screen===screenId) return;
+      if(!options.force && currentState && currentState.app==='sake-tools' && currentState.screen===screenId) return;
       window.history.pushState(nextState, '', location.href);
     }catch{}
   }
@@ -9047,7 +9050,12 @@ function Jcalc(){
     const currentScreen = q('.screen.active')?.id || 'home-screen';
     syncBrowserHistory(currentScreen, true);
   }
+  function pushCurrentBrowserHistoryState(options={}){
+    const currentScreen = q('.screen.active')?.id || 'home-screen';
+    syncBrowserHistory(currentScreen, false, options);
+  }
   window.syncCurrentBrowserHistoryState = syncCurrentBrowserHistoryState;
+  window.pushCurrentBrowserHistoryState = pushCurrentBrowserHistoryState;
   const JST_TIMEZONE = 'Asia/Tokyo';
   function formatJstDate(value, withZone){
     if(value===undefined || value===null || value==='') return '';
@@ -10234,10 +10242,12 @@ function clearInputsByTool(toolKey){
     originalShowScreen(targetScreen);
     if(targetScreen==='home-screen') clearHistoryAuxiliaryStateForHome();
     persistScreenState(targetScreen);
-    refreshUiStateAndHistory({screenId:targetScreen});
     if(opts.syncHistory !== false && !isBootstrapping && !isHandlingPopState && opts.previousScreen !== targetScreen){
+      // 画面移動では、保存処理による現在履歴の置換より先に、ブラウザ履歴へ移動先を積む。
+      // これにより、ブラウザバック・多機能マウス戻る・スマホ戻るで直前画面へ戻りやすくする。
       syncBrowserHistory(targetScreen, false);
     }
+    refreshUiStateAndHistory({screenId:targetScreen});
   }
   function resetUiModesToDefaults(){
     try{ WshowPanel(0); }catch{}
@@ -10292,6 +10302,21 @@ function clearInputsByTool(toolKey){
       return '';
     }
   }
+  function getBrowserHistoryResumeState(){
+    try{
+      const state = window.history && window.history.state;
+      if(!state || state.app !== 'sake-tools') return null;
+      const uiState = isPlainObject(state.uiState) ? {...state.uiState} : {};
+      if(state.screen) uiState.screen = state.screen;
+      const tm2State = isPlainObject(state.tm2State)
+        ? state.tm2State
+        : (isPlainObject(uiState.tm2State) ? uiState.tm2State : null);
+      if(tm2State) uiState.tm2State = tm2State;
+      return isPlainObject(uiState) ? uiState : null;
+    }catch{
+      return null;
+    }
+  }
   function bootstrapApp(){
     bindDeclarativeUi();
     enhanceNumericInputs();
@@ -10299,10 +10324,12 @@ function clearInputsByTool(toolKey){
     cleanupDisabledHistoryData();
     setupHistoryShortcutPanels();
     applyUiCommonRoles();
-    const bootState=applyUIState() || getStoredUiState();
+    const storedBootState=applyUIState() || getStoredUiState();
     restoreInputs();
     runInitialCalculations();
     const forcedScreen = getForcedScreenFromUrl();
+    const historyBootState = forcedScreen ? null : getBrowserHistoryResumeState();
+    const bootState = historyBootState || storedBootState || {};
     const requestedLast=(forcedScreen || bootState.screen || storageGet(STORAGE.screen) || 'home-screen');
     const last=resolveResumeScreenId(requestedLast, bootState);
     const bootRestoreState=getFallbackRestoreState(requestedLast, last, bootState);
