@@ -10378,8 +10378,9 @@ function clearInputsByTool(toolKey){
     const last=resolveResumeScreenId(requestedLast, bootState);
     const bootRestoreState=getFallbackRestoreState(requestedLast, last, bootState);
     clearTransientOverlayState();
+    if(last==='history-compare-screen') restoreScreenSubState(bootRestoreState, last);
     if(last && document.getElementById(last)) originalShowScreen(last);
-    restoreScreenSubState(bootRestoreState, last);
+    if(last!=='history-compare-screen') restoreScreenSubState(bootRestoreState, last);
     sanitizeShareChoiceState({closeWhenInvalid:true});
     isBootstrapping = false;
     syncBrowserHistory(q('.screen.active')?.id || 'home-screen', true);
@@ -10403,8 +10404,9 @@ function clearInputsByTool(toolKey){
     if(!screenId || !document.getElementById(screenId)) return;
     isHandlingPopState = true;
     clearTransientOverlayState();
+    if(screenId==='history-compare-screen') restoreScreenSubState(restoreState, screenId);
     originalShowScreen(screenId);
-    restoreScreenSubState(restoreState, screenId);
+    if(screenId!=='history-compare-screen') restoreScreenSubState(restoreState, screenId);
     sanitizeShareChoiceState({closeWhenInvalid:true});
     persistScreenState(screenId);
     refreshUiStateAndHistory({screenId});
