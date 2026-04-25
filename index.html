@@ -669,7 +669,6 @@ input::placeholder{color:#c4bdb5;}
 .share-choice-btn .btn-main{font-size:14px;font-weight:900;line-height:1.35;}
 .share-choice-btn .btn-sub{font-size:11px;font-weight:700;line-height:1.6;color:#6b756e;}
 .share-choice-btn.is-human{background:#f8f9fa;border-color:#d5d9dd;}
-.share-choice-btn.is-tank2mm{background:#eef6fb;border-color:#c9dced;}
 .share-choice-btn.is-restore{background:#fbf8f3;border-color:#e2dacd;}
 .share-choice-preview-wrap{display:grid;gap:8px;}
 .share-choice-preview-label{font-size:12px;font-weight:800;color:#313b46;}
@@ -5424,7 +5423,7 @@ function toggleEl(target, visible, display='block'){
       { start_depth_mm:2194, end_depth_mm:2226, start_l:10358, end_l:10408, recorded_per_mm_l:1.563 },
       { start_depth_mm:2226, end_depth_mm:2286, start_l:10408, end_l:10458, recorded_per_mm_l:0.833 }
     ] },
-    { tank_no:130, label:'No.130', group_label:'121〜140', full_l:634, bottom_l:5, center_mm:892, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'2mm表で尺0で633、容器検定簿で尺0で634' },
+    { tank_no:130, label:'No.130', group_label:'121〜140', full_l:634, bottom_l:5, center_mm:892, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:131, label:'No.131', group_label:'121〜140', full_l:636, bottom_l:5, center_mm:896, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:132, label:'No.132', group_label:'121〜140', full_l:635, bottom_l:5, center_mm:894, per_mm_l:0.70528, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
     { tank_no:133, label:'No.133', group_label:'121〜140', full_l:189, bottom_l:1, center_mm:670, per_mm_l:0.2806, source_note:'監査用生成条件', audit_enabled:true, audit_note:'' },
@@ -6118,9 +6117,6 @@ function syncDocsLink(tank){
     if(!isSegmentTank(tank)) return null;
     return tank.segments.find((segment, index) => matchesSegmentLiquidDepth(tank, liquidDepth, segment, index)) || null;
   }
-  function getTankSegmentByGauge(tank, gaugeMm){
-    return getTankSegmentByLiquidDepth(tank, getTankLiquidDepth(tank, gaugeMm));
-  }
   function getSegmentActualPerMm(segment){
     const depthSpan = segment.end_depth_mm - segment.start_depth_mm;
     if(depthSpan <= 0) return 0;
@@ -6311,15 +6307,6 @@ function buildAuditInfo(tank){
 
 
     const supplementRows = [];
-    if(isSegmentTank(tank)){
-      const zeroGaugeDisplayed = calculateVolume(tank, 0);
-      if((tank.full_l - zeroGaugeDisplayed) === 1){
-        supplementRows.push({
-          label:'尺0の補足',
-          value:'このタンクは、紙2mm表では尺0のみ全容量表記です。 この換算表は切り捨て計算のため、尺0では1L低く表示されます。'
-        });
-      }
-    }
     if(tank.audit_force_caution === true && tank.audit_note){
       supplementRows.push({ label:'注意の根拠', value:tank.audit_note });
     }
@@ -6734,9 +6721,6 @@ function buildAuditInfo(tank){
     setError('');
     updateAuditView(getSelectedTank());
     saveTm2UiState();
-  }
-  function getListNearbySummary(tank){
-    return '';
   }
   function getTm2ListScrollGauge(){
     if(Number.isFinite(state.scrollTargetGauge)) return Number(state.scrollTargetGauge);
@@ -7402,12 +7386,8 @@ function formatTruncatedFixed(value,digits=2){
 }
 function EexRaw(dal,d){return ((d-dal)*260+0.21);}
 function EtexRaw(dal,d,al){return EexRaw(dal,d)+1.5894*al;}
-function Eex(dal,d){return Math.floor(100*EexRaw(dal,d)+0.05)/100;}
-function Etex(dal,d,al){return Math.floor(100*EtexRaw(dal,d,al)+0.05)/100;}
 function EexdevRaw(d1,d0,dv,dev){return dev*(EexRaw(d1,dv)-EexRaw(d0,dv))+EexRaw(d0,dv);}
 function EtexdevRaw(d1,d0,dv,al,dev){return dev*(EtexRaw(d1,dv,al+1)-EtexRaw(d0,dv,al))+EtexRaw(d0,dv,al);}
-function Eexdev(d1,d0,dv,dev){return Math.floor(100*EexdevRaw(d1,d0,dv,dev)+0.05)/100;}
-function Etexdev(d1,d0,dv,al,dev){return Math.floor(100*EtexdevRaw(d1,d0,dv,al,dev)+0.05)/100;}
 function EshowErr(msg){
   const e=document.getElementById('Eerr');
   if(!e){ hideEl('Eresult'); return; }
@@ -8339,14 +8319,6 @@ function Jcalc(){
       successMessage:'この履歴を2mm表送信メモへ送りました',
       emptyMessage:'2mm表送信用の共有文を作成できませんでした'
     });
-  }
-  function executeShareChoiceSendToTank2mm(){
-    if(!canUseTank2mmTransfer()){ toast('2mm表送信は現在停止中です'); return; }
-    updateShareChoicePreview('human');
-    const text=buildHumanTextFromContext(ShareChoiceState);
-    if(!sendTextToTank2mm(text, {navigate:true})) return;
-    closeShareChoice();
-    toast('2mm表送信メモへ共有文を送りました');
   }
   function sendShareChoiceToTank2mm(){
     if(!canUseTank2mmTransfer()){ toast('2mm表送信は現在停止中です'); return; }
