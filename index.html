@@ -10263,6 +10263,22 @@ function clearInputsByTool(toolKey){
       return null;
     }
   }
+  function getPageNavigationType(){
+    try{
+      const entry = performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+      if(entry && entry.type) return String(entry.type);
+      if(performance && performance.navigation){
+        if(performance.navigation.type === 1) return 'reload';
+        if(performance.navigation.type === 2) return 'back_forward';
+        return 'navigate';
+      }
+    }catch{}
+    return '';
+  }
+  function canUseBrowserHistoryStateOnBoot(){
+    const navType = getPageNavigationType();
+    return navType === 'reload' || navType === 'back_forward';
+  }
   function bootstrapApp(){
     bindDeclarativeUi();
     enhanceNumericInputs();
@@ -10274,9 +10290,15 @@ function clearInputsByTool(toolKey){
     restoreInputs();
     runInitialCalculations();
     const forcedScreen = getForcedScreenFromUrl();
-    const historyBootState = forcedScreen ? null : getBrowserHistoryResumeState();
-    const bootState = historyBootState || storedBootState || {};
-    const requestedLast=(forcedScreen || bootState.screen || storageGet(STORAGE.screen) || 'home-screen');
+    const canUseHistoryBootState = !forcedScreen && canUseBrowserHistoryStateOnBoot();
+    const historyBootState = canUseHistoryBootState ? getBrowserHistoryResumeState() : null;
+    // 起動入口の責務固定:
+    // - 通常リロード / ブラウザの戻る・進む復帰では、ブラウザ履歴 state を使ってその画面を復元する。
+    // - URLで画面指定された場合は、その画面を開く。
+    // - Chromeブックマーク・新規タブ・同一URLへの通常移動のような fresh navigate では、ブラウザ履歴 state と localStorage の前回画面へ自動復帰しない。
+    //   localStorage は入力値や補助状態の保存には使うが、通常起動の入口画面決定には使わない。
+    const bootState = historyBootState || (forcedScreen ? storedBootState : {});
+    const requestedLast=(forcedScreen || (historyBootState && historyBootState.screen) || 'home-screen');
     const last=resolveResumeScreenId(requestedLast, bootState);
     const bootRestoreState=getFallbackRestoreState(requestedLast, last, bootState);
     clearTransientOverlayState();
