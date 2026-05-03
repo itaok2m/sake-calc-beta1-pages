@@ -1,0 +1,51 @@
+/* 混合計算専用比較。戻る操作は上部バーに任せ、表の中で基準変更と入力欄へ戻す操作だけを扱う。 */
+.compare-wrapper{max-width:920px;}
+.history-compare-screen-table-card{display:grid;gap:10px;background:#fff;border:1px solid #e4ded3;border-radius:18px;padding:12px 12px 10px;box-shadow:none;}
+.history-compare-screen-table-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid #e7e2d9;padding-bottom:9px;}
+.history-compare-screen-table-head h2{font-size:13px;line-height:1.45;color:#262d35;margin:0;font-weight:900;}
+.history-compare-screen-table-head p{font-size:11px;line-height:1.65;color:#66746a;margin:0;text-align:right;}
+.history-compare-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+.history-compare-table{--history-compare-group-width:46px;--history-compare-label-width:112px;--history-compare-col-width:150px;border-collapse:separate;border-spacing:0;width:max-content;min-width:calc(var(--history-compare-group-width) + var(--history-compare-label-width) + (var(--history-compare-col-width) * var(--history-compare-item-count)));background:#fff;border:1px solid #d2d4d7;border-radius:16px;overflow:hidden;}
+.history-compare-table th,.history-compare-table td{border-right:1px solid #e6e7e9;border-bottom:1px solid #e6e7e9;vertical-align:top;}
+.history-compare-table thead tr th{border-bottom:2px solid #cbcdd0;}
+.history-compare-table tr:last-child td,.history-compare-table tr:last-child th{border-bottom:none;}
+.history-compare-table th:last-child,.history-compare-table td:last-child{border-right:none;}
+.history-compare-table-sticky-group{position:sticky;left:0;z-index:4;min-width:var(--history-compare-group-width);max-width:var(--history-compare-group-width);background:#fff;color:#394552;font-size:10px;font-weight:900;text-align:center;padding:6px 4px;border-right:1px solid #d8dadc;box-shadow:none;}
+.history-compare-table-sticky{position:sticky;left:var(--history-compare-group-width);z-index:3;min-width:var(--history-compare-label-width);max-width:var(--history-compare-label-width);background:#fff;color:#2a343e;font-size:11px;font-weight:900;text-align:left;padding:6px 8px;border-right:1px solid #d2d4d7;box-shadow:none;}
+.history-compare-table thead .history-compare-table-sticky-group,.history-compare-table thead .history-compare-table-sticky{z-index:6;background:#fff;}
+.history-compare-table-group-cell{position:sticky;left:0;z-index:2;background:#fff;color:#37424e;font-size:10px;font-weight:900;text-align:center;padding:6px 4px;vertical-align:middle;border-right:1px solid #d8dadc;box-shadow:none;writing-mode:vertical-rl;letter-spacing:.08em;}
+.history-compare-table-row-label{position:sticky;left:var(--history-compare-group-width);z-index:1;background:#fff;color:#445261;font-size:10.5px;font-weight:900;text-align:left;padding:7px 8px;line-height:1.35;border-right:1px solid #d2d4d7;box-shadow:none;}
+.history-compare-table-col{min-width:var(--history-compare-col-width);max-width:var(--history-compare-col-width);background:#fff;padding:0;}
+.history-compare-table-col.is-base{background:#f8f9fa;border-left:2px solid #384655;border-right:2px solid #384655;border-top:2px solid #384655;}
+.history-compare-table-headcell{display:grid;gap:3px;padding:7px 8px;min-height:54px;box-shadow:none;}
+.history-compare-head-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:2px;}
+.history-compare-base-badge{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:3px 9px;border-radius:999px;background:#314257;color:#fff;font-size:10px;font-weight:900;line-height:1.2;}
+.history-compare-set-base{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:3px 9px;border-radius:999px;border:1px solid #d8d3ca;background:#fff;color:#2f4257;font-size:10px;font-weight:900;line-height:1.2;cursor:pointer;}
+.history-compare-set-base:active{transform:translateY(1px);}
+.history-compare-table-headlabel{font-size:9.5px;font-weight:900;color:#455363;line-height:1.25;letter-spacing:.02em;}
+.history-compare-table-date{display:block;font-size:10.5px;line-height:1.3;color:#323c48;font-weight:900;}
+.history-compare-table-clock{display:block;font-size:9.5px;line-height:1.3;color:#5c675f;font-weight:800;}
+.history-compare-table-cell{padding:7px 8px;background:#fff;}
+.history-compare-table-cell.is-base{background:#f8f9fa;border-left:2px solid #384655;border-right:2px solid #384655;}
+.history-compare-table tbody tr:last-child .history-compare-table-cell.is-base{border-bottom:2px solid #384655;}
+.history-compare-table-cell.is-changed{background:#fff7e8;}
+.history-compare-table-value{display:block;font-size:13px;font-weight:900;line-height:1.35;color:#222d39;word-break:break-word;}
+.history-compare-table-subvalue{display:block;margin-top:2px;font-size:10px;line-height:1.4;color:#5f6a62;}
+.history-compare-table-subvalue .history-compare-table-diff-tag{display:inline-flex;align-items:center;justify-content:center;margin-right:4px;padding:1px 5px;border-radius:999px;background:#fff0c9;border:1px solid #e8cf82;color:#775400;font-weight:900;}
+.history-compare-table-actions{display:grid;gap:6px;}
+.history-compare-table-action-btn{width:100%;min-height:34px;border-radius:10px;border:1px solid #d8d3ca;background:#fff;color:#2f4257;font-size:11px;font-weight:900;line-height:1.25;cursor:pointer;}
+.history-compare-table-action-btn:active{transform:translateY(1px);}
+@media(max-width:640px){
+  .compare-wrapper{max-width:100%;}
+  .history-compare-screen-table-card{padding:11px 10px 9px;border-radius:16px;}
+  .history-compare-screen-table-head{display:grid;gap:4px;}
+  .history-compare-screen-table-head p{text-align:left;}
+  .history-compare-table{--history-compare-group-width:40px;--history-compare-label-width:98px;--history-compare-col-width:138px;border-radius:14px;}
+  .history-compare-table-group-cell{left:0;padding:6px 4px;}
+  .history-compare-table-headcell{min-height:50px;padding:6px 7px;}
+  .history-compare-table-cell{padding:6px 7px;}
+  .history-compare-head-actions{gap:4px;}
+  .history-compare-set-base,.history-compare-base-badge{font-size:9.5px;min-height:23px;padding:3px 7px;}
+  .history-compare-table-action-btn{font-size:10.5px;min-height:34px;}
+}
+

@@ -1,0 +1,13 @@
+/* 計算機別履歴画面 */
+.history-action-controls.history-action-controls-single{grid-template-columns:minmax(180px,280px);}
+.history-note{font-size:11.5px;color:#6f7975;line-height:1.65;margin-top:6px;}
+.history-item-mode{font-size:11px;color:#6d7988;font-weight:900;line-height:1.45;}
+.history-record-lines{display:grid;gap:4px;margin-top:1px;color:#4b5663;font-size:11.5px;line-height:1.55;}
+.history-record-line strong{color:#2e3d4e;}
+.history-actions .calc-btn,.history-actions .back-btn{justify-content:center;}
+@media(max-width:640px){
+  .history-action-controls.history-action-controls-single{grid-template-columns:1fr;}
+}
+
+.history-route-note{border:1px dashed #cfdbe7;background:#f6f9fc;border-radius:12px;padding:8px 10px;margin:-2px 0 10px;color:#3e566e;font-size:11.5px;font-weight:800;line-height:1.7;}
+body.dark .history-route-note{background:#132336;border-color:#29445f;color:#d7e7f7;}

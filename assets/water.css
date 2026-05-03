@@ -1,0 +1,32 @@
+.water-card{padding-top:0;}
+.water-sub-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 12px;}
+.water-sub-tab{appearance:none;border:1.5px solid #d0cbc2;background:#fff;color:#444;border-radius:12px;min-height:58px;padding:9px 10px;text-align:left;display:grid;gap:2px;box-shadow:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.water-sub-tab.active{background:#2f4257;border-color:#2f4257;color:#fff;}
+.water-sub-goal{font-size:12.5px;font-weight:900;line-height:1.35;}
+.water-sub-known{font-size:10.5px;font-weight:700;line-height:1.45;color:#6f7882;}
+.water-sub-tab.active .water-sub-known{color:#e8edf3;}
+.water-panel-desc{font-size:12px;color:#69756d;line-height:1.75;border-top:1px solid #e4e5e7;padding-top:10px;margin:0 0 10px;}
+.water-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.water-field{display:grid;gap:5px;min-width:0;}
+.water-field>span:first-child{font-size:12px;font-weight:800;color:#66717e;line-height:1.4;}
+.water-input-wrap{position:relative;display:flex;align-items:center;}
+.water-input-wrap input{padding-right:36px;}
+.iunit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:900;color:#66717e;pointer-events:none;}
+.water-field.is-readonly{align-content:start;gap:7px;min-height:72px;}
+.water-hint{font-size:11px;color:#7d878f;font-weight:800;line-height:1.5;}
+.unknown-badge{display:inline-flex;align-items:center;justify-content:center;width:max-content;max-width:100%;min-height:32px;border:1px dashed #cfd5dc;border-radius:999px;background:#f7f8f9;color:#647080;font-size:11px;font-weight:900;padding:5px 10px;line-height:1.3;}
+.water-action-panel{max-width:680px;margin-left:auto;margin-right:auto;}
+.water-action-title-row{margin-bottom:2px;}
+.water-action-note{margin-bottom:8px;}
+.water-action-buttons{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-items:stretch;}
+.water-action-buttons .back-btn{width:100%;min-height:44px;padding-left:10px;padding-right:10px;text-align:center;white-space:normal;}
+.water-tm2-candidate-btn:disabled{opacity:.45;cursor:not-allowed;background:#fff;border-color:#d0cbc2;color:#8a8f94;}
+.water-action-status{min-height:1.5em;margin-top:5px;color:#3a526b;font-size:11.5px;font-weight:700;line-height:1.6;}
+@media(max-width:640px){
+  .water-sub-tabs{grid-template-columns:1fr;gap:7px;}
+  .water-sub-tab{min-height:52px;padding:8px 10px;}
+  .water-field-grid{grid-template-columns:1fr;gap:10px;}
+  .water-action-panel{padding-top:10px;margin-top:12px;}
+  .water-action-note{margin-bottom:9px;}
+  .water-action-buttons .back-btn{min-height:46px;font-size:13px;justify-content:center;}
+}
