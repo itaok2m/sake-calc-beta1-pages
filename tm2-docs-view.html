@@ -1,518 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<meta name="theme-color" content="#2f4257"/>
-<link rel="manifest" href="./manifest.json"/>
-<link rel="apple-touch-icon" href="./icons/icon-192.png"/>
-<meta name="application-name" content="酒造ツール"/>
-<title>タンク登録詳細 / ベータ1</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
-body{font-family:"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;background:#f4f4f3;color:#1c2126;min-height:100vh;min-height:100dvh;-webkit-font-smoothing:antialiased;}
-a{color:inherit;text-decoration:none;}
-button{font:inherit;}
-.page{max-width:860px;margin:0 auto;padding:18px 16px 56px;padding-bottom:max(56px, calc(env(safe-area-inset-bottom) + 24px));display:grid;gap:0;}
-.nav{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:14px 16px;padding-top:max(20px, calc(env(safe-area-inset-top) + 16px));padding-bottom:14px;background:rgba(250,250,249,.95);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(216,216,213,.9);}
-.back-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 16px;border-radius:16px;border:1.5px solid #d9dadb;background:#fff;color:#3d4957;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(39,55,74,.10);}
-.back-btn:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(56,70,85,.10);}
-.nav-title{font-size:18px;font-weight:800;line-height:1.35;min-width:0;}
-.card{padding:16px 0;display:grid;gap:10px;border:none;background:transparent;box-shadow:none;}
-.card + .card{border-top:1px solid rgba(216,218,220,.88);}
-.hero{padding-top:18px;gap:10px;}
-.kicker{font-size:11px;font-weight:800;letter-spacing:.05em;color:#516275;}
-h1{font-size:25px;line-height:1.35;}
-.lead,.body-text,.plain-note{font-size:14px;line-height:1.85;color:#3e4a58;}
-.hero-status{padding:12px 14px;border-radius:16px;border:1px solid #dbdddf;background:#f8f8f9;display:grid;gap:6px;}
-.hero-status[hidden]{display:none !important;}
-.hero-status.is-ok{border-color:#dadde0;background:#f6f7f9;}
-.hero-status.is-caution{border-color:#e7d19a;background:#fffaf0;}
-.hero-status-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.hero-status-badge{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:2px 9px;border-radius:999px;background:#eaecee;color:#273340;font-size:11px;font-weight:800;line-height:1.4;}
-.hero-status.is-caution .hero-status-badge{background:#f3d89b;color:#6a4b00;}
-.hero-status-title{font-size:14px;font-weight:800;line-height:1.6;color:#222a33;}
-.hero-status-note{font-size:13px;line-height:1.8;color:#495768;}
-.hero-status.is-caution .hero-status-note{color:#5d4a11;}
-.grid{display:grid;gap:0 18px;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid rgba(220,221,223,.88);}
-.mini{padding:10px 2px 11px;border-radius:0;background:transparent;border:none;border-bottom:1px solid rgba(220,221,223,.88);display:grid;gap:2px;}
-.label{font-size:12px;font-weight:800;line-height:1.6;color:#516174;}
-.value{font-size:16px;font-weight:800;line-height:1.6;color:#222a34;word-break:break-word;}
-.section-title{font-size:18px;font-weight:800;line-height:1.4;color:#1c2a39;}
-.row-list{display:grid;gap:0;border-top:1px solid rgba(220,221,223,.88);}
-.row{padding:11px 2px;border-radius:0;border:none;border-bottom:1px solid rgba(220,221,223,.88);background:transparent;display:grid;gap:4px;}
-.row-title{font-size:14px;font-weight:800;line-height:1.6;color:#222a33;}
-.row-text{font-size:13px;line-height:1.85;color:#485768;}
-.section-note{font-size:12px;line-height:1.8;color:#55677b;}
-.segment-table{display:grid;gap:0;border-top:1px solid rgba(220,221,223,.88);}
-.segment-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 2px;border-radius:0;border:none;border-bottom:1px solid rgba(220,221,223,.88);background:transparent;align-items:start;}
-.segment-cell{display:grid;gap:2px;min-width:0;}
-.segment-head{font-size:12px;font-weight:800;line-height:1.6;color:#516174;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.segment-band{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:1px 8px;border-radius:999px;background:#eff0f2;color:#2b343f;font-size:11px;font-weight:800;line-height:1.4;}
-.segment-value{font-size:13px;line-height:1.75;color:#242a31;word-break:break-word;}
-.segment-alert{grid-column:1 / -1;margin-top:2px;padding-top:8px;border-top:1px dashed rgba(122,91,21,.26);font-size:12px;line-height:1.8;color:#5d4a11;}
-.segment-row.is-caution{padding:12px 14px;border-radius:16px;border:1px solid #e7d19a;background:#fff6e3;margin:6px 0;}
-.segment-row.is-caution .segment-band{background:#f3d89b;color:#6a4b00;}
-.segment-row.is-caution .segment-head{color:#7a5b15;}
-.segment-row.is-caution .segment-value{color:#5d4a11;font-weight:800;}
-.footer-note{font-size:12px;line-height:1.85;color:#55677b;}
-[hidden]{display:none !important;}
-@media(max-width:720px){
-  .grid{grid-template-columns:1fr;}
-  .mini{padding-left:0;padding-right:0;}
-  .row{padding-left:0;padding-right:0;}
-  .segment-row{grid-template-columns:1fr 1fr;padding-left:0;padding-right:0;}
-  .segment-row.is-caution{padding-left:12px;padding-right:12px;}
-  .nav{align-items:flex-start;}
-}
-
-/* 2026-04-18: gradient removal + darker neutral background */
-body{
-  background:#eeeeeb !important;
-  background-image:none !important;
-}
-.nav{
-  background:#f3f3f0 !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  border-bottom:1px solid #ddddda !important;
-}
-.hero-status,
-.hero-status.is-ok,
-.hero-status.is-caution,
-.segment-row.is-caution,
-.segment-band,
-.hero-status-badge,
-.back-btn{
-  background-image:none !important;
-}
-.back-btn{background-color:#ffffff !important;}
-.hero-status,
-.hero-status.is-ok{background-color:#eef4fb !important;}
-.hero-status.is-caution,
-.segment-row.is-caution{background-color:#f5efe0 !important;}
-.segment-band{background-color:#e2e3e5 !important;}
-.hero-status-badge{background-color:#e4e5e7 !important;}
-.hero-status.is-caution .hero-status-badge,
-.segment-row.is-caution .segment-band{background-color:#ecd29a !important;}
-
-
-
-/* 2026-04-18: full blue cleanup pass */
-body{background:#f4f5f7 !important;}
-.nav{background:#f8f9fb !important;border-bottom-color:#dbe2ea !important;}
-.hero-status,
-.hero-status.is-ok{
-  background:#eef4fb !important;
-  border-color:#d9e4ef !important;
-}
-.hero-status-badge,
-.segment-band{
-  background:#eef4fb !important;
-  border-color:#d7e2ee !important;
-  color:#30506f !important;
-}
-.back-btn{
-  background:#ffffff !important;
-  border-color:#d7e2ee !important;
-  color:#3d566f !important;
-}
-.lead,.body-text,.plain-note,.hero-status-note,.label,.segment-head{color:#5c7087 !important;}
-
-</style>
-<style>
-
-/* 2026-04-18: color reduction + main actions only blue */
-body{background:#f4f4f3 !important;background-image:none !important;}
-body::before{display:none !important;content:none !important;}
-.page-shell,.hero-card,.info-card,.section-card,.panel-card,.audit-card,.segment-card,.calc-card,.row,.segment-row,.section{
-  background:#ffffff !important;
-  background-image:none !important;
-  border-color:#d7dde4 !important;
-  box-shadow:none !important;
-}
-.topbar,.page-header,.sticky-actions,.hero-head{
-  background:#f7f7f6 !important;
-  background-image:none !important;
-  border-color:#d9dde2 !important;
-  box-shadow:none !important;
-}
-.back-btn{
-  background:#ffffff !important;
-  border-color:#d7dde4 !important;
-  color:#59636d !important;
-  box-shadow:none !important;
-}
-.hero-status,
-.hero-status.is-ok,
-.segment-band,
-.kicker,
-.section-note,
-.footer-note,
-.plain-note{
-  background-image:none !important;
-}
-.hero-status,
-.hero-status.is-ok{
-  background:#ffffff !important;
-  border-color:#d7dde4 !important;
-}
-.hero-status-badge,
-.segment-band{
-  background:#edf3f8 !important;
-  color:#2f4d70 !important;
-  border-color:#8fa7bf !important;
-}
-.segment-row.is-caution,
-.segment-row.is-caution .segment-band,
-.hero-status.is-caution,
-.hero-status.is-caution .hero-status-badge{
-  background-image:none !important;
-}
-
-
-.memo-callout{padding:12px 14px;border:1px solid #d7dde4;border-radius:16px;background:#fff;display:grid;gap:8px;}
-.memo-title{font-size:16px;font-weight:800;line-height:1.5;color:#1f2b38;}
-.memo-lead{font-size:13px;line-height:1.85;color:#485768;}
-.memo-details{border-top:1px solid rgba(220,221,223,.88);}
-.memo-details>summary{list-style:none;cursor:pointer;padding:13px 2px;border-bottom:1px solid rgba(220,221,223,.88);font-size:14px;font-weight:800;line-height:1.6;color:#223040;display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.memo-details>summary::-webkit-details-marker{display:none;}
-.memo-details>summary::after{content:'開く';font-size:12px;font-weight:700;color:#5a6f86;}
-.memo-details[open]>summary::after{content:'閉じる';}
-.memo-body{padding:12px 0 2px;display:grid;gap:12px;}
-.memo-box{padding:12px 14px;border:1px solid #d7dde4;border-radius:16px;background:#fff;display:grid;gap:6px;}
-.memo-box-title{font-size:13px;font-weight:800;line-height:1.6;color:#223040;}
-.memo-box-text{font-size:13px;line-height:1.85;color:#485768;}
-.formula-box,.diagram-box{padding:12px 14px;border:1px solid #d7dde4;border-radius:16px;background:#f8fafc;}
-.formula-box code,.diagram-box code{display:block;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.8;color:#223040;}
-.memo-chip-row{display:flex;flex-wrap:wrap;gap:8px;}
-.memo-chip{display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:2px 10px;border-radius:999px;background:#eef4fb;border:1px solid #d7e2ee;color:#30506f;font-size:11px;font-weight:800;line-height:1.4;}
-.memo-warn{background:#fff6e3;border-color:#e7d19a;color:#6a4b00;}
-
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>タンク登録詳細 / 2mm表 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/tm2.css">
 </head>
-<body>
-<div class="nav">
-  <button class="back-btn" id="backToTm2" type="button">← 2mm表入力画面へ戻る</button>
-  <div class="nav-title">タンク登録詳細</div>
-</div>
-<div class="page">
-  <section class="card hero">
-    <div class="kicker">2mm表 / 確認画面</div>
-    <div>
-      <h1 id="page-title">タンク登録詳細</h1>
-      <p class="lead">登録値・区間登録値・採用計算方式を確認します。</p>
-    </div>
-    <div class="hero-status" id="audit-hero" hidden>
-      <div class="hero-status-row">
-        <span class="hero-status-badge" id="audit-hero-badge">登録済み</span>
-        <div class="hero-status-title" id="audit-hero-title">登録値の確認画面です。</div>
-      </div>
-      <div class="hero-status-note" id="audit-hero-note" hidden></div>
-    </div>
-  </section>
-  <section class="card">
-    <div class="section-title">登録値</div>
-    <div class="grid">
-      <div class="mini"><div class="label">タンク</div><div class="value" id="tank-label">未指定</div></div>
-      <div class="mini"><div class="label">計算方式</div><div class="value" id="calc-label">未指定</div></div>
-      <div class="mini"><div class="label">記載の全容量</div><div class="value" id="full-l">—</div></div>
-      <div class="mini"><div class="label">記載の底板面以下</div><div class="value" id="bottom-l">—</div></div>
-      <div class="mini"><div class="label">記載の中心深</div><div class="value" id="center-mm">—</div></div>
-      <div class="mini" id="fixed-permm-card" hidden><div class="label">記載1mm当</div><div class="value" id="fixed-permm">—</div></div>
-      <div class="mini"><div class="label">1mm当の切替</div><div class="value" id="boundary-label">—</div></div>
-    </div>
-  </section>
-  <section class="card" id="segment-card" hidden>
-    <div class="section-title">区間登録値</div>
-    <div class="section-note" id="segment-note">注意がある区間だけ色を付けて表示します。</div>
-    <div class="segment-table" id="segment-list"></div>
-  </section>
-  <section class="card">
-    <div class="section-title">計算のしかた</div>
-    <div class="row-list" id="calc-steps"></div>
-    <div class="row-list" id="calc-example"></div>
-  </section>
-  <section class="card" id="tm2-integer-policy-card">
-    <div class="memo-callout">
-      <div class="memo-title">2mm表の整数表示について</div>
-      <div class="memo-lead">このアプリでは、容器検定簿の登録値をもとに容量を計算し、2mm表の表示Lは小数点以下を切り捨てています。紙2mm表・酒仙2mm表・新洋技研2mm表・このアプリでは、最後に整数Lへ表示する方法が異なる場合があります。</div>
-      <details class="memo-details">
-        <summary>詳しい根拠と実務上の注意</summary>
-        <div class="memo-body">
-          <div class="memo-box">
-            <div class="memo-box-title">確認できている根拠</div>
-            <div class="memo-box-text">容器検定簿には、全容量、中心深、測定区分ごとの深さ・容量、深さ1mm当たり容量などの記載があります。国税庁の容器容量申告書付表では、深さ1mm当たりの容量について、リットル未満の端数は第4位以下を切り捨て、第3位まで記載するとされています。</div>
+<body id="tank2mm-docs-screen">
+  <div class="tool-nav">
+    <a class="back-btn" data-tm2-docs-role="return-link" href="./tm2.html">← 2mm表へ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">タンク登録詳細</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>タンク登録詳細</h1>
+      <p>2mm表で使うタンク登録値、採用している計算方式、区間別登録値を確認する画面です。ここでは保存・記録・タンク現在値更新は行いません。</p>
+    </section>
+
+    <div class="wrapper tm2-docs-root">
+      <section class="card tm2-docs-card">
+        <div class="tm2-subscreen-label">タンク登録詳細</div>
+        <div class="tm2-docs-heading">
+          <div>
+            <div class="tm2-docs-kicker">選択中タンク</div>
+            <h2 data-tm2-docs-role="tank-title">タンク未指定</h2>
           </div>
-          <div class="memo-box">
-            <div class="memo-box-title">2mm表で差が出る理由</div>
-            <div class="memo-box-text">容器検定簿の値から現場用の2mm刻み空積深表を作る際、各行の整数Lを切り捨て・四捨五入・特定条件で繰り上げのどれにするかまでは、確認できた一次資料上、全国一律の指定までは確認できていません。そのため、同じ尺でも1L程度の差が出る場合があります。</div>
-          </div>
-          <div class="memo-box">
-            <div class="memo-box-title">このアプリの扱い</div>
-            <div class="memo-box-text">このアプリでは、紙2mm表・酒仙2mm表・新洋技研2mm表のどれかへ個別補正して寄せるのではなく、換算結果欄に切り捨て前の値を表示したうえで、表示Lは小数点以下を切り捨てます。</div>
-          </div>
-          <details class="memo-details">
-            <summary>1L差で起こりえる実務上の問題</summary>
-            <div class="memo-body">
-              <div class="memo-box">
-                <div class="memo-box-title">記録・照合での問題</div>
-                <div class="memo-box-text">1L差そのものが、すぐに酒質や作業を大きく崩すとは限りません。ただし、酒の移動簿、紙メモ、酒仙入力、このアプリの表示が1Lずれると、後から「どの数字を正本にしたか」を確認する手間が発生します。特に出前・出後、入前・入後の差で移動数量を見る場合、片側だけ1Lずれると移動量も1L変わります。</div>
-              </div>
-              <div class="memo-box">
-                <div class="memo-box-title">割水計算での度数差例</div>
-                <div class="memo-box-text">例として、15%の酒を13%付近へ割水する場合、252Lを291Lにすると 15 × 252 ÷ 291 = 約12.990% です。252Lを292Lにすると 約12.945% で、差は約0.045ポイントです。252Lを291Lにした場合と、253Lを292Lにした場合を比べると、約12.990% と約12.997% で、差は約0.007ポイントです。</div>
-              </div>
-              <div class="memo-box">
-                <div class="memo-box-title">実務上の考え方</div>
-                <div class="memo-box-text">度数差は小さい場合が多い一方で、帳簿・移動記録・酒仙入力との照合では、1L差でも理由を追えることが重要です。そのため、このアプリでは切り捨て前の値を見えるようにし、表示方針の違いとして扱います。</div>
-              </div>
-            </div>
-          </details>
+          <a class="back-btn tm2-docs-return" data-tm2-docs-role="return-link-2" href="./tm2.html">← 2mm表へ戻る</a>
         </div>
-      </details>
+        <div class="tm2-docs-note" data-tm2-docs-role="status-note">2mm表で選択したタンクの登録詳細を表示します。</div>
+      </section>
+
+      <section class="card tm2-docs-card" data-tm2-docs-role="summary-card">
+        <h2>登録値</h2>
+        <div class="tm2-docs-grid" data-tm2-docs-role="summary-grid"></div>
+      </section>
+
+      <section class="card tm2-docs-card" data-tm2-docs-role="method-card">
+        <h2>採用計算方式</h2>
+        <div class="tm2-docs-grid" data-tm2-docs-role="method-grid"></div>
+      </section>
+
+      <section class="card tm2-docs-card" data-tm2-docs-role="segments-card" hidden>
+        <h2>区間別登録値</h2>
+        <div class="tm2-docs-table-wrap">
+          <table class="tm2-docs-table">
+            <thead>
+              <tr>
+                <th>底からの深さ</th>
+                <th>開始L</th>
+                <th>終点L</th>
+                <th>記載1mm当</th>
+                <th>計算1mm当</th>
+              </tr>
+            </thead>
+            <tbody data-tm2-docs-role="segments-body"></tbody>
+          </table>
+        </div>
+        <div class="tm2-docs-footnote">区間別タンクは、容器検定簿の区間行をもとに2mm表を再生成します。</div>
+      </section>
+
+      <section class="card tm2-docs-card" data-tm2-docs-role="alerts-card" hidden>
+        <h2>注意・補足</h2>
+        <div class="tm2-docs-alert-list" data-tm2-docs-role="alerts-list"></div>
+      </section>
     </div>
-  </section>
-
-
-
-</div>
-<script>
-(function(){
-  const params = new URLSearchParams(location.search);
-  const tankNo = params.get('tankNo') || '';
-  const tankLabel = params.get('tankLabel') || (tankNo ? `No.${tankNo}` : '未指定');
-  const fullL = params.get('fullL') || '';
-  const bottomL = params.get('bottomL') || '';
-  const centerMm = params.get('centerMm') || '';
-  const perMm = params.get('perMm') || '';
-  const calcMode = params.get('calcMode') || 'fixed';
-  const boundaryMode = params.get('boundaryMode') || 'none';
-  const returnScreen = params.get('returnScreen') || 'tank2mm-screen';
-  const segmentsParam = params.get('segments') || '';
-  const segmentAlertsParam = params.get('segmentAlerts') || '';
-  const auditStatusNote = params.get('auditStatusNote') || '';
-  const auditHero = document.getElementById('audit-hero');
-  const auditHeroBadge = document.getElementById('audit-hero-badge');
-  const auditHeroTitle = document.getElementById('audit-hero-title');
-  const auditHeroNote = document.getElementById('audit-hero-note');
-  const activeGaugeParam = params.get('tm2activegauge') || (params.get('tm2mode') === 'gauge' ? (params.get('tm2gauge') || '') : '');
-  const returnUrl = params.get('returnUrl') || '';
-  const TM2_RETURN_KEY = 'sake-tools-tm2-return-v1';
-  const activeGauge = Number(activeGaugeParam);
-  const calcModeLabels = {
-    fixed:'固定の1mm当で計算',
-    segment_linear:'区間の始点Lと終点Lから1mm当を再計算',
-    segment_recorded:'区間の記載1mm当をそのまま使う計算'
-  };
-  const boundaryLabels = {
-    none:'固定1mm当のため切替なし',
-    inclusive:'区間の端もその区間の値で計算',
-    next:'1mm当は区間の終わりで次の値に切り替え'
-  };
-  const calcSteps = {
-    fixed:[
-      '中心深 − 検尺（空積深） = 入身深 を出します。',
-      '底板面以下 ＋ 入身深 × 1mm当 で容量を出し、最後に1L未満を切り捨てます。'
-    ],
-    segment_linear:[
-      '中心深 − 検尺（空積深） = 入身深 を出します。',
-      'その入身深が入る区間を選び、区間の始点Lと終点Lから1mm当を再計算して容量を出し、最後に1L未満を切り捨てます。'
-    ],
-    segment_recorded:[
-      '中心深 − 検尺（空積深） = 入身深 を出します。',
-      'その入身深が入る区間を選び、開始容量 ＋ 区間に入ってからのmm × 1mm当 で容量を出して最後に1L未満を切り捨てます。'
-    ]
-  };
-  const segments = segmentsParam ? segmentsParam.split('|').map(row => {
-    const [startDepth,endDepth,startL,endL,recordedPerMm] = row.split(',');
-    return {
-      startDepth:Number(startDepth),
-      endDepth:Number(endDepth),
-      startL:Number(startL),
-      endL:Number(endL),
-      recordedPerMm:Number(recordedPerMm)
-    };
-  }).filter(item => Number.isFinite(item.startDepth) && Number.isFinite(item.endDepth) && Number.isFinite(item.startL) && Number.isFinite(item.endL) && Number.isFinite(item.recordedPerMm)) : [];
-  const segmentAlerts = (() => {
-    if(!segmentAlertsParam) return [];
-    try{
-      const parsed = JSON.parse(decodeURIComponent(segmentAlertsParam));
-      return Array.isArray(parsed) ? parsed : [];
-    }catch{
-      return [];
-    }
-  })();
-  function normalizeAuditStatusNote(note){
-    const normalized = String(note || '')
-      .replace('詳細は登録値を見るで確認してください。', '黄色の行で確認してください。')
-      .replace(/内部整合差/g, '計算上の差')
-      .trim();
-    const isTank128 = String(tankNo) === '128';
-    const firstSegment = Array.isArray(segments) ? segments.find(item => Number(item.startDepth) === 0 && Number(item.endDepth) === 552 && Number(item.startL) === 662 && Number(item.endL) === 2982 && Number(item.recordedPerMm) === 4.393) : null;
-    if(isTank128 && firstSegment && normalized.includes('原票記載1mm当 4.393L と区間差分再計算 4.202899L に大きな差がある')){
-      const recorded = Number(firstSegment.recordedPerMm);
-      const recalculated = Number(((Number(firstSegment.endL) - Number(firstSegment.startL)) / (Number(firstSegment.endDepth) - Number(firstSegment.startDepth))).toFixed(6));
-      const diff = Number((recorded - recalculated).toFixed(6));
-      return `第1帯先頭 0〜552mm は、原票記載1mm当 ${recorded.toFixed(3)}L と区間差分再計算 ${recalculated.toFixed(6)}L に約 ${diff.toFixed(6)}L の差があります。現在アプリは区間差分再計算を採用し、この帯は要注意として表示します。黄色の行で確認してください。`;
-    }
-    return normalized;
-  }
-  function getSegmentForLiquidDepth(liquidDepth){
-    if(!Number.isFinite(liquidDepth)) return null;
-    if(boundaryMode === 'next'){
-      for(let i=0;i<segments.length;i++){
-        const item = segments[i];
-        const isLast = i === segments.length - 1;
-        if(isLast){
-          if(liquidDepth >= item.startDepth && liquidDepth <= item.endDepth) return item;
-        }else if(liquidDepth >= item.startDepth && liquidDepth < item.endDepth){
-          return item;
-        }
-      }
-      return null;
-    }
-    return segments.find(item => liquidDepth >= item.startDepth && liquidDepth <= item.endDepth) || null;
-  }
-  function buildCurrentExample(){
-    if(!Number.isFinite(activeGauge) || !Number.isFinite(Number(centerMm)) || activeGauge < 0 || activeGauge > Number(centerMm)) return '';
-    const liquidDepth = Number(centerMm) - activeGauge;
-    if(calcMode === 'fixed'){
-      if(!Number.isFinite(Number(bottomL)) || !Number.isFinite(Number(fullL)) || !Number.isFinite(Number(centerMm)) || Number(centerMm) === 0) return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 で容量を出します。`;
-      const hasRegisteredPerMm = Number.isFinite(Number(perMm)) && String(perMm).trim() !== '';
-      const formulaPerMm = hasRegisteredPerMm ? Number(perMm) : ((Number(fullL) - Number(bottomL)) / Number(centerMm));
-      const formulaPerMmLabel = hasRegisteredPerMm ? String(perMm).trim() : formulaPerMm.toFixed(6);
-      const raw = Number(bottomL) + (liquidDepth * formulaPerMm);
-      return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。底板面以下 ${bottomL}L ＋ ${liquidDepth}mm × 1mm当 ${formulaPerMmLabel}L = ${raw.toFixed(5)}L、表示は ${Math.floor(raw)}Lです。`;
-    }
-    const segment = getSegmentForLiquidDepth(liquidDepth);
-    if(!segment) return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。入身深が入る区間で容量を出します。`;
-    const diffMm = liquidDepth - segment.startDepth;
-    const segmentPerMm = calcMode === 'segment_recorded'
-      ? Number(segment.recordedPerMm)
-      : ((Number(segment.endL) - Number(segment.startL)) / (Number(segment.endDepth) - Number(segment.startDepth)));
-    const raw = Number(segment.startL) + (diffMm * segmentPerMm);
-    return `中心深 ${centerMm}mm − 検尺（空積深） ${activeGauge}mm = 入身深 ${liquidDepth}mm。入身深 ${liquidDepth}mm は ${segment.startDepth}〜${segment.endDepth}mm の区間なので、開始容量 ${segment.startL}L（${segment.startDepth}mm）＋ ${diffMm}mm × 1mm当 ${segmentPerMm.toFixed(6)}L = ${raw.toFixed(5)}L、表示は ${Math.floor(raw)}Lです。`;
-  }
-  document.getElementById('page-title').textContent = tankNo ? `${tankLabel} / タンク登録詳細` : 'タンク登録詳細';
-  document.getElementById('tank-label').textContent = tankLabel;
-  document.getElementById('calc-label').textContent = calcModeLabels[calcMode] || calcModeLabels.fixed;
-  document.getElementById('full-l').textContent = fullL ? `${fullL}L` : '—';
-  document.getElementById('bottom-l').textContent = bottomL ? `${bottomL}L` : '—';
-  document.getElementById('center-mm').textContent = centerMm ? `${centerMm}mm` : '—';
-  document.getElementById('boundary-label').textContent = boundaryLabels[boundaryMode] || boundaryLabels.none;
-  const fixedPerMmCard = document.getElementById('fixed-permm-card');
-  const fixedPerMmValue = document.getElementById('fixed-permm');
-  if(calcMode === 'fixed' && fixedPerMmCard && fixedPerMmValue && perMm){
-    fixedPerMmCard.hidden = false;
-    fixedPerMmValue.textContent = `${Number(perMm).toFixed(String(perMm).includes('.') ? String(perMm).split('.')[1].length : 0)}L`;
-  }
-  document.getElementById('calc-steps').innerHTML = (calcSteps[calcMode] || calcSteps.fixed).map(text => `<div class="row"><div class="row-text">${text}</div></div>`).join('');
-  const calcExample = buildCurrentExample();
-  document.getElementById('calc-example').innerHTML = calcExample ? `<div class="row"><div class="row-title">今の入力での計算</div><div class="row-text">${calcExample}</div></div>` : '';
-
-  const normalizedAuditStatusNote = normalizeAuditStatusNote(auditStatusNote);
-  const hasCaution = Boolean(normalizedAuditStatusNote || segmentAlerts.length);
-  if(auditHero){
-    auditHero.hidden = false;
-    auditHero.className = `hero-status ${hasCaution ? 'is-caution' : 'is-ok'}`;
-    if(auditHeroBadge) auditHeroBadge.textContent = hasCaution ? '注意あり' : '登録済み';
-    if(auditHeroTitle) auditHeroTitle.textContent = hasCaution ? '確認時に注意が必要な区間があります。' : 'このタンクは登録値確認用の表示です。';
-    if(auditHeroNote){
-      auditHeroNote.hidden = !normalizedAuditStatusNote;
-      auditHeroNote.textContent = normalizedAuditStatusNote || '';
-    }
-  }
-  const segmentCard = document.getElementById('segment-card');
-  const segmentList = document.getElementById('segment-list');
-  const segmentNote = document.getElementById('segment-note');
-  if(segmentCard && segmentList && segments.length){
-    segmentCard.hidden = false;
-    const hasSegmentCaution = segmentAlerts.length > 0;
-    if(segmentNote) segmentNote.hidden = !hasSegmentCaution;
-
-    const registryRows = [];
-    const first = segments[0];
-    if(first){
-      registryRows.push({
-        kind:'bottom',
-        rowNo:0,
-        depthLabel:'底板面以下',
-        capacityL:first.startL,
-        perMmLabel:'—',
-        sourceSegment:null,
-        alert:null
-      });
-    }
-    segments.forEach((item, index) => {
-      const alert = segmentAlerts.find(entry => {
-        if(Number.isFinite(entry.index)) return Number(entry.index) === index;
-        return Number(entry.start_depth_mm) === Number(item.startDepth) && Number(entry.end_depth_mm) === Number(item.endDepth);
-      }) || null;
-      registryRows.push({
-        kind:'endpoint',
-        rowNo:index + 1,
-        depthLabel:`${item.endDepth}mm`,
-        capacityL:item.endL,
-        perMmLabel:`${item.recordedPerMm.toFixed(3)}L`,
-        sourceSegment:item,
-        alert
-      });
-    });
-
-    segmentList.innerHTML = registryRows.map(row => {
-      const rowClass = row.alert ? 'segment-row is-caution' : 'segment-row';
-      const bandLabel = row.kind === 'bottom' ? '基準行' : `登録行${row.rowNo}`;
-      const alertMarkup = row.alert && row.alert.note ? `<div class="segment-alert">${row.alert.note}</div>` : '';
-      return `
-      <div class="${rowClass}">
-        <div class="segment-cell"><div class="segment-head"><span class="segment-band">${bandLabel}</span>累計深さ</div><div class="segment-value">${row.depthLabel}</div></div>
-        <div class="segment-cell"><div class="segment-head">累計容量</div><div class="segment-value">${row.capacityL}L</div></div>
-        <div class="segment-cell"><div class="segment-head">深さ1mm当</div><div class="segment-value">${row.perMmLabel}</div></div>
-        ${alertMarkup}
-      </div>`;
-    }).join('');
-  }
-  document.getElementById('backToTm2').addEventListener('click', function(){
-    const payload = {
-      screen: 'tank2mm-screen',
-      groupKey: params.get('tm2group') || '',
-      tankNo: params.get('tm2tank') || '',
-      mode: params.get('tm2mode') === 'volume' ? 'volume' : 'gauge',
-      inputValue: params.get('tm2input') || '',
-      gaugeValue: params.get('tm2gauge') || '',
-      volumeValue: params.get('tm2volume') || '',
-      listOpen: (params.get('tm2list') || '') === '1',
-      activeGauge: params.get('tm2activegauge') || '',
-      scrollTargetGauge: params.get('tm2scrollgauge') || params.get('tm2activegauge') || ''
-    };
-    const backParams = new URLSearchParams();
-    backParams.set('screen', returnScreen || 'tank2mm-screen');
-    backParams.set('tm2return', '1');
-    if(payload.groupKey) backParams.set('tm2group', payload.groupKey);
-    if(payload.tankNo) backParams.set('tm2tank', payload.tankNo);
-    if(payload.mode) backParams.set('tm2mode', payload.mode);
-    if(payload.gaugeValue) backParams.set('tm2gauge', payload.gaugeValue);
-    if(payload.volumeValue) backParams.set('tm2volume', payload.volumeValue);
-    if(payload.listOpen) backParams.set('tm2list', '1');
-    if(payload.activeGauge) backParams.set('tm2activegauge', payload.activeGauge);
-    if(payload.scrollTargetGauge) backParams.set('tm2scrollgauge', payload.scrollTargetGauge);
-    if(payload.inputValue) backParams.set('tm2input', payload.inputValue);
-    const targetUrl = returnUrl || `./index.html?${backParams.toString()}`;
-    try{ localStorage.setItem(TM2_RETURN_KEY, JSON.stringify(payload)); }catch{}
-    try{ localStorage.setItem('sake-tools-last-screen-v2','tank2mm-screen'); }catch{}
-    try{
-      const raw = localStorage.getItem('sake-tools-ui-state-v1');
-      const parsed = raw ? JSON.parse(raw) : {};
-      parsed.screen = 'tank2mm-screen';
-      parsed.tm2State = payload;
-      localStorage.setItem('sake-tools-ui-state-v1', JSON.stringify(parsed));
-    }catch{}
-    try{ sessionStorage.setItem('sake-tools-force-screen-v1','tank2mm-screen'); }catch{}
-    window.location.href = targetUrl;
-  });
-})();
-</script>
+  </main>
+  <script src="./assets/tm2-docs.js"></script>
 </body>
 </html>

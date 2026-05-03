@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>エキス分計算 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/ekisu.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">エキス分計算</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>エキス分計算</h1>
+      <p>アルコール分と日本酒度またはボーメ度から、エキス分と原エキス分を確認できます。</p>
+    </section>
+
+    <div class="wrapper">
+      <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
+      <div class="unit-bar" aria-label="エキス分計算の式">
+        <div class="unit-bar-formula">
+          <span class="fml-main" id="ekisu-formula-main">① エキス分 ＝ 日本酒度とアルコール分から算出</span>
+          <span class="fml-note" id="ekisu-formula-sub">② 原エキス分 ＝ エキス分 ＋ アルコール分 × 1.5894</span>
+        </div>
+      </div>
+
+      <section class="card ekisu-card" aria-label="エキス分計算入力">
+        <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="ekisu-reset" type="button">入力値をリセット</button></div>
+
+        <div class="group"><div class="group-title">アルコール分</div>
+          <div class="ekisu-field-grid single">
+            <label class="ekisu-field"><span>アルコール分</span><div class="ekisu-input-wrap"><input id="ekisu-alcohol" inputmode="decimal" max="99.9" min="0" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+          </div>
+        </div>
+
+        <div class="group"><div class="group-title">比重指標</div>
+          <div class="ekisu-toggle-group" role="tablist" aria-label="比重指標の入力方式">
+            <button class="ekisu-toggle-btn active" id="ekisu-mode-sm" data-ekisu-mode="sm" type="button">日本酒度で入力</button>
+            <button class="ekisu-toggle-btn" id="ekisu-mode-bm" data-ekisu-mode="bm" type="button">ボーメ度で入力</button>
+          </div>
+
+          <div id="ekisu-row-sm">
+            <label class="ekisu-field"><span>日本酒度 <span class="unit-hint">プラス（+）・マイナス（−）どちらも可</span></span><div class="ekisu-input-wrap"><input id="ekisu-sake-meter" inputmode="decimal" placeholder="例：+3.0 または −5.0" step="0.1" type="number"><span class="iunit">度</span></div></label>
+            <div class="convert-badge" id="ekisu-sm-conv">日本酒度を入力するとボーメ度に換算します</div>
+          </div>
+
+          <div id="ekisu-row-bm" hidden>
+            <label class="ekisu-field"><span>ボーメ度</span><div class="ekisu-input-wrap"><input id="ekisu-baume" inputmode="decimal" placeholder="例：3.0" step="0.1" type="number"><span class="iunit">°Bé</span></div></label>
+            <div class="convert-badge" id="ekisu-bm-conv">ボーメ度を入力すると日本酒度に自動換算します</div>
+          </div>
+        </div>
+
+        <div class="calc-help">表示は自動更新です。エキス分計算は数量Lを出さないため、2mm表候補は作成しません。</div>
+
+        <div class="result-card" id="ekisu-result" hidden>
+          <div class="result-title">計算結果</div>
+          <div class="result-grid r2">
+            <div><div class="result-label">エキス分</div><div class="result-value"><span id="ekisu-extract">—</span><span class="result-unit">%</span></div></div>
+            <div><div class="result-label">原エキス分</div><div class="result-value"><span id="ekisu-original-extract">—</span><span class="result-unit">%</span></div></div>
+          </div>
+          <div class="result-sub visible" id="ekisu-conv-result"><span id="ekisu-conv-label">日本酒度 → ボーメ度換算値</span>：<strong id="ekisu-conv-value">—</strong> <span id="ekisu-conv-unit">°Bé</span></div>
+        </div>
+        <div class="err" id="ekisu-error" aria-live="polite" hidden></div>
+
+        <section class="compact-tools-panel ekisu-action-panel" aria-label="エキス分計算の操作">
+          <div class="inline-tools-title-row ekisu-action-title-row">
+            <div class="inline-tools-title">エキス分計算の扱い</div>
+            <span class="inline-tools-badge" id="ekisu-action-mode-badge">日本酒度入力</span>
+          </div>
+          <div class="inline-tools-note ekisu-action-note">この画面は成分確認用です。2mm表候補Lは作成しません。計算結果はエキス分計算専用の履歴画面に残せます。比較は混合計算専用です。</div>
+          <div class="calc-main-actions">
+            <button class="calc-btn" id="ekisu-save-history" type="button" disabled>このエキス分計算を履歴に残す</button>
+            <a class="back-btn" id="ekisu-toggle-history" href="./ekisu-history.html">エキス分履歴を見る</a>
+          </div>
+          <div class="history-action-status" id="ekisu-history-status" aria-live="polite">計算結果が出ると履歴に残せます。</div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="./assets/ekisu.js"></script>
+</body>
+</html>

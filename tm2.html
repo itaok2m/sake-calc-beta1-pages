@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>2mm表 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/tm2.css">
+</head>
+<body id="tank2mm-screen">
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">2mm表</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>2mm表</h1>
+      <p>容器検定簿・測定ルール・採用計算方式をもとに再生成した2mm表で、尺→L と L→尺 を確認します。</p>
+    </section>
+
+    <div class="wrapper" id="tm2-root">
+      <section class="card" data-tm2-panel="main">
+        <div class="tm2-subscreen-label">タンク選択・換算画面</div>
+        <div class="group">
+          <div class="field-row col2">
+            <div class="field">
+              <label for="tm2_group_select">番号帯</label>
+              <div class="input-wrap"><select data-tm2-role="group" id="tm2_group_select"><option value="">番号帯を選んでください</option></select></div>
+            </div>
+            <div class="field">
+              <label for="tm2_tank_select">タンク番号</label>
+              <div class="input-wrap"><select data-tm2-role="tank" disabled id="tm2_tank_select"><option value="">先に番号帯を選んでください</option></select></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui-info-band tm2-info-band">
+          <div class="tm2-v2-draft-band" data-tm2-role="v2-draft-card" hidden>
+            <div class="tm2-v2-draft-head">
+              <div>
+                <div class="tm2-v2-draft-title">2mm表 候補L（保存なし・記録なし）</div>
+                <div class="tm2-v2-draft-source" data-tm2-role="v2-draft-source">候補はまだ受け取っていません。</div>
+              </div>
+              <div class="tm2-v2-draft-head-actions">
+                <a class="back-btn tm2-v2-draft-return" href="./tm2-candidate.html">候補確認を見る</a>
+                <button class="back-btn reset-btn tm2-v2-draft-clear" data-tm2-action="clear-v2-draft" type="button">候補を消す</button>
+              </div>
+            </div>
+            <div class="tm2-v2-draft-list" data-tm2-role="v2-draft-candidates"></div>
+            <div class="tm2-v2-draft-note" data-tm2-role="v2-draft-note">この欄は候補表示だけです。「L入力へ入れる」で通常L入力欄へ入り、換算結果を表示します。メモ欄・履歴・比較・記帳記録には保存しません。</div>
+          </div>
+
+          <div class="tm2-current-card is-empty" data-tm2-role="current-card">
+            <div class="tm2-current-head">
+              <div class="tm2-current-label">今見ているタンク</div>
+              <button class="calc-btn tm2-current-open-btn" data-tm2-action="open-list" disabled type="button">このタンクの2mm表一覧を見る</button>
+            </div>
+            <div class="tm2-current-name" data-tm2-role="current-name">未選択</div>
+            <div class="tm2-current-meta" data-tm2-role="current-meta" hidden>
+              <div class="tm2-current-row"><span>検尺範囲</span><strong data-tm2-role="current-range">—</strong></div>
+              <div class="tm2-current-row"><span>容量目安</span><strong data-tm2-role="current-volume-range">—</strong></div>
+            </div>
+            <div class="tm2-current-note" data-tm2-role="current-note">先にタンクを選ぶと、この下で見る内容を選べます。</div>
+          </div>
+
+          <div class="tm2-share-card" data-tm2-role="share-card">
+            <div class="tm2-share-head">
+              <div>
+                <div class="tm2-share-title">メモ</div>
+                <div class="tm2-share-note">手入力・貼り付け用のメモです。計算結果は自動では入りません。</div>
+              </div>
+            </div>
+            <button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">メモを開く</button>
+            <div class="tm2-share-body" data-tm2-role="share-body" hidden>
+              <textarea class="tm2-share-input" id="tm2_share_memo" placeholder="必要ならメモを手入力・貼り付けできます。"></textarea>
+              <button class="back-btn reset-btn tm2-share-clear-btn" data-action="clear-tm2-share-memo" type="button">メモを消す</button>
+            </div>
+          </div>
+
+          <div class="tm2-status is-idle" data-tm2-role="audit-status">
+            <div class="tm2-status-title">監査状態: タンク未選択</div>
+            <div class="tm2-status-note">タンクを選ぶと監査状態を表示します。</div>
+          </div>
+        </div>
+
+        <div class="group">
+          <div class="tm2-mode-group-title">見る内容を選ぶ</div>
+          <div class="tm2-mode-grid" role="tablist" aria-label="2mm表の換算方式">
+            <button aria-pressed="true" class="tm2-mode-btn is-active" data-tm2-action="mode" data-tm2-mode="gauge" disabled type="button">
+              <span class="tm2-mode-title">尺から見る</span>
+              <span class="tm2-mode-sub">検尺値(mm)から容量(L)を見る</span>
+            </button>
+            <button aria-pressed="false" class="tm2-mode-btn" data-tm2-action="mode" data-tm2-mode="volume" disabled type="button">
+              <span class="tm2-mode-title">Lから見る</span>
+              <span class="tm2-mode-sub">目標数量(L)から候補mmを見る</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group" data-tm2-field="gauge">
+          <div class="field">
+            <label for="tm2_gauge_input">検尺値 <span class="unit-hint">mm</span></label>
+            <div class="tm2-input-row">
+              <div class="input-wrap"><input data-tm2-role="gauge" disabled id="tm2_gauge_input" inputmode="numeric" placeholder="例：244" step="1" type="number"></div>
+              <button class="back-btn reset-btn tm2-mini-reset-btn" data-tm2-action="reset" type="button">入力値をリセット</button>
+            </div>
+            <div class="hint" data-tm2-role="gauge-help">タンクを選ぶと入力できる範囲の目安を表示します。</div>
+          </div>
+        </div>
+
+        <div class="group" data-tm2-field="volume" hidden>
+          <div class="field">
+            <label for="tm2_volume_input">目標数量 <span class="unit-hint">L</span></label>
+            <div class="tm2-input-row">
+              <div class="input-wrap"><input data-tm2-role="volume" disabled id="tm2_volume_input" inputmode="decimal" placeholder="例：291.6" step="0.1" type="number"></div>
+              <button class="back-btn reset-btn tm2-mini-reset-btn" data-tm2-action="reset" type="button">入力値をリセット</button>
+            </div>
+            <div class="hint" data-tm2-role="volume-help">タンクを選ぶと入力できる範囲の目安を表示します。</div>
+          </div>
+        </div>
+
+        <div class="tm2-result-box" aria-live="polite">
+          <div class="tm2-result-label" data-tm2-role="result-heading">換算値(L)</div>
+          <div class="tm2-result-value" data-tm2-role="result-value">—</div>
+          <div class="tm2-subnote" data-tm2-role="result-subtext"></div>
+          <div class="tm2-result-actions">
+            <button class="calc-btn tm2-detail-btn tm2-list-position-btn" data-tm2-action="open-list-position" disabled type="button">この位置を2mm表一覧で見る</button>
+          </div>
+        </div>
+
+        <div class="tm2-detail-toggle-grid is-single">
+          <button aria-expanded="false" class="back-btn tm2-detail-btn" data-tm2-action="toggle-audit" disabled type="button">登録値と換算内訳を見る</button>
+        </div>
+        <div class="tm2-detail-panel" data-tm2-role="reason-panel" hidden><div class="tm2-detail-grid" data-tm2-role="reason-grid"></div></div>
+        <div class="tm2-detail-panel" data-tm2-role="audit-panel" hidden><div class="tm2-detail-grid" data-tm2-role="audit-grid"></div><div class="tm2-docs-link-wrap is-inside-panel"><a aria-disabled="true" class="back-btn tm2-docs-link-btn is-disabled" data-tm2-role="docs-link" href="#" tabindex="-1">タンク登録詳細を開く</a></div></div>
+        <div class="tm2-error" data-tm2-role="error" hidden></div>
+      </section>
+
+      <section class="card" data-tm2-panel="list" hidden>
+        <div class="tm2-list-head"><div class="tm2-subscreen-label is-list">タンク別2mm表一覧画面</div><h2 data-tm2-role="list-title">タンク別2mm表一覧</h2><div class="tm2-list-note">選択したタンクの2mm刻み一覧です。タンク選択・尺↔L換算は前の画面で行います。</div></div>
+        <div class="tm2-list-search-help" data-tm2-role="list-search-help">
+          <button aria-expanded="false" class="back-btn tm2-list-search-help-btn" data-tm2-action="toggle-list-search-help" type="button">一覧内の探し方を見る</button>
+          <div class="tm2-list-search-help-body" data-tm2-role="list-search-help-body" hidden>
+            目的のLやmmを探す時は、ブラウザのページ内検索を使えます。PCは Ctrl + F、Android Chrome は右上メニューの「ページ内検索」、iPhone Safari はページメニューの「ページを検索」を使います。
+          </div>
+        </div>
+        <div class="tm2-list-nearby" data-tm2-role="list-nearby" hidden></div>
+        <div class="tm2-list-top"><button class="back-btn" data-tm2-action="close-list" type="button">← タンク選択・換算へ戻る</button></div>
+        <div class="tm2-table-wrap">
+          <table class="tm2-table">
+            <thead><tr><th>検尺値(mm)</th><th>換算値(L)</th></tr></thead>
+            <tbody data-tm2-role="list-body"><tr><td colspan="2">タンクを選ぶとタンク別2mm表一覧を表示します。</td></tr></tbody>
+          </table>
+        </div>
+        <div class="tm2-footer-note">この一覧は、タンク登録値から再生成した2mm表です。</div>
+        <div class="tm2-list-bottom-action"><button class="back-btn" data-tm2-action="close-list" type="button">← タンク選択・換算へ戻る</button></div>
+      </section>
+    </div>
+  </main>
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="./assets/tm2.js"></script>
+</body>
+</html>

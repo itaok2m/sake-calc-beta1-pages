@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>混合計算履歴 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/mix.css">
+  <link rel="stylesheet" href="./assets/mix-history.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./mix.html">← 混合計算へ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">混合計算履歴</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>混合計算履歴</h1>
+      <p>方式を選び、保存した配合を確認します。履歴は混合計算専用です。</p>
+    </section>
+
+    <div class="wrapper history-wrapper">
+      <section class="history-action-panel" aria-label="混合計算履歴の操作">
+        <div class="history-action-title-row">
+          <div>
+            <h2>混合計算履歴の操作</h2>
+            <p>方式を選んで、履歴の確認・比較を行います。</p>
+            <p class="history-route-note">2mm表候補を作る場合は、この履歴を入力欄に戻して計算結果を確認してから、結果下の「2mm表候補を確認する」を押してください。</p>
+          </div>
+          <span class="inline-tools-badge">混合計算専用</span>
+        </div>
+
+        <div class="history-action-controls">
+          <div class="history-filter-field">
+            <label for="mix-history-mode-filter">表示する方式</label>
+            <select id="mix-history-mode-filter">
+              <option value="2">2混合</option>
+              <option value="3">3混合</option>
+              <option value="4">4混合</option>
+              <option value="5">5混合</option>
+            </select>
+          </div>
+          <button class="calc-btn" id="mix-compare-start" type="button" disabled>選んだ履歴を比較する</button>
+        </div>
+
+        <div class="history-action-statuses">
+          <p id="mix-history-filter-status">—</p>
+          <p id="mix-compare-select-status">比較対象：0件</p>
+        </div>
+      </section>
+
+      <section class="history-list-section" aria-label="履歴一覧">
+        <div class="history-list-header">
+          <div>
+            <h2 id="mix-history-list-title">2混合の履歴</h2>
+            <p id="mix-history-count">—</p>
+          </div>
+        </div>
+        <div class="history-empty" id="mix-history-empty" hidden>まだ混合計算履歴はありません。</div>
+        <div class="history-list" id="mix-history-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="./assets/mix-history.js"></script>
+</body>
+</html>

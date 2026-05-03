@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>混合計算 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/mix.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">混合計算</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>混合計算</h1>
+      <p>普段は2種混合を使い、必要な時だけ3〜5種混合を開いて混合後の成分と合計数量を計算できます。</p>
+    </section>
+
+    <div class="wrapper">
+      <section class="section-subnav sublevel-nav" aria-label="計算式表示">
+        <span class="section-subnav-title">計算式表示</span>
+      </section>
+
+      <section class="unit-bar" aria-live="polite">
+        <div class="unit-bar-formula">
+          <span class="fml-main" id="mix-formula-main">—</span>
+          <span class="fml-note" id="mix-formula-sub">—</span>
+        </div>
+      </section>
+
+      <section class="card mix-card" aria-label="混合計算入力">
+        <div class="field-reset-row">
+          <button class="back-btn reset-btn inline-reset-btn" id="mix-reset" type="button">入力値をリセット</button>
+        </div>
+
+        <div class="mix-primary-row">
+          <button class="mix-count-btn mix-primary-btn active" data-mix-mode="2" id="mix-mode-2" type="button">2種混合</button>
+        </div>
+
+        <details class="mix-extra-details mix-feature-toggle" id="mix-extra-details">
+          <summary>
+            <span class="mix-extra-summary-main">
+              <span class="mix-extra-summary-kicker">追加機能</span>
+              <span class="mix-extra-summary-title" id="mix-extra-summary-text">3〜5種混合を使う</span>
+              <span class="mix-extra-summary-state" id="mix-current-mode">現在：2種混合</span>
+            </span>
+            <span class="mix-extra-summary-action" id="mix-extra-summary-action">開く</span>
+          </summary>
+          <div class="mix-extra-body">
+            <div aria-label="多種混合の選択" class="mix-count-switch mix-count-switch-extra">
+              <button class="mix-count-btn" data-mix-mode="3" id="mix-mode-3" type="button">3種混合</button>
+              <button class="mix-count-btn" data-mix-mode="4" id="mix-mode-4" type="button">4種混合</button>
+              <button class="mix-count-btn" data-mix-mode="5" id="mix-mode-5" type="button">5種混合</button>
+            </div>
+            <div class="mix-count-note" id="mix-extra-note">3種以上を使う時だけ選びます。履歴は方式別に分かれます。</div>
+          </div>
+        </details>
+
+        <div class="mix-count-note mix-approx-note">日本酒度とボーメ度の混合計算は近似です。</div>
+
+        <div class="group ui-input-surface">
+          <div class="group-title" id="mix-group-title">各成分値・数量を入力</div>
+          <div class="mix-table-wrap">
+            <table class="mix-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th><span id="mix-value-label">成分値</span></th>
+                  <th>数量（L）</th>
+                </tr>
+              </thead>
+              <tbody id="mix-body">
+                <tr data-mix-row="1"><td class="row-label">①</td><td><input id="mix-c1" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"></td><td><input id="mix-v1" inputmode="decimal" min="0" placeholder="例：254" step="0.1" type="number"></td></tr>
+                <tr data-mix-row="2"><td class="row-label">②</td><td><input id="mix-c2" inputmode="decimal" placeholder="例：0" step="0.1" type="number"></td><td><input id="mix-v2" inputmode="decimal" min="0" placeholder="例：38" step="0.1" type="number"></td></tr>
+                <tr data-mix-row="3"><td class="row-label">③</td><td><input id="mix-c3" inputmode="decimal" placeholder="例：15.0" step="0.1" type="number"></td><td><input id="mix-v3" inputmode="decimal" min="0" placeholder="例：100" step="0.1" type="number"></td></tr>
+                <tr data-mix-row="4"><td class="row-label">④</td><td><input id="mix-c4" inputmode="decimal" placeholder="例：13.0" step="0.1" type="number"></td><td><input id="mix-v4" inputmode="decimal" min="0" placeholder="例：50" step="0.1" type="number"></td></tr>
+                <tr data-mix-row="5"><td class="row-label">⑤</td><td><input id="mix-c5" inputmode="decimal" placeholder="例：10.0" step="0.1" type="number"></td><td><input id="mix-v5" inputmode="decimal" min="0" placeholder="例：20" step="0.1" type="number"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="calc-help ui-help-surface">表示は自動更新です。</div>
+
+        <section class="result-card ui-result-surface" id="mix-result" hidden aria-live="polite">
+          <div class="result-title">計算結果</div>
+          <div class="result-grid r2">
+            <div><div class="result-label">混合後の値</div><div class="result-value" id="mix-result-component">—</div></div>
+            <div><div class="result-label">合計数量</div><div class="result-value"><span id="mix-result-volume">—</span><span class="result-unit">L</span></div></div>
+          </div>
+          <div class="mix-cumulative-box" id="mix-cumulative-box" hidden>
+            <div class="mix-cumulative-title">投入順の途中数量・成分</div>
+            <div class="mix-cumulative-note">投入順に、作業途中の累計Lとその時点の成分を確認します。</div>
+            <div class="mix-cumulative-list" id="mix-cumulative-list"></div>
+          </div>
+        </section>
+
+        <div class="err" id="mix-error" hidden></div>
+      </section>
+
+      <section class="compact-tools-panel mix-action-panel" aria-label="混合計算の操作">
+        <div class="inline-tools-title-row mix-action-title-row">
+          <div class="inline-tools-title">混合計算の操作</div>
+          <span class="inline-tools-badge" id="mix-action-mode-badge">2種</span>
+        </div>
+        <div class="inline-tools-note mix-action-note">履歴は混合計算専用です。2mm表候補は保存なしの一時確認です。</div>
+        <div class="mix-action-buttons">
+          <button class="calc-btn mix-save-btn" id="mix-save-history" type="button" disabled>この配合を履歴に残す</button>
+          <button class="back-btn mix-tm2-candidate-btn" id="mix-open-tm2-candidate" type="button" disabled>2mm表候補を確認する</button>
+          <a class="back-btn mix-history-link" href="./mix-history.html">混合計算履歴を見る</a>
+        </div>
+        <div class="mix-action-statuses">
+          <div class="mix-history-status" id="mix-history-status" aria-live="polite"></div>
+          <div class="mix-history-status" id="mix-tm2-candidate-status" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="./assets/mix.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>2mm表候補確認 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/tm2-candidate.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">2mm表候補確認</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>2mm表候補確認</h1>
+      <p>計算結果から来た候補Lと、その根拠になる入力・内訳を候補カード内で確認する一時画面です。</p>
+    </section>
+
+    <div class="wrapper">
+      <section class="tm2-candidate-status-band" aria-label="2mm表候補確認の状態">
+        <div class="tm2-candidate-status-title">候補表示のみ</div>
+        <div class="tm2-candidate-status-note">この画面では候補の確認だけを行います。保存・記録・履歴・タンク現在値更新は行いません。</div>
+      </section>
+
+      <section class="result-card tm2-candidate-card" id="tm2-candidate-card" hidden aria-live="polite">
+        <div class="result-title">受け取った候補</div>
+        <div class="tm2-candidate-meta" id="tm2-candidate-source">—</div>
+        <div class="tm2-candidate-list" id="tm2-candidate-list"></div>
+        <div class="tm2-candidate-toolbar" aria-label="候補操作">
+          <div class="tm2-candidate-clear-note">候補を消すと、このタブ内の最新1件の一時候補だけを消します。履歴や計算結果は消えません。</div>
+          <div class="tm2-candidate-action-buttons">
+            <button class="back-btn reset-btn" id="tm2-candidate-clear" type="button">候補を消す</button>
+            <a class="back-btn" href="./tm2.html">2mm表で候補Lを入れる</a>
+            <a class="calc-btn" id="tm2-candidate-return-source" href="./index.html" hidden>← 元の計算画面へ戻る</a>
+          </div>
+        </div>
+        <div class="tm2-candidate-note">この画面は最新1件の候補表示です。候補カード内で根拠を確認してから、2mm表側の通常L入力へ進めるための一時確認として使います。</div>
+        <div class="tm2-candidate-message" id="tm2-candidate-message" aria-live="polite"></div>
+      </section>
+
+      <section class="result-card tm2-candidate-empty" id="tm2-candidate-empty">
+        <div class="result-title">候補がありません</div>
+        <p>各計算機画面で計算結果を出し、「2mm表候補を確認する」を押すと、ここに候補Lが表示されます。</p>
+      </section>
+    </div>
+  </main>
+
+  <script src="./assets/tm2-candidate.js"></script>
+</body>
+</html>

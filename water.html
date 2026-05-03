@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>割水計算 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/water.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">割水計算</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>割水計算</h1>
+      <p>4つの求め方を切り替えて、割水量や割水後の成分値・数量を計算できます。必要に応じて2mm表候補を一時確認できます。</p>
+    </section>
+
+    <div class="wrapper">
+      <section class="section-subnav sublevel-nav" aria-label="計算式表示">
+        <span class="section-subnav-title">計算式表示</span>
+      </section>
+      <section class="unit-bar" aria-label="選択中の計算式">
+        <div class="unit-bar-formula">
+          <span class="fml-main" id="water-formula-main">—</span>
+          <span class="fml-note" id="water-formula-sub">—</span>
+        </div>
+      </section>
+
+      <section class="card water-card" aria-label="割水計算入力">
+        <div class="water-sub-tabs" role="tablist" aria-label="割水計算の求め方">
+          <button class="water-sub-tab active" data-water-mode="0" type="button"><span class="water-sub-goal">割水量・目標数量 を求める</span><span class="water-sub-known">既知：現在成分 ／ 現在数量 ／ 目標成分</span></button>
+          <button class="water-sub-tab" data-water-mode="1" type="button"><span class="water-sub-goal">割水前の必要数量 を求める</span><span class="water-sub-known">既知：目標成分 ／ 目標数量 ／ 現在成分</span></button>
+          <button class="water-sub-tab" data-water-mode="2" type="button"><span class="water-sub-goal">割水前の成分値 を求める</span><span class="water-sub-known">既知：目標成分 ／ 目標数量 ／ 現在数量</span></button>
+          <button class="water-sub-tab" data-water-mode="3" type="button"><span class="water-sub-goal">割水後の成分値・割水量 を求める</span><span class="water-sub-known">既知：現在成分 ／ 現在数量 ／ 目標数量</span></button>
+        </div>
+
+        <section class="water-panel" id="water-panel-0" data-water-panel="0">
+          <p class="water-panel-desc">割水前の成分値・数量と、割水後の目標成分を入力してください。加える水の量（割水量）と割水後の合計数量を計算します。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-water-reset="0" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">割水前（現在）</div>
+            <div class="water-field-grid">
+              <label class="water-field"><span>成分（現在）</span><div class="water-input-wrap"><input id="water-0-current-component" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="water-field"><span>数量（現在）</span><div class="water-input-wrap"><input id="water-0-current-volume" inputmode="decimal" placeholder="例：254" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">割水後（目標）</div>
+            <div class="water-field-grid">
+              <label class="water-field"><span>成分（目標）</span><div class="water-input-wrap"><input id="water-0-target-component" inputmode="decimal" placeholder="例：13.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <div class="water-field is-readonly"><span>数量（目標）</span><span class="water-hint">→ 計算で求まります</span><div class="unknown-badge">計算結果で表示</div></div>
+            </div>
+          </div>
+          <div class="calc-help">表示は自動更新です。2mm表候補はボタンで一時候補として作成します。</div>
+          <section class="result-card" id="water-result-0" hidden><div class="result-title">計算結果</div><div class="result-grid r2">
+            <div><div class="result-label">割水量（加える水の量）</div><div class="result-value"><span id="water-0-water-volume">—</span><span class="result-unit">L</span></div></div>
+            <div><div class="result-label">割水後の合計数量</div><div class="result-value"><span id="water-0-total-volume">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="water-error-0" hidden></div>
+        </section>
+
+        <section class="water-panel" id="water-panel-1" data-water-panel="1" hidden>
+          <p class="water-panel-desc">目標とする成分・数量と、割水前の成分値を入力してください。割水前（現在）の必要数量と割水量を計算します。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-water-reset="1" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">割水前（現在）</div>
+            <div class="water-field-grid">
+              <label class="water-field"><span>成分（現在）</span><div class="water-input-wrap"><input id="water-1-current-component" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <div class="water-field is-readonly"><span>数量（現在）</span><span class="water-hint">→ 計算で求まります</span><div class="unknown-badge">計算結果で表示</div></div>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">割水後（目標）</div>
+            <div class="water-field-grid">
+              <label class="water-field"><span>成分（目標）</span><div class="water-input-wrap"><input id="water-1-target-component" inputmode="decimal" placeholder="例：13.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="water-field"><span>数量（目標）</span><div class="water-input-wrap"><input id="water-1-target-volume" inputmode="decimal" placeholder="例：292" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="calc-help">表示は自動更新です。条件を残したい場合は、割水計算専用の履歴画面で確認します。</div>
+          <section class="result-card" id="water-result-1" hidden><div class="result-title">計算結果</div><div class="result-grid r2">
+            <div><div class="result-label">割水前の必要数量</div><div class="result-value"><span id="water-1-current-volume">—</span><span class="result-unit">L</span></div></div>
+            <div><div class="result-label">割水量（加える水の量）</div><div class="result-value"><span id="water-1-water-volume">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="water-error-1" hidden></div>
+        </section>
+
+        <section class="water-panel" id="water-panel-2" data-water-panel="2" hidden>
+          <p class="water-panel-desc">目標とする成分・数量と、割水前の数量を入力してください。割水前（現在）に必要な成分値と割水量を計算します。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-water-reset="2" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">割水前（現在）</div>
+            <div class="water-field-grid">
+              <div class="water-field is-readonly"><span>成分（現在）</span><span class="water-hint">→ 計算で求まります</span><div class="unknown-badge">計算結果で表示</div></div>
+              <label class="water-field"><span>数量（現在）</span><div class="water-input-wrap"><input id="water-2-current-volume" inputmode="decimal" placeholder="例：255" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">割水後（目標）</div>
+            <div class="water-field-grid">
+              <label class="water-field"><span>成分（目標）</span><div class="water-input-wrap"><input id="water-2-target-component" inputmode="decimal" placeholder="例：13.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="water-field"><span>数量（目標）</span><div class="water-input-wrap"><input id="water-2-target-volume" inputmode="decimal" placeholder="例：292" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="calc-help">現在数量を固定して逆算する画面です。表示は自動更新です。</div>
+          <section class="result-card" id="water-result-2" hidden><div class="result-title">計算結果</div><div class="result-grid r2">
+            <div><div class="result-label">必要な割水前の成分値</div><div class="result-value"><span id="water-2-current-component">—</span><span class="result-unit">%</span></div></div>
+            <div><div class="result-label">割水量（加える水の量）</div><div class="result-value"><span id="water-2-water-volume">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="water-error-2" hidden></div>
+        </section>
+
+        <section class="water-panel" id="water-panel-3" data-water-panel="3" hidden>
+          <p class="water-panel-desc">割水前の成分値・数量と、割水後の目標数量を入力してください。割水後の成分値と割水量を計算します。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-water-reset="3" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">割水前（現在）</div>
+            <div class="water-field-grid">
+              <label class="water-field"><span>成分（現在）</span><div class="water-input-wrap"><input id="water-3-current-component" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="water-field"><span>数量（現在）</span><div class="water-input-wrap"><input id="water-3-current-volume" inputmode="decimal" placeholder="例：255" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">割水後（目標）</div>
+            <div class="water-field-grid">
+              <div class="water-field is-readonly"><span>成分（目標）</span><span class="water-hint">→ 計算で求まります</span><div class="unknown-badge">計算結果で表示</div></div>
+              <label class="water-field"><span>数量（目標）</span><div class="water-input-wrap"><input id="water-3-target-volume" inputmode="decimal" placeholder="例：292" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="calc-help">目標数量を先に決める比較用です。表示は自動更新です。</div>
+          <section class="result-card" id="water-result-3" hidden><div class="result-title">計算結果</div><div class="result-grid r2">
+            <div><div class="result-label">割水後の成分値</div><div class="result-value"><span id="water-3-target-component">—</span><span class="result-unit">%</span></div></div>
+            <div><div class="result-label">割水量（加える水の量）</div><div class="result-value"><span id="water-3-water-volume">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="water-error-3" hidden></div>
+        </section>
+
+        <section class="compact-tools-panel water-action-panel" aria-label="割水計算の操作">
+          <div class="inline-tools-title-row water-action-title-row">
+            <div class="inline-tools-title">割水計算の操作</div>
+            <span class="inline-tools-badge" id="water-action-mode-badge">割水量・目標数量</span>
+          </div>
+          <div class="inline-tools-note water-action-note">2mm表候補は保存なしの一時確認です。計算結果は割水計算専用の履歴画面に残せます。比較は混合計算専用です。</div>
+          <div class="calc-main-actions has-tm2">
+            <button class="calc-btn" id="water-save-history" type="button" disabled>この割水計算を履歴に残す</button>
+            <button class="back-btn water-tm2-candidate-btn" id="water-open-tm2-candidate" type="button" disabled>2mm表候補を確認する</button>
+            <a class="back-btn" id="water-toggle-history" href="./water-history.html">割水計算履歴を見る</a>
+          </div>
+          <div class="water-action-status" id="water-tm2-candidate-status" aria-live="polite">入力がそろうと2mm表候補を確認できます。</div>
+          <div class="history-action-status" id="water-history-status" aria-live="polite">計算結果が出ると履歴に残せます。</div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="./assets/water.js"></script>
+</body>
+</html>

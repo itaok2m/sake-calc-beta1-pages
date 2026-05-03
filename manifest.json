@@ -2,13 +2,13 @@
   "id": "./index.html",
   "name": "日本酒醸造 計算ツール",
   "short_name": "酒造ツール",
-  "description": "日本酒醸造の現場で使う主要な計算と、アルコール分温度換算表の資料ビューをまとめた社内向けベータ版です。",
+  "description": "日本酒醸造の現場で使う主要な計算と2mm表をまとめた社内向けツールです。",
   "lang": "ja",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f4f5f7",
-  "theme_color": "#4d72a3",
+  "background_color": "#f4f4f3",
+  "theme_color": "#2f4257",
   "icons": [
     {
       "src": "./icons/icon-192.png",

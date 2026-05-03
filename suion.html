@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>水温温度計算 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/suion.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">水温温度計算</span></div>
+  </div>
+
+  <main class="tool-body">
+    <section class="screen-lead">
+      <h1>水温温度計算</h1>
+      <p>水＋水専用の温度計算です。氷を使う場合は融解熱が入るため、この画面ではなく「氷投入量計算」で扱います。</p>
+    </section>
+
+    <div class="wrapper">
+      <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
+      <div class="unit-bar" aria-label="水温温度計算の式">
+        <div class="unit-bar-formula">
+          <span class="fml-main" id="suion-formula-main">① 混合後水温 ＝（水温① × 水量① ＋ 水温② × 水量②）÷（水量① ＋ 水量②）</span>
+          <span class="fml-note" id="suion-formula-sub">② 混合後水量 ＝ 水量① ＋ 水量②</span>
+        </div>
+      </div>
+
+      <section class="card suion-card" aria-label="水温温度計算入力">
+        <div class="suion-sub-tabs" role="tablist" aria-label="水温温度計算の求め方">
+          <button class="suion-sub-tab active" data-suion-mode="0" type="button"><span class="suion-sub-goal">混合後の水温</span><span class="suion-sub-known">2種類の水を混ぜた結果を見る</span></button>
+          <button class="suion-sub-tab" data-suion-mode="1" type="button"><span class="suion-sub-goal">追加水の条件</span><span class="suion-sub-known">目標の水温・水量から逆算する</span></button>
+          <button class="suion-sub-tab" data-suion-mode="2" type="button"><span class="suion-sub-goal">配合量の計算</span><span class="suion-sub-known">目標に合わせた必要量を出す</span></button>
+        </div>
+
+        <section class="suion-panel" id="suion-panel-0" data-suion-panel="0">
+          <p class="suion-panel-desc">水同士を混ぜたときの水温・水量を計算します。温度優先で多めに作り、仕込みに必要な量だけ取り出す使い方も想定します。氷はここでは扱いません。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-suion-reset="0" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">水①（例：仕込み水・冷水）</div>
+            <div class="suion-field-grid">
+              <label class="suion-field"><span>水温</span><div class="suion-input-wrap"><input id="suion-0-temp-1" inputmode="decimal" placeholder="例：5" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+              <label class="suion-field"><span>水量</span><div class="suion-input-wrap"><input id="suion-0-volume-1" inputmode="decimal" placeholder="例：100" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">水②（例：温湯）</div>
+            <div class="suion-field-grid">
+              <label class="suion-field"><span>水温</span><div class="suion-input-wrap"><input id="suion-0-temp-2" inputmode="decimal" placeholder="例：60" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+              <label class="suion-field"><span>水量</span><div class="suion-input-wrap"><input id="suion-0-volume-2" inputmode="decimal" placeholder="例：20" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="calc-help">表示は自動更新です。温度による体積変化・熱損失は無視します。</div>
+          <section class="result-card" id="suion-result-0" hidden><div class="result-title">計算結果</div><div class="result-grid r2">
+            <div><div class="result-label">混合後の水温</div><div class="result-value"><span id="suion-0-result-temp">—</span><span class="result-unit">℃</span></div></div>
+            <div><div class="result-label">混合後の水量</div><div class="result-value"><span id="suion-0-result-volume">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="suion-error-0" hidden></div>
+        </section>
+
+        <section class="suion-panel" id="suion-panel-1" data-suion-panel="1" hidden>
+          <p class="suion-panel-desc">手持ちの水に別の水を足して、目標の水温・水量にするための追加水温・追加水量を計算します。水＋水の逆算です。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-suion-reset="1" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">手持ちの水</div>
+            <div class="suion-field-grid">
+              <label class="suion-field"><span>水温</span><div class="suion-input-wrap"><input id="suion-1-current-temp" inputmode="decimal" placeholder="例：5" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+              <label class="suion-field"><span>水量</span><div class="suion-input-wrap"><input id="suion-1-current-volume" inputmode="decimal" placeholder="例：80" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">目標（混合後）</div>
+            <div class="suion-field-grid">
+              <label class="suion-field"><span>目標水温</span><div class="suion-input-wrap"><input id="suion-1-target-temp" inputmode="decimal" placeholder="例：15" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+              <label class="suion-field"><span>目標水量</span><div class="suion-input-wrap"><input id="suion-1-target-volume" inputmode="decimal" placeholder="例：100" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="calc-help">表示は自動更新です。目標水量は手持ちの水量より大きい値にしてください。</div>
+          <section class="result-card" id="suion-result-1" hidden><div class="result-title">計算結果 ― 追加する水</div><div class="result-grid r2">
+            <div><div class="result-label">追加水の水温</div><div class="result-value"><span id="suion-1-result-temp">—</span><span class="result-unit">℃</span></div></div>
+            <div><div class="result-label">追加水の水量</div><div class="result-value"><span id="suion-1-result-volume">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="suion-error-1" hidden></div>
+        </section>
+
+        <section class="suion-panel" id="suion-panel-2" data-suion-panel="2" hidden>
+          <p class="suion-panel-desc">2種類の水温が決まっているとき、目標水温・水量にするための配合量を計算します。「混合後の水温」の逆方向計算として使えます。</p>
+          <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-suion-reset="2" type="button">入力値をリセット</button></div>
+          <div class="group"><div class="group-title">使用する水の水温</div>
+            <div class="suion-field-grid">
+              <label class="suion-field"><span>水①の水温</span><div class="suion-input-wrap"><input id="suion-2-temp-1" inputmode="decimal" placeholder="例：5" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+              <label class="suion-field"><span>水②の水温</span><div class="suion-input-wrap"><input id="suion-2-temp-2" inputmode="decimal" placeholder="例：60" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+            </div>
+          </div>
+          <div class="group"><div class="group-title">目標（混合後）</div>
+            <div class="suion-field-grid">
+              <label class="suion-field"><span>目標水温</span><div class="suion-input-wrap"><input id="suion-2-target-temp" inputmode="decimal" placeholder="例：15" step="0.1" type="number"><span class="iunit">℃</span></div></label>
+              <label class="suion-field"><span>目標水量</span><div class="suion-input-wrap"><input id="suion-2-target-volume" inputmode="decimal" placeholder="例：100" step="0.1" type="number"><span class="iunit">L</span></div></label>
+            </div>
+          </div>
+          <div class="calc-help">表示は自動更新です。目標水温は水①と水②の間の温度にしてください。</div>
+          <section class="result-card" id="suion-result-2" hidden><div class="result-title">計算結果 ― それぞれの使用量</div><div class="result-grid r2">
+            <div><div class="result-label">水①の使用量</div><div class="result-value"><span id="suion-2-result-volume-1">—</span><span class="result-unit">L</span></div></div>
+            <div><div class="result-label">水②の使用量</div><div class="result-value"><span id="suion-2-result-volume-2">—</span><span class="result-unit">L</span></div></div>
+          </div></section>
+          <div class="err" id="suion-error-2" hidden></div>
+        </section>
+
+        <section class="compact-tools-panel suion-action-panel" aria-label="水温温度計算の操作">
+          <div class="inline-tools-title-row suion-action-title-row">
+            <div class="inline-tools-title">水温温度計算の扱い</div>
+            <span class="inline-tools-badge" id="suion-action-mode-badge">混合後の水温</span>
+          </div>
+          <div class="inline-tools-note suion-action-note">この画面は水＋水専用です。氷投入は融解熱が入るため別計算機で扱います。2mm表候補Lは作成しません。計算結果は水温温度計算専用の履歴画面に残せます。比較は混合計算専用です。</div>
+          <div class="calc-main-actions">
+            <button class="calc-btn" id="suion-save-history" type="button" disabled>この水温温度計算を履歴に残す</button>
+            <a class="back-btn" id="suion-toggle-history" href="./suion-history.html">水温温度履歴を見る</a>
+          </div>
+          <div class="history-action-status" id="suion-history-status" aria-live="polite">計算結果が出ると履歴に残せます。</div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="./assets/suion.js"></script>
+</body>
+</html>

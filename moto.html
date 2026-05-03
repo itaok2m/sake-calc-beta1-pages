@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2f4257">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>酛仕込温度計算 / 日本酒醸造 計算ツール</title>
+  <link rel="stylesheet" href="./assets/common.css">
+  <link rel="stylesheet" href="./assets/temperature-brew.css">
+</head>
+<body>
+  <div class="tool-nav">
+    <a class="back-btn" href="./index.html">← トップへ戻る</a>
+    <div class="tool-nav-place"><span class="tool-nav-title">酛仕込温度計算</span></div>
+  </div>
+  <main class="tool-body">
+    <section class="screen-lead"><h1>酛仕込温度計算</h1><p>水麹温度から、通常の温度帯と四段仕込用55〜60℃の蒸米温度を一覧で確認できます。</p></section>
+    <div class="wrapper">
+      <section class="section-subnav sublevel-nav" aria-label="計算式表示"><span class="section-subnav-title">計算式表示</span></section>
+      <section class="unit-bar" aria-label="式"><div class="unit-bar-formula"><span class="fml-main">蒸米温度 ＝（仕込予定温度 − 水麹温度）× 3.5 ＋ 水麹温度</span></div></section>
+      <section class="card" aria-label="酛仕込温度計算入力">
+        <div class="group"><div class="group-title">水麹温度を入力</div>
+          <div class="temp-field-grid"><label class="temp-field"><span>水麹温度</span><div class="temp-input-wrap"><input id="moto-water-koji-temp" inputmode="decimal" placeholder="例：12.0" step="0.1" type="number"><span class="iunit">℃</span></div></label></div>
+        </div>
+        <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="moto-reset" type="button">入力値をリセット</button></div>
+        <section class="result-card" id="moto-result" hidden><div class="result-title">蒸米温度一覧</div><div class="temp-table-wrap"><table class="temp-table"><thead><tr><th>仕込予定温度</th><th>蒸米温度</th></tr></thead><tbody id="moto-body"></tbody></table></div><p class="temp-note">※ 仕込予定温度 18〜30℃（1℃刻み）の蒸米温度を一覧表示します。</p><details class="temp-optional" id="moto-yodan"><summary><span>四段仕込用 55〜60℃ を表示</span><span aria-hidden="true">▾</span></summary><div class="temp-optional-body"><p class="temp-note">四段仕込みを行う時だけ開いて確認します。</p><div class="temp-table-wrap"><table class="temp-table"><thead><tr><th>仕込予定温度</th><th>蒸米温度</th></tr></thead><tbody id="moto-yodan-body"></tbody></table></div></div></details></section>
+        <div class="err" id="moto-error" hidden></div>
+      </section>
+    </div>
+  </main>
+  <script src="./assets/moto.js"></script>
+</body>
+</html>
