@@ -115,6 +115,28 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 }
 
 
+/* トップ4入口と計算機一覧 */
+.top-entry-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:800px;margin:0 auto;}
+.top-entry-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;text-decoration:none;background:#fff;border:1px solid #e0dbd2;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.05);padding:17px 16px;min-height:96px;transition:box-shadow .15s,transform .15s,border-color .15s;}
+.top-entry-card:hover,.top-entry-card:focus-visible{border-color:#bfc5cc;box-shadow:0 6px 18px rgba(47,66,87,.12);outline:none;}
+.top-entry-card:active{transform:translateY(1px);}
+.top-entry-text{display:grid;gap:5px;min-width:0;}
+.top-entry-text h2{font-size:16px;color:#1f2e40;}
+.top-entry-text p{font-size:12px;color:#66717e;line-height:1.65;}
+.top-entry-arrow{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#f0f2f4;border:1px solid #d9dcdf;color:#2f4257;font-weight:900;}
+.calculators-body .wrapper{max-width:720px;}
+.calc-list{display:grid;gap:8px;}
+.calc-list-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;text-decoration:none;background:#fff;border:1px solid #e0dbd2;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);padding:14px 15px;min-height:74px;transition:box-shadow .15s,transform .15s,border-color .15s;}
+.calc-list-row:hover,.calc-list-row:focus-visible{border-color:#bfc5cc;box-shadow:0 5px 16px rgba(47,66,87,.10);outline:none;}
+.calc-list-row:active{transform:translateY(1px);}
+.calc-list-main{display:grid;gap:3px;min-width:0;}
+.calc-list-title{font-size:15px;font-weight:900;color:#1f2e40;line-height:1.35;}
+.calc-list-desc{font-size:12px;color:#66717e;line-height:1.55;overflow-wrap:anywhere;}
+.calc-list-arrow{color:#2f4257;font-size:18px;font-weight:900;line-height:1;}
+@media(min-width:480px){.top-entry-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.top-entry-card{min-height:112px;}}
+@media(max-width:420px){.top-entry-card{padding:15px 14px;min-height:88px;}.top-entry-text h2{font-size:15px;}.top-entry-text p{font-size:11.5px;}.calc-list-row{padding:13px 13px;min-height:70px;}.calc-list-title{font-size:14px;}.calc-list-desc{font-size:11.5px;}}
+
+
 /* 計算機別履歴カード */
 .history-action-buttons{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px;}
 .history-action-status{font-size:11px;color:#7a847f;line-height:1.7;margin-top:6px;}
