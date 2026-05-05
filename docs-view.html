@@ -190,6 +190,26 @@ input:focus,select:focus{
   border-color:#8fa7bf !important;
 }
 
+/* 2026-05-04: 公開後UI整理。表画像・換算ロジックは触らず、入口説明と押せる場所の見え方だけ調整。 */
+.docs-short-lead{margin:0 0 12px;padding:12px 14px;border-radius:16px;border:1px solid #dfe3e8;background:#fff;color:#3f4d5c;font-size:12px;line-height:1.75;}
+.docs-short-lead strong{display:block;margin-bottom:2px;color:#1f2e40;font-size:13px;}
+.docs-short-lead p{margin:0;}
+.controls-card{margin-top:0;}
+.zone{padding:12px 0;}
+.zone:first-child{padding-top:0;}
+.zone:last-child{padding-bottom:0;}
+.image-toolbar{padding-top:2px;}
+.guide-btn{border-radius:18px;min-height:44px;}
+@media(max-width:860px){
+  .docs-short-lead{font-size:12px;padding:11px 12px;margin-bottom:10px;}
+  .docs-short-lead strong{font-size:12.5px;}
+  .image-toolbar{gap:10px;}
+  .viewer-meta{width:100%;}
+}
+@media(max-width:420px){
+  .docs-short-lead{line-height:1.65;}
+}
+
 </style>
 </head>
 <body>
@@ -198,6 +218,10 @@ input:focus,select:focus{
   <div class="nav-title">アルコール分温度換算表</div>
 </div>
 <div class="page">
+  <div class="docs-short-lead" role="note" aria-label="アルコール換算表の使い方">
+    <strong>測定度数と温度を入れると、表画像上の確認位置を探しやすくします。</strong>
+    <p>補助線は目安です。最終確認は、表示された換算表画像の交点を見て行ってください。</p>
+  </div>
   <div class="card controls-card">
     <section class="zone zone-input" aria-label="入力する所">
       <div class="search-controls">
