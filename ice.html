@@ -19,22 +19,22 @@
   <main class="tool-body">
     <section class="screen-lead">
       <h1>氷投入量計算</h1>
-      <p>汲水を氷で冷やす時の必要氷量kgと水量を確認します。方式を選び、標準0℃計算を基準にして、氷温別の目安は結果欄で確認します。</p>
+      <p>必要氷量kgと水量を確認します。</p>
     </section>
 
     <div class="wrapper">
-      <section class="section-subnav sublevel-nav" aria-label="計算式表示">
-        <span class="section-subnav-title">計算式表示</span>
-      </section>
-      <section class="unit-bar" aria-label="氷投入量計算の式">
-        <div class="unit-bar-formula">
-          <span class="fml-main" id="ice-formula-main">標準0℃：必要氷kg ＝ 現在L × 4.186 ×（現在水温 − 目標水温）÷（334 ＋ 4.186 × 目標水温）</span>
-          <span class="fml-note" id="ice-formula-sub">0℃計算を基準表示にし、氷温別の目安は結果欄で切り替えて確認します。</span>
-        </div>
-      </section>
+      <details class="common-info-toggle formula-toggle">
+        <summary>計算式・考え方を見る</summary>
+        <section class="unit-bar" aria-label="氷投入量計算の式">
+          <div class="unit-bar-formula">
+            <span class="fml-main" id="ice-formula-main">標準0℃：必要氷kg ＝ 現在L × 4.186 ×（現在水温 − 目標水温）÷（334 ＋ 4.186 × 目標水温）</span>
+            <span class="fml-note" id="ice-formula-sub">0℃計算を基準表示にし、氷温別の目安は結果欄で切り替えて確認します。</span>
+          </div>
+        </section>
+      </details>
 
       <section class="card ice-card" aria-label="氷投入量計算入力">
-        <p class="ice-panel-desc">0℃の氷を標準として、氷の融解熱を含めて計算します。タンク温度・外気・攪拌・氷表面の水による誤差は残るため、現場確認用の概算として扱います。</p>
+        <p class="ice-panel-desc">標準0℃の氷で概算します。</p>
         <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="ice-reset" type="button">入力値をリセット</button></div>
 
         <section class="ice-mode-select" aria-label="計算方式を選ぶ">
@@ -54,7 +54,7 @@
         <section class="ice-mode-block" id="ice-forward-panel" aria-label="現在水量から計算">
           <div class="ice-mode-heading">
             <h2>現在水量から計算</h2>
-            <p>すでにタンクへ入っている水量を、目標水温まで下げるための氷量を出します。</p>
+            <p>現在水量から必要氷量を出します。</p>
           </div>
 
           <div class="group"><div class="group-title">現在の水</div>
@@ -96,7 +96,7 @@
         <section class="ice-mode-block" id="ice-final-panel" aria-label="仕上がり水量から計算" hidden>
           <div class="ice-mode-heading">
             <h2>仕上がり水量から計算</h2>
-            <p>氷投入後に必要な水量が決まっている時、最初に入れる水量と必要氷量を出します。</p>
+            <p>仕上がり水量から逆算します。</p>
           </div>
 
           <div class="group"><div class="group-title">仕上がり目標</div>
@@ -136,14 +136,14 @@
           <div class="err" id="ice-final-error" hidden></div>
         </section>
 
-        <div class="calc-help">表示は自動更新です。氷kgは2mm表の通常L入力対象にしません。</div>
+        <div class="calc-help">自動更新</div>
 
         <section class="compact-tools-panel ice-action-panel" aria-label="氷投入量計算の操作">
           <div class="inline-tools-title-row ice-action-title-row">
             <div class="inline-tools-title">氷投入量計算の扱い</div>
             <span class="inline-tools-badge">単独計算</span>
           </div>
-          <div class="inline-tools-note ice-action-note">この画面は、汲水を氷で冷やすための概算確認用です。必要氷量kgは確認用で、2mm表の通常L入力へは入れません。将来接続する場合も、主候補は投入前L・投入後Lを中心に検討します。履歴は専用履歴画面で確認します。</div>
+          <div class="inline-tools-note ice-action-note">概算確認用 ／ 履歴：専用保存 ／ 2mm表候補なし</div>
           <div class="calc-main-actions">
             <button class="calc-btn" id="ice-save-history" type="button" disabled>この氷投入量計算を履歴に残す</button>
             <a class="back-btn" id="ice-toggle-history" href="./ice-history.html">氷投入量履歴を見る</a>

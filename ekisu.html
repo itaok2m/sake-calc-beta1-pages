@@ -19,17 +19,19 @@
   <main class="tool-body">
     <section class="screen-lead">
       <h1>エキス分計算</h1>
-      <p>アルコール分と日本酒度またはボーメ度から、エキス分と原エキス分を確認できます。</p>
+      <p>エキス分と原エキス分を確認します。</p>
     </section>
 
     <div class="wrapper">
-      <div class="section-subnav sublevel-nav formula-label-nav"><span class="section-subnav-title">計算式表示</span></div>
-      <div class="unit-bar" aria-label="エキス分計算の式">
-        <div class="unit-bar-formula">
-          <span class="fml-main" id="ekisu-formula-main">① エキス分 ＝ 日本酒度とアルコール分から算出</span>
-          <span class="fml-note" id="ekisu-formula-sub">② 原エキス分 ＝ エキス分 ＋ アルコール分 × 1.5894</span>
+      <details class="common-info-toggle formula-toggle">
+        <summary>計算式・考え方を見る</summary>
+        <div class="unit-bar" aria-label="エキス分計算の式">
+          <div class="unit-bar-formula">
+            <span class="fml-main" id="ekisu-formula-main">① エキス分 ＝ 日本酒度とアルコール分から算出</span>
+            <span class="fml-note" id="ekisu-formula-sub">② 原エキス分 ＝ エキス分 ＋ アルコール分 × 1.5894</span>
+          </div>
         </div>
-      </div>
+      </details>
 
       <section class="card ekisu-card" aria-label="エキス分計算入力">
         <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="ekisu-reset" type="button">入力値をリセット</button></div>
@@ -57,7 +59,7 @@
           </div>
         </div>
 
-        <div class="calc-help">表示は自動更新です。エキス分計算は数量Lを出さないため、2mm表候補は作成しません。</div>
+        <div class="calc-help">自動更新</div>
 
         <div class="result-card" id="ekisu-result" hidden>
           <div class="result-title">計算結果</div>
@@ -74,7 +76,7 @@
             <div class="inline-tools-title">エキス分計算の扱い</div>
             <span class="inline-tools-badge" id="ekisu-action-mode-badge">日本酒度入力</span>
           </div>
-          <div class="inline-tools-note ekisu-action-note">この画面は成分確認用です。2mm表候補Lは作成しません。計算結果はエキス分計算専用の履歴画面に残せます。比較は混合計算専用です。</div>
+          <div class="inline-tools-note ekisu-action-note">履歴：専用保存 ／ 2mm表候補なし</div>
           <div class="calc-main-actions">
             <button class="calc-btn" id="ekisu-save-history" type="button" disabled>このエキス分計算を履歴に残す</button>
             <a class="back-btn" id="ekisu-toggle-history" href="./ekisu-history.html">エキス分履歴を見る</a>
