@@ -76,13 +76,69 @@ input:focus{outline:none;border-color:#2f4257;box-shadow:0 0 0 3px rgba(47,66,87
 code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.95em;background:#eef3f7;border:1px solid #dbe3ea;border-radius:6px;padding:1px 4px;}
 
 /* 共通UI整理: 計算式・考え方はPC/スマホ共通で折りたたみにする */
-.common-info-toggle{border-top:1px solid #e4e5e7;border-bottom:1px solid #eef0f2;margin:0 0 12px;padding:0;}
-.common-info-toggle summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:9px 0;font-size:12px;font-weight:900;color:#2f4257;cursor:pointer;user-select:none;}
+/* 2026-05-11: 開閉状態が弱く見えたため、補足用の共通折りたたみ行として閉/開の色差を明確化。 */
+.common-info-toggle{
+  margin:0 0 12px;
+  padding:0;
+  border:1px solid #dfe3e7;
+  border-radius:12px;
+  background:#f8f9fa;
+  box-shadow:none;
+  overflow:hidden;
+}
+.common-info-toggle summary{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:44px;
+  padding:10px 12px;
+  font-size:12.5px;
+  line-height:1.35;
+  font-weight:900;
+  color:#2f4257;
+  cursor:pointer;
+  user-select:none;
+}
 .common-info-toggle summary::-webkit-details-marker{display:none;}
-.common-info-toggle summary::after{content:'開く';flex:0 0 auto;border:1px solid #d9dde3;border-radius:999px;background:#fff;color:#2f4257;font-size:10.5px;font-weight:900;line-height:1;padding:5px 8px;}
-.common-info-toggle[open] summary::after{content:'閉じる';background:#eef4fb;border-color:#cbd8e8;}
-.common-info-toggle .unit-bar{border-top:none;margin:0;padding:0 0 10px;}
-.common-info-toggle .unit-bar-formula{padding-top:2px;}
+.common-info-toggle .toggle-label-closed,.common-info-toggle .toggle-label-open{min-width:0;color:#2f4257;overflow-wrap:anywhere;}
+.common-info-toggle .toggle-label-open{display:none;}
+.common-info-toggle[open] .toggle-label-closed{display:none;}
+.common-info-toggle[open] .toggle-label-open{display:inline;}
+.common-info-toggle summary::after{
+  content:'開く ▼';
+  flex:0 0 auto;
+  border:1px solid #cfd6dd;
+  border-radius:999px;
+  background:#fff;
+  color:#2f4257;
+  font-size:10.5px;
+  font-weight:900;
+  line-height:1;
+  padding:6px 9px;
+}
+.common-info-toggle[open]{
+  border-color:#b9cbe0;
+  background:#eef4fb;
+}
+.common-info-toggle[open] summary{
+  background:#e4eef8;
+  border-bottom:1px solid #c9d9ea;
+}
+.common-info-toggle[open] summary::after{
+  content:'閉じる ▲';
+  background:#fff;
+  border-color:#b8cade;
+  color:#1f3b58;
+}
+.common-info-toggle .unit-bar{
+  border-top:none;
+  margin:0;
+  padding:10px 12px 12px;
+  background:#fff;
+}
+.common-info-toggle .unit-bar-formula{padding-top:0;}
 @media(min-width:560px){.tool-grid{grid-template-columns:repeat(3,1fr);}}
 @media(min-width:640px){
   .tool-body{padding:28px 24px;padding-bottom:max(60px,calc(env(safe-area-inset-bottom) + 40px));}
