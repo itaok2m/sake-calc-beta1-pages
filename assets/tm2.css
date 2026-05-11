@@ -258,3 +258,29 @@ body.theme-dark#tank2mm-docs-screen .tm2-docs-alert{border-color:rgba(245,170,70
   #tank2mm-screen .card[data-tm2-panel="list"]{padding-bottom:116px;}
   #tank2mm-screen .tm2-footer-note{padding-bottom:18px;}
 }
+
+/* 2026-05-11: 2mm表内の開閉ボタンを、補足用折りたたみの開閉色ルールへ寄せる。イベントや候補データは変更しない。 */
+#tank2mm-screen .tm2-share-toggle-btn,
+#tank2mm-screen .tm2-detail-btn[aria-expanded],
+#tank2mm-screen .tm2-list-search-help-btn{
+  border-color:#dfe3e7;
+  background:#f8f9fa;
+  color:#2f4257;
+  box-shadow:none;
+}
+#tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"],
+#tank2mm-screen .tm2-detail-btn[aria-expanded="true"],
+#tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"]{
+  border-color:#b9cbe0;
+  background:#e4eef8;
+  color:#1f3b58;
+}
+#tank2mm-screen .tm2-share-card.is-open{
+  border-color:#b9cbe0;
+  background:#eef4fb;
+}
+#tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"]::after,
+#tank2mm-screen .tm2-detail-btn[aria-expanded="true"]::after,
+#tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"]::after{
+  color:#1f3b58;
+}

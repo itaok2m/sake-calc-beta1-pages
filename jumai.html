@@ -18,8 +18,10 @@
   <main class="tool-body">
     <section class="screen-lead"><h1>醪仕込温度計算</h1><p>水麹温度と工程（添・仲・留）をもとに、使う蒸米温度を一覧で確認できます。</p></section>
     <div class="wrapper">
-      <section class="section-subnav sublevel-nav" aria-label="計算式表示"><span class="section-subnav-title">計算式表示</span></section>
-      <section class="unit-bar" aria-label="式"><div class="unit-bar-formula"><span class="fml-main">蒸米温度 ＝（仕込予定温度 − 水麹温度）× F ＋ 水麹温度</span></div></section>
+      <details class="common-info-toggle formula-toggle">
+        <summary><span class="toggle-label-closed">計算式・考え方を見る</span><span class="toggle-label-open">計算式・考え方を閉じる</span></summary>
+        <section class="unit-bar" aria-label="式"><div class="unit-bar-formula"><span class="fml-main">蒸米温度 ＝（仕込予定温度 − 水麹温度）× F ＋ 水麹温度</span></div></section>
+      </details>
       <section class="card" aria-label="醪仕込温度計算入力">
         <div class="group"><div class="group-title">水麹温度・工程を入力</div>
           <div class="temp-field-grid"><label class="temp-field"><span>水麹温度</span><div class="temp-input-wrap"><input id="jumai-water-koji-temp" inputmode="decimal" placeholder="例：8.0" step="0.1" type="number"><span class="iunit">℃</span></div></label><label class="temp-field"><span>工程（F値）</span><div class="temp-input-wrap"><select id="jumai-factor"><option value="5">添・仲（F = 5）</option><option value="6">留（F = 6）</option></select></div></label></div>
