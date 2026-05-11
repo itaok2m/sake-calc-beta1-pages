@@ -210,16 +210,6 @@ input:focus,select:focus{
   .docs-short-lead{line-height:1.65;}
 }
 
-
-
-/* 2026-05-11: アルコール換算表画面の軽量化。画像データ・換算表データ・保存キーは変更しない。 */
-.image-wrap{contain:layout paint;-webkit-overflow-scrolling:touch;}
-.image-stage{contain:layout paint;}
-.doc-image{box-shadow:none;}
-.guide-overlay{contain:layout paint;}
-@media(max-width:860px){
-  .doc-image{border-radius:8px;}
-}
 </style>
 </head>
 <body>
@@ -279,7 +269,7 @@ input:focus,select:focus{
     </div>
     <div id="imageWrap" class="image-wrap">
       <div id="imageStage" class="image-stage">
-        <img id="docImage" class="doc-image" alt="アルコール分温度換算表の資料画像" decoding="async" loading="eager" fetchpriority="high">
+        <img id="docImage" class="doc-image" alt="アルコール分温度換算表の資料画像" decoding="async">
         <div id="guideOverlay" class="guide-overlay" aria-hidden="true">
           <div id="guideVertical" class="guide-line guide-line-v"></div>
           <button id="guideVerticalHandle" class="guide-handle guide-handle-v" type="button" aria-label="縦補助線を動かす">度数</button>
@@ -343,8 +333,6 @@ input:focus,select:focus{
   let guideXRatio = 0.5;
   let guideYRatio = 0.5;
   let dragState = null;
-  let imageRequestSeq = 0;
-  let guideSyncQueued = false;
 
   function safeLoadState(){
     try {
@@ -429,7 +417,7 @@ input:focus,select:focus{
     syncGuideOverlay();
     return moved;
   }
-  function syncGuideOverlayNow(){
+  function syncGuideOverlay(){
     const width = docImage.clientWidth;
     const height = docImage.clientHeight;
     if (!width || !height) return;
@@ -443,14 +431,6 @@ input:focus,select:focus{
     guideVerticalHandle.style.left = x + 'px';
     guideHorizontal.style.top = y + 'px';
     guideHorizontalHandle.style.top = y + 'px';
-  }
-  function syncGuideOverlay(){
-    if (guideSyncQueued) return;
-    guideSyncQueued = true;
-    requestAnimationFrame(function(){
-      guideSyncQueued = false;
-      syncGuideOverlayNow();
-    });
   }
   function setGuideEnabled(next){
     guideEnabled = !!next;
@@ -482,13 +462,12 @@ input:focus,select:focus{
       guideYRatio = nextY;
     }
     syncGuideOverlay();
+    saveViewState();
     event.preventDefault();
   }
   function endGuideDrag(){
-    const hadDragState = !!dragState;
     if (dragState && dragState.handle) dragState.handle.classList.remove('dragging');
     dragState = null;
-    if (hadDragState) saveViewState();
   }
   function saveViewState(){
     safeSaveState({
@@ -514,23 +493,13 @@ input:focus,select:focus{
     syncGuideOverlay();
     saveViewState();
   }
-  function loadPageImage(page){
-    const nextSrc = page && page.file ? page.file : '';
-    const requestId = ++imageRequestSeq;
-    docImage.removeAttribute('src');
-    if (!nextSrc) return;
-    requestAnimationFrame(function(){
-      if (requestId !== imageRequestSeq) return;
-      docImage.src = nextSrc;
-    });
-  }
   function render(index, options) {
     currentIndex = clamp(index, 0, pages.length - 1);
     const page = pages[currentIndex];
     pageSelect.value = String(currentIndex);
     errorBox.classList.remove('show');
+    docImage.src = page.file;
     docImage.alt = page.title || page.label || 'アルコール分温度換算表資料';
-    loadPageImage(page);
     syncGuideOverlay();
     updateButtons();
     if (!(options && options.keepScroll)) {
@@ -630,10 +599,7 @@ input:focus,select:focus{
   }
   function bindViewEvents(){
     docImage.addEventListener('load', applyFitView);
-    docImage.addEventListener('error', function(){
-      if (!docImage.getAttribute('src')) return;
-      showViewError('画像を読み込めませんでした。images 配下を確認してください。');
-    });
+    docImage.addEventListener('error', function(){ showViewError('画像を読み込めませんでした。images 配下を確認してください。'); });
     pageSelect.addEventListener('change', function(){ render(Number(pageSelect.value)); });
     prevBtn.addEventListener('click', function(){ if(currentIndex>0) render(currentIndex-1); });
     nextBtn.addEventListener('click', function(){ if(currentIndex<pages.length-1) render(currentIndex+1); });
