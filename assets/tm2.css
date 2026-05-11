@@ -252,3 +252,9 @@ body.theme-dark#tank2mm-docs-screen .tm2-docs-row strong{color:#edf5ff;}
 body.theme-dark#tank2mm-docs-screen .tm2-docs-table-wrap{border-color:rgba(220,230,245,.18);background:#111827;}
 body.theme-dark#tank2mm-docs-screen .tm2-docs-table thead th{background:#1f2937;color:#edf5ff;}
 body.theme-dark#tank2mm-docs-screen .tm2-docs-alert{border-color:rgba(245,170,70,.44);background:rgba(82,55,18,.42);color:#ffe2ae;}
+
+/* 2026-05-11 スマホ・タブレットUI整理: 2mm表一覧の下部固定ボタンが表末尾を隠しすぎないよう余白だけ増やす */
+@media(max-width:640px){
+  #tank2mm-screen .card[data-tm2-panel="list"]{padding-bottom:116px;}
+  #tank2mm-screen .tm2-footer-note{padding-bottom:18px;}
+}
