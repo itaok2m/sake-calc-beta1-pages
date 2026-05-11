@@ -28,7 +28,7 @@
         <section class="unit-bar" aria-label="氷投入量計算の式">
           <div class="unit-bar-formula">
             <span class="fml-main" id="ice-formula-main">標準0℃：必要氷kg ＝ 現在L × 4.186 ×（現在水温 − 目標水温）÷（334 ＋ 4.186 × 目標水温）</span>
-            <span class="fml-note" id="ice-formula-sub">0℃計算を基準表示にし、氷温別の目安は結果欄で切り替えて確認します。</span>
+            <span class="fml-note" id="ice-formula-sub">0℃を基準結果として残し、選択した氷温別の計算結果を下の欄に出します。</span>
           </div>
         </section>
       </details>
@@ -72,16 +72,16 @@
           </div>
 
           <section class="result-card" id="ice-result" hidden>
-            <div class="result-title">計算結果 / 標準0℃</div>
+            <div class="result-title">基準結果 / 標準0℃</div>
             <div class="result-grid r2">
               <div><div class="result-label">必要氷量</div><div class="result-value"><span id="ice-result-kg">—</span><span class="result-unit">kg</span></div></div>
               <div><div class="result-label">氷投入後の概算水量</div><div class="result-value"><span id="ice-result-volume">—</span><span class="result-unit">L</span></div></div>
             </div>
             <div class="ice-result-note" id="ice-result-note">—</div>
             <div class="ice-temp-panel">
-              <label class="ice-field ice-temp-select-field"><span>氷温別の目安を選ぶ</span><select id="ice-forward-temp-view" class="ice-select"><option value="0">0℃</option><option value="-5">-5℃</option><option value="-10">-10℃</option><option value="-20">-20℃</option><option value="-30">-30℃</option></select></label>
+              <label class="ice-field ice-temp-select-field"><span>氷温別の結果を選ぶ</span><select id="ice-forward-temp-view" class="ice-select"><option value="0">0℃</option><option value="-5">-5℃</option><option value="-10">-10℃</option><option value="-20">-20℃</option><option value="-30">-30℃</option></select></label>
               <div class="ice-temp-detail ice-temp-result-box" id="ice-forward-temp-detail">
-                <div class="ice-temp-result-title"><span id="ice-forward-selected-temp-label">0℃</span>の目安</div>
+                <div class="ice-temp-result-title">氷温別の計算結果 / <span id="ice-forward-selected-temp-label">0℃</span></div>
                 <div class="ice-temp-result-grid">
                   <div><span class="ice-mini-label">必要氷量</span><strong><span id="ice-forward-selected-kg">—</span>kg</strong></div>
                   <div><span class="ice-mini-label">氷投入後</span><strong><span id="ice-forward-selected-volume">—</span>L</strong></div>
@@ -114,7 +114,7 @@
           </div>
 
           <section class="result-card" id="ice-final-result" hidden>
-            <div class="result-title">計算結果 / 標準0℃</div>
+            <div class="result-title">基準結果 / 標準0℃</div>
             <div class="result-grid r3">
               <div><div class="result-label">最初に入れる水量</div><div class="result-value"><span id="ice-final-water">—</span><span class="result-unit">L</span></div></div>
               <div><div class="result-label">必要氷量</div><div class="result-value"><span id="ice-final-kg">—</span><span class="result-unit">kg</span></div></div>
@@ -122,9 +122,9 @@
             </div>
             <div class="ice-result-note" id="ice-final-note">—</div>
             <div class="ice-temp-panel">
-              <label class="ice-field ice-temp-select-field"><span>氷温別の目安を選ぶ</span><select id="ice-final-temp-view" class="ice-select"><option value="0">0℃</option><option value="-5">-5℃</option><option value="-10">-10℃</option><option value="-20">-20℃</option><option value="-30">-30℃</option></select></label>
+              <label class="ice-field ice-temp-select-field"><span>氷温別の結果を選ぶ</span><select id="ice-final-temp-view" class="ice-select"><option value="0">0℃</option><option value="-5">-5℃</option><option value="-10">-10℃</option><option value="-20">-20℃</option><option value="-30">-30℃</option></select></label>
               <div class="ice-temp-detail ice-temp-result-box" id="ice-final-temp-detail">
-                <div class="ice-temp-result-title"><span id="ice-final-selected-temp-label">0℃</span>の目安</div>
+                <div class="ice-temp-result-title">氷温別の計算結果 / <span id="ice-final-selected-temp-label">0℃</span></div>
                 <div class="ice-temp-result-grid">
                   <div><span class="ice-mini-label">最初の水量</span><strong><span id="ice-final-selected-water">—</span>L</strong></div>
                   <div><span class="ice-mini-label">必要氷量</span><strong><span id="ice-final-selected-kg">—</span>kg</strong></div>
@@ -146,7 +146,7 @@
           <div class="inline-tools-note ice-action-note">概算確認用 ／ 履歴：専用保存 ／ 2mm表候補なし</div>
           <div class="calc-main-actions">
             <button class="calc-btn" id="ice-save-history" type="button" disabled>この氷投入量計算を履歴に残す</button>
-            <a class="back-btn" id="ice-toggle-history" href="./ice-history.html">氷投入量履歴を見る</a>
+            <a class="back-btn history-link-btn" id="ice-toggle-history" href="./ice-history.html">氷投入量履歴を見る ＞</a>
           </div>
           <div class="history-action-status" id="ice-history-status" aria-live="polite">計算結果が出ると履歴に残せます。</div>
         </section>

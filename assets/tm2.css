@@ -74,11 +74,11 @@
   background:#fff;color:#57635b;text-align:left;font:inherit;font-weight:800;cursor:pointer;
   box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:background .15s,color .15s,border-color .15s,box-shadow .15s,transform .15s;
 }
-#tank2mm-screen .tm2-mode-btn.is-active{color:#1f2e40;border-color:#a2a9b3;background:linear-gradient(180deg,#f0f2f4,#e6e9ec);box-shadow:0 8px 18px rgba(39,55,74,.08);}
+#tank2mm-screen .tm2-mode-btn.is-active{color:#fff;border-color:#2f4257;background:#2f4257;box-shadow:0 4px 12px rgba(31,46,64,.14);}
 #tank2mm-screen .tm2-mode-btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none;}
 #tank2mm-screen .tm2-mode-title{display:block;font-size:14px;line-height:1.35;}
 #tank2mm-screen .tm2-mode-sub{display:block;font-size:11px;font-weight:600;line-height:1.55;color:#7a847d;margin-top:4px;}
-#tank2mm-screen .tm2-mode-btn.is-active .tm2-mode-sub{color:#4f5f72;}
+#tank2mm-screen .tm2-mode-btn.is-active .tm2-mode-sub{color:#e8edf3;}
 #tank2mm-screen .tm2-result-box{padding:15px 16px;border-radius:16px;border:1px solid #dcdee1;background:linear-gradient(180deg,#fcfcfc 0%,#f3f4f6 100%);}
 #tank2mm-screen .tm2-result-actions{margin-top:12px;display:grid;gap:8px;}
 #tank2mm-screen .tm2-result-actions .tm2-list-position-btn{width:100%;}
@@ -283,4 +283,38 @@ body.theme-dark#tank2mm-docs-screen .tm2-docs-alert{border-color:rgba(245,170,70
 #tank2mm-screen .tm2-detail-btn[aria-expanded="true"]::after,
 #tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"]::after{
   color:#1f3b58;
+}
+
+/* 2026-05-12: 2mm表内のリセット/削除系ボタン強弱整理。入力リセットは軽い注意、候補・メモ削除は赤系の危険操作として見せる。 */
+#tank2mm-screen .tm2-mini-reset-btn{
+  border-color:#d9d1c5;
+  background:#fffdf8;
+  color:#6b5a3f;
+  font-weight:800;
+}
+#tank2mm-screen .tm2-mini-reset-btn:hover,
+#tank2mm-screen .tm2-mini-reset-btn:focus-visible{
+  border-color:#b79a63;
+  color:#5d4519;
+  outline:none;
+}
+#tank2mm-screen .tm2-v2-draft-clear,
+#tank2mm-screen .tm2-share-clear-btn{
+  border-color:#e2c7c7;
+  background:#fff8f6;
+  color:#8b2e2e;
+  font-weight:800;
+}
+#tank2mm-screen .tm2-v2-draft-clear:hover,
+#tank2mm-screen .tm2-v2-draft-clear:focus-visible,
+#tank2mm-screen .tm2-share-clear-btn:hover,
+#tank2mm-screen .tm2-share-clear-btn:focus-visible{
+  border-color:#9f2d2d;
+  color:#9f2d2d;
+  outline:none;
+}
+@media(max-width:640px){
+  #tank2mm-screen .tm2-mini-reset-btn,
+  #tank2mm-screen .tm2-v2-draft-clear,
+  #tank2mm-screen .tm2-share-clear-btn{min-height:46px;}
 }

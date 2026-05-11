@@ -44,3 +44,20 @@
 @media(max-width:760px){
   .tm2-candidate-toolbar{display:grid;gap:7px;}
 }
+
+/* 2026-05-12: 2mm表候補確認v2の「候補を消す」は履歴や計算結果ではなく一時候補だけを消すが、消去操作として赤系に寄せる。 */
+#tm2-candidate-clear{
+  border-color:#e2c7c7;
+  background:#fff8f6;
+  color:#8b2e2e;
+  font-weight:800;
+}
+#tm2-candidate-clear:hover,
+#tm2-candidate-clear:focus-visible{
+  border-color:#9f2d2d;
+  color:#9f2d2d;
+  outline:none;
+}
+@media(max-width:760px){
+  #tm2-candidate-clear{min-height:46px;}
+}

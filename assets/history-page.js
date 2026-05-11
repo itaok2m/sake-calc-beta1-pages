@@ -167,8 +167,8 @@
         ${resultLine}
         <div class="history-record-lines">${lines}</div>
         <div class="history-actions">
-          <button class="calc-btn" type="button" data-restore-id="${escapeHtml(record.id)}">この履歴を入力欄に戻す</button>
-          <button class="back-btn history-delete-btn" type="button" data-delete-id="${escapeHtml(record.id)}">この履歴を削除</button>
+          <button class="calc-btn restore-action-btn" type="button" data-restore-id="${escapeHtml(record.id)}">この履歴を入力欄に戻す</button>
+          <button class="back-btn danger-btn history-delete-btn" type="button" data-delete-id="${escapeHtml(record.id)}">この履歴を削除</button>
         </div>
       </div>
     </article>`;

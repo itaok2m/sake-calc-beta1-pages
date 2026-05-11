@@ -40,9 +40,117 @@ p{margin:0;}
 .tool-nav-title{font-size:15px;font-weight:700;color:#1a1a1a;min-width:0;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .back-btn,.calc-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:44px;border-radius:22px;border:1.5px solid #d0cbc2;text-decoration:none;font-weight:600;font-size:14px;line-height:1.25;padding:10px 16px;background:#fff;color:#555;box-shadow:none;white-space:nowrap;}
 .back-btn:hover,.back-btn:focus-visible{border-color:#2f4257;color:#2f4257;outline:none;}
+/* 2026-05-11: 上部バーの戻る系だけ、方向が分かる範囲で少し視認性を上げる。画面内の補助ボタンには適用しない。 */
+.tool-nav .back-btn{
+  border-color:#bcc6d1;
+  background:#fff;
+  color:#263240;
+  font-weight:800;
+  box-shadow:0 1px 5px rgba(31,46,64,.07);
+}
+.tool-nav .back-btn:hover,
+.tool-nav .back-btn:focus-visible{
+  border-color:#2f4257;
+  color:#1f2e40;
+  box-shadow:0 2px 8px rgba(31,46,64,.12);
+}
+@media(max-width:420px){
+  .tool-nav{gap:8px;padding-left:12px;padding-right:12px;}
+  .tool-nav .back-btn{min-height:42px;padding:9px 12px;font-size:13px;}
+}
 .calc-btn{background:#2f4257;border-color:#2f4257;color:#fff;font-weight:700;}
 .reset-btn{background:#fff;color:#555;border-color:#d0cbc2;}
 .inline-reset-btn::before{content:'↺';font-weight:900;}
+
+/* 2026-05-12: リセット/削除系の危険度表示を整理。入力リセットは軽い注意、履歴削除や候補・メモ削除は赤系の危険操作として区別する。 */
+.reset-btn:not(.danger-btn):not(.history-delete-btn){
+  border-color:#d9d1c5;
+  background:#fffdf8;
+  color:#6b5a3f;
+  font-weight:800;
+}
+.reset-btn:not(.danger-btn):not(.history-delete-btn):hover,
+.reset-btn:not(.danger-btn):not(.history-delete-btn):focus-visible{
+  border-color:#b79a63;
+  color:#5d4519;
+  outline:none;
+}
+.clear-danger-btn,
+button[id$="-clear"].reset-btn,
+button[data-action^="clear"].reset-btn,
+button[data-tm2-action^="clear"].reset-btn{
+  border-color:#e2c7c7;
+  background:#fff8f6;
+  color:#8b2e2e;
+  font-weight:800;
+}
+.clear-danger-btn:hover,
+.clear-danger-btn:focus-visible,
+button[id$="-clear"].reset-btn:hover,
+button[id$="-clear"].reset-btn:focus-visible,
+button[data-action^="clear"].reset-btn:hover,
+button[data-action^="clear"].reset-btn:focus-visible,
+button[data-tm2-action^="clear"].reset-btn:hover,
+button[data-tm2-action^="clear"].reset-btn:focus-visible{
+  border-color:#9f2d2d;
+  color:#9f2d2d;
+  outline:none;
+}
+
+/* 2026-05-11: 画面移動・履歴・危険操作の共通ボタン強弱整理。保存・候補・履歴処理は変更しない。 */
+.action-forward-btn:not(:disabled){
+  border-color:#b8cfeb;
+  background:#f3f8fe;
+  color:#1f4e7a;
+  font-weight:800;
+}
+.action-forward-btn:not(:disabled):hover,
+.action-forward-btn:not(:disabled):focus-visible{
+  border-color:#7fa8d4;
+  color:#163f65;
+  outline:none;
+}
+.history-link-btn{
+  border-color:#d8dde4;
+  background:#f8f9fa;
+  color:#4b5b6b;
+  font-weight:700;
+}
+.history-link-btn:hover,
+.history-link-btn:focus-visible{
+  border-color:#aeb9c6;
+  color:#2f4257;
+  outline:none;
+}
+.aux-return-btn{
+  border-color:#d7dde4;
+  background:#f8fafc;
+  color:#334155;
+  font-weight:700;
+}
+.aux-return-btn:hover,
+.aux-return-btn:focus-visible{
+  border-color:#9fb0c2;
+  color:#1f344d;
+  outline:none;
+}
+.restore-action-btn{
+  font-weight:800;
+}
+.danger-btn,
+.history-delete-btn{
+  background:#fff;
+  color:#8b2e2e;
+  border-color:#e2c7c7;
+}
+.danger-btn:hover,
+.danger-btn:focus-visible,
+.history-delete-btn:hover,
+.history-delete-btn:focus-visible{
+  border-color:#9f2d2d;
+  color:#9f2d2d;
+  outline:none;
+}
 .screen-lead{width:100%;max-width:680px;margin:0 0 12px;}
 .wrapper{width:100%;max-width:600px;}
 .card{background:transparent;border:none;border-radius:0;box-shadow:none;padding:0;margin:0;}
@@ -179,6 +287,93 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
   .home-body{padding-top:20px;}
 }
 
+
+
+
+/* 2026-05-11: 選択カードとプルダウンの役割差を固定。カード型は「方式を選ぶ」、selectは「値を選ぶ」入力部品として見せる。 */
+.choice-card-btn,
+.water-sub-tab,
+.alcohol-sub-tab,
+.suion-sub-tab,
+.ice-mode-card,
+.ekisu-toggle-btn,
+.mix-count-btn,
+#tank2mm-screen .tm2-mode-btn{
+  transition:border-color .15s,background .15s,color .15s,box-shadow .15s,transform .12s;
+}
+.water-sub-tab:not(.active):hover,
+.water-sub-tab:not(.active):focus-visible,
+.alcohol-sub-tab:not(.active):hover,
+.alcohol-sub-tab:not(.active):focus-visible,
+.suion-sub-tab:not(.active):hover,
+.suion-sub-tab:not(.active):focus-visible,
+.ice-mode-card:not(.is-active):hover,
+.ice-mode-card:not(.is-active):focus-visible,
+.ekisu-toggle-btn:not(.active):hover,
+.ekisu-toggle-btn:not(.active):focus-visible,
+.mix-count-btn:not(.active):hover,
+.mix-count-btn:not(.active):focus-visible,
+#tank2mm-screen .tm2-mode-btn:not(.is-active):not(:disabled):hover,
+#tank2mm-screen .tm2-mode-btn:not(.is-active):not(:disabled):focus-visible{
+  border-color:#9fb0c2;
+  background:#f8fafc;
+  color:#253449;
+  outline:none;
+  box-shadow:0 0 0 3px rgba(47,66,87,.08);
+}
+.water-sub-tab.active,
+.alcohol-sub-tab.active,
+.suion-sub-tab.active,
+.ice-mode-card.is-active,
+.ekisu-toggle-btn.active,
+.mix-count-btn.active,
+#tank2mm-screen .tm2-mode-btn.is-active{
+  background:#2f4257;
+  border-color:#2f4257;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(31,46,64,.14);
+}
+.water-sub-tab.active .water-sub-known,
+.alcohol-sub-tab.active .alcohol-sub-known,
+.suion-sub-tab.active .suion-sub-known,
+.ice-mode-card.is-active .ice-mode-card-text,
+#tank2mm-screen .tm2-mode-btn.is-active .tm2-mode-sub{
+  color:#e8edf3;
+}
+select,
+.dedicated-history-filter,
+.ice-select,
+#tank2mm-screen .input-wrap select{
+  appearance:auto;
+  border-color:#c4cbd3;
+  background-color:#fff;
+  color:#1a1a1a;
+}
+select:focus,
+.dedicated-history-filter:focus,
+.ice-select:focus,
+#tank2mm-screen .input-wrap select:focus{
+  outline:none;
+  border-color:#2f4257;
+  box-shadow:0 0 0 3px rgba(47,66,87,.12);
+}
+.dedicated-history-head label,
+.ice-temp-select-field>span:first-child,
+#tank2mm-screen .field label{
+  color:#2f3944;
+  font-weight:900;
+}
+@media(max-width:640px){
+  .water-sub-tab:not(.active):hover,
+  .alcohol-sub-tab:not(.active):hover,
+  .suion-sub-tab:not(.active):hover,
+  .ice-mode-card:not(.is-active):hover,
+  .ekisu-toggle-btn:not(.active):hover,
+  .mix-count-btn:not(.active):hover,
+  #tank2mm-screen .tm2-mode-btn:not(.is-active):not(:disabled):hover{
+    box-shadow:none;
+  }
+}
 
 /* トップ4入口と計算機一覧 */
 .top-entry-grid{display:grid;grid-template-columns:1fr;gap:12px;max-width:800px;margin:0 auto;}

@@ -252,7 +252,7 @@
   function actionRows(records){
     return row('操作', '入力欄へ戻す', records.map(record => `<td class="history-compare-table-cell">
       <div class="history-compare-table-actions">
-        <button class="history-compare-table-action-btn" type="button" data-compare-restore-id="${escapeHtml(record.id)}">この履歴を入力欄に戻す</button>
+        <button class="history-compare-table-action-btn restore-action-btn" type="button" data-compare-restore-id="${escapeHtml(record.id)}">この履歴を入力欄に戻す</button>
       </div>
     </td>`).join(''), true, 1);
   }

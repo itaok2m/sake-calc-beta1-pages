@@ -49,3 +49,18 @@
   .history-compare-table-action-btn{font-size:10.5px;min-height:34px;}
 }
 
+
+
+/* 2026-05-11: 比較表内の「入力欄へ戻す」を復元操作として少し明確化。 */
+.history-compare-table-action-btn.restore-action-btn{
+  border-color:#b8cfeb;
+  background:#f3f8fe;
+  color:#1f4e7a;
+  font-weight:900;
+}
+.history-compare-table-action-btn.restore-action-btn:hover,
+.history-compare-table-action-btn.restore-action-btn:focus-visible{
+  border-color:#7fa8d4;
+  color:#163f65;
+  outline:none;
+}
