@@ -7,8 +7,8 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>2mm表 / 日本酒醸造 計算ツール</title>
-  <link rel="stylesheet" href="./assets/common.css">
-  <link rel="stylesheet" href="./assets/tm2.css?v=20260512e">
+  <link rel="stylesheet" href="./assets/common.css?v=20260512symbol">
+  <link rel="stylesheet" href="./assets/tm2.css?v=20260512symbol">
 </head>
 <body id="tank2mm-screen">
   <div class="tool-nav">
@@ -57,7 +57,7 @@
           <div class="tm2-current-card is-empty" data-tm2-role="current-card">
             <div class="tm2-current-head">
               <div class="tm2-current-label">今見ているタンク</div>
-              <button class="calc-btn tm2-current-open-btn" data-tm2-action="open-list" disabled type="button">このタンクの2mm表一覧を見る</button>
+              <button class="calc-btn tm2-current-open-btn" data-tm2-action="open-list" disabled type="button">このタンクの2mm表一覧を見る →</button>
             </div>
             <div class="tm2-current-name" data-tm2-role="current-name">未選択</div>
             <div class="tm2-current-meta" data-tm2-role="current-meta" hidden>
@@ -128,7 +128,7 @@
           <div class="tm2-result-value" data-tm2-role="result-value">—</div>
           <div class="tm2-subnote" data-tm2-role="result-subtext"></div>
           <div class="tm2-result-actions">
-            <button class="calc-btn tm2-detail-btn tm2-list-position-btn" data-tm2-action="open-list-position" disabled type="button">この位置を2mm表一覧で見る</button>
+            <button class="calc-btn tm2-detail-btn tm2-list-position-btn" data-tm2-action="open-list-position" disabled type="button">この位置を2mm表一覧で見る →</button>
           </div>
         </div>
 
@@ -142,7 +142,7 @@
 
       <section class="card" data-tm2-panel="list" hidden>
         <div class="tm2-list-head"><h2 data-tm2-role="list-title">タンク別2mm表一覧</h2></div>
-        <div class="tm2-list-top"><button class="back-btn" data-tm2-action="close-list" type="button">← タンク選択・換算へ戻る</button></div>
+        <div class="tm2-list-top"><button class="back-btn" data-tm2-action="close-list" type="button">← 一覧を閉じて換算へ戻る</button></div>
         <div class="tm2-list-search-help" data-tm2-role="list-search-help">
           <button aria-expanded="false" class="back-btn tm2-list-search-help-btn" data-tm2-action="toggle-list-search-help" type="button">一覧内の探し方を見る</button>
           <div class="tm2-list-search-help-body" data-tm2-role="list-search-help-body" hidden>
@@ -157,11 +157,10 @@
           </table>
         </div>
         <div class="tm2-footer-note">この一覧は、タンク登録値から再生成した2mm表です。</div>
-        <div class="tm2-list-bottom-action"><button class="back-btn" data-tm2-action="close-list" type="button">← タンク選択・換算へ戻る</button></div>
       </section>
     </div>
   </main>
   <div id="toast" class="toast" aria-live="polite"></div>
-  <script src="./assets/tm2.js"></script>
+  <script src="./assets/tm2.js?v=20260512symbol"></script>
 </body>
 </html>

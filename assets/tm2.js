@@ -1391,7 +1391,7 @@ function buildAuditInfo(tank){
   function syncReasonToggle(){
     const enabled = Boolean(getSelectedTank()) && Number.isFinite(Number(state.lastValidGauge));
     setPseudoDisabled(els.reasonToggle, !enabled);
-    els.reasonToggle.textContent = 'この位置を2mm表一覧で見る';
+    els.reasonToggle.textContent = 'この位置を2mm表一覧で見る →';
     els.reasonToggle.removeAttribute('aria-expanded');
     els.reasonPanel.hidden = true;
   }
@@ -1878,6 +1878,7 @@ function buildAuditInfo(tank){
     els.listBody.innerHTML = rows.join('');
     els.mainPanel.hidden = true;
     els.listPanel.hidden = false;
+    document.body.classList.add('is-tm2-list-open');
     if(options.pushHistory === true && typeof window.pushCurrentBrowserHistoryState === 'function'){
       try{ window.pushCurrentBrowserHistoryState({force:true}); }catch{}
     }
@@ -1894,6 +1895,7 @@ function buildAuditInfo(tank){
     syncListSearchHelp();
     els.listPanel.hidden = true;
     els.mainPanel.hidden = false;
+    document.body.classList.remove('is-tm2-list-open');
     delete els.listPanel.dataset.tm2ScrollGauge;
     if(options.save !== false) saveTm2UiState();
   }

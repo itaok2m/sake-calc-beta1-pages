@@ -215,7 +215,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
 .common-info-toggle[open] .toggle-label-closed{display:none;}
 .common-info-toggle[open] .toggle-label-open{display:inline;}
 .common-info-toggle summary::after{
-  content:'開く ▼';
+  content:'開く';
   flex:0 0 auto;
   border:1px solid #cfd6dd;
   border-radius:999px;
@@ -235,7 +235,7 @@ code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:
   border-bottom:1px solid #c9d9ea;
 }
 .common-info-toggle[open] summary::after{
-  content:'閉じる ▲';
+  content:'閉じる';
   background:#fff;
   border-color:#b8cade;
   color:#1f3b58;

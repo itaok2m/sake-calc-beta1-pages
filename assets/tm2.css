@@ -36,8 +36,6 @@
 #tank2mm-screen .tm2-share-title{font-size:13px;font-weight:800;line-height:1.6;color:#242c36;}
 #tank2mm-screen .tm2-share-note{font-size:11px;line-height:1.7;color:#657268;}
 #tank2mm-screen .tm2-share-toggle-btn{width:100%;min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;}
-#tank2mm-screen .tm2-share-toggle-btn::after{content:'▾';display:inline-block;font-size:14px;color:#56677b;flex:0 0 auto;line-height:1;}
-#tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"]::after{content:'▾';transform:rotate(180deg);}
 #tank2mm-screen .tm2-share-body{display:grid;gap:10px;}
 #tank2mm-screen .tm2-share-clear-btn{width:auto;min-height:40px;padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.35;white-space:nowrap;justify-self:end;}
 #tank2mm-screen .tm2-share-input{width:100%;min-height:144px;border:1px solid #dadcdf;border-radius:14px;background:#fff;padding:12px 13px;font:inherit;line-height:1.7;color:#272e35;resize:vertical;box-sizing:border-box;}
@@ -98,8 +96,6 @@
 #tank2mm-screen .tm2-detail-toggle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
 #tank2mm-screen .tm2-detail-toggle-grid.is-single{grid-template-columns:1fr;}
 #tank2mm-screen .tm2-detail-btn{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;}
-#tank2mm-screen .tm2-detail-btn::after{content:'▾';display:inline-block;font-size:14px;color:#56677b;flex:0 0 auto;line-height:1;}
-#tank2mm-screen .tm2-detail-btn[aria-expanded="true"]::after{content:'▾';transform:rotate(180deg);}
 #tank2mm-screen .tm2-detail-panel{margin-top:10px;padding:12px 14px;border-radius:14px;border:1px dashed #ccced1;background:#fbfcfe;}
 #tank2mm-screen .tm2-docs-link-wrap{margin-top:12px;}
 #tank2mm-screen .tm2-docs-link-wrap.is-inside-panel{margin-top:10px;}
@@ -111,7 +107,6 @@
 #tank2mm-screen .tm2-detail-grid{display:grid;gap:8px;}
 #tank2mm-screen .tm2-list-top{margin:8px 0 12px;}
 #tank2mm-screen .tm2-list-top .back-btn{width:100%;justify-content:center;border-color:#cfd5dc;background:#f8fafc;color:#263240;}
-#tank2mm-screen .tm2-list-bottom-action{display:none;}
 #tank2mm-screen .tm2-input-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;}
 #tank2mm-screen .tm2-mini-reset-btn{
   min-height:48px;padding:10px 14px;border-radius:22px;white-space:nowrap;
@@ -142,6 +137,8 @@
 #tank2mm-screen .tm2-table tbody tr.is-highlight{background:#eceef1;}
 #tank2mm-screen .tm2-footer-note{margin-top:10px;font-size:12px;line-height:1.8;color:#66746a;}
 #tank2mm-screen [hidden]{display:none !important;}
+body#tank2mm-screen.is-tm2-list-open .screen-lead{display:none;}
+
 @media(max-width:640px){
   #tank2mm-screen .tm2-mode-grid{grid-template-columns:1fr;}
 
@@ -157,10 +154,8 @@
   #tank2mm-screen .tm2-share-head{display:block;}
   #tank2mm-screen .tm2-share-toggle-btn{min-height:52px;padding:10px 12px;font-size:13px;}
   #tank2mm-screen .tm2-share-clear-btn{width:100%;justify-content:center;}
-  #tank2mm-screen .card[data-tm2-panel="list"]{padding-bottom:96px;}
-  #tank2mm-screen .tm2-list-top{display:none;}
-  #tank2mm-screen .tm2-list-bottom-action{display:block;position:fixed;left:50%;bottom:max(10px, calc(env(safe-area-inset-bottom) + 10px));transform:translateX(-50%);width:min(calc(100vw - 28px), 728px);z-index:130;pointer-events:none;}
-  #tank2mm-screen .tm2-list-bottom-action .back-btn{width:100%;min-height:54px;justify-content:center;border-radius:16px;border:2px solid #d0d2d5;background:#fff;color:#263240;box-shadow:0 12px 26px rgba(24,32,42,.18);pointer-events:auto;}
+  #tank2mm-screen .card[data-tm2-panel="list"]{padding-bottom:0;}
+  #tank2mm-screen .tm2-list-top{display:block;}
   #tank2mm-screen .tm2-table-wrap{max-height:none;overflow:visible;}
   #tank2mm-screen .tm2-table thead th{top:calc(env(safe-area-inset-top) + 82px);}
   #tank2mm-screen .tm2-table th,#tank2mm-screen .tm2-table td{padding:10px 12px;font-size:14px;}
@@ -202,13 +197,8 @@ body.theme-dark .tm2-subscreen-label{
 }
 
 /* 候補位置から一覧へ進む導線とページ内検索補助。 */
-#tank2mm-screen .tm2-list-position-btn::after{content:'→';transform:none;font-size:16px;font-weight:900;color:#fff;}
-#tank2mm-screen .tm2-list-position-btn[aria-expanded="true"]::after{content:'→';transform:none;}
-#tank2mm-screen .tm2-list-position-btn:disabled::after,#tank2mm-screen .tm2-list-position-btn.is-disabled::after{color:rgba(255,255,255,.76);}
 #tank2mm-screen .tm2-list-search-help{margin:0 0 10px;display:grid;gap:8px;}
 #tank2mm-screen .tm2-list-search-help-btn{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;border:1px solid #d8dadd;background:#f8f9fa;color:#263240;box-shadow:none;}
-#tank2mm-screen .tm2-list-search-help-btn::after{content:'▾';display:inline-block;font-size:14px;color:#56677b;flex:0 0 auto;line-height:1;}
-#tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"]::after{transform:rotate(180deg);}
 #tank2mm-screen .tm2-list-search-help-body{padding:9px 11px;border:1px dashed #d7dbe0;border-radius:12px;background:#fbfcfd;color:#5a6674;font-size:12px;line-height:1.8;}
 body.theme-dark#tank2mm-screen .tm2-list-search-help-btn{border-color:rgba(125,175,255,.28);background:rgba(80,135,220,.12);color:#dbe8ff;}
 body.theme-dark#tank2mm-screen .tm2-list-search-help-body{border-color:rgba(125,175,255,.24);background:rgba(10,20,34,.38);color:#c8d6ea;}
@@ -664,3 +654,28 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
   }
 }
 
+
+/* 2026-05-12symbol: UI記号ルール反映。
+   画面名: 2mm表本体のタンク別2mm表一覧画面。
+   役割: スマホだけの追従戻り・下部常設戻りをやめ、タブレット/PCと同じ通常配置の戻る導線へ寄せる。
+   計算ロジック・丸め方式・保存キー・2mm表データ・候補確認v2には触れない。 */
+@media(max-width:640px){
+  #tank2mm-screen .card[data-tm2-panel="list"]{
+    padding-bottom:0;
+  }
+  #tank2mm-screen .tm2-list-top{
+    display:block;
+    position:static;
+    top:auto;
+    z-index:auto;
+    margin:0 0 10px;
+    padding:0;
+    background:transparent;
+  }
+  #tank2mm-screen .tm2-list-bottom-action{
+    display:none !important;
+  }
+  body.theme-dark#tank2mm-screen .tm2-list-top{
+    background:transparent;
+  }
+}
