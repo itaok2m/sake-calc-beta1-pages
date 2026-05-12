@@ -64,3 +64,70 @@
   color:#163f65;
   outline:none;
 }
+
+/* 2026-05-12: 混合計算比較画面のPC表示整理。
+   比較表は機能維持のまま、PCで左に小さく固まらないように表幅と中央配置だけを調整する。 */
+.compare-wrapper{
+  max-width:min(1120px, 100%);
+}
+.history-compare-screen-table-card{
+  width:fit-content;
+  max-width:100%;
+  margin:0 auto;
+  padding:14px 14px 12px;
+}
+.history-compare-table-scroll{
+  width:100%;
+  max-width:100%;
+}
+.history-compare-table{
+  --history-compare-group-width:52px;
+  --history-compare-label-width:132px;
+  --history-compare-col-width:240px;
+}
+.history-compare-table-headcell{
+  min-height:66px;
+}
+.history-compare-table-value{
+  font-size:14px;
+}
+.history-compare-table-subvalue{
+  font-size:10.5px;
+}
+@media(min-width:1180px){
+  .history-compare-table{
+    --history-compare-col-width:260px;
+  }
+}
+@media(max-width:900px){
+  .compare-wrapper{
+    max-width:100%;
+  }
+  .history-compare-screen-table-card{
+    width:100%;
+  }
+  .history-compare-table{
+    --history-compare-group-width:46px;
+    --history-compare-label-width:112px;
+    --history-compare-col-width:170px;
+  }
+}
+@media(max-width:640px){
+  .history-compare-screen-table-card{
+    padding:11px 10px 9px;
+  }
+  .history-compare-table{
+    --history-compare-group-width:40px;
+    --history-compare-label-width:98px;
+    --history-compare-col-width:138px;
+  }
+  .history-compare-table-headcell{
+    min-height:50px;
+  }
+  .history-compare-table-value{
+    font-size:13px;
+  }
+  .history-compare-table-subvalue{
+    font-size:10px;
+  }
+}
