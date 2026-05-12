@@ -518,3 +518,85 @@ body.theme-dark#tank2mm-screen .tm2-list-nearby{
     background:linear-gradient(180deg, rgba(17,24,39,.98) 0%, rgba(17,24,39,.92) 72%, rgba(17,24,39,0) 100%);
   }
 }
+
+
+/* 2026-05-12d: タンク別2mm表一覧のタッチスクロール調整。
+   数字表の表示幅を中央に絞り、スマホ・タブレットで左右に画面スクロール用の余白を残す。 */
+#tank2mm-screen .tm2-table-wrap{
+  width:min(100%, 520px);
+  margin-left:auto;
+  margin-right:auto;
+}
+#tank2mm-screen .tm2-table{
+  table-layout:fixed;
+}
+#tank2mm-screen .tm2-table th,
+#tank2mm-screen .tm2-table td{
+  text-align:center;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+#tank2mm-screen .tm2-table th:first-child,
+#tank2mm-screen .tm2-table td:first-child{
+  width:46%;
+}
+#tank2mm-screen .tm2-table th:last-child,
+#tank2mm-screen .tm2-table td:last-child{
+  width:54%;
+  border-left:1px solid #eef0f2;
+}
+#tank2mm-screen .tm2-table tbody tr.is-highlight{
+  background:#eef3f8;
+  box-shadow:inset 3px 0 0 #8fa8c5;
+}
+
+@media(max-width:900px){
+  #tank2mm-screen .tm2-table-wrap{
+    width:min(72vw, 430px);
+    max-height:64vh;
+  }
+  #tank2mm-screen .tm2-table th,
+  #tank2mm-screen .tm2-table td{
+    padding:11px 10px;
+  }
+}
+
+@media(max-width:640px){
+  #tank2mm-screen .tm2-table-wrap{
+    width:min(82vw, 340px);
+    max-width:100%;
+    max-height:none;
+    overflow:visible;
+  }
+  #tank2mm-screen .tm2-table th,
+  #tank2mm-screen .tm2-table td{
+    padding:10px 8px;
+    font-size:14px;
+  }
+  #tank2mm-screen .tm2-table tbody tr.is-highlight{
+    box-shadow:inset 3px 0 0 #8fa8c5;
+  }
+}
+
+@media(max-width:360px){
+  #tank2mm-screen .tm2-table-wrap{
+    width:min(86vw, 310px);
+  }
+  #tank2mm-screen .tm2-table th,
+  #tank2mm-screen .tm2-table td{
+    padding-left:6px;
+    padding-right:6px;
+  }
+}
+
+body.theme-dark#tank2mm-screen .tm2-table th:last-child,
+body.theme-dark#tank2mm-screen .tm2-table td:last-child{
+  border-left-color:rgba(220,230,245,.13);
+}
+body.theme-dark#tank2mm-screen .tm2-table tbody tr.is-highlight{
+  background:rgba(80,135,220,.20);
+  box-shadow:inset 3px 0 0 rgba(125,175,255,.55);
+}
+body.theme-dark#tank2mm-screen .tm2-table tbody tr.is-highlight td{
+  color:#ffffff;
+}
