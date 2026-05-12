@@ -1861,7 +1861,7 @@ function buildAuditInfo(tank){
     const tank = getSelectedTank();
     if(!tank){ tm2GuideToast('未入力があります。先にタンクを選択してください。'); return; }
     const scrollGauge = getTm2ListScrollGauge();
-    els.listTitle.textContent = `${tank.label} のタンク別2mm表一覧`; 
+    els.listTitle.textContent = tank.label || 'タンク別2mm表一覧'; 
     if(els.listNearby){
       const summary = getTm2ListPositionSummary(tank, scrollGauge);
       els.listNearby.hidden = !summary;
