@@ -28,3 +28,19 @@
 .temp-optional.common-info-toggle .temp-optional-body{
   background:transparent;
 }
+
+/* 2026-05-12: スマホ幅で酛仕込温度計算・醪仕込温度計算の2列表に不要な横スクロールバーが出ないよう調整。 */
+.temp-table-wrap{
+  max-width:100%;
+  box-sizing:border-box;
+  overflow-x:hidden;
+}
+.temp-table{
+  min-width:0;
+  table-layout:fixed;
+}
+.temp-table th,
+.temp-table td{
+  box-sizing:border-box;
+  white-space:normal;
+}
