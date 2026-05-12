@@ -187,3 +187,15 @@
 .history-compare-table tbody tr.is-section-start .history-compare-table-cell.is-base{
   border-top-color:#bcc5cf;
 }
+
+
+/* 2026-05-12: iPad/Safariで比較表の区分文字方向が不自然になるため、
+   区分セルは縦書きにせず横書き中央表示へ統一する。 */
+.history-compare-table-group-cell{
+  writing-mode:horizontal-tb;
+  letter-spacing:0;
+  line-height:1.35;
+  white-space:normal;
+  text-align:center;
+  vertical-align:middle;
+}

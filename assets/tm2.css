@@ -318,3 +318,32 @@ body.theme-dark#tank2mm-docs-screen .tm2-docs-alert{border-color:rgba(245,170,70
   #tank2mm-screen .tm2-v2-draft-clear,
   #tank2mm-screen .tm2-share-clear-btn{min-height:46px;}
 }
+
+
+/* 2026-05-12: 2mm表一覧画面のスマホ視認性調整。
+   一覧の情報は削らず、行間と下部固定戻るボタンを少し軽くして表を見やすくする。 */
+@media(max-width:640px){
+  #tank2mm-screen .card[data-tm2-panel="list"]{padding-bottom:82px;}
+  #tank2mm-screen .tm2-list-bottom-action{
+    width:min(calc(100vw - 36px), 560px);
+    bottom:max(8px, calc(env(safe-area-inset-bottom) + 8px));
+  }
+  #tank2mm-screen .tm2-list-bottom-action .back-btn{
+    min-height:48px;
+    border-radius:18px;
+    font-size:13px;
+    box-shadow:0 8px 18px rgba(24,32,42,.14);
+  }
+  #tank2mm-screen .tm2-table th,
+  #tank2mm-screen .tm2-table td{
+    padding:8px 12px;
+    font-size:13px;
+    line-height:1.45;
+  }
+  #tank2mm-screen .tm2-table thead th{
+    top:calc(env(safe-area-inset-top) + 78px);
+  }
+  #tank2mm-screen .tm2-table tbody tr{
+    scroll-margin-top:calc(env(safe-area-inset-top) + 108px);
+  }
+}
