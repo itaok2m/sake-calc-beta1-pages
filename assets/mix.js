@@ -244,6 +244,9 @@
     });
     const finalLiters = Number(latestValidSnapshot.result && latestValidSnapshot.result.totalVolume);
     const finalComponent = Number(latestValidSnapshot.result && latestValidSnapshot.result.mixedComponent);
+    const finalInput = inputsByIndex[mode] || {};
+    const finalInputVolume = Number(finalInput.volume);
+    const finalInputComponent = Number(finalInput.component);
     if(Number.isFinite(finalLiters) && finalLiters >= 0){
       candidates.push({
         role:'final',
@@ -258,6 +261,8 @@
         modeLabel:modeLabel(mode),
         order:mode,
         details:[
+          { label:'今回投入', value:Number.isFinite(finalInputVolume) ? truncatedFixed(finalInputVolume, 2) + 'L' : '' },
+          { label:'入力成分', value:Number.isFinite(finalInputComponent) ? truncatedFixed(finalInputComponent, 2) : '' },
           { label:'合計数量', value:(latestValidSnapshot.result.totalVolumeText || truncatedFixed(finalLiters, 2)) + 'L' },
           { label:'混合後成分', value:Number.isFinite(finalComponent) ? (latestValidSnapshot.result.mixedComponentText || truncatedFixed(finalComponent, 2)) : '' }
         ].filter(item => item.value !== '')

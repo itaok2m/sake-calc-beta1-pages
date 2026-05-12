@@ -6,3 +6,25 @@
 .temp-optional.common-info-toggle[open]{border-color:#b9cbe0;background:#eef4fb;}
 .temp-optional.common-info-toggle[open] summary{background:#e4eef8;border-bottom:1px solid #c9d9ea;}
 .temp-optional.common-info-toggle .temp-optional-body{border-top:none;padding:10px 12px 12px;background:#fff;}
+
+/* 2026-05-12: 酛仕込温度計算・蒸米温度計算の表まわりが二重に囲われて見えないよう、表本体は線中心の静かな表示へ寄せる。 */
+.temp-table-wrap{
+  border:none;
+  border-top:1px solid #e1e4e8;
+  border-radius:0;
+  background:transparent;
+  margin-top:10px;
+}
+.temp-table th{
+  background:#f7f8f9;
+}
+.temp-table th,.temp-table td{
+  border-bottom:1px solid #e7e9ec;
+}
+.temp-optional.common-info-toggle{
+  border-color:#e2e6eb;
+  background:#fafbfc;
+}
+.temp-optional.common-info-toggle .temp-optional-body{
+  background:transparent;
+}
