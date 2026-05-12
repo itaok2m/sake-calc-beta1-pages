@@ -1258,7 +1258,7 @@ function syncDocsLink(tank){
     if(els.shareCard) els.shareCard.classList.toggle('is-open', open);
     if(els.shareBody) els.shareBody.hidden = !open;
     if(els.shareToggle){
-      els.shareToggle.textContent = open ? 'メモを閉じる' : 'メモを開く';
+      els.shareToggle.textContent = 'メモ';
       els.shareToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }
@@ -1398,7 +1398,7 @@ function buildAuditInfo(tank){
   function syncAuditToggle(tank){
     const enabled = Boolean(tank);
     setPseudoDisabled(els.auditToggle, !enabled);
-    els.auditToggle.textContent = enabled ? (state.auditOpen ? '登録値と換算内訳を閉じる' : '登録値と換算内訳を見る') : '登録値と換算内訳を見る';
+    els.auditToggle.textContent = '登録値と換算内訳';
     els.auditToggle.setAttribute('aria-expanded', state.auditOpen ? 'true' : 'false');
     els.auditPanel.hidden = !(enabled && state.auditOpen);
   }
@@ -1834,7 +1834,7 @@ function buildAuditInfo(tank){
     const open = Boolean(state.listSearchHelpOpen);
     if(els.listSearchHelpBody) els.listSearchHelpBody.hidden = !open;
     if(els.listSearchHelpToggle){
-      els.listSearchHelpToggle.textContent = open ? '一覧内の探し方を閉じる' : '一覧内の探し方を見る';
+      els.listSearchHelpToggle.textContent = '一覧内の探し方';
       els.listSearchHelpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }

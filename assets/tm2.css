@@ -269,9 +269,25 @@ body.theme-dark#tank2mm-docs-screen .tm2-docs-alert{border-color:rgba(245,170,70
   border-color:#b9cbe0;
   background:#eef4fb;
 }
+#tank2mm-screen .tm2-share-toggle-btn[aria-expanded]::after,
+#tank2mm-screen .tm2-detail-btn[aria-expanded]::after,
+#tank2mm-screen .tm2-list-search-help-btn[aria-expanded]::after{
+  content:'開く';
+  flex:0 0 auto;
+  border:1px solid #cfd6dd;
+  border-radius:999px;
+  background:#fff;
+  color:#2f4257;
+  font-size:10.5px;
+  font-weight:900;
+  line-height:1;
+  padding:6px 9px;
+}
 #tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"]::after,
 #tank2mm-screen .tm2-detail-btn[aria-expanded="true"]::after,
 #tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"]::after{
+  content:'閉じる';
+  border-color:#b8cade;
   color:#1f3b58;
 }
 
