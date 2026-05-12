@@ -311,7 +311,7 @@
       <section class="history-compare-screen-table-card" aria-label="混合計算比較表">
         <div class="history-compare-screen-table-head">
           <h2>${escapeHtml(modeLabel(mode))}の比較表</h2>
-          <p>基準は太枠、差分は黄色、区分は線で区切っています。</p>
+          <p>基準は太枠、差分は黄色、区分は薄い線で区切っています。</p>
         </div>
         <div class="history-compare-table-scroll">
           <table class="history-compare-table" style="--history-compare-item-count:${records.length};">
