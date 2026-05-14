@@ -93,7 +93,8 @@
     const calcMode = getParam('calcMode');
     const boundaryMode = getParam('boundaryMode');
     const segments = parseSegments(getParam('segments'));
-    const hasSegments = segments.length > 0;
+    const showSegmentsTable = segments.length > 1;
+    const fallbackPerMm = perMm || (segments.length === 1 ? String(segments[0].recordedPerMm) : '');
 
     if(titleEl) titleEl.textContent = tankLabel;
     if(statusNoteEl){
@@ -103,36 +104,41 @@
     }
 
     if(summaryGrid){
+      const perMmDigits = Math.max(0, Math.min(6, String(fallbackPerMm || '').split('.')[1]?.length || 0));
       summaryGrid.innerHTML = [
         row('タンク番号', tankLabel),
         row('全容量', numberText(fullL, 'L')),
         row('底板面以下', numberText(bottomL, 'L')),
         row('中心深', numberText(centerMm, 'mm')),
-        row('登録方式', hasSegments ? '区間別タンク' : '単一区間タンク'),
-        row('記載1mm当', hasSegments ? '区間表を参照' : fixedText(perMm, Math.max(0, Math.min(6, String(perMm || '').split('.')[1]?.length || 0)), 'L'))
+        row('登録方式', showSegmentsTable ? '区間別タンク' : '単一区間タンク'),
+        row('記載1mm当', showSegmentsTable ? '区間表を参照' : fixedText(fallbackPerMm, perMmDigits, 'L'))
       ].join('');
     }
 
     if(methodGrid){
       methodGrid.innerHTML = [
-        row('採用計算', calcModeLabel(calcMode, hasSegments)),
-        row('区間境界', boundaryLabel(boundaryMode, hasSegments)),
+        row('採用計算', calcModeLabel(calcMode, showSegmentsTable)),
+        row('区間境界', boundaryLabel(boundaryMode, showSegmentsTable)),
         row('表示L', '切り捨て表示'),
         row('入力元', '2mm表のタンク選択状態から表示')
       ].join('');
     }
 
     if(segmentsCard && segmentsBody){
-      segmentsCard.hidden = !hasSegments;
-      segmentsBody.innerHTML = segments.map(segment => `
-        <tr>
-          <td>${escapeHtml(`${segment.startDepth}〜${segment.endDepth}mm`)}</td>
-          <td>${escapeHtml(`${segment.startL}L`)}</td>
-          <td>${escapeHtml(`${segment.endL}L`)}</td>
-          <td>${escapeHtml(fixedText(segment.recordedPerMm, 6, 'L'))}</td>
-          <td>${escapeHtml(fixedText(segment.calculatedPerMm, 6, 'L'))}</td>
-        </tr>
-      `).join('');
+      segmentsCard.hidden = !showSegmentsTable;
+      if(showSegmentsTable){
+        segmentsBody.innerHTML = segments.map(segment => `
+          <tr>
+            <td>${escapeHtml(`${segment.startDepth}〜${segment.endDepth}mm`)}</td>
+            <td>${escapeHtml(`${segment.startL}L`)}</td>
+            <td>${escapeHtml(`${segment.endL}L`)}</td>
+            <td>${escapeHtml(fixedText(segment.recordedPerMm, 6, 'L'))}</td>
+            <td>${escapeHtml(fixedText(segment.calculatedPerMm, 6, 'L'))}</td>
+          </tr>
+        `).join('');
+      }else{
+        segmentsBody.innerHTML = '';
+      }
     }
 
     const alerts = parseAlerts();
