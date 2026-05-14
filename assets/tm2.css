@@ -706,36 +706,40 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
 @media(max-width:760px){
   #tank2mm-docs-screen .tm2-docs-table-wrap{
     border-color:#c7d5e4;
-    box-shadow:inset -18px 0 16px -18px rgba(40,64,90,.50);
+    box-shadow:inset -16px 0 14px -18px rgba(40,64,90,.46);
   }
   #tank2mm-docs-screen .tm2-docs-table{
     table-layout:fixed;
-    min-width:470px;
+    min-width:420px;
   }
   #tank2mm-docs-screen .tm2-docs-table th,
   #tank2mm-docs-screen .tm2-docs-table td{
-    padding:9px 6px;
+    padding:8px 4px;
     white-space:nowrap;
   }
   #tank2mm-docs-screen .tm2-docs-table th{
-    font-size:.86rem;
-    line-height:1.25;
+    font-size:.82rem;
+    line-height:1.22;
+    letter-spacing:-.02em;
+  }
+  #tank2mm-docs-screen .tm2-docs-table td{
+    font-size:.88rem;
   }
 }
 @media(max-width:360px){
   #tank2mm-docs-screen .tm2-docs-table{
-    min-width:455px;
+    min-width:405px;
   }
   #tank2mm-docs-screen .tm2-docs-table th,
   #tank2mm-docs-screen .tm2-docs-table td{
-    padding-left:5px;
-    padding-right:5px;
+    padding-left:3px;
+    padding-right:3px;
   }
 }
 @media(max-width:760px){
   body.theme-dark#tank2mm-docs-screen .tm2-docs-table-wrap{
     border-color:rgba(125,175,255,.26);
-    box-shadow:inset -18px 0 16px -18px rgba(125,175,255,.50);
+    box-shadow:inset -16px 0 14px -18px rgba(125,175,255,.46);
   }
 }
 
