@@ -696,45 +696,37 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
   }
 }
 
-/* 2026-05-14: タンク登録詳細 / 区間別登録値の横スクロール案内。
-   役割: 区間別登録値の表が横に動かせることを、機能に触れず表示だけで伝える。
+/* 2026-05-14: タンク登録詳細 / 区間別登録値の横スクロール視覚サイン。
+   役割: 案内文を置かず、スマホ幅だけ「記載1mm当」が少し見える列幅へ寄せる。
    2mm表データ・登録処理・換算ロジック・保存キーは変更しない。 */
-#tank2mm-docs-screen .tm2-docs-scroll-guide{
-  display:none;
-  align-items:center;
-  justify-content:flex-start;
-  gap:8px;
-  padding:8px 10px;
-  border:1px dashed #cbd8e6;
-  border-radius:12px;
-  background:#f6f9fc;
-  color:#3f536a;
-  font-size:12px;
-  font-weight:800;
-  line-height:1.55;
-}
 #tank2mm-docs-screen .tm2-docs-table-wrap{
   -webkit-overflow-scrolling:touch;
   scrollbar-gutter:stable;
 }
 @media(max-width:760px){
-  #tank2mm-docs-screen .tm2-docs-scroll-guide{
-    display:flex;
-  }
   #tank2mm-docs-screen .tm2-docs-table-wrap{
     border-color:#c7d5e4;
-    box-shadow:inset -18px 0 18px -20px rgba(40,64,90,.55);
+    box-shadow:inset -22px 0 18px -22px rgba(40,64,90,.55);
+  }
+  #tank2mm-docs-screen .tm2-docs-table{
+    table-layout:fixed;
+    min-width:560px;
+  }
+  #tank2mm-docs-screen .tm2-docs-table th,
+  #tank2mm-docs-screen .tm2-docs-table td{
+    padding:10px 9px;
+    white-space:nowrap;
   }
 }
-body.theme-dark#tank2mm-docs-screen .tm2-docs-scroll-guide{
-  border-color:rgba(125,175,255,.30);
-  background:rgba(80,135,220,.12);
-  color:#dbe8ff;
+@media(max-width:360px){
+  #tank2mm-docs-screen .tm2-docs-table{
+    min-width:540px;
+  }
 }
 @media(max-width:760px){
   body.theme-dark#tank2mm-docs-screen .tm2-docs-table-wrap{
     border-color:rgba(125,175,255,.26);
-    box-shadow:inset -18px 0 18px -20px rgba(125,175,255,.55);
+    box-shadow:inset -22px 0 18px -22px rgba(125,175,255,.55);
   }
 }
 
