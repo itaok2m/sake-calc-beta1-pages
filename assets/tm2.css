@@ -697,7 +697,7 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
 }
 
 /* 2026-05-14: タンク登録詳細 / 区間別登録値の横スクロール視覚サイン。
-   役割: 案内文を置かず、スマホ幅では列間を詰めて「記載1mm当」が自然に見える幅へ寄せる。
+   役割: 案内文を置かず、スマホ幅では「記載1mm当」が途中で見切れる位置へ寄せる。
    2mm表データ・登録処理・換算ロジック・保存キーは変更しない。 */
 #tank2mm-docs-screen .tm2-docs-table-wrap{
   -webkit-overflow-scrolling:touch;
@@ -706,40 +706,36 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
 @media(max-width:760px){
   #tank2mm-docs-screen .tm2-docs-table-wrap{
     border-color:#c7d5e4;
-    box-shadow:inset -16px 0 14px -18px rgba(40,64,90,.46);
+    box-shadow:inset -20px 0 17px -20px rgba(40,64,90,.52);
   }
   #tank2mm-docs-screen .tm2-docs-table{
     table-layout:fixed;
-    min-width:420px;
+    min-width:525px;
   }
   #tank2mm-docs-screen .tm2-docs-table th,
   #tank2mm-docs-screen .tm2-docs-table td{
-    padding:8px 4px;
+    padding:9px 7px;
     white-space:nowrap;
   }
   #tank2mm-docs-screen .tm2-docs-table th{
-    font-size:.82rem;
-    line-height:1.22;
-    letter-spacing:-.02em;
-  }
-  #tank2mm-docs-screen .tm2-docs-table td{
-    font-size:.88rem;
+    font-size:.86rem;
+    line-height:1.25;
   }
 }
 @media(max-width:360px){
   #tank2mm-docs-screen .tm2-docs-table{
-    min-width:405px;
+    min-width:500px;
   }
   #tank2mm-docs-screen .tm2-docs-table th,
   #tank2mm-docs-screen .tm2-docs-table td{
-    padding-left:3px;
-    padding-right:3px;
+    padding-left:6px;
+    padding-right:6px;
   }
 }
 @media(max-width:760px){
   body.theme-dark#tank2mm-docs-screen .tm2-docs-table-wrap{
     border-color:rgba(125,175,255,.26);
-    box-shadow:inset -16px 0 14px -18px rgba(125,175,255,.46);
+    box-shadow:inset -20px 0 17px -20px rgba(125,175,255,.52);
   }
 }
 
