@@ -738,4 +738,12 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
     box-shadow:inset -20px 0 17px -20px rgba(125,175,255,.52);
   }
 }
+/* 2026-05-14 JST
+   画面: 2mm表本体 / タンク登録詳細
+   役割: docs-view側で hidden 属性が .card 表示指定に負けて、単一区間タンクでも
+   区間別登録値カードの外枠だけ表示される事故を防ぐ。
+   計算ロジック・丸め方式・保存キー・2mm表データ・候補確認v2には触れない。 */
+#tank2mm-docs-screen [hidden]{
+  display:none !important;
+}
 
