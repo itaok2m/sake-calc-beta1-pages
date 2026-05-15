@@ -842,3 +842,26 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
 @media(max-width:640px){
   #tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn{min-height:36px;font-size:12px;padding:7px 10px;}
 }
+
+/* 2026-05-15 JST
+   画面: 2mm表本体 / タンク別2mm表一覧、タンク登録詳細 / 区間別登録値
+   役割: 数字表を縦・横に追いやすくするため、通常行だけに薄い行帯を入れる。
+   注意: 現在位置の強調行、注意あり表示、候補確認v2、計算ロジック、丸め方式、保存キーは変更しない。 */
+#tank2mm-screen .tm2-table tbody tr:nth-child(even):not(.is-highlight) td{
+  background:#f8fafc;
+}
+#tank2mm-screen .tm2-table tbody tr.is-highlight td{
+  background:transparent;
+}
+#tank2mm-docs-screen .tm2-docs-table tbody tr:nth-child(even) td{
+  background:#f8fafc;
+}
+body.theme-dark#tank2mm-screen .tm2-table tbody tr:nth-child(even):not(.is-highlight) td{
+  background:rgba(125,175,255,.055);
+}
+body.theme-dark#tank2mm-screen .tm2-table tbody tr.is-highlight td{
+  background:transparent;
+}
+body.theme-dark#tank2mm-docs-screen .tm2-docs-table tbody tr:nth-child(even) td{
+  background:rgba(125,175,255,.055);
+}
