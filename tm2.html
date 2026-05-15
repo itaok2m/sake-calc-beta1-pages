@@ -57,7 +57,6 @@
           <div class="tm2-current-card is-empty" data-tm2-role="current-card">
             <div class="tm2-current-head">
               <div class="tm2-current-label">今見ているタンク</div>
-              <button class="calc-btn tm2-current-open-btn" data-tm2-action="open-list" disabled type="button">このタンクの2mm表一覧を見る →</button>
             </div>
             <div class="tm2-current-name" data-tm2-role="current-name">未選択</div>
             <div class="tm2-current-meta" data-tm2-role="current-meta" hidden>
@@ -128,7 +127,7 @@
           <div class="tm2-result-value" data-tm2-role="result-value">—</div>
           <div class="tm2-subnote" data-tm2-role="result-subtext"></div>
           <div class="tm2-result-actions">
-            <button class="calc-btn tm2-detail-btn tm2-list-position-btn" data-tm2-action="open-list-position" disabled type="button">この位置を2mm表一覧で見る →</button>
+            <button class="calc-btn tm2-detail-btn tm2-list-position-btn" data-tm2-action="open-list-position" disabled type="button">2mm表一覧を見る →</button>
           </div>
         </div>
 
@@ -144,9 +143,9 @@
         <div class="tm2-list-head"><h2 data-tm2-role="list-title">タンク別2mm表一覧</h2></div>
         <div class="tm2-list-top"><button class="back-btn" data-tm2-action="close-list" type="button">← 一覧を閉じて換算へ戻る</button></div>
         <div class="tm2-list-search-help" data-tm2-role="list-search-help">
-          <button aria-expanded="false" class="back-btn tm2-list-search-help-btn" data-tm2-action="toggle-list-search-help" type="button">一覧内の探し方</button>
+          <button aria-expanded="false" class="back-btn tm2-list-search-help-btn" data-tm2-action="toggle-list-search-help" type="button">一覧の見方</button>
           <div class="tm2-list-search-help-body" data-tm2-role="list-search-help-body" hidden>
-            目的のLやmmを探す時は、ブラウザのページ内検索を使えます。PCは Ctrl + F、Android Chrome は右上メニューの「ページ内検索」、iPhone Safari はページメニューの「ページを検索」を使います。
+            見たい尺またはLが分かっている場合は、タンク選択・換算画面で尺またはLを入力してから、この一覧を開いてください。入力位置付近を強調表示します。未入力の場合は尺0付近から表示します。PWA・ホーム画面追加版ではブラウザのページ内検索が使えない場合があります。
           </div>
         </div>
         <div class="tm2-list-nearby" data-tm2-role="list-nearby" hidden></div>
@@ -161,6 +160,6 @@
     </div>
   </main>
   <div id="toast" class="toast" aria-live="polite"></div>
-  <script src="./assets/tm2.js?v=20260512symbol"></script>
+  <script src="./assets/tm2.js?v=20260515list"></script>
 </body>
 </html>
