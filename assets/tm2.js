@@ -459,7 +459,6 @@
     auditGrid: $('[data-tm2-role="audit-grid"]'),
     docsLinkBtn: $('[data-tm2-role="docs-link"]'),
     errorBox: $('[data-tm2-role="error"]'),
-    openListBtn: $('[data-tm2-action="open-list"]'),
     listTitle: $('[data-tm2-role="list-title"]'),
     listNearby: $('[data-tm2-role="list-nearby"]'),
     listSearchHelpBody: $('[data-tm2-role="list-search-help-body"]'),
@@ -1389,9 +1388,9 @@ function buildAuditInfo(tank){
     els.reasonGrid.innerHTML = targetGroup + candidateGroups;
   }
   function syncReasonToggle(){
-    const enabled = Boolean(getSelectedTank()) && Number.isFinite(Number(state.lastValidGauge));
+    const enabled = Boolean(getSelectedTank());
     setPseudoDisabled(els.reasonToggle, !enabled);
-    els.reasonToggle.textContent = 'この位置を2mm表一覧で見る →';
+    els.reasonToggle.textContent = '2mm表一覧を見る →';
     els.reasonToggle.removeAttribute('aria-expanded');
     els.reasonPanel.hidden = true;
   }
@@ -1582,7 +1581,6 @@ function buildAuditInfo(tank){
     if(!tank){
       els.resultValue.textContent = '—';
       setResultSubtext('', '');
-      setPseudoDisabled(els.openListBtn, true);
       setError('');
       state.lastValidGauge = null;
       state.scrollTargetGauge = null;
@@ -1591,7 +1589,6 @@ function buildAuditInfo(tank){
       syncReasonToggle();
       return;
     }
-    setPseudoDisabled(els.openListBtn, false);
     if(state.mode === 'gauge'){
       const validation = validateGaugeInput(els.gaugeInput.value, tank);
       if(String(els.gaugeInput.value).trim()===''){
@@ -1834,7 +1831,7 @@ function buildAuditInfo(tank){
     const open = Boolean(state.listSearchHelpOpen);
     if(els.listSearchHelpBody) els.listSearchHelpBody.hidden = !open;
     if(els.listSearchHelpToggle){
-      els.listSearchHelpToggle.textContent = '一覧内の探し方';
+      els.listSearchHelpToggle.textContent = '一覧の見方';
       els.listSearchHelpToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }
@@ -1852,8 +1849,10 @@ function buildAuditInfo(tank){
   function getListPositionMissingGuide(){
     const tank = getSelectedTank();
     if(!tank) return '未入力があります。先にタンクを選択してください。';
-    if(state.mode === 'gauge' && String(els.gaugeInput.value || '').trim() === '') return '未入力があります。検尺値mmを入力してください。';
-    if(state.mode === 'volume' && String(els.volumeInput.value || '').trim() === '') return '未入力があります。目標数量Lを入力してください。';
+    const activeInputValue = state.mode === 'volume'
+      ? String(els.volumeInput.value || '').trim()
+      : String(els.gaugeInput.value || '').trim();
+    if(activeInputValue === '') return '';
     if(!Number.isFinite(Number(state.lastValidGauge))) return '入力値を確認してください。2mm表一覧で見る位置がまだ決まっていません。';
     return '';
   }
@@ -1956,7 +1955,6 @@ function buildAuditInfo(tank){
     const action = btn.dataset.tm2Action;
     if(action === 'mode') setMode(btn.dataset.tm2Mode || 'gauge');
     if(action === 'reset') resetInputs();
-    if(action === 'open-list') openList({pushHistory:true});
     if(action === 'open-list-position'){
       const missingGuide = getListPositionMissingGuide();
       if(missingGuide){ tm2GuideToast(missingGuide); return; }
