@@ -471,6 +471,10 @@
   const TM2_SCREEN_ID = 'tank2mm-screen';
   const TM2_CANDIDATE_KEY = 'sakeCalc.htmlSplit.tm2Candidate.v2.session';
   const TM2_SHARE_MEMO_KEY = 'sakeCalc.htmlSplit.tm2.shareMemo.v1';
+  const TM2_URL_STATE_KEYS = [
+    'screen','tm2return','tm2group','tm2tank','tm2mode','tm2gauge','tm2volume',
+    'tm2list','tm2shareopen','tm2activegauge','tm2scrollgauge','tm2input'
+  ];
 
   function tm2StorageGet(key){
     try{ return window.localStorage.getItem(key); }catch{ return null; }
@@ -816,6 +820,57 @@
     return normalizeTm2UiState(tm2ParseStoredObject(TM2_STORAGE_KEY));
   }
 
+  function setTm2UrlParam(params, key, value){
+    const text = String(value == null ? '' : value);
+    if(text === '' || text === 'false' || text === '0') params.delete(key);
+    else params.set(key, text);
+  }
+  function hasTm2UrlState(){
+    try{
+      const params = new URLSearchParams(window.location.search || '');
+      return TM2_URL_STATE_KEYS.some(key => params.has(key));
+    }catch{
+      return false;
+    }
+  }
+  function buildTm2UrlFromState(overrides={}){
+    const tm2State = buildTm2UiStateFromCurrent(overrides);
+    const params = new URLSearchParams(window.location.search || '');
+    TM2_URL_STATE_KEYS.forEach(key => params.delete(key));
+    setTm2UrlParam(params, 'screen', TM2_SCREEN_ID);
+    setTm2UrlParam(params, 'tm2group', tm2State.groupKey);
+    setTm2UrlParam(params, 'tm2tank', tm2State.tankNo);
+    setTm2UrlParam(params, 'tm2mode', tm2State.mode);
+    setTm2UrlParam(params, 'tm2gauge', tm2State.gaugeValue);
+    setTm2UrlParam(params, 'tm2volume', tm2State.volumeValue);
+    setTm2UrlParam(params, 'tm2activegauge', tm2State.activeGauge);
+    setTm2UrlParam(params, 'tm2scrollgauge', tm2State.scrollTargetGauge);
+    setTm2UrlParam(params, 'tm2input', tm2State.inputValue);
+    if(tm2State.listOpen && tm2State.tankNo) params.set('tm2list', '1');
+    if(tm2State.shareOpen) params.set('tm2shareopen', '1');
+    const query = params.toString();
+    return `${window.location.pathname}${query ? '?' + query : ''}${window.location.hash || ''}`;
+  }
+  function updateTm2UrlState(overrides={}, options={}){
+    if(!window.history || typeof window.history.replaceState !== 'function') return false;
+    try{
+      const tm2State = buildTm2UiStateFromCurrent(overrides);
+      const url = buildTm2UrlFromState(overrides);
+      const current = `${window.location.pathname}${window.location.search}${window.location.hash || ''}`;
+      const baseState = (window.history.state && typeof window.history.state === 'object') ? window.history.state : {};
+      const nextState = { ...baseState, screen: TM2_SCREEN_ID, tm2State };
+      const method = options.mode === 'push' && typeof window.history.pushState === 'function' ? 'pushState' : 'replaceState';
+      if(method === 'replaceState' && url === current){
+        window.history.replaceState(nextState, '', url);
+        return true;
+      }
+      window.history[method](nextState, '', url);
+      return true;
+    }catch{
+      return false;
+    }
+  }
+
   function countDecimals(value){
     const str = String(value);
     if(!str.includes('.')) return 0;
@@ -965,6 +1020,9 @@ function saveTm2UiState(options={}){
   const payload = buildTm2UiStateFromCurrent();
   try{ tm2StorageSet(TM2_STORAGE_KEY, JSON.stringify(payload)); }catch{}
   try{ syncDocsLink(getSelectedTank()); }catch{}
+  if(options.updateUrl !== false && hasTm2UrlState()){
+    try{ updateTm2UrlState({}, {mode:'replace'}); }catch{}
+  }
   if(options.updateHistory !== false && typeof window.syncCurrentBrowserHistoryState === 'function'){
     try{ window.syncCurrentBrowserHistoryState(); }catch{}
   }
@@ -1072,8 +1130,8 @@ function applyTm2UiState(rawState, options={}){
   state.lastCalcDetail = null;
   setMode(saved.mode, {save:false});
   syncShareToggle();
-  if(saved.listOpen && getSelectedTank()) openList({save:false, scheduleScroll:false});
-  else closeList({save:false});
+  if(saved.listOpen && getSelectedTank()) openList({save:false, scheduleScroll:false, updateUrl:false});
+  else closeList({save:false, updateUrl:false});
   if(saved.listOpen && getSelectedTank()){
     requestAnimationFrame(() => scrollTm2ListToHighlight());
   }
@@ -1886,8 +1944,13 @@ function buildAuditInfo(tank){
     els.mainPanel.hidden = true;
     els.listPanel.hidden = false;
     document.body.classList.add('is-tm2-list-open');
-    if(options.pushHistory === true && typeof window.pushCurrentBrowserHistoryState === 'function'){
-      try{ window.pushCurrentBrowserHistoryState({force:true}); }catch{}
+    if(options.updateUrl !== false){
+      if(options.pushHistory === true){
+        updateTm2UrlState({listOpen:false}, {mode:'replace'});
+        updateTm2UrlState({listOpen:true, scrollTargetGauge:scrollGauge}, {mode:'push'});
+      }else{
+        updateTm2UrlState({listOpen:true, scrollTargetGauge:scrollGauge}, {mode:'replace'});
+      }
     }
     if(options.save !== false) saveTm2UiState();
     if(options.scheduleScroll !== false){
@@ -1904,6 +1967,7 @@ function buildAuditInfo(tank){
     els.mainPanel.hidden = false;
     document.body.classList.remove('is-tm2-list-open');
     delete els.listPanel.dataset.tm2ScrollGauge;
+    if(options.updateUrl !== false) updateTm2UrlState({listOpen:false}, {mode:'replace'});
     if(options.save !== false) saveTm2UiState();
   }
   function prepareTank2mmForIncomingShare(options={}){
@@ -2029,13 +2093,20 @@ function buildAuditInfo(tank){
     updateInputAvailability();
     updateResult();
     if(els.listPanel && !els.listPanel.hidden && els.mainPanel && els.mainPanel.hidden){
-      openList({save:false});
+      openList({save:false, updateUrl:false});
       return;
     }
     if(isTm2ScreenActive()){
       requestAnimationFrame(() => scrollTm2ListToHighlight());
     }
   }
+  window.addEventListener('popstate', event => {
+    const urlState = getTm2StateFromUrl();
+    const historyState = getTm2StateFromHistory(event.state);
+    const nextState = urlState || historyState;
+    if(nextState) applyTm2UiState(nextState, {save:false, updateHistory:false});
+    else closeList({save:false, updateUrl:false});
+  });
   window.captureTank2mmState = function(overrides={}){
     return buildTm2UiStateFromCurrent(overrides);
   };
@@ -2098,6 +2169,6 @@ function buildAuditInfo(tank){
   renderReasonGrid([]);
   syncReasonToggle();
   syncShareToggle();
-  closeList({save:false});
+  closeList({save:false, updateUrl:false});
   restoreTm2UiState({save:false, updateHistory:false});
 })();
