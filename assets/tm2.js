@@ -1102,7 +1102,14 @@ function resolveTm2UiState(options={}){
   }
   const fromHistory = getTm2StateFromHistory(options.historyState ?? window.history.state);
   if(fromHistory) return fromHistory;
-  return getTm2SavedState();
+  const fromStorage = getTm2SavedState();
+  if(fromStorage){
+    // 通常の tm2.html 入口では、前回のタンク・尺/L入力は復元するが、
+    // 一覧画面まで自動復元しない。
+    // 一覧復元は、URL・戻りURL・ブラウザ履歴に tm2list=1 / listOpen が明示されている時だけ行う。
+    return { ...fromStorage, listOpen:false };
+  }
+  return null;
 }
 function applyTm2UiState(rawState, options={}){
   const saved = normalizeTm2UiState(rawState);
