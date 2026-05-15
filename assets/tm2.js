@@ -1100,7 +1100,8 @@ function resolveTm2UiState(options={}){
       return fromReturn;
     }
   }
-  const fromHistory = getTm2StateFromHistory(options.historyState ?? window.history.state);
+  const shouldUseHistoryState = options.useHistoryState === true || hasTm2UrlState();
+  const fromHistory = shouldUseHistoryState ? getTm2StateFromHistory(options.historyState ?? window.history.state) : null;
   if(fromHistory) return fromHistory;
   const fromStorage = getTm2SavedState();
   if(fromStorage){
