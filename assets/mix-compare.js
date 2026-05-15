@@ -149,7 +149,7 @@
       const isBase = record && record.id === baseId;
       const t = splitTime(record.savedAtJST || record.savedAtISO || '');
       const action = isBase
-        ? '<span class="history-compare-base-badge">基準中</span>'
+        ? ''
         : `<button class="history-compare-set-base" type="button" data-set-base-id="${escapeHtml(record.id)}">基準にする</button>`;
       return `<th class="history-compare-table-col${isBase ? ' is-base' : ''}">
         <div class="history-compare-table-headcell">

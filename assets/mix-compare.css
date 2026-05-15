@@ -19,7 +19,6 @@
 .history-compare-table-col.is-base{background:#f8f9fa;border-left:2px solid #384655;border-right:2px solid #384655;border-top:2px solid #384655;}
 .history-compare-table-headcell{display:grid;gap:3px;padding:7px 8px;min-height:54px;box-shadow:none;}
 .history-compare-head-actions{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:2px;}
-.history-compare-base-badge{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:3px 9px;border-radius:999px;background:#314257;color:#fff;font-size:10px;font-weight:900;line-height:1.2;}
 .history-compare-set-base{display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:3px 9px;border-radius:999px;border:1px solid #d8d3ca;background:#fff;color:#2f4257;font-size:10px;font-weight:900;line-height:1.2;cursor:pointer;}
 .history-compare-set-base:active{transform:translateY(1px);}
 .history-compare-table-headlabel{font-size:9.5px;font-weight:900;color:#455363;line-height:1.25;letter-spacing:.02em;}
@@ -45,7 +44,7 @@
   .history-compare-table-headcell{min-height:50px;padding:6px 7px;}
   .history-compare-table-cell{padding:6px 7px;}
   .history-compare-head-actions{gap:4px;}
-  .history-compare-set-base,.history-compare-base-badge{font-size:9.5px;min-height:23px;padding:3px 7px;}
+  .history-compare-set-base,
   .history-compare-table-action-btn{font-size:10.5px;min-height:34px;}
 }
 
