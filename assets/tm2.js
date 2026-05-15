@@ -1257,7 +1257,7 @@ function syncDocsLink(tank){
     if(els.shareCard) els.shareCard.classList.toggle('is-open', open);
     if(els.shareBody) els.shareBody.hidden = !open;
     if(els.shareToggle){
-      els.shareToggle.textContent = open ? '手入力メモを閉じる' : '手入力メモを開く';
+      els.shareToggle.textContent = open ? '手入力メモを閉じる' : '手入力メモ（補助）';
       els.shareToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }

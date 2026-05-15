@@ -808,3 +808,59 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
 #tank2mm-screen .tm2-share-card.is-quiet{background:#fbfcfd;border-color:#e4e7ea;}
 #tank2mm-screen .tm2-share-card.is-quiet .tm2-share-title{color:#465464;}
 #tank2mm-screen .tm2-share-card.is-quiet .tm2-share-note{color:#6f7a86;}
+
+/* 2026-05-15: 2mm表トップの手入力メモを主導線から外し、補助リンク相当に弱める。保存挙動・候補確認v2・換算処理は変更しない。 */
+#tank2mm-screen .tm2-share-card.is-quiet{
+  padding:2px 0 0;
+  border:0;
+  background:transparent;
+  display:grid;
+  gap:6px;
+  margin-top:4px;
+}
+#tank2mm-screen .tm2-share-card.is-quiet.is-open{
+  padding:8px 0 0;
+  border:0;
+  background:transparent;
+}
+#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn{
+  width:auto;
+  justify-self:start;
+  min-height:34px;
+  padding:6px 10px;
+  border-radius:999px;
+  border-color:#e2e6ea;
+  background:#fbfcfd;
+  color:#637083;
+  font-size:12px;
+  font-weight:800;
+  box-shadow:none;
+}
+#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn[aria-expanded="true"]{
+  border-color:#cbd8e6;
+  background:#f1f6fb;
+  color:#42566d;
+}
+#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn[aria-expanded]::after{
+  padding:4px 7px;
+  font-size:10px;
+  color:#687586;
+}
+#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-note{
+  font-size:11px;
+  line-height:1.7;
+  color:#7d8794;
+}
+#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-body{
+  border:1px solid #e2e6ea;
+  border-radius:12px;
+  background:#fbfcfd;
+  padding:10px;
+}
+#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-input{
+  min-height:96px;
+  border-radius:12px;
+}
+@media(max-width:640px){
+  #tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn{min-height:36px;font-size:12px;padding:7px 10px;}
+}
