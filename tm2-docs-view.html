@@ -17,22 +17,19 @@
   </div>
 
   <main class="tool-body">
-    <section class="screen-lead">
+    <section class="screen-lead tm2-docs-lead">
       <h1>タンク登録詳細</h1>
-      <p>2mm表で使うタンク登録値と採用している計算方式を確認する画面です。区間別タンクでは、区間別登録値も表示します。ここでは保存・記録・タンク現在値更新は行いません。</p>
     </section>
 
     <div class="wrapper tm2-docs-root">
       <section class="card tm2-docs-card">
-        <div class="tm2-subscreen-label">タンク登録詳細</div>
         <div class="tm2-docs-heading">
           <div>
             <div class="tm2-docs-kicker">選択中タンク</div>
             <h2 data-tm2-docs-role="tank-title">タンク未指定</h2>
           </div>
-          <a class="back-btn tm2-docs-return" data-tm2-docs-role="return-link-2" href="./tm2.html">← 2mm表へ戻る</a>
         </div>
-        <div class="tm2-docs-note" data-tm2-docs-role="status-note">2mm表で選択したタンクの登録詳細を表示します。</div>
+        <div class="tm2-docs-note" data-tm2-docs-role="status-note" hidden>2mm表画面からタンクを選んで開いてください。</div>
       </section>
 
       <section class="card tm2-docs-card" data-tm2-docs-role="summary-card">
@@ -61,15 +58,14 @@
             <tbody data-tm2-docs-role="segments-body"></tbody>
           </table>
         </div>
-        <div class="tm2-docs-footnote">区間別タンクは、容器検定簿の区間行をもとに2mm表を再生成します。</div>
       </section>
 
       <section class="card tm2-docs-card" data-tm2-docs-role="alerts-card" hidden>
-        <h2>注意・補足</h2>
+        <h2>注意</h2>
         <div class="tm2-docs-alert-list" data-tm2-docs-role="alerts-list"></div>
       </section>
     </div>
   </main>
-  <script src="./assets/tm2-docs.js?v=20260514single-section"></script>
+  <script src="./assets/tm2-docs.js?v=20260515docs-tidy"></script>
 </body>
 </html>

@@ -208,6 +208,9 @@ body.theme-dark#tank2mm-screen .tm2-list-top .back-btn{border-color:rgba(125,175
 
 
 /* タンク登録詳細ページ */
+
+#tank2mm-docs-screen .tm2-docs-lead{margin-bottom:10px;}
+#tank2mm-docs-screen .tm2-docs-lead h1{margin-bottom:0;}
 #tank2mm-docs-screen .wrapper{max-width:820px;}
 #tank2mm-docs-screen .tm2-docs-root{display:grid;gap:14px;width:100%;}
 #tank2mm-docs-screen .tm2-docs-card{display:grid;gap:12px;}
@@ -231,7 +234,6 @@ body.theme-dark#tank2mm-screen .tm2-list-top .back-btn{border-color:rgba(125,175
 #tank2mm-docs-screen .tm2-docs-alert{padding:10px 12px;border-radius:12px;border:1px solid #e7d19a;background:#fff6e3;color:#5d4a11;font-size:13px;line-height:1.8;}
 @media(max-width:640px){
   #tank2mm-docs-screen .tm2-docs-heading{display:grid;}
-  #tank2mm-docs-screen .tm2-docs-return{width:100%;justify-content:center;text-align:center;}
   #tank2mm-docs-screen .tm2-docs-row{grid-template-columns:8.5em minmax(0,1fr);}
   #tank2mm-docs-screen .tm2-docs-table-wrap{max-height:none;}
 }

@@ -98,9 +98,13 @@
 
     if(titleEl) titleEl.textContent = tankLabel;
     if(statusNoteEl){
-      statusNoteEl.textContent = getParam('tankNo')
-        ? '2mm表で選択したタンクの登録値です。確認専用で、保存・記録・タンク現在値更新は行いません。'
-        : 'タンク情報が見つかりません。2mm表画面からタンクを選んで開いてください。';
+      if(getParam('tankNo')){
+        statusNoteEl.hidden = true;
+        statusNoteEl.textContent = '';
+      }else{
+        statusNoteEl.hidden = false;
+        statusNoteEl.textContent = 'タンク情報が見つかりません。2mm表画面からタンクを選んで開いてください。';
+      }
     }
 
     if(summaryGrid){
