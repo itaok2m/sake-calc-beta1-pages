@@ -1257,7 +1257,7 @@ function syncDocsLink(tank){
     if(els.shareCard) els.shareCard.classList.toggle('is-open', open);
     if(els.shareBody) els.shareBody.hidden = !open;
     if(els.shareToggle){
-      els.shareToggle.textContent = 'メモ';
+      els.shareToggle.textContent = open ? '手入力メモを閉じる' : '手入力メモを開く';
       els.shareToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }
@@ -1339,7 +1339,8 @@ function buildAuditInfo(tank){
       { label:'全容量', value:`${tank.full_l}L` },
       { label:'底板面以下', value:`${tank.bottom_l}L` },
       { label:'中心深', value:`${tank.center_mm}mm` },
-      { label:'登録方式', value:isSegmentTank(tank) ? '区間別タンク' : '単一区間タンク' }
+      { label:'登録方式', value:isSegmentTank(tank) ? '区間別タンク' : '単一区間タンク' },
+      { label:'換算方式', value:getTankCalcMethodLabel(tank) }
     ];
     if(!isSegmentTank(tank) && Number.isFinite(Number(tank.per_mm_l))){
       registerRows.push({ label:'記載1mm当', value:`${Number(tank.per_mm_l).toFixed(countDecimals(tank.per_mm_l))}L` });
@@ -1409,23 +1410,21 @@ function buildAuditInfo(tank){
       els.currentMeta.hidden = true;
       els.currentRange.textContent = '—';
       els.currentVolumeRange.textContent = '—';
-      els.currentNote.textContent = '先にタンクを選ぶと、この下で見る内容を選べます。';
+      if(els.currentNote){
+        els.currentNote.textContent = '';
+        els.currentNote.hidden = true;
+      }
       return;
     }
     els.currentCard.classList.remove('is-empty');
     els.currentName.textContent = tank.label;
-    els.currentMeta.hidden = false;
+    els.currentMeta.hidden = true;
     els.currentRange.textContent = `0〜${tank.center_mm}mm の偶数`;
     els.currentVolumeRange.textContent = `${tank.bottom_l}〜${tank.full_l}L`;
-    if(isSegmentTank(tank) && usesBoundaryRecalcSegmentCalc(tank)){
-      els.currentNote.textContent = `${tank.label} は区間の始点Lと終点Lから1mm当を再計算する方式です。`;
-      return;
+    if(els.currentNote){
+      els.currentNote.textContent = '';
+      els.currentNote.hidden = true;
     }
-    if(isSegmentTank(tank) && usesRecordedPerMmSegmentCalc(tank)){
-      els.currentNote.textContent = `${tank.label} は区間の記載1mm当をそのまま使う方式です。`;
-      return;
-    }
-    els.currentNote.textContent = isSegmentTank(tank) ? 'このタンクは、区間ごとに1mm当が変わる前提で計算します。下で尺から見るかLから見るかを選びます。' : 'このタンクを基準に、下で尺から見るかLから見るかを選びます。';
   }
   function syncModeButtons(tank){
     const enabled = Boolean(tank);
@@ -1460,16 +1459,24 @@ function buildAuditInfo(tank){
   }
   function updateAuditView(tank){
     if(!tank){
+      els.auditStatus.hidden = true;
       els.auditStatus.className = 'tm2-status is-idle';
-      els.auditStatus.innerHTML = '<div class="tm2-status-row"><span class="tm2-status-badge">監査状態</span><div class="tm2-status-title">タンク未選択</div></div>';
+      els.auditStatus.innerHTML = '';
       els.auditGrid.innerHTML = '';
       state.auditOpen = false;
       syncAuditToggle(null);
       return;
     }
     const audit = buildAuditInfo(tank);
-    els.auditStatus.className = `tm2-status ${audit.status === 'caution' ? 'is-caution' : 'is-ok'}`;
-    els.auditStatus.innerHTML = `<div class="tm2-status-row"><span class="tm2-status-badge">${audit.title}</span><div class="tm2-status-title">${audit.summary || ''}</div></div>${audit.note ? `<div class="tm2-status-note">${audit.note}</div>` : ''}`;
+    if(audit.status === 'caution'){
+      els.auditStatus.hidden = false;
+      els.auditStatus.className = 'tm2-status is-caution';
+      els.auditStatus.innerHTML = `<div class="tm2-status-row"><span class="tm2-status-badge">${audit.title}</span><div class="tm2-status-title">${audit.summary || ''}</div></div>${audit.note ? `<div class="tm2-status-note">${audit.note}</div>` : ''}`;
+    }else{
+      els.auditStatus.hidden = true;
+      els.auditStatus.className = 'tm2-status is-ok';
+      els.auditStatus.innerHTML = '';
+    }
     renderAuditGrid(tank, state.lastCalcDetail);
     syncAuditToggle(tank);
   }
@@ -1482,8 +1489,9 @@ function buildAuditInfo(tank){
     els.volumeInput.disabled = !hasTank || state.mode !== 'volume';
     syncDocsLink(tank);
     if(tank){
-      els.gaugeHelp.textContent = `入力範囲: 0〜${tank.center_mm}mm の偶数`;
-      els.volumeHelp.textContent = `入力目安: ${tank.bottom_l}〜${tank.full_l}L`;
+      const inputGuide = `入力目安：検尺 0〜${tank.center_mm}mm の偶数 / 容量 ${tank.bottom_l}〜${tank.full_l}L`;
+      els.gaugeHelp.textContent = inputGuide;
+      els.volumeHelp.textContent = inputGuide;
     }else{
       els.gaugeHelp.textContent = 'タンクを選ぶと入力できる範囲の目安を表示します。';
       els.volumeHelp.textContent = 'タンクを選ぶと入力できる範囲の目安を表示します。';

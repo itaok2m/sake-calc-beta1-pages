@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>2mm表 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260512symbol">
-  <link rel="stylesheet" href="./assets/tm2.css?v=20260512symbol">
+  <link rel="stylesheet" href="./assets/tm2.css?v=20260515tankui">
 </head>
 <body id="tank2mm-screen">
   <div class="tool-nav">
@@ -63,24 +63,24 @@
               <div class="tm2-current-row"><span>検尺範囲</span><strong data-tm2-role="current-range">—</strong></div>
               <div class="tm2-current-row"><span>容量目安</span><strong data-tm2-role="current-volume-range">—</strong></div>
             </div>
-            <div class="tm2-current-note" data-tm2-role="current-note">タンクを選んでください。</div>
+            <div class="tm2-current-note" data-tm2-role="current-note" hidden>タンクを選んでください。</div>
           </div>
 
-          <div class="tm2-share-card" data-tm2-role="share-card">
+          <div class="tm2-share-card is-quiet" data-tm2-role="share-card">
             <div class="tm2-share-head">
               <div>
-                <div class="tm2-share-title">メモ</div>
-                <div class="tm2-share-note">手入力メモです。</div>
+                <div class="tm2-share-title">手入力メモ（補助）</div>
+                <div class="tm2-share-note">通常は2mm表候補確認v2を使います。必要な時だけ開きます。</div>
               </div>
             </div>
-            <button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">メモ</button>
+            <button aria-expanded="false" class="back-btn tm2-share-toggle-btn" data-tm2-action="toggle-share" type="button">手入力メモを開く</button>
             <div class="tm2-share-body" data-tm2-role="share-body" hidden>
               <textarea class="tm2-share-input" id="tm2_share_memo" placeholder="必要ならメモを手入力・貼り付けできます。"></textarea>
               <button class="back-btn reset-btn tm2-share-clear-btn" data-action="clear-tm2-share-memo" type="button">メモを消す</button>
             </div>
           </div>
 
-          <div class="tm2-status is-idle" data-tm2-role="audit-status">
+          <div class="tm2-status is-idle" data-tm2-role="audit-status" hidden>
             <div class="tm2-status-title">監査状態: タンク未選択</div>
             <div class="tm2-status-note">タンク選択後に表示します。</div>
           </div>
@@ -160,6 +160,6 @@
     </div>
   </main>
   <div id="toast" class="toast" aria-live="polite"></div>
-  <script src="./assets/tm2.js?v=20260515list"></script>
+  <script src="./assets/tm2.js?v=20260515tankui"></script>
 </body>
 </html>
