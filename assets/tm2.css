@@ -775,3 +775,29 @@ body.theme-dark#tank2mm-screen .tm2-list-head h2{
     max-height:clamp(300px, 50dvh, 460px);
   }
 }
+
+
+/* 2026-05-14 JST
+   画面: 2mm表本体 / タンク登録詳細 / 区間別登録値
+   役割: スマホ・タブレットで表スクロールと画面スクロールが被る問題を軽減する。
+   表そのものの列・情報量・右端見切れは維持し、表の外側左右に画面スクロール用の余白を作る。
+   計算ロジック・丸め方式・保存キー・2mm表データ・候補確認v2には触れない。 */
+@media(max-width:900px){
+  #tank2mm-docs-screen [data-tm2-docs-role="segments-card"] .tm2-docs-table-wrap{
+    width:calc(100% - clamp(28px, 6vw, 56px));
+    margin-left:auto;
+    margin-right:auto;
+  }
+}
+
+@media(max-width:640px){
+  #tank2mm-docs-screen [data-tm2-docs-role="segments-card"] .tm2-docs-table-wrap{
+    width:calc(100% - clamp(24px, 7vw, 40px));
+  }
+}
+
+@media(max-width:360px){
+  #tank2mm-docs-screen [data-tm2-docs-role="segments-card"] .tm2-docs-table-wrap{
+    width:calc(100% - 22px);
+  }
+}
