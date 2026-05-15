@@ -469,6 +469,8 @@
   const TM2_STORAGE_KEY = 'sake-tools-tm2-state-v1';
   const TM2_RETURN_KEY = 'sake-tools-tm2-return-v1';
   const TM2_SCREEN_ID = 'tank2mm-screen';
+  const TM2_HISTORY_ROLE_PARENT = 'tm2-parent';
+  const TM2_HISTORY_ROLE_LIST = 'tm2-list';
   const TM2_CANDIDATE_KEY = 'sakeCalc.htmlSplit.tm2Candidate.v2.session';
   const TM2_SHARE_MEMO_KEY = 'sakeCalc.htmlSplit.tm2.shareMemo.v1';
   const TM2_URL_STATE_KEYS = [
@@ -858,7 +860,14 @@
       const url = buildTm2UrlFromState(overrides);
       const current = `${window.location.pathname}${window.location.search}${window.location.hash || ''}`;
       const baseState = (window.history.state && typeof window.history.state === 'object') ? window.history.state : {};
-      const nextState = { ...baseState, screen: TM2_SCREEN_ID, tm2State };
+      const role = options.historyRole || (tm2State.listOpen ? TM2_HISTORY_ROLE_LIST : TM2_HISTORY_ROLE_PARENT);
+      const nextState = {
+        ...baseState,
+        screen: TM2_SCREEN_ID,
+        tm2State,
+        tm2HistoryRole: role,
+        tm2ListParentReady: role === TM2_HISTORY_ROLE_LIST && options.parentReady === true
+      };
       const method = options.mode === 'push' && typeof window.history.pushState === 'function' ? 'pushState' : 'replaceState';
       if(method === 'replaceState' && url === current){
         window.history.replaceState(nextState, '', url);
@@ -1954,10 +1963,10 @@ function buildAuditInfo(tank){
     document.body.classList.add('is-tm2-list-open');
     if(options.updateUrl !== false){
       if(options.pushHistory === true){
-        updateTm2UrlState({listOpen:false}, {mode:'replace'});
-        updateTm2UrlState({listOpen:true, scrollTargetGauge:scrollGauge}, {mode:'push'});
+        updateTm2UrlState({listOpen:false}, {mode:'replace', historyRole:TM2_HISTORY_ROLE_PARENT});
+        updateTm2UrlState({listOpen:true, scrollTargetGauge:scrollGauge}, {mode:'push', historyRole:TM2_HISTORY_ROLE_LIST, parentReady:true});
       }else{
-        updateTm2UrlState({listOpen:true, scrollTargetGauge:scrollGauge}, {mode:'replace'});
+        updateTm2UrlState({listOpen:true, scrollTargetGauge:scrollGauge}, {mode:'replace', historyRole:TM2_HISTORY_ROLE_LIST, parentReady:false});
       }
     }
     if(options.save !== false) saveTm2UiState();
@@ -1975,9 +1984,61 @@ function buildAuditInfo(tank){
     els.mainPanel.hidden = false;
     document.body.classList.remove('is-tm2-list-open');
     delete els.listPanel.dataset.tm2ScrollGauge;
-    if(options.updateUrl !== false) updateTm2UrlState({listOpen:false}, {mode:'replace'});
+    if(options.updateUrl !== false) updateTm2UrlState({listOpen:false}, {mode:'replace', historyRole:TM2_HISTORY_ROLE_PARENT});
     if(options.save !== false) saveTm2UiState();
   }
+  function canCloseListByBrowserBack(){
+    try{
+      const historyState = window.history && window.history.state && typeof window.history.state === 'object' ? window.history.state : null;
+      if(!historyState) return false;
+      if(String(historyState.screen || '') !== TM2_SCREEN_ID) return false;
+      if(historyState.tm2HistoryRole !== TM2_HISTORY_ROLE_LIST) return false;
+      if(historyState.tm2ListParentReady !== true) return false;
+      const stateFromHistory = getTm2StateFromHistory(historyState);
+      const stateFromUrl = getTm2StateFromUrl();
+      return Boolean((stateFromHistory && stateFromHistory.listOpen) || (stateFromUrl && stateFromUrl.listOpen));
+    }catch{
+      return false;
+    }
+  }
+  function closeListFromButton(){
+    if(canCloseListByBrowserBack() && window.history && typeof window.history.back === 'function'){
+      let handled = false;
+      const fallback = window.setTimeout(() => {
+        if(!handled && els.listPanel && !els.listPanel.hidden){
+          closeList({save:true, updateUrl:true});
+        }
+      }, 350);
+      const markHandled = () => {
+        handled = true;
+        window.clearTimeout(fallback);
+        window.removeEventListener('popstate', markHandled);
+      };
+      window.addEventListener('popstate', markHandled, {once:true});
+      window.history.back();
+      return;
+    }
+    closeList();
+  }
+  function prepareTm2TopExit(){
+    // 「トップへ戻る」は2mm表作業をいったん抜ける操作。
+    // 一覧画面から出る場合は、ブラウザ履歴上の現在位置も親画面状態へ置き換えてから離脱する。
+    // これにより、トップから再度2mm表へ入った時やブラウザバックを混ぜた時に、
+    // 直前の一覧状態が勝手に復元される事故を抑える。
+    try{
+      if(els.listPanel && !els.listPanel.hidden){
+        closeList({save:true, updateUrl:true});
+      }else{
+        saveTm2UiState({updateUrl:hasTm2UrlState(), updateHistory:false});
+      }
+    }catch{}
+  }
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href="./index.html"],a[href="index.html"]');
+    if(!link || !document.body || document.body.id !== TM2_SCREEN_ID) return;
+    if(event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    prepareTm2TopExit();
+  });
   function prepareTank2mmForIncomingShare(options={}){
     const tank = getSelectedTank();
     state.reasonOpen = false;
@@ -2040,7 +2101,7 @@ function buildAuditInfo(tank){
       if(missingGuide){ tm2GuideToast(missingGuide); return; }
       openList({pushHistory:true});
     }
-    if(action === 'close-list') closeList();
+    if(action === 'close-list') closeListFromButton();
     if(action === 'open-docs') openTankDocs();
     if(action === 'toggle-share') setShareOpen(!state.shareOpen);
     if(action === 'clear-v2-draft') clearIncomingV2Draft(true);
