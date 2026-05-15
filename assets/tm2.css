@@ -172,30 +172,6 @@ body#tank2mm-screen.is-tm2-list-open .screen-lead{display:none;}
 #tank2mm-screen .tm2-v2-draft-mini strong{font-weight:900;color:#3f4b58;}
 @media(max-width:640px){#tank2mm-screen .tm2-v2-draft-mode{white-space:normal;}}
 
-/* 2mm表内の表示切替 */
-.tm2-subscreen-label{
-  display:inline-flex;
-  align-items:center;
-  width:fit-content;
-  max-width:100%;
-  margin:0 0 10px;
-  padding:5px 10px;
-  border:1px solid var(--border, #c8d3e3);
-  border-radius:999px;
-  background:var(--soft-blue, #eef5ff);
-  color:var(--muted, #41516a);
-  font-size:0.84rem;
-  font-weight:700;
-}
-.tm2-subscreen-label.is-list{
-  margin-bottom:8px;
-}
-body.theme-dark .tm2-subscreen-label{
-  border-color:rgba(125, 175, 255, 0.38);
-  background:rgba(80, 135, 220, 0.18);
-  color:#d8e6ff;
-}
-
 /* 候補位置から一覧へ進む導線とページ内検索補助。 */
 #tank2mm-screen .tm2-list-search-help{margin:0 0 10px;display:grid;gap:8px;}
 #tank2mm-screen .tm2-list-search-help-btn{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;white-space:normal;line-height:1.45;border:1px solid #d8dadd;background:#f8f9fa;color:#263240;box-shadow:none;}
