@@ -39,3 +39,10 @@ body.theme-dark .kisa-candidate-btn.is-active,body.dark .kisa-candidate-btn.is-a
 .alcohol-conversion-sub-result .result-value{font-size:18px;font-weight:900;}
 body.theme-dark .alcohol-conversion-primary-result .result-value.primary,body.dark .alcohol-conversion-primary-result .result-value.primary{color:#9fc7ff;}
 @media(max-width:640px){.alcohol-conversion-primary-result .result-value.primary{font-size:30px;}.alcohol-conversion-sub-result{display:grid;gap:4px;justify-content:stretch;}}
+.alcohol-conversion-corrected-card{margin-top:14px;padding:12px 14px;border:1px solid var(--line-soft);border-radius:14px;background:var(--panel-bg-soft);display:flex;align-items:baseline;justify-content:space-between;gap:14px;}
+.alcohol-conversion-corrected-card .result-label{font-size:12px;font-weight:900;color:var(--muted);}
+.alcohol-conversion-corrected-card .result-value.intermediate{font-size:20px;font-weight:950;color:var(--ink);}
+.alcohol-conversion-result-card{margin-top:12px;}
+.alcohol-conversion-primary-result{border-bottom:0;padding-bottom:0;}
+body.theme-dark .alcohol-conversion-corrected-card,body.dark .alcohol-conversion-corrected-card{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.12);}
+@media(max-width:640px){.alcohol-conversion-corrected-card{display:grid;gap:4px;}.alcohol-conversion-corrected-card .result-value.intermediate{font-size:18px;}}

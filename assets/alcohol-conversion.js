@@ -26,6 +26,7 @@
     hydrometer: document.getElementById('alcohol-conversion-hydrometer'),
     candidates: document.getElementById('alcohol-conversion-kisa-candidates'),
     kisa: document.getElementById('alcohol-conversion-kisa'),
+    correctedCard: document.getElementById('alcohol-conversion-corrected-card'),
     result: document.getElementById('alcohol-conversion-result'),
     corrected: document.getElementById('alcohol-conversion-corrected'),
     final: document.getElementById('alcohol-conversion-final'),
@@ -462,15 +463,20 @@
     el.tableLink.href = './docs-view.html?' + params.toString();
   }
   function updateResult(corrected, converted){
-    if (!Number.isFinite(corrected) || !Number.isFinite(converted)) {
-      el.result.hidden = true;
+    if (Number.isFinite(corrected)) {
+      el.correctedCard.hidden = false;
+      el.corrected.textContent = formatPlain(roundTo(corrected, 2), 2);
+    } else {
+      el.correctedCard.hidden = true;
       el.corrected.textContent = '—';
-      el.final.textContent = '—';
-      return;
     }
-    el.result.hidden = false;
-    el.corrected.textContent = formatPlain(roundTo(corrected, 2), 2);
-    el.final.textContent = formatPlain(roundTo(converted, 1), 1);
+    if (Number.isFinite(converted)) {
+      el.result.hidden = false;
+      el.final.textContent = formatPlain(roundTo(converted, 1), 1);
+    } else {
+      el.result.hidden = true;
+      el.final.textContent = '—';
+    }
   }
   function valueEntered(input){ return !!String(input && input.value || '').trim(); }
   function buildErrorMessage(reading, temp, kisa, hydrometer, corrected, converted){
