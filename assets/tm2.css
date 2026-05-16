@@ -1087,3 +1087,175 @@ body.dark#tank2mm-docs-screen .tm2-docs-kicker,
 body.dark#tank2mm-docs-screen .tm2-docs-footnote{
   color:#b9c7da;
 }
+
+/* 2026-05-16 JST
+   画面: 2mm表本体 / タンク選択・換算画面
+   役割: ダークテーマでプルダウン、尺/L選択、入力欄、候補カード、補助メモなどの白浮きを抑え、
+   他計算機の暗色テーマ基準へ寄せる。
+   注意: 2mm表一覧とタンク登録詳細の読みやすさは維持する。計算ロジック・丸め方式・保存キー・2mm表データ・候補確認v2には触れない。 */
+body.theme-dark#tank2mm-screen .input-wrap input[type="number"],
+body.theme-dark#tank2mm-screen .input-wrap select,
+body.dark#tank2mm-screen .input-wrap input[type="number"],
+body.dark#tank2mm-screen .input-wrap select{
+  border-color:var(--role-input-border);
+  background:var(--role-input-bg);
+  color:var(--text);
+  box-shadow:none;
+}
+body.theme-dark#tank2mm-screen .input-wrap input[type="number"]::placeholder,
+body.dark#tank2mm-screen .input-wrap input[type="number"]::placeholder{
+  color:#93a4ba;
+  opacity:1;
+}
+body.theme-dark#tank2mm-screen .input-wrap input[type="number"]:disabled,
+body.theme-dark#tank2mm-screen .input-wrap select:disabled,
+body.dark#tank2mm-screen .input-wrap input[type="number"]:disabled,
+body.dark#tank2mm-screen .input-wrap select:disabled{
+  opacity:1;
+  border-color:#2b3546;
+  background:#101827;
+  color:#8fa1b8;
+  -webkit-text-fill-color:#8fa1b8;
+}
+body.theme-dark#tank2mm-screen .input-wrap input[type="number"]:focus,
+body.theme-dark#tank2mm-screen .input-wrap select:focus,
+body.dark#tank2mm-screen .input-wrap input[type="number"]:focus,
+body.dark#tank2mm-screen .input-wrap select:focus{
+  border-color:var(--role-action-border);
+  box-shadow:0 0 0 3px rgba(125,175,255,.16);
+}
+body.theme-dark#tank2mm-screen .tm2-mode-btn,
+body.dark#tank2mm-screen .tm2-mode-btn{
+  border-color:var(--line);
+  background:var(--surface);
+  color:#dce6f2;
+  box-shadow:none;
+}
+body.theme-dark#tank2mm-screen .tm2-mode-btn:not(.is-active):disabled,
+body.dark#tank2mm-screen .tm2-mode-btn:not(.is-active):disabled{
+  opacity:1;
+  border-color:#2b3546;
+  background:#101827;
+  color:#8fa1b8;
+}
+body.theme-dark#tank2mm-screen .tm2-mode-btn.is-active,
+body.dark#tank2mm-screen .tm2-mode-btn.is-active{
+  border-color:var(--role-action-border);
+  background:#2e4f82;
+  color:#ffffff;
+  box-shadow:none;
+}
+body.theme-dark#tank2mm-screen .tm2-mode-btn:not(.is-active) .tm2-mode-sub,
+body.dark#tank2mm-screen .tm2-mode-btn:not(.is-active) .tm2-mode-sub{
+  color:#9fb0c7;
+}
+body.theme-dark#tank2mm-screen .tm2-mode-btn:not(.is-active):disabled .tm2-mode-sub,
+body.dark#tank2mm-screen .tm2-mode-btn:not(.is-active):disabled .tm2-mode-sub{
+  color:#7f90a7;
+}
+body.theme-dark#tank2mm-screen .tm2-mini-reset-btn,
+body.dark#tank2mm-screen .tm2-mini-reset-btn{
+  border-color:var(--role-warning-border);
+  background:var(--role-warning-bg);
+  color:var(--role-warning);
+}
+body.theme-dark#tank2mm-screen .tm2-share-toggle-btn,
+body.theme-dark#tank2mm-screen .tm2-detail-btn[aria-expanded],
+body.theme-dark#tank2mm-screen .tm2-list-search-help-btn,
+body.dark#tank2mm-screen .tm2-share-toggle-btn,
+body.dark#tank2mm-screen .tm2-detail-btn[aria-expanded],
+body.dark#tank2mm-screen .tm2-list-search-help-btn{
+  border-color:var(--line);
+  background:var(--surface);
+  color:#dce6f2;
+  box-shadow:none;
+}
+body.theme-dark#tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"],
+body.theme-dark#tank2mm-screen .tm2-detail-btn[aria-expanded="true"],
+body.theme-dark#tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"],
+body.dark#tank2mm-screen .tm2-share-toggle-btn[aria-expanded="true"],
+body.dark#tank2mm-screen .tm2-detail-btn[aria-expanded="true"],
+body.dark#tank2mm-screen .tm2-list-search-help-btn[aria-expanded="true"]{
+  border-color:var(--role-fold-open-border);
+  background:var(--role-fold-open-bg);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-share-toggle-btn[aria-expanded]::after,
+body.theme-dark#tank2mm-screen .tm2-detail-btn[aria-expanded]::after,
+body.theme-dark#tank2mm-screen .tm2-list-search-help-btn[aria-expanded]::after,
+body.dark#tank2mm-screen .tm2-share-toggle-btn[aria-expanded]::after,
+body.dark#tank2mm-screen .tm2-detail-btn[aria-expanded]::after,
+body.dark#tank2mm-screen .tm2-list-search-help-btn[aria-expanded]::after{
+  border-color:var(--role-action-border);
+  background:var(--surface-soft);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-body,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-body{
+  border-color:var(--line);
+  background:var(--surface);
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-note,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-note{
+  color:#aebed2;
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-input,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-input{
+  border-color:var(--role-input-border);
+  background:var(--role-input-bg);
+  color:var(--text);
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-band,
+body.dark#tank2mm-screen .tm2-v2-draft-band{
+  border-top-color:rgba(220,230,245,.24);
+  border-bottom-color:rgba(220,230,245,.18);
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-title,
+body.dark#tank2mm-screen .tm2-v2-draft-title{
+  color:#edf5ff;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-source,
+body.theme-dark#tank2mm-screen .tm2-v2-draft-note,
+body.dark#tank2mm-screen .tm2-v2-draft-source,
+body.dark#tank2mm-screen .tm2-v2-draft-note{
+  color:#aebed2;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-row,
+body.dark#tank2mm-screen .tm2-v2-draft-row{
+  border-color:var(--role-candidate-border);
+  background:var(--role-candidate-bg);
+  color:#dce6f2;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-name,
+body.theme-dark#tank2mm-screen .tm2-v2-draft-label,
+body.dark#tank2mm-screen .tm2-v2-draft-name,
+body.dark#tank2mm-screen .tm2-v2-draft-label{
+  color:#dce6f2;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-name strong,
+body.dark#tank2mm-screen .tm2-v2-draft-name strong{
+  color:#ffffff;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-role,
+body.theme-dark#tank2mm-screen .tm2-v2-draft-mode,
+body.dark#tank2mm-screen .tm2-v2-draft-role,
+body.dark#tank2mm-screen .tm2-v2-draft-mode{
+  border-color:rgba(125,175,255,.28);
+  background:rgba(10,20,34,.42);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-row.is-role-component .tm2-v2-draft-role,
+body.dark#tank2mm-screen .tm2-v2-draft-row.is-role-component .tm2-v2-draft-role{
+  border-color:var(--role-warning-border);
+  background:rgba(82,55,18,.36);
+  color:#ffe2ae;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-mini,
+body.dark#tank2mm-screen .tm2-v2-draft-mini{
+  border-top-color:rgba(220,230,245,.18);
+  color:#aebed2;
+}
+body.theme-dark#tank2mm-screen .tm2-v2-draft-mini strong,
+body.dark#tank2mm-screen .tm2-v2-draft-mini strong{
+  color:#edf5ff;
+}
