@@ -233,6 +233,25 @@ body{
   overflow:hidden;
   text-overflow:ellipsis;
 }
+.nav .theme-toggle-btn{
+  margin-left:auto;
+  min-height:40px;
+  padding:8px 13px;
+  border-radius:999px;
+  border:1px solid #bcc6d1;
+  background:#ffffff;
+  color:#263240;
+  font-weight:900;
+  box-shadow:0 1px 5px rgba(31,46,64,.07);
+  cursor:pointer;
+}
+.nav .theme-toggle-btn:hover,
+.nav .theme-toggle-btn:focus-visible{
+  border-color:#2f4257;
+  color:#1f2e40;
+  outline:none;
+  box-shadow:0 2px 8px rgba(31,46,64,.12);
+}
 .nav .back-btn{
   min-height:44px;
   border-radius:22px !important;
@@ -435,7 +454,7 @@ body.theme-dark .nav{
 body.theme-dark .nav-title{
   color:#e9eef6 !important;
 }
-body.theme-dark .theme-toggle-btn{
+body.theme-dark .nav .theme-toggle-btn{
   margin-left:auto;
   min-height:40px;
   padding:8px 13px;
@@ -446,8 +465,8 @@ body.theme-dark .theme-toggle-btn{
   font-weight:900;
   box-shadow:none;
 }
-body.theme-dark .theme-toggle-btn:hover,
-body.theme-dark .theme-toggle-btn:focus-visible{
+body.theme-dark .nav .theme-toggle-btn:hover,
+body.theme-dark .nav .theme-toggle-btn:focus-visible{
   border-color:rgba(125,175,255,.68);
   color:#ffffff;
   outline:none;
