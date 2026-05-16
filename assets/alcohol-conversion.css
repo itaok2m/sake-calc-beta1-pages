@@ -1,0 +1,29 @@
+.alcohol-conversion-lead{margin-bottom:8px;}
+.alcohol-conversion-lead h1{margin-bottom:0;}
+.alcohol-conversion-wrapper{max-width:680px;}
+.alcohol-conversion-card{width:100%;}
+.alcohol-conversion-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.alcohol-conversion-field-grid.single{grid-template-columns:1fr;}
+.alcohol-conversion-field{display:grid;gap:6px;min-width:0;}
+.alcohol-conversion-field>span{font-size:12px;font-weight:900;color:#5f6c78;line-height:1.35;}
+.alcohol-conversion-input-wrap{position:relative;display:flex;align-items:center;min-width:0;}
+.alcohol-conversion-input-wrap input,.alcohol-conversion-input-wrap select{width:100%;min-height:46px;border:1.5px solid var(--role-input-border);border-radius:10px;background:var(--role-input-bg);color:var(--text);padding:9px 38px 9px 10px;font-size:16px;font-weight:800;line-height:1.25;text-align:center;box-shadow:none;}
+.alcohol-conversion-input-wrap select{appearance:auto;text-align:left;padding-right:12px;}
+.alcohol-conversion-input-wrap input:focus,.alcohol-conversion-input-wrap select:focus{outline:none;border-color:var(--role-action);box-shadow:0 0 0 3px rgba(47,66,87,.12);}
+.alcohol-conversion-input-wrap .iunit{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:900;color:#66717e;pointer-events:none;}
+.alcohol-conversion-input-wrap.select-wrap select{padding-right:10px;}
+.candidate-panel{display:grid;gap:8px;margin:0 0 12px;}
+.candidate-list{display:flex;flex-wrap:wrap;gap:8px;}
+.kisa-candidate-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 12px;border-radius:999px;border:1.5px solid var(--role-candidate-border);background:var(--role-candidate-bg);color:var(--role-candidate);font-size:12px;font-weight:900;line-height:1.2;cursor:pointer;}
+.kisa-candidate-btn.is-active{border-color:#2f4257;background:#2f4257;color:#fff;}
+.kisa-candidate-btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(47,66,87,.14);}
+.candidate-empty{font-size:12px;font-weight:800;color:var(--muted);line-height:1.6;border-top:1px dashed var(--line-soft);padding-top:8px;}
+.alcohol-conversion-result-card{margin-top:14px;}
+.alcohol-conversion-actions{margin-top:14px;}
+.alcohol-conversion-actions .calc-main-actions{display:grid;grid-template-columns:1fr;gap:10px;}
+body.theme-dark .alcohol-conversion-field>span,body.dark .alcohol-conversion-field>span{color:var(--muted);}
+body.theme-dark .alcohol-conversion-input-wrap .iunit,body.dark .alcohol-conversion-input-wrap .iunit{color:#b9c7da;}
+body.theme-dark .kisa-candidate-btn,body.dark .kisa-candidate-btn{border-color:var(--role-candidate-border);background:var(--role-candidate-bg);color:#dbe8ff;}
+body.theme-dark .kisa-candidate-btn.is-active,body.dark .kisa-candidate-btn.is-active{border-color:#8fb7f0;background:#274f84;color:#fff;}
+@media(max-width:640px){.alcohol-conversion-field-grid{grid-template-columns:1fr;gap:10px;}.alcohol-conversion-input-wrap input,.alcohol-conversion-input-wrap select{min-height:44px;font-size:16px;}.candidate-list{gap:7px;}.kisa-candidate-btn{flex:1 1 auto;min-width:calc(50% - 8px);}}
+@media(max-width:360px){.kisa-candidate-btn{min-width:100%;}}
