@@ -79,3 +79,134 @@
   .tm2-candidate-list{gap:12px;}
   .tm2-candidate-row{padding:11px 12px 10px;}
 }
+
+
+/* 2026-05-16: ダークモード第3段。2mm表候補確認v2の白浮きを抑え、候補カードは2mm表トップ側の暗色面に寄せる。保存・候補生成ロジックは変更しない。 */
+body.theme-dark .tm2-candidate-status-band,
+body.dark .tm2-candidate-status-band{
+  border-top-color:rgba(125,175,255,.30);
+  border-bottom-color:rgba(125,175,255,.24);
+}
+body.theme-dark .tm2-candidate-status-title,
+body.dark .tm2-candidate-status-title{
+  color:#dbe8ff;
+}
+body.theme-dark .tm2-candidate-status-note,
+body.theme-dark .tm2-candidate-meta,
+body.theme-dark .tm2-candidate-note,
+body.theme-dark .tm2-candidate-empty p,
+body.theme-dark .tm2-candidate-clear-note,
+body.dark .tm2-candidate-status-note,
+body.dark .tm2-candidate-meta,
+body.dark .tm2-candidate-note,
+body.dark .tm2-candidate-empty p,
+body.dark .tm2-candidate-clear-note{
+  color:#a8b3c2;
+}
+body.theme-dark .tm2-candidate-meta,
+body.dark .tm2-candidate-meta{
+  border-top-color:#2b3546;
+}
+body.theme-dark .tm2-candidate-row,
+body.dark .tm2-candidate-row{
+  background:#121c2d;
+  border-color:#2c3a50;
+  color:#e9eef6;
+}
+body.theme-dark .tm2-candidate-row.is-final,
+body.theme-dark .tm2-candidate-row.is-primary,
+body.dark .tm2-candidate-row.is-final,
+body.dark .tm2-candidate-row.is-primary{
+  background:rgba(80,135,220,.18);
+  border-color:rgba(125,175,255,.42);
+}
+body.theme-dark .tm2-candidate-row.is-source,
+body.dark .tm2-candidate-row.is-source{
+  background:#121c2d;
+  border-color:#314056;
+}
+body.theme-dark .tm2-candidate-role,
+body.dark .tm2-candidate-role{
+  background:#19263a;
+  border-color:#33445b;
+  color:#c8d6ea;
+}
+body.theme-dark .tm2-candidate-row.is-final .tm2-candidate-role,
+body.theme-dark .tm2-candidate-row.is-primary .tm2-candidate-role,
+body.dark .tm2-candidate-row.is-final .tm2-candidate-role,
+body.dark .tm2-candidate-row.is-primary .tm2-candidate-role{
+  background:rgba(125,175,255,.18);
+  border-color:rgba(125,175,255,.40);
+  color:#dbe8ff;
+}
+body.theme-dark .tm2-candidate-row.is-source .tm2-candidate-role,
+body.dark .tm2-candidate-row.is-source .tm2-candidate-role{
+  background:#19263a;
+  border-color:#33445b;
+  color:#c8d6ea;
+}
+body.theme-dark .tm2-candidate-mode,
+body.theme-dark .tm2-candidate-label,
+body.theme-dark .tm2-candidate-component,
+body.dark .tm2-candidate-mode,
+body.dark .tm2-candidate-label,
+body.dark .tm2-candidate-component{
+  color:#c8d6ea;
+}
+body.theme-dark .tm2-candidate-liter,
+body.theme-dark .tm2-candidate-chip strong,
+body.dark .tm2-candidate-liter,
+body.dark .tm2-candidate-chip strong{
+  color:#ffffff;
+}
+body.theme-dark .tm2-candidate-chips,
+body.theme-dark .tm2-candidate-row.is-step .tm2-candidate-chips,
+body.theme-dark .tm2-candidate-row.is-final .tm2-candidate-chips,
+body.theme-dark .tm2-candidate-row.is-primary .tm2-candidate-chips,
+body.dark .tm2-candidate-chips,
+body.dark .tm2-candidate-row.is-step .tm2-candidate-chips,
+body.dark .tm2-candidate-row.is-final .tm2-candidate-chips,
+body.dark .tm2-candidate-row.is-primary .tm2-candidate-chips{
+  border-top-color:#2b3546;
+}
+body.theme-dark .tm2-candidate-chip,
+body.dark .tm2-candidate-chip{
+  background:#0f1724;
+  border-color:#34445a;
+  color:#c8d6ea;
+}
+body.theme-dark .tm2-candidate-toolbar,
+body.dark .tm2-candidate-toolbar{
+  border-top-color:rgba(125,175,255,.24);
+  border-bottom-color:rgba(125,175,255,.24);
+}
+body.theme-dark .tm2-candidate-source-back,
+body.dark .tm2-candidate-source-back{
+  background:#0f1724;
+  border-color:#34445a;
+  color:#c8d6ea;
+}
+body.theme-dark .tm2-candidate-source-back:hover,
+body.theme-dark .tm2-candidate-source-back:focus-visible,
+body.dark .tm2-candidate-source-back:hover,
+body.dark .tm2-candidate-source-back:focus-visible{
+  border-color:rgba(125,175,255,.44);
+  color:#ffffff;
+}
+body.theme-dark .tm2-candidate-message,
+body.dark .tm2-candidate-message{
+  color:#c8d6ea;
+}
+body.theme-dark #tm2-candidate-clear,
+body.dark #tm2-candidate-clear{
+  background:rgba(85,32,32,.42);
+  border-color:rgba(255,154,146,.38);
+  color:#ffd2ce;
+}
+body.theme-dark #tm2-candidate-clear:hover,
+body.theme-dark #tm2-candidate-clear:focus-visible,
+body.dark #tm2-candidate-clear:hover,
+body.dark #tm2-candidate-clear:focus-visible{
+  border-color:rgba(255,154,146,.68);
+  color:#ffffff;
+}

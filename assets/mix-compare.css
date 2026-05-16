@@ -198,3 +198,141 @@
   text-align:center;
   vertical-align:middle;
 }
+
+
+/* 2026-05-16: ダークモード第3段。混合計算比較表の白浮きを抑え、基準列・差分色・区分線を暗色側へ整理する。比較計算は変更しない。 */
+body.theme-dark .history-compare-screen-table-card,
+body.dark .history-compare-screen-table-card{
+  background:#121c2d;
+  border-color:#2c3a50;
+  color:#e9eef6;
+}
+body.theme-dark .history-compare-screen-table-head,
+body.dark .history-compare-screen-table-head{
+  border-bottom-color:#2b3546;
+}
+body.theme-dark .history-compare-screen-table-head h2,
+body.dark .history-compare-screen-table-head h2{
+  color:#e9eef6;
+}
+body.theme-dark .history-compare-screen-table-head p,
+body.dark .history-compare-screen-table-head p{
+  color:#a8b3c2;
+}
+body.theme-dark .history-compare-table,
+body.dark .history-compare-table{
+  background:#0f1724;
+  border-color:#34445a;
+}
+body.theme-dark .history-compare-table th,
+body.theme-dark .history-compare-table td,
+body.dark .history-compare-table th,
+body.dark .history-compare-table td{
+  border-right-color:#2b3546;
+  border-bottom-color:#2b3546;
+}
+body.theme-dark .history-compare-table thead tr th,
+body.dark .history-compare-table thead tr th{
+  border-bottom-color:#41536b;
+}
+body.theme-dark .history-compare-table-sticky-group,
+body.theme-dark .history-compare-table-sticky,
+body.theme-dark .history-compare-table thead .history-compare-table-sticky-group,
+body.theme-dark .history-compare-table thead .history-compare-table-sticky,
+body.theme-dark .history-compare-table-group-cell,
+body.theme-dark .history-compare-table-row-label,
+body.dark .history-compare-table-sticky-group,
+body.dark .history-compare-table-sticky,
+body.dark .history-compare-table thead .history-compare-table-sticky-group,
+body.dark .history-compare-table thead .history-compare-table-sticky,
+body.dark .history-compare-table-group-cell,
+body.dark .history-compare-table-row-label{
+  background:#101a2a;
+  color:#dbe8ff;
+  border-right-color:#34445a;
+}
+body.theme-dark .history-compare-table-col,
+body.theme-dark .history-compare-table-cell,
+body.dark .history-compare-table-col,
+body.dark .history-compare-table-cell{
+  background:#0f1724;
+}
+body.theme-dark .history-compare-table-col.is-base,
+body.theme-dark .history-compare-table-cell.is-base,
+body.dark .history-compare-table-col.is-base,
+body.dark .history-compare-table-cell.is-base{
+  background:#142033;
+  border-left-color:#7aa7e6;
+  border-right-color:#7aa7e6;
+}
+body.theme-dark .history-compare-table-col.is-base,
+body.dark .history-compare-table-col.is-base{
+  border-top-color:#7aa7e6;
+}
+body.theme-dark .history-compare-table tbody tr:last-child .history-compare-table-cell.is-base,
+body.dark .history-compare-table tbody tr:last-child .history-compare-table-cell.is-base{
+  border-bottom-color:#7aa7e6;
+}
+body.theme-dark .history-compare-table-cell.is-changed,
+body.dark .history-compare-table-cell.is-changed{
+  background:rgba(255,190,90,.14);
+}
+body.theme-dark .history-compare-table-value,
+body.theme-dark .history-compare-table-date,
+body.dark .history-compare-table-value,
+body.dark .history-compare-table-date{
+  color:#ffffff;
+}
+body.theme-dark .history-compare-table-subvalue,
+body.theme-dark .history-compare-table-headlabel,
+body.theme-dark .history-compare-table-clock,
+body.dark .history-compare-table-subvalue,
+body.dark .history-compare-table-headlabel,
+body.dark .history-compare-table-clock{
+  color:#a8b3c2;
+}
+body.theme-dark .history-compare-set-base,
+body.dark .history-compare-set-base{
+  background:#0f1724;
+  border-color:#34445a;
+  color:#dbe8ff;
+}
+body.theme-dark .history-compare-set-base:hover,
+body.theme-dark .history-compare-set-base:focus-visible,
+body.dark .history-compare-set-base:hover,
+body.dark .history-compare-set-base:focus-visible{
+  border-color:rgba(125,175,255,.54);
+  color:#ffffff;
+}
+body.theme-dark .history-compare-table-action-btn.restore-action-btn,
+body.dark .history-compare-table-action-btn.restore-action-btn{
+  background:rgba(80,135,220,.18);
+  border-color:rgba(125,175,255,.42);
+  color:#dbe8ff;
+}
+body.theme-dark .history-compare-table-action-btn.restore-action-btn:hover,
+body.theme-dark .history-compare-table-action-btn.restore-action-btn:focus-visible,
+body.dark .history-compare-table-action-btn.restore-action-btn:hover,
+body.dark .history-compare-table-action-btn.restore-action-btn:focus-visible{
+  border-color:rgba(125,175,255,.68);
+  color:#ffffff;
+}
+body.theme-dark .history-compare-table tbody tr.is-section-start > th,
+body.theme-dark .history-compare-table tbody tr.is-section-start > td,
+body.dark .history-compare-table tbody tr.is-section-start > th,
+body.dark .history-compare-table tbody tr.is-section-start > td{
+  border-top-color:#41536b;
+}
+body.theme-dark .history-compare-table tbody tr.is-section-start .history-compare-table-group-cell,
+body.dark .history-compare-table tbody tr.is-section-start .history-compare-table-group-cell{
+  border-right-color:#41536b;
+  color:#dbe8ff;
+}
+body.theme-dark .history-compare-table tbody tr.is-section-start .history-compare-table-row-label,
+body.dark .history-compare-table tbody tr.is-section-start .history-compare-table-row-label{
+  color:#dbe8ff;
+}
+body.theme-dark .history-compare-table tbody tr.is-section-start .history-compare-table-cell.is-base,
+body.dark .history-compare-table tbody tr.is-section-start .history-compare-table-cell.is-base{
+  border-top-color:#7aa7e6;
+}

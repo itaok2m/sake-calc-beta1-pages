@@ -67,3 +67,103 @@ body.dark .history-route-note{background:#132336;border-color:#29445f;color:#d7e
   .history-item{border-radius:16px;}
   .history-big-value{font-size:17px;}
 }
+
+
+/* 2026-05-16: ダークモード第3段。混合計算履歴の白い操作パネル・履歴カードを暗色テーマへ寄せる。履歴処理は変更しない。 */
+body.theme-dark .history-action-panel,
+body.dark .history-action-panel{
+  background:#121c2d;
+  border-color:#2c3a50;
+  color:#e9eef6;
+}
+body.theme-dark .history-action-title-row h2,
+body.theme-dark .history-list-header h2,
+body.theme-dark .history-item-title,
+body.theme-dark .history-compare-check,
+body.dark .history-action-title-row h2,
+body.dark .history-list-header h2,
+body.dark .history-item-title,
+body.dark .history-compare-check{
+  color:#e9eef6;
+}
+body.theme-dark .history-action-title-row p,
+body.theme-dark .history-filter-field label,
+body.theme-dark .history-list-header p,
+body.theme-dark .history-small-label,
+body.theme-dark .history-inputs,
+body.theme-dark .history-cumulative,
+body.dark .history-action-title-row p,
+body.dark .history-filter-field label,
+body.dark .history-list-header p,
+body.dark .history-small-label,
+body.dark .history-inputs,
+body.dark .history-cumulative{
+  color:#a8b3c2;
+}
+body.theme-dark .history-filter-field select,
+body.dark .history-filter-field select{
+  background:#0f1724;
+  border-color:#34445a;
+  color:#e9eef6;
+}
+body.theme-dark .history-filter-field select:focus,
+body.dark .history-filter-field select:focus{
+  border-color:rgba(125,175,255,.54);
+  box-shadow:0 0 0 3px rgba(80,135,220,.22);
+}
+body.theme-dark .history-action-controls .calc-btn:disabled,
+body.dark .history-action-controls .calc-btn:disabled{
+  background:#263244;
+  border-color:#34445a;
+  color:#7e8da1;
+}
+body.theme-dark .history-action-statuses p,
+body.dark .history-action-statuses p{
+  color:#c8d6ea;
+}
+body.theme-dark .history-empty,
+body.theme-dark .history-mode-empty,
+body.dark .history-empty,
+body.dark .history-mode-empty{
+  background:#0f1724;
+  border-color:#34445a;
+  color:#a8b3c2;
+}
+body.theme-dark .history-item,
+body.dark .history-item{
+  background:#121c2d;
+  border-color:#2c3a50;
+}
+body.theme-dark .history-item-time,
+body.dark .history-item-time{
+  color:#a8b3c2;
+}
+body.theme-dark .history-result-line,
+body.dark .history-result-line{
+  border-top-color:#2b3546;
+}
+body.theme-dark .history-big-value,
+body.dark .history-big-value{
+  color:#ffffff;
+}
+body.theme-dark .history-cumulative,
+body.dark .history-cumulative{
+  border-top-color:#2b3546;
+}
+body.theme-dark .history-compare-check input,
+body.dark .history-compare-check input{
+  accent-color:#7aa7e6;
+}
+body.theme-dark .history-delete-btn,
+body.dark .history-delete-btn{
+  background:rgba(85,32,32,.42);
+  border-color:rgba(255,154,146,.38);
+  color:#ffd2ce;
+}
+body.theme-dark .history-delete-btn:hover,
+body.theme-dark .history-delete-btn:focus-visible,
+body.dark .history-delete-btn:hover,
+body.dark .history-delete-btn:focus-visible{
+  border-color:rgba(255,154,146,.68);
+  color:#ffffff;
+}

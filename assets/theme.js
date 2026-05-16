@@ -43,16 +43,27 @@
       btn.title = isDark ? 'ライトテーマに切り替える' : 'ダークテーマに切り替える';
     });
   }
+  function toggleModeFromButton(){
+    var next = document.body.classList.contains(DARK_CLASS) ? 'light' : 'dark';
+    safeSet(STORAGE_KEY, next);
+    applyMode(next);
+  }
+
+  function bindToggleButtons(){
+    var buttons = document.querySelectorAll('[data-theme-toggle]');
+    buttons.forEach(function(btn){
+      if(btn.__sakeThemeToggleBound){return;}
+      btn.__sakeThemeToggleBound = true;
+      btn.addEventListener('click', toggleModeFromButton);
+    });
+  }
+
   function buildButton(){
     var button = document.createElement('button');
     button.type = 'button';
     button.className = 'theme-toggle-btn';
     button.setAttribute('data-theme-toggle','');
-    button.addEventListener('click', function(){
-      var next = document.body.classList.contains(DARK_CLASS) ? 'light' : 'dark';
-      safeSet(STORAGE_KEY, next);
-      applyMode(next);
-    });
+    bindToggleButtons();
     return button;
   }
   function insertToggle(){
@@ -73,6 +84,7 @@
 
   function boot(){
     insertToggle();
+    bindToggleButtons();
     applyMode(readMode());
   }
   if(document.readyState === 'loading'){

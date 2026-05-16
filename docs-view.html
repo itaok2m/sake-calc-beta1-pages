@@ -420,12 +420,127 @@ body{
 @media(max-width:420px){
   .docs-short-lead{padding:11px 12px !important;}
 }
+
+
+/* 2026-05-16: ダークモード第3段。アルコール換算表は保護対象のため、表画像・補助線座標・入力処理・保存復帰・遷移処理には触らず、画面色だけを暗色テーマへ対応。 */
+body.theme-dark{
+  background:#0b111c !important;
+  color:#e9eef6 !important;
+}
+body.theme-dark .nav{
+  background:#0d1524 !important;
+  border-bottom-color:#2b3546 !important;
+  box-shadow:none !important;
+}
+body.theme-dark .nav-title{
+  color:#e9eef6 !important;
+}
+body.theme-dark .theme-toggle-btn{
+  margin-left:auto;
+  min-height:40px;
+  padding:8px 13px;
+  border-radius:999px;
+  border:1px solid rgba(125,175,255,.36);
+  background:rgba(80,135,220,.18);
+  color:#dbe8ff;
+  font-weight:900;
+  box-shadow:none;
+}
+body.theme-dark .theme-toggle-btn:hover,
+body.theme-dark .theme-toggle-btn:focus-visible{
+  border-color:rgba(125,175,255,.68);
+  color:#ffffff;
+  outline:none;
+}
+body.theme-dark .docs-short-lead,
+body.theme-dark .card{
+  background:#121c2d !important;
+  border-color:#2c3a50 !important;
+  color:#c8d6ea !important;
+  box-shadow:none !important;
+}
+body.theme-dark .docs-short-lead strong,
+body.theme-dark .zone-label,
+body.theme-dark .field label,
+body.theme-dark .notice-box strong{
+  color:#e9eef6 !important;
+}
+body.theme-dark .docs-short-lead p,
+body.theme-dark .zone-copy,
+body.theme-dark .notice-box,
+body.theme-dark .status-inline{
+  color:#a8b3c2 !important;
+}
+body.theme-dark .input,
+body.theme-dark .select{
+  background:#0f1724 !important;
+  border-color:#34445a !important;
+  color:#e9eef6 !important;
+}
+body.theme-dark .input::placeholder{
+  color:#7e8da1 !important;
+}
+body.theme-dark .input:focus,
+body.theme-dark .select:focus{
+  border-color:rgba(125,175,255,.54) !important;
+  box-shadow:0 0 0 3px rgba(80,135,220,.22) !important;
+}
+body.theme-dark .back-btn,
+body.theme-dark .ghost-btn{
+  background:#0f1724 !important;
+  border-color:#34445a !important;
+  color:#c8d6ea !important;
+}
+body.theme-dark .back-btn:hover,
+body.theme-dark .back-btn:focus-visible,
+body.theme-dark .ghost-btn:hover,
+body.theme-dark .ghost-btn:focus-visible{
+  border-color:rgba(125,175,255,.54) !important;
+  color:#ffffff !important;
+}
+body.theme-dark .apply-btn{
+  background:#2f4777 !important;
+  border-color:#5f86c8 !important;
+  color:#ffffff !important;
+  box-shadow:none !important;
+}
+body.theme-dark .apply-btn:hover,
+body.theme-dark .apply-btn:focus-visible{
+  background:#3b568b !important;
+  border-color:#7aa7e6 !important;
+}
+body.theme-dark .guide-btn{
+  background:#0f1724 !important;
+  border-color:#34445a !important;
+  color:#c8d6ea !important;
+}
+body.theme-dark .guide-btn.active{
+  background:#2f4777 !important;
+  border-color:#7aa7e6 !important;
+  color:#ffffff !important;
+}
+body.theme-dark .image-wrap{
+  background:#101a2a !important;
+  border-color:#2c3a50 !important;
+}
+body.theme-dark .doc-image{
+  background:#ffffff !important;
+  box-shadow:0 1px 8px rgba(0,0,0,.28) !important;
+}
+body.theme-dark .error{
+  background:rgba(85,32,32,.42) !important;
+  border-color:rgba(255,154,146,.38) !important;
+  color:#ffd2ce !important;
+}
+
 </style>
+<script src="./assets/theme.js?v=20260516dark3" defer></script>
 </head>
 <body>
 <div class="nav">
   <a id="backLink" class="back-btn" href="./index.html">← トップへ戻る</a>
   <div class="nav-title">アルコール分温度換算表</div>
+  <button type="button" class="theme-toggle-btn" data-theme-toggle>暗色</button>
 </div>
 <div class="page">
   <div class="docs-short-lead" role="note" aria-label="アルコール換算表の使い方">
