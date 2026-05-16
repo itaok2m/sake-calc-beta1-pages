@@ -865,3 +865,225 @@ body.theme-dark#tank2mm-screen .tm2-table tbody tr.is-highlight td{
 body.theme-dark#tank2mm-docs-screen .tm2-docs-table tbody tr:nth-child(even) td{
   background:rgba(125,175,255,.055);
 }
+
+
+/* 2026-05-16 JST
+   画面: 2mm表本体（タンク選択・換算画面、タンク別2mm表一覧、タンク登録詳細）
+   役割: ダークテーマ第1段の実機所感を受け、白系カード・補足文字・内訳表示が見づらい箇所を補正する。
+   計算ロジック・丸め方式・保存キー・2mm表データ・候補確認v2・旧2mm表送信・履歴・比較には触れない。 */
+body.theme-dark#tank2mm-screen .field .hint,
+body.theme-dark#tank2mm-screen .hint,
+body.theme-dark#tank2mm-screen .unit-hint,
+body.dark#tank2mm-screen .field .hint,
+body.dark#tank2mm-screen .hint,
+body.dark#tank2mm-screen .unit-hint{
+  color:#aebed2;
+}
+body.theme-dark#tank2mm-screen .hint[data-tm2-role="gauge-help"],
+body.theme-dark#tank2mm-screen .hint[data-tm2-role="volume-help"],
+body.dark#tank2mm-screen .hint[data-tm2-role="gauge-help"],
+body.dark#tank2mm-screen .hint[data-tm2-role="volume-help"]{
+  border-color:rgba(125,175,255,.24);
+  background:rgba(80,135,220,.12);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-current-card,
+body.dark#tank2mm-screen .tm2-current-card{
+  border-color:var(--line);
+  background:linear-gradient(180deg,#162033 0%,#111827 100%);
+  color:var(--text);
+}
+body.theme-dark#tank2mm-screen .tm2-current-card.is-empty,
+body.dark#tank2mm-screen .tm2-current-card.is-empty{
+  border-color:rgba(220,230,245,.20);
+  background:rgba(17,24,39,.70);
+}
+body.theme-dark#tank2mm-screen .tm2-current-label,
+body.theme-dark#tank2mm-screen .tm2-current-row span,
+body.theme-dark#tank2mm-screen .tm2-current-note,
+body.theme-dark#tank2mm-screen .tm2-mode-group-title,
+body.theme-dark#tank2mm-screen .tm2-result-label,
+body.theme-dark#tank2mm-screen .tm2-detail-row span,
+body.theme-dark#tank2mm-screen .tm2-share-title,
+body.theme-dark#tank2mm-screen .tm2-share-note,
+body.theme-dark#tank2mm-screen .tm2-footer-note,
+body.dark#tank2mm-screen .tm2-current-label,
+body.dark#tank2mm-screen .tm2-current-row span,
+body.dark#tank2mm-screen .tm2-current-note,
+body.dark#tank2mm-screen .tm2-mode-group-title,
+body.dark#tank2mm-screen .tm2-result-label,
+body.dark#tank2mm-screen .tm2-detail-row span,
+body.dark#tank2mm-screen .tm2-share-title,
+body.dark#tank2mm-screen .tm2-share-note,
+body.dark#tank2mm-screen .tm2-footer-note{
+  color:#b9c7da;
+}
+body.theme-dark#tank2mm-screen .tm2-current-name,
+body.theme-dark#tank2mm-screen .tm2-current-row,
+body.theme-dark#tank2mm-screen .tm2-current-row strong,
+body.theme-dark#tank2mm-screen .tm2-result-value,
+body.theme-dark#tank2mm-screen .tm2-detail-row,
+body.theme-dark#tank2mm-screen .tm2-detail-value,
+body.theme-dark#tank2mm-screen .tm2-detail-heading,
+body.dark#tank2mm-screen .tm2-current-name,
+body.dark#tank2mm-screen .tm2-current-row,
+body.dark#tank2mm-screen .tm2-current-row strong,
+body.dark#tank2mm-screen .tm2-result-value,
+body.dark#tank2mm-screen .tm2-detail-row,
+body.dark#tank2mm-screen .tm2-detail-value,
+body.dark#tank2mm-screen .tm2-detail-heading{
+  color:#edf5ff;
+}
+body.theme-dark#tank2mm-screen .tm2-mode-sub,
+body.dark#tank2mm-screen .tm2-mode-sub{
+  color:#aebed2;
+}
+body.theme-dark#tank2mm-screen .tm2-mode-btn.is-active .tm2-mode-sub,
+body.dark#tank2mm-screen .tm2-mode-btn.is-active .tm2-mode-sub{
+  color:#e9f2ff;
+}
+body.theme-dark#tank2mm-screen .tm2-result-box,
+body.dark#tank2mm-screen .tm2-result-box{
+  border-color:var(--line);
+  background:linear-gradient(180deg,#162033 0%,#111827 100%);
+}
+body.theme-dark#tank2mm-screen .tm2-subnote,
+body.dark#tank2mm-screen .tm2-subnote{
+  color:#b9c7da;
+}
+body.theme-dark#tank2mm-screen .tm2-subnote.is-guide,
+body.dark#tank2mm-screen .tm2-subnote.is-guide{
+  border-color:rgba(125,175,255,.24);
+  background:rgba(80,135,220,.12);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-status,
+body.dark#tank2mm-screen .tm2-status{
+  border-color:var(--line);
+  background:var(--surface);
+  color:#c8d6ea;
+}
+body.theme-dark#tank2mm-screen .tm2-status.is-ok,
+body.dark#tank2mm-screen .tm2-status.is-ok{
+  border-color:var(--role-success-border);
+  background:var(--role-success-bg);
+}
+body.theme-dark#tank2mm-screen .tm2-status.is-caution,
+body.dark#tank2mm-screen .tm2-status.is-caution,
+body.theme-dark#tank2mm-screen .tm2-detail-row.is-caution,
+body.dark#tank2mm-screen .tm2-detail-row.is-caution{
+  border-color:var(--role-warning-border);
+  background:var(--role-warning-bg);
+  color:#ffe2ae;
+}
+body.theme-dark#tank2mm-screen .tm2-status-note,
+body.dark#tank2mm-screen .tm2-status-note{
+  color:#b9c7da;
+}
+body.theme-dark#tank2mm-screen .tm2-status-badge,
+body.dark#tank2mm-screen .tm2-status-badge{
+  background:var(--surface-soft);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-status.is-caution .tm2-status-badge,
+body.dark#tank2mm-screen .tm2-status.is-caution .tm2-status-badge{
+  border:1px solid var(--role-warning-border);
+  background:rgba(245,170,70,.22);
+  color:#ffe2ae;
+}
+body.theme-dark#tank2mm-screen .tm2-detail-panel,
+body.dark#tank2mm-screen .tm2-detail-panel{
+  border-color:rgba(220,230,245,.20);
+  background:rgba(10,20,34,.38);
+}
+body.theme-dark#tank2mm-screen .tm2-detail-group,
+body.dark#tank2mm-screen .tm2-detail-group{
+  border-bottom-color:rgba(220,230,245,.14);
+}
+body.theme-dark#tank2mm-screen .tm2-detail-row.is-caution span,
+body.theme-dark#tank2mm-screen .tm2-detail-row.is-caution .tm2-detail-value,
+body.dark#tank2mm-screen .tm2-detail-row.is-caution span,
+body.dark#tank2mm-screen .tm2-detail-row.is-caution .tm2-detail-value{
+  color:#ffe2ae;
+}
+body.theme-dark#tank2mm-screen .tm2-docs-link-btn,
+body.dark#tank2mm-screen .tm2-docs-link-btn{
+  border-color:var(--role-action-border);
+  background:var(--role-action-soft);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-docs-link-btn::after,
+body.dark#tank2mm-screen .tm2-docs-link-btn::after{
+  color:#e9f2ff;
+}
+body.theme-dark#tank2mm-screen .tm2-docs-link-btn.is-disabled,
+body.dark#tank2mm-screen .tm2-docs-link-btn.is-disabled{
+  border-color:#3a4555;
+  background:var(--surface);
+  color:#8f9db0;
+}
+body.theme-dark#tank2mm-screen .tm2-share-card,
+body.theme-dark#tank2mm-screen .tm2-share-card.is-open,
+body.dark#tank2mm-screen .tm2-share-card,
+body.dark#tank2mm-screen .tm2-share-card.is-open{
+  border-color:var(--line);
+  background:var(--surface);
+}
+body.theme-dark#tank2mm-screen .tm2-share-body,
+body.dark#tank2mm-screen .tm2-share-body{
+  border-color:var(--line);
+  background:rgba(10,20,34,.38);
+}
+body.theme-dark#tank2mm-screen .tm2-share-input,
+body.dark#tank2mm-screen .tm2-share-input{
+  border-color:var(--role-input-border);
+  background:var(--role-input-bg);
+  color:var(--text);
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet,
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet.is-open,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet.is-open{
+  border:0;
+  background:transparent;
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn{
+  border-color:rgba(220,230,245,.18);
+  background:rgba(10,20,34,.30);
+  color:#b9c7da;
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn[aria-expanded="true"],
+body.dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn[aria-expanded="true"]{
+  border-color:var(--role-fold-open-border);
+  background:var(--role-fold-open-bg);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn[aria-expanded]::after,
+body.dark#tank2mm-screen .tm2-share-card.is-quiet .tm2-share-toggle-btn[aria-expanded]::after{
+  border-color:var(--role-action-border);
+  background:var(--surface-soft);
+  color:#dbe8ff;
+}
+body.theme-dark#tank2mm-screen .tm2-error,
+body.dark#tank2mm-screen .tm2-error{
+  border-color:var(--role-danger-border);
+  background:var(--role-danger-bg);
+  color:var(--role-danger);
+}
+body.theme-dark#tank2mm-screen .tm2-list-head h2,
+body.dark#tank2mm-screen .tm2-list-head h2{
+  color:#f2f7ff;
+}
+body.theme-dark#tank2mm-docs-screen .tm2-docs-card h2,
+body.theme-dark#tank2mm-docs-screen .tm2-docs-heading h2,
+body.dark#tank2mm-docs-screen .tm2-docs-card h2,
+body.dark#tank2mm-docs-screen .tm2-docs-heading h2{
+  color:#edf5ff;
+}
+body.theme-dark#tank2mm-docs-screen .tm2-docs-kicker,
+body.theme-dark#tank2mm-docs-screen .tm2-docs-footnote,
+body.dark#tank2mm-docs-screen .tm2-docs-kicker,
+body.dark#tank2mm-docs-screen .tm2-docs-footnote{
+  color:#b9c7da;
+}

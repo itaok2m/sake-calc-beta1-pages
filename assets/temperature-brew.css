@@ -44,3 +44,56 @@
   box-sizing:border-box;
   white-space:normal;
 }
+
+
+/* 2026-05-16 JST
+   画面: 酛仕込温度計算・醪仕込温度計算
+   役割: ダークテーマで表・補助折りたたみ・注記が白く浮いたり読みにくくなる箇所だけを補正する。
+   計算ロジック・丸め方式・保存キー・履歴・2mm表候補確認v2には触れない。 */
+body.theme-dark .temp-field>span,
+body.dark .temp-field>span{
+  color:#c8d6ea;
+}
+body.theme-dark .temp-table-wrap,
+body.dark .temp-table-wrap{
+  border-top-color:var(--line);
+  background:transparent;
+}
+body.theme-dark .temp-table th,
+body.dark .temp-table th{
+  background:#1b2431;
+  color:#edf5ff;
+  border-bottom-color:rgba(220,230,245,.18);
+}
+body.theme-dark .temp-table td,
+body.dark .temp-table td{
+  color:#e9eef6;
+  border-bottom-color:rgba(220,230,245,.13);
+}
+body.theme-dark .temp-table tr:nth-child(even) td,
+body.dark .temp-table tr:nth-child(even) td{
+  background:rgba(125,175,255,.055);
+}
+body.theme-dark .temp-optional.common-info-toggle,
+body.dark .temp-optional.common-info-toggle{
+  border-color:var(--line);
+  background:var(--surface);
+}
+body.theme-dark .temp-optional.common-info-toggle[open],
+body.dark .temp-optional.common-info-toggle[open]{
+  border-color:var(--role-fold-open-border);
+  background:var(--role-fold-open-bg);
+}
+body.theme-dark .temp-optional.common-info-toggle[open] summary,
+body.dark .temp-optional.common-info-toggle[open] summary{
+  border-bottom-color:var(--role-fold-open-border);
+  background:rgba(80,135,220,.18);
+}
+body.theme-dark .temp-optional.common-info-toggle .temp-optional-body,
+body.dark .temp-optional.common-info-toggle .temp-optional-body{
+  background:rgba(10,20,34,.26);
+}
+body.theme-dark .temp-note,
+body.dark .temp-note{
+  color:#b9c7da;
+}
