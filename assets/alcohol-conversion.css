@@ -27,3 +27,26 @@ body.theme-dark .kisa-candidate-btn,body.dark .kisa-candidate-btn{border-color:v
 body.theme-dark .kisa-candidate-btn.is-active,body.dark .kisa-candidate-btn.is-active{border-color:#8fb7f0;background:#274f84;color:#fff;}
 @media(max-width:640px){.alcohol-conversion-field-grid{grid-template-columns:1fr;gap:10px;}.alcohol-conversion-input-wrap input,.alcohol-conversion-input-wrap select{min-height:44px;font-size:16px;}.candidate-list{gap:7px;}.kisa-candidate-btn{flex:1 1 auto;min-width:calc(50% - 8px);}}
 @media(max-width:360px){.kisa-candidate-btn{min-width:100%;}}
+
+/* 2026-05-16: アルコール換算「計算で求める」実機感想反映。
+   器差は全点表示して選択可能にし、主結果と補助値の見え方を分離する。 */
+.kisa-candidate-btn.is-suggested{border-color:#b88b2b;background:#fff8e7;color:#5c430e;}
+.kisa-candidate-btn.is-active{border-color:#2f4257;background:#2f4257;color:#fff;}
+.alcohol-conversion-primary-result{display:grid;gap:6px;padding:12px 0 14px;border-bottom:1px solid var(--line-soft);}
+.alcohol-conversion-primary-result .result-label{font-size:13px;font-weight:900;}
+.alcohol-conversion-primary-result .result-value.primary{font-size:34px;line-height:1.1;font-weight:950;color:var(--role-action);}
+.alcohol-conversion-sub-result{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-top:10px;color:var(--muted);}
+.alcohol-conversion-sub-result .result-label{font-size:12px;font-weight:900;}
+.alcohol-conversion-sub-result .result-value{font-size:18px;font-weight:900;}
+.alcohol-conversion-formula{margin-top:14px;border:1px solid var(--line-soft);border-radius:16px;background:var(--surface-soft);overflow:hidden;}
+.alcohol-conversion-formula summary{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:10px 12px;cursor:pointer;font-size:13px;font-weight:900;color:var(--text);list-style:none;}
+.alcohol-conversion-formula summary::-webkit-details-marker{display:none;}
+.alcohol-conversion-formula .fold-state{font-size:12px;color:var(--muted);}
+.alcohol-conversion-formula[open] summary{background:rgba(47,66,87,.08);}
+.alcohol-conversion-formula[open] .fold-state{font-size:0;}
+.alcohol-conversion-formula[open] .fold-state::after{content:'閉じる';font-size:12px;color:var(--muted);}
+.alcohol-conversion-formula .formula-body{display:grid;gap:6px;padding:0 12px 12px;font-size:12px;line-height:1.75;color:var(--muted);}
+body.theme-dark .kisa-candidate-btn.is-suggested,body.dark .kisa-candidate-btn.is-suggested{border-color:#d0a84f;background:rgba(190,142,37,.20);color:#ffe2a1;}
+body.theme-dark .kisa-candidate-btn.is-active,body.dark .kisa-candidate-btn.is-active{border-color:#8fb7f0;background:#274f84;color:#fff;}
+body.theme-dark .alcohol-conversion-primary-result .result-value.primary,body.dark .alcohol-conversion-primary-result .result-value.primary{color:#9fc7ff;}
+@media(max-width:640px){.alcohol-conversion-primary-result .result-value.primary{font-size:30px;}.alcohol-conversion-sub-result{display:grid;gap:4px;justify-content:stretch;}}

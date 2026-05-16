@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260516kisa1">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260516kisa3">
 </head>
 <body>
   <div class="tool-nav">
@@ -38,7 +38,7 @@
           </div>
         </div>
 
-        <div class="group"><div class="group-title">器差</div>
+        <div class="group"><div class="group-title">器差を選ぶ</div>
           <div class="candidate-panel" id="alcohol-conversion-kisa-candidates" aria-live="polite"></div>
           <div class="alcohol-conversion-field-grid single">
             <label class="alcohol-conversion-field"><span>器差</span><div class="alcohol-conversion-input-wrap"><input id="alcohol-conversion-kisa" inputmode="decimal" placeholder="例：-0.05" step="0.01" type="number"><span class="iunit">%</span></div></label>
@@ -47,12 +47,25 @@
 
         <div class="result-card alcohol-conversion-result-card" id="alcohol-conversion-result" hidden>
           <div class="result-title">計算結果</div>
-          <div class="result-grid r2">
-            <div><div class="result-label">補正後示度</div><div class="result-value"><span id="alcohol-conversion-corrected">—</span><span class="result-unit">%</span></div></div>
-            <div><div class="result-label">15℃補正後アルコール分</div><div class="result-value"><span id="alcohol-conversion-final">—</span><span class="result-unit">%</span></div></div>
+          <div class="alcohol-conversion-primary-result">
+            <div class="result-label">15℃補正後アルコール分</div>
+            <div class="result-value primary"><span id="alcohol-conversion-final">—</span><span class="result-unit">%</span></div>
+          </div>
+          <div class="alcohol-conversion-sub-result">
+            <div class="result-label">補正後示度</div>
+            <div class="result-value"><span id="alcohol-conversion-corrected">—</span><span class="result-unit">%</span></div>
           </div>
         </div>
         <div class="err" id="alcohol-conversion-error" aria-live="polite" hidden></div>
+
+        <details class="alcohol-conversion-formula">
+          <summary>計算式・考え方を見る <span class="fold-state">開く</span></summary>
+          <div class="formula-body">
+            <div>補正後示度 = 測定度数 − 器差</div>
+            <div>15℃補正後アルコール分は、補正後示度と測定温度を使って換算します。</div>
+            <div>主結果は0.1%表示、補正後示度は0.01%表示です。</div>
+          </div>
+        </details>
 
         <section class="compact-tools-panel alcohol-conversion-actions" aria-label="アルコール換算の操作">
           <div class="calc-main-actions">
@@ -63,7 +76,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260516kisa1"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260516kisa3"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>

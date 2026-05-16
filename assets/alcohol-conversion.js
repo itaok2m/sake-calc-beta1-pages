@@ -3,7 +3,8 @@
 
   const STORAGE_KEYS = {
     hydrometers: 'sake_alcohol_conversion_hydrometer_master_v1',
-    lastHydrometer: 'sake_alcohol_conversion_last_hydrometer_v1'
+    lastHydrometer: 'sake_alcohol_conversion_last_hydrometer_v1',
+    lastInputs: 'sake_alcohol_conversion_last_inputs_v1'
   };
 
   const DEFAULT_HYDROMETERS = [
@@ -308,7 +309,9 @@
     return defaults;
   }
   function numberValue(input){
-    const n = Number(String(input && input.value || '').replace(/,/g,'.'));
+    const raw = String(input && input.value || '').trim().replace(/,/g,'.');
+    if (!raw) return NaN;
+    const n = Number(raw);
     return Number.isFinite(n) ? n : NaN;
   }
   function formatSigned(n, digits){
@@ -335,18 +338,24 @@
     const last = safeGet(STORAGE_KEYS.lastHydrometer);
     if (last && hydrometers.some(h => h.id === last)) el.hydrometer.value = last;
   }
+  function getRegisteredKisaPoints(hydrometer){
+    if (!hydrometer || !Array.isArray(hydrometer.points) || !hydrometer.points.length) return [];
+    return hydrometer.points.map((p) => ({ degree:Number(p.degree), kisa:Number(p.kisa) }))
+      .filter(p => Number.isFinite(p.degree) && Number.isFinite(p.kisa))
+      .sort((a,b) => a.degree - b.degree);
+  }
   function getKisaCandidates(reading, hydrometer){
-    if (!Number.isFinite(reading) || !hydrometer || !Array.isArray(hydrometer.points) || !hydrometer.points.length) return [];
-    const withDistance = hydrometer.points.map((p) => ({ degree:Number(p.degree), kisa:Number(p.kisa), distance:Math.abs(reading - Number(p.degree)) }))
-      .filter(p => Number.isFinite(p.degree) && Number.isFinite(p.kisa) && Number.isFinite(p.distance));
-    if (!withDistance.length) return [];
+    if (!Number.isFinite(reading)) return [];
+    const points = getRegisteredKisaPoints(hydrometer);
+    if (!points.length) return [];
+    const withDistance = points.map((p) => ({ degree:p.degree, kisa:p.kisa, distance:Math.abs(reading - p.degree) }));
     const min = Math.min.apply(null, withDistance.map(p => p.distance));
     return withDistance.filter(p => Math.abs(p.distance - min) < 1e-9).sort((a,b) => a.degree - b.degree);
   }
   function candidateKey(c){ return c ? String(c.degree) + ':' + c.kisa.toFixed(2) : ''; }
-  function renderCandidates(candidates){
+  function renderCandidates(points, suggestedCandidates){
     el.candidates.innerHTML = '';
-    if (!candidates.length) {
+    if (!points.length) {
       const div = document.createElement('div');
       div.className = 'candidate-empty';
       div.textContent = '—';
@@ -354,17 +363,20 @@
       activeCandidateKey = '';
       return;
     }
+    const suggestedKeys = new Set((suggestedCandidates || []).map(candidateKey));
     const list = document.createElement('div');
     list.className = 'candidate-list';
-    candidates.forEach((c) => {
+    points.forEach((c) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'kisa-candidate-btn';
       const key = candidateKey(c);
+      const currentKisa = numberValue(el.kisa);
       btn.dataset.kisa = String(c.kisa);
       btn.dataset.key = key;
       btn.textContent = formatPlain(c.degree, Number.isInteger(c.degree) ? 0 : 1) + '：' + formatSigned(c.kisa, 2);
-      btn.classList.toggle('is-active', key === activeCandidateKey || Math.abs(numberValue(el.kisa) - c.kisa) < 1e-9);
+      btn.classList.toggle('is-suggested', suggestedKeys.has(key));
+      btn.classList.toggle('is-active', key === activeCandidateKey || (!activeCandidateKey && Number.isFinite(currentKisa) && Math.abs(currentKisa - c.kisa) < 1e-9));
       btn.addEventListener('click', () => {
         activeCandidateKey = key;
         manualKisaTouched = true;
@@ -375,18 +387,44 @@
     });
     el.candidates.appendChild(list);
   }
-  function pickDefaultCandidate(candidates){
-    if (!candidates.length) return;
-    const current = numberValue(el.kisa);
-    const currentMatches = candidates.some(c => Math.abs(c.kisa - current) < 1e-9);
-    if (manualKisaTouched && currentMatches) return;
+  function pickDefaultCandidate(reading, candidates){
+    if (!Number.isFinite(reading)) {
+      if (!manualKisaTouched) {
+        el.kisa.value = '';
+        activeCandidateKey = '';
+      }
+      return;
+    }
+    if (manualKisaTouched) return;
     if (candidates.length === 1) {
       el.kisa.value = candidates[0].kisa.toFixed(2);
       activeCandidateKey = candidateKey(candidates[0]);
-    } else if (!manualKisaTouched) {
+    } else {
       el.kisa.value = '';
       activeCandidateKey = '';
     }
+  }
+  function saveInputs(){
+    safeSet(STORAGE_KEYS.lastInputs, JSON.stringify({
+      reading: el.reading.value,
+      temp: el.temp.value,
+      kisa: el.kisa.value,
+      hydrometer: el.hydrometer.value
+    }));
+  }
+  function restoreInputs(){
+    const raw = safeGet(STORAGE_KEYS.lastInputs);
+    if (!raw) return;
+    try {
+      const saved = JSON.parse(raw);
+      if (saved && typeof saved === 'object') {
+        if (saved.hydrometer && hydrometers.some(h => h.id === saved.hydrometer)) el.hydrometer.value = saved.hydrometer;
+        if (saved.reading != null) el.reading.value = String(saved.reading);
+        if (saved.temp != null) el.temp.value = String(saved.temp);
+        if (saved.kisa != null) el.kisa.value = String(saved.kisa);
+        if (String(el.kisa.value || '').trim()) manualKisaTouched = true;
+      }
+    } catch(_err) {}
   }
   function interpolateValue(a, b, ratio){
     const aOk = Number.isFinite(a);
@@ -419,9 +457,10 @@
   }
   function updateTableLink(corrected, temp){
     const params = new URLSearchParams();
-    if (Number.isFinite(corrected)) params.set('abv', roundTo(corrected, 1).toFixed(1));
+    if (Number.isFinite(corrected)) params.set('abv', roundTo(corrected, 2).toFixed(2));
     if (Number.isFinite(temp)) params.set('temp', roundTo(temp, 1).toFixed(1));
-    el.tableLink.href = './docs-view.html' + (params.toString() ? '?' + params.toString() : '');
+    params.set('back', 'alcohol-conversion.html');
+    el.tableLink.href = './docs-view.html?' + params.toString();
   }
   function updateResult(corrected, converted){
     if (!Number.isFinite(corrected) || !Number.isFinite(converted)) {
@@ -434,23 +473,35 @@
     el.corrected.textContent = formatPlain(roundTo(corrected, 2), 2);
     el.final.textContent = formatPlain(roundTo(converted, 1), 1);
   }
+  function valueEntered(input){ return !!String(input && input.value || '').trim(); }
+  function buildErrorMessage(reading, temp, kisa, hydrometer, corrected, converted){
+    const hasReading = valueEntered(el.reading);
+    const hasTemp = valueEntered(el.temp);
+    const hasKisa = valueEntered(el.kisa);
+    if (hasReading && !Number.isFinite(reading)) return '測定度数を確認してください。';
+    if (hasTemp && !Number.isFinite(temp)) return '測定温度を確認してください。';
+    if (hasKisa && !Number.isFinite(kisa)) return '器差を確認してください。';
+    if (hasReading && hydrometer && Number.isFinite(reading) && (reading < Number(hydrometer.min) || reading > Number(hydrometer.max))) {
+      return '選択中の浮標範囲外です。';
+    }
+    if (hasReading && hasTemp && hasKisa && (!Number.isFinite(corrected) || !Number.isFinite(converted))) return '範囲外です。';
+    return '';
+  }
   function updateAll(){
     const reading = numberValue(el.reading);
     const temp = numberValue(el.temp);
     const hydrometer = selectedHydrometer();
+    const points = getRegisteredKisaPoints(hydrometer);
     const candidates = getKisaCandidates(reading, hydrometer);
-    pickDefaultCandidate(candidates);
-    renderCandidates(candidates);
+    pickDefaultCandidate(reading, candidates);
+    renderCandidates(points, candidates);
     const kisa = numberValue(el.kisa);
     const corrected = Number.isFinite(reading) && Number.isFinite(kisa) ? reading - kisa : NaN;
     const converted = convertToFifteen(corrected, temp);
     updateTableLink(corrected, temp);
     updateResult(corrected, converted);
-    if ((el.reading.value || el.temp.value || el.kisa.value) && (!Number.isFinite(converted) || !Number.isFinite(corrected))) {
-      showError('範囲外です。');
-    } else {
-      showError('');
-    }
+    showError(buildErrorMessage(reading, temp, kisa, hydrometer, corrected, converted));
+    saveInputs();
   }
   function resetAll(){
     manualKisaTouched = false;
@@ -461,11 +512,16 @@
     updateAll();
   }
   function bindEvents(){
-    [el.reading, el.temp].forEach((input) => {
-      input.addEventListener('input', () => { manualKisaTouched = false; activeCandidateKey = ''; updateAll(); });
-      input.addEventListener('change', updateAll);
+    el.reading.addEventListener('input', () => {
+      manualKisaTouched = false;
+      activeCandidateKey = '';
+      updateAll();
     });
+    el.reading.addEventListener('change', updateAll);
+    el.temp.addEventListener('input', updateAll);
+    el.temp.addEventListener('change', updateAll);
     el.kisa.addEventListener('input', () => { manualKisaTouched = true; activeCandidateKey = ''; updateAll(); });
+    el.kisa.addEventListener('change', updateAll);
     el.hydrometer.addEventListener('change', () => {
       safeSet(STORAGE_KEYS.lastHydrometer, el.hydrometer.value);
       manualKisaTouched = false;
@@ -477,6 +533,7 @@
   }
   function init(){
     populateHydrometerOptions();
+    restoreInputs();
     bindEvents();
     updateAll();
   }

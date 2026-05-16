@@ -735,11 +735,16 @@ body.theme-dark .error{
     return {start:Number(match[1]), end:Number(match[2])};
   }
   function normalizeDecimal(value){
-    const trimmed = String(value || '').trim().replace(/。/g,'.');
+    const trimmed = String(value || '').trim().replace(/。/g,'.').replace(/,/g,'.');
     if (!trimmed) return '';
     const num = Number(trimmed);
     if (!Number.isFinite(num)) return '';
-    return num.toFixed(1).replace(/\.0$/, '.0');
+    const decimalMatch = trimmed.match(/\.(\d+)/);
+    const sourceDigits = decimalMatch ? decimalMatch[1].length : 0;
+    const digits = Math.min(Math.max(sourceDigits, 1), 2);
+    let fixed = num.toFixed(digits);
+    if (digits > 1) fixed = fixed.replace(/(\.\d*?[1-9])0+$/, '$1');
+    return fixed.replace(/\.0$/, '.0');
   }
   function updateInputSummary(){
     const abvLabel = abvInput.value ? (normalizeDecimal(abvInput.value) + '%') : '未入力';
@@ -1006,11 +1011,17 @@ body.theme-dark .error{
   function resolveBackHref(raw){
     const cleaned = String(raw || '').trim().replace(/^\.\//, '').replace(/^\//, '');
     if (!cleaned) return VIEW_META.defaultBackHref;
-    if (cleaned === 'index.html' || cleaned === 'sake_calc_tool_beta1.html') return './' + cleaned;
+    if (cleaned === 'index.html' || cleaned === 'sake_calc_tool_beta1.html' || cleaned === 'alcohol-conversion.html') return './' + cleaned;
     return VIEW_META.defaultBackHref;
+  }
+  function resolveBackLabel(raw){
+    const cleaned = String(raw || '').trim().replace(/^\.\//, '').replace(/^\//, '');
+    if (cleaned === 'alcohol-conversion.html') return '← 計算画面へ戻る';
+    return '← トップへ戻る';
   }
   function initializeDocumentView(){
     backLink.href = resolveBackHref(requestedBack);
+    backLink.textContent = resolveBackLabel(requestedBack);
     if (!pages.length) {
       prevBtn.disabled=true; nextBtn.disabled=true; pageSelect.disabled=true;
       showViewError('資料一覧が空です。');
