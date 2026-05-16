@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260516kisa3">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260516kisa4">
 </head>
 <body>
   <div class="tool-nav">
@@ -22,6 +22,16 @@
     </section>
 
     <div class="wrapper alcohol-conversion-wrapper">
+      <details class="common-info-toggle formula-toggle alcohol-conversion-formula">
+        <summary><span class="toggle-label-closed">計算式・考え方を見る</span><span class="toggle-label-open">計算式・考え方を閉じる</span></summary>
+        <section class="unit-bar" aria-label="式">
+          <div class="unit-bar-formula">
+            <span class="fml-main">15℃補正後アルコール分 ＝ 温度補正表の値</span>
+            <span class="fml-note">補正後示度と測定温度を使い、表の目盛の間は内部で補間します。</span>
+          </div>
+        </section>
+      </details>
+
       <section class="card alcohol-conversion-card" aria-label="アルコール換算入力">
         <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="alcohol-conversion-reset" type="button">入力値をリセット</button></div>
 
@@ -58,14 +68,6 @@
         </div>
         <div class="err" id="alcohol-conversion-error" aria-live="polite" hidden></div>
 
-        <details class="alcohol-conversion-formula">
-          <summary>計算式・考え方を見る <span class="fold-state">開く</span></summary>
-          <div class="formula-body">
-            <div>補正後示度 = 測定度数 − 器差</div>
-            <div>15℃補正後アルコール分は、補正後示度と測定温度を使って換算します。</div>
-            <div>主結果は0.1%表示、補正後示度は0.01%表示です。</div>
-          </div>
-        </details>
 
         <section class="compact-tools-panel alcohol-conversion-actions" aria-label="アルコール換算の操作">
           <div class="calc-main-actions">
@@ -76,7 +78,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260516kisa3"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260516kisa4"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>

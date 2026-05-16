@@ -363,7 +363,6 @@
       activeCandidateKey = '';
       return;
     }
-    const suggestedKeys = new Set((suggestedCandidates || []).map(candidateKey));
     const list = document.createElement('div');
     list.className = 'candidate-list';
     points.forEach((c) => {
@@ -371,12 +370,10 @@
       btn.type = 'button';
       btn.className = 'kisa-candidate-btn';
       const key = candidateKey(c);
-      const currentKisa = numberValue(el.kisa);
       btn.dataset.kisa = String(c.kisa);
       btn.dataset.key = key;
       btn.textContent = formatPlain(c.degree, Number.isInteger(c.degree) ? 0 : 1) + '：' + formatSigned(c.kisa, 2);
-      btn.classList.toggle('is-suggested', suggestedKeys.has(key));
-      btn.classList.toggle('is-active', key === activeCandidateKey || (!activeCandidateKey && Number.isFinite(currentKisa) && Math.abs(currentKisa - c.kisa) < 1e-9));
+      btn.classList.toggle('is-active', key === activeCandidateKey);
       btn.addEventListener('click', () => {
         activeCandidateKey = key;
         manualKisaTouched = true;
@@ -409,6 +406,7 @@
       reading: el.reading.value,
       temp: el.temp.value,
       kisa: el.kisa.value,
+      candidateKey: activeCandidateKey,
       hydrometer: el.hydrometer.value
     }));
   }
@@ -422,6 +420,7 @@
         if (saved.reading != null) el.reading.value = String(saved.reading);
         if (saved.temp != null) el.temp.value = String(saved.temp);
         if (saved.kisa != null) el.kisa.value = String(saved.kisa);
+        if (saved.candidateKey != null) activeCandidateKey = String(saved.candidateKey);
         if (String(el.kisa.value || '').trim()) manualKisaTouched = true;
       }
     } catch(_err) {}
@@ -492,11 +491,17 @@
     const temp = numberValue(el.temp);
     const hydrometer = selectedHydrometer();
     const points = getRegisteredKisaPoints(hydrometer);
-    const candidates = getKisaCandidates(reading, hydrometer);
-    pickDefaultCandidate(reading, candidates);
+    const hydrometerInRange = !!(hydrometer && Number.isFinite(reading) && reading >= Number(hydrometer.min) && reading <= Number(hydrometer.max));
+    const candidates = hydrometerInRange ? getKisaCandidates(reading, hydrometer) : [];
+    if (hydrometerInRange) {
+      pickDefaultCandidate(reading, candidates);
+    } else if (!manualKisaTouched) {
+      el.kisa.value = '';
+      activeCandidateKey = '';
+    }
     renderCandidates(points, candidates);
     const kisa = numberValue(el.kisa);
-    const corrected = Number.isFinite(reading) && Number.isFinite(kisa) ? reading - kisa : NaN;
+    const corrected = Number.isFinite(reading) && Number.isFinite(kisa) && hydrometerInRange ? reading - kisa : NaN;
     const converted = convertToFifteen(corrected, temp);
     updateTableLink(corrected, temp);
     updateResult(corrected, converted);
