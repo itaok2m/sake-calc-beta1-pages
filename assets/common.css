@@ -12,7 +12,74 @@
   --danger:#9f2d2d;
   --danger-bg:#fff4f2;
   --radius:16px;
+  /*
+    2026-05-15 色ルール固定の土台。
+    既存画面の見た目を急に変えず、今後のライト/ダーク整理で役割別に参照するための共通トークン。
+    正規の暗色テーマクラスは body.theme-dark。body.dark は過去CSSとの互換用。
+  */
+  --role-action:#2f4257;
+  --role-action-strong:#1f2e40;
+  --role-action-soft:#eef4fb;
+  --role-action-border:#b8cfeb;
+  --role-success:#25634f;
+  --role-success-bg:#eef7f2;
+  --role-success-border:#b8d8c6;
+  --role-warning:#8a5a14;
+  --role-warning-bg:#fff8e8;
+  --role-warning-border:#e2c47a;
+  --role-danger:#9f2d2d;
+  --role-danger-bg:#fff4f2;
+  --role-danger-border:#e2c7c7;
+  --role-candidate:#1f4e7a;
+  --role-candidate-bg:#f3f8fe;
+  --role-candidate-border:#b8cfeb;
+  --role-read-bg:#f8f9fa;
+  --role-read-text:#5e6a76;
+  --role-input-bg:#ffffff;
+  --role-input-border:#d0cbc2;
+  --role-fold-open-bg:#eef4fb;
+  --role-fold-open-border:#cbd8e8;
+  --role-table-band:rgba(47,66,87,.035);
   font-family:"Hiragino Kaku Gothic ProN","Meiryo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body.theme-dark,
+body.dark{
+  --bg:#0b111c;
+  --surface:#111827;
+  --surface-soft:#162033;
+  --text:#e9eef6;
+  --muted:#a8b3c2;
+  --line:#2b3546;
+  --line-soft:#233044;
+  --blue:#7aa7e6;
+  --blue-dark:#a8c7ff;
+  --blue-soft:#17243a;
+  --danger:#ff9a92;
+  --danger-bg:#341b1b;
+  --role-action:#7aa7e6;
+  --role-action-strong:#a8c7ff;
+  --role-action-soft:rgba(80,135,220,.18);
+  --role-action-border:rgba(125,175,255,.36);
+  --role-success:#8bd3ad;
+  --role-success-bg:rgba(35,95,70,.28);
+  --role-success-border:rgba(125,210,165,.34);
+  --role-warning:#ffd28a;
+  --role-warning-bg:rgba(82,55,18,.42);
+  --role-warning-border:rgba(245,170,70,.44);
+  --role-danger:#ff9a92;
+  --role-danger-bg:rgba(85,32,32,.42);
+  --role-danger-border:rgba(255,154,146,.38);
+  --role-candidate:#dbe8ff;
+  --role-candidate-bg:rgba(80,135,220,.18);
+  --role-candidate-border:rgba(125,175,255,.34);
+  --role-read-bg:rgba(10,20,34,.38);
+  --role-read-text:#c8d6ea;
+  --role-input-bg:#0f1724;
+  --role-input-border:#34445a;
+  --role-fold-open-bg:rgba(80,135,220,.18);
+  --role-fold-open-border:rgba(125,175,255,.34);
+  --role-table-band:rgba(220,230,245,.045);
 }
 *{box-sizing:border-box;}
 html{min-height:100%;background:var(--bg);color:var(--text);-webkit-text-size-adjust:100%;text-size-adjust:100%;}
