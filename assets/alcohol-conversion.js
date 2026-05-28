@@ -39,8 +39,8 @@
   let manualKisaTouched = false;
   let activeCandidateKey = '';
 
-  // 2026-05-28: 15℃補正後アルコール分の自動計算結果は停止中。
-  // 内部温度補正表は初期化せず、補正後示度から横田表画像へ進む。
+  // 2026-05-28: 15℃補正後アルコール分の自動結果カードは表示しない。
+  // 補正後示度と測定温度から横田表画像へ進む。
   const TEMP_TABLE = null;
 
   function buildTemperatureTable(){
@@ -375,7 +375,7 @@
       const key = candidateKey(c);
       btn.dataset.kisa = String(c.kisa);
       btn.dataset.key = key;
-      btn.textContent = formatPlain(c.degree, Number.isInteger(c.degree) ? 0 : 1) + '：' + formatSigned(c.kisa, 2);
+      btn.textContent = formatPlain(c.degree, Number.isInteger(c.degree) ? 0 : 1) + '度：' + formatSigned(c.kisa, 2) + '度';
       btn.classList.toggle('is-active', key === activeCandidateKey);
       btn.addEventListener('click', () => {
         activeCandidateKey = key;
@@ -469,11 +469,11 @@
     if (Number.isFinite(corrected)) {
       el.correctedCard.hidden = false;
       el.corrected.textContent = formatPlain(roundTo(corrected, 2), 2);
-      el.result.hidden = false;
+      if (el.result) el.result.hidden = false;
     } else {
       el.correctedCard.hidden = true;
       el.corrected.textContent = '—';
-      el.result.hidden = true;
+      if (el.result) el.result.hidden = true;
     }
     if (el.final) el.final.textContent = '—';
   }
@@ -530,8 +530,10 @@
     el.reading.addEventListener('change', updateAll);
     el.temp.addEventListener('input', updateAll);
     el.temp.addEventListener('change', updateAll);
-    el.kisa.addEventListener('input', () => { manualKisaTouched = true; activeCandidateKey = ''; updateAll(); });
-    el.kisa.addEventListener('change', updateAll);
+    if (el.kisa && el.kisa.type !== 'hidden') {
+      el.kisa.addEventListener('input', () => { manualKisaTouched = true; activeCandidateKey = ''; updateAll(); });
+      el.kisa.addEventListener('change', updateAll);
+    }
     el.hydrometer.addEventListener('change', () => {
       safeSet(STORAGE_KEYS.lastHydrometer, el.hydrometer.value);
       manualKisaTouched = false;
