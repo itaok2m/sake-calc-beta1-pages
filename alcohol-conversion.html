@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260528table3">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260528table4">
 </head>
 <body>
   <div class="tool-nav">
@@ -37,7 +37,7 @@
 
         <div class="group"><div class="group-title">測定</div>
           <div class="alcohol-conversion-field-grid">
-            <label class="alcohol-conversion-field"><span>測定度数</span><div class="alcohol-conversion-input-wrap"><input id="alcohol-conversion-reading" inputmode="decimal" min="0" max="100" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">vol%</span></div></label>
+            <label class="alcohol-conversion-field"><span>測定度数</span><div class="alcohol-conversion-input-wrap"><input id="alcohol-conversion-reading" inputmode="decimal" min="0" max="100" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
             <label class="alcohol-conversion-field"><span>測定温度</span><div class="alcohol-conversion-input-wrap"><input id="alcohol-conversion-temp" inputmode="decimal" min="0" max="35" placeholder="例：10.0" step="0.1" type="number"><span class="iunit">℃</span></div></label>
           </div>
         </div>
@@ -55,7 +55,7 @@
 
         <div class="intermediate-card alcohol-conversion-corrected-card" id="alcohol-conversion-corrected-card" hidden>
           <div class="result-label">補正後示度</div>
-          <div class="result-value intermediate"><span id="alcohol-conversion-corrected">—</span><span class="result-unit">vol%</span></div>
+          <div class="result-value intermediate"><span id="alcohol-conversion-corrected">—</span><span class="result-unit">%</span></div>
         </div>
 
         <div class="err" id="alcohol-conversion-error" aria-live="polite" hidden></div>
@@ -70,7 +70,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260528table3"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260528table4"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>

@@ -375,7 +375,7 @@
       const key = candidateKey(c);
       btn.dataset.kisa = String(c.kisa);
       btn.dataset.key = key;
-      btn.textContent = formatPlain(c.degree, Number.isInteger(c.degree) ? 0 : 1) + ' vol%時：' + formatSigned(c.kisa, 2) + ' vol%';
+      btn.textContent = formatPlain(c.degree, Number.isInteger(c.degree) ? 0 : 1) + '%時：' + formatSigned(c.kisa, 2) + '%';
       btn.classList.toggle('is-active', key === activeCandidateKey);
       btn.addEventListener('click', () => {
         activeCandidateKey = key;

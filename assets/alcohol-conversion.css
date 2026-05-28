@@ -48,4 +48,4 @@ body.theme-dark .alcohol-conversion-corrected-card,body.dark .alcohol-conversion
 @media(max-width:640px){.alcohol-conversion-corrected-card{display:grid;gap:4px;}.alcohol-conversion-corrected-card .result-value.intermediate{font-size:18px;}}
 
 
-/* 2026-05-28 unit3: 器差候補は温度の℃と混同しないよう「vol%」付き表示。手修正欄は画面から外し、検定3点候補を選ぶ方式に整理。 */
+/* 2026-05-28 unit4: 器差候補は温度の℃と混同しないよう酒精度側を「%」表示に統一。手修正欄は画面から外し、検定3点候補を選ぶ方式を維持。 */
