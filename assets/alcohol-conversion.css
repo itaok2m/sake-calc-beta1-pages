@@ -48,26 +48,4 @@ body.theme-dark .alcohol-conversion-corrected-card,body.dark .alcohol-conversion
 @media(max-width:640px){.alcohol-conversion-corrected-card{display:grid;gap:4px;}.alcohol-conversion-corrected-card .result-value.intermediate{font-size:18px;}}
 
 
-/* 2026-05-28: アルコール換算を一時的に「表確認補助」へ変更。
-   15℃補正後アルコール分の自動計算結果は表示せず、補正後示度と測定温度から横田表画像の確認位置へ進む。 */
-.alcohol-conversion-table-note{
-  border:1px solid var(--line-soft);
-  background:var(--panel-bg-soft);
-}
-.alcohol-conversion-table-note .alcohol-conversion-primary-result{
-  gap:8px;
-  padding:12px 0 2px;
-}
-.alcohol-conversion-table-note .result-label{
-  color:var(--ink);
-}
-.alcohol-conversion-table-note-text{
-  font-size:13px;
-  line-height:1.7;
-  font-weight:800;
-  color:var(--muted);
-}
-body.theme-dark .alcohol-conversion-table-note,body.dark .alcohol-conversion-table-note{
-  background:rgba(255,255,255,.035);
-  border-color:rgba(255,255,255,.12);
-}
+/* 2026-05-28 unit2: 器差候補は単位「度」付き表示。手修正欄は画面から外し、検定3点候補を選ぶ方式に整理。 */
