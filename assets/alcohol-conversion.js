@@ -39,7 +39,9 @@
   let manualKisaTouched = false;
   let activeCandidateKey = '';
 
-  const TEMP_TABLE = buildTemperatureTable();
+  // 2026-05-28: 15℃補正後アルコール分の自動計算結果は停止中。
+  // 内部温度補正表は初期化せず、補正後示度から横田表画像へ進む。
+  const TEMP_TABLE = null;
 
   function buildTemperatureTable(){
     const grid = new Map();
@@ -435,6 +437,7 @@
     return NaN;
   }
   function convertToFifteen(corrected, temp){
+    if (!TEMP_TABLE) return NaN;
     if (!Number.isFinite(corrected) || !Number.isFinite(temp)) return NaN;
     if (temp < 0 || temp > 35 || corrected < 0 || corrected > 100) return NaN;
     const d0 = Math.floor(corrected);
@@ -462,24 +465,20 @@
     params.set('back', 'alcohol-conversion.html');
     el.tableLink.href = './docs-view.html?' + params.toString();
   }
-  function updateResult(corrected, converted){
+  function updateResult(corrected){
     if (Number.isFinite(corrected)) {
       el.correctedCard.hidden = false;
       el.corrected.textContent = formatPlain(roundTo(corrected, 2), 2);
+      el.result.hidden = false;
     } else {
       el.correctedCard.hidden = true;
       el.corrected.textContent = '—';
-    }
-    if (Number.isFinite(converted)) {
-      el.result.hidden = false;
-      el.final.textContent = formatPlain(roundTo(converted, 1), 1);
-    } else {
       el.result.hidden = true;
-      el.final.textContent = '—';
     }
+    if (el.final) el.final.textContent = '—';
   }
   function valueEntered(input){ return !!String(input && input.value || '').trim(); }
-  function buildErrorMessage(reading, temp, kisa, hydrometer, corrected, converted){
+  function buildErrorMessage(reading, temp, kisa, hydrometer, corrected){
     const hasReading = valueEntered(el.reading);
     const hasTemp = valueEntered(el.temp);
     const hasKisa = valueEntered(el.kisa);
@@ -489,7 +488,8 @@
     if (hasReading && hydrometer && Number.isFinite(reading) && (reading < Number(hydrometer.min) || reading > Number(hydrometer.max))) {
       return '選択中の浮標範囲外です。';
     }
-    if (hasReading && hasTemp && hasKisa && (!Number.isFinite(corrected) || !Number.isFinite(converted))) return '範囲外です。';
+    if (hasReading && hasTemp && hasKisa && (!Number.isFinite(corrected) || corrected < 0 || corrected > 100)) return '補正後示度が表の範囲外です。';
+    if (hasTemp && Number.isFinite(temp) && (temp < 0 || temp > 35)) return '測定温度が表の範囲外です。';
     return '';
   }
   function updateAll(){
@@ -508,10 +508,9 @@
     renderCandidates(points, candidates);
     const kisa = numberValue(el.kisa);
     const corrected = Number.isFinite(reading) && Number.isFinite(kisa) && hydrometerInRange ? reading - kisa : NaN;
-    const converted = convertToFifteen(corrected, temp);
     updateTableLink(corrected, temp);
-    updateResult(corrected, converted);
-    showError(buildErrorMessage(reading, temp, kisa, hydrometer, corrected, converted));
+    updateResult(corrected);
+    showError(buildErrorMessage(reading, temp, kisa, hydrometer, corrected));
     saveInputs();
   }
   function resetAll(){

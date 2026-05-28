@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260516kisa5">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260528table1">
 </head>
 <body>
   <div class="tool-nav">
@@ -23,11 +23,11 @@
 
     <div class="wrapper alcohol-conversion-wrapper">
       <details class="common-info-toggle formula-toggle alcohol-conversion-formula">
-        <summary><span class="toggle-label-closed">計算式・考え方を見る</span><span class="toggle-label-open">計算式・考え方を閉じる</span></summary>
+        <summary><span class="toggle-label-closed">表確認の考え方を見る</span><span class="toggle-label-open">表確認の考え方を閉じる</span></summary>
         <section class="unit-bar" aria-label="式">
           <div class="unit-bar-formula">
-            <span class="fml-main">ρ = A[1] + Σ A[k]・p^(k−1) + Σ B[k]・(t−20)^k + ΣΣ C[i][k]・p^k・(t−20)^i</span>
-            <span class="fml-note">この画面では、上式系から作られたアルコール分温度補正表を内部表として使い、補正後示度と測定温度の間を補間します。</span>
+            <span class="fml-main">測定度数 − 器差 = 補正後示度</span>
+            <span class="fml-note">この画面では、15℃補正後アルコール分の自動計算結果は表示しません。補正後示度と測定温度を横田表画像へ渡し、表の確認位置を合わせます。</span>
           </div>
         </section>
       </details>
@@ -60,11 +60,11 @@
           <div class="result-value intermediate"><span id="alcohol-conversion-corrected">—</span><span class="result-unit">%</span></div>
         </div>
 
-        <div class="result-card alcohol-conversion-result-card" id="alcohol-conversion-result" hidden>
-          <div class="result-title">計算結果</div>
+        <div class="result-card alcohol-conversion-result-card alcohol-conversion-table-note" id="alcohol-conversion-result" hidden>
+          <div class="result-title">表で確認</div>
           <div class="alcohol-conversion-primary-result">
-            <div class="result-label">15℃補正後アルコール分</div>
-            <div class="result-value primary"><span id="alcohol-conversion-final">—</span><span class="result-unit">%</span></div>
+            <div class="result-label">15℃補正後アルコール分の自動計算は停止中です。</div>
+            <div class="alcohol-conversion-table-note-text">補正後示度と測定温度を使って、横田表画像の該当位置を確認してください。</div>
           </div>
         </div>
         <div class="err" id="alcohol-conversion-error" aria-live="polite" hidden></div>
@@ -72,14 +72,14 @@
 
         <section class="compact-tools-panel alcohol-conversion-actions" aria-label="アルコール換算の操作">
           <div class="calc-main-actions">
-            <a class="back-btn action-forward-btn" id="alcohol-conversion-open-table" href="./docs-view.html">表で見る →</a>
+            <a class="back-btn action-forward-btn" id="alcohol-conversion-open-table" href="./docs-view.html">横田表で確認する →</a>
           </div>
         </section>
       </section>
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260516kisa5"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260528table1"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>
