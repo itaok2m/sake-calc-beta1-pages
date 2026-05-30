@@ -49,3 +49,27 @@ body.theme-dark .alcohol-conversion-corrected-card,body.dark .alcohol-conversion
 
 
 /* 2026-05-28 unit4: 器差候補は温度の℃と混同しないよう酒精度側を「%」表示に統一。手修正欄は画面から外し、検定3点候補を選ぶ方式を維持。 */
+
+
+/* 2026-05-30 hydromaster1: 使用浮標本体と検定点%＋器差補正%を端末内で編集する。通常画面には登録済み候補だけを出す。 */
+.alcohol-conversion-hydrometer-editor{margin:2px 0 14px;}
+.alcohol-conversion-hydrometer-editor-body{display:grid;gap:10px;padding:10px 12px 12px;background:var(--panel-bg);border-top:1px solid var(--line-soft);}
+.alcohol-conversion-hydrometer-editor-note{margin:0;font-size:12px;font-weight:700;line-height:1.6;color:var(--muted);}
+.alcohol-conversion-editor-grid{display:grid;gap:8px;align-items:end;}
+.alcohol-conversion-editor-main-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,.8fr);}
+.alcohol-conversion-editor-field{display:grid;gap:5px;min-width:0;}
+.alcohol-conversion-editor-field>span{font-size:12px;font-weight:900;color:var(--muted);line-height:1.35;}
+.alcohol-conversion-editor-field input,.alcohol-conversion-editor-cell input{width:100%;min-height:42px;border:1.5px solid var(--role-input-border);border-radius:10px;background:var(--role-input-bg);color:var(--text);padding:8px 10px;font-size:16px;font-weight:800;line-height:1.25;box-shadow:none;}
+.alcohol-conversion-editor-field input[type="number"],.alcohol-conversion-editor-cell input{text-align:center;}
+.alcohol-conversion-editor-field input:focus,.alcohol-conversion-editor-cell input:focus{outline:none;border-color:var(--role-action);box-shadow:0 0 0 3px rgba(47,66,87,.12);}
+.alcohol-conversion-editor-points{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center;}
+.alcohol-conversion-editor-head{font-size:12px;font-weight:900;color:var(--muted);line-height:1.35;}
+.alcohol-conversion-editor-cell{display:block;min-width:0;}
+.alcohol-conversion-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:2px;}
+.alcohol-conversion-editor-actions .back-btn{width:100%;justify-content:center;text-align:center;}
+.alcohol-conversion-editor-status{min-height:1.6em;font-size:12px;font-weight:800;line-height:1.6;color:var(--muted);}
+.alcohol-conversion-editor-status.is-error{color:var(--role-danger);}
+.alcohol-conversion-editor-status.is-ok{color:var(--role-success);}
+body.theme-dark .alcohol-conversion-hydrometer-editor-body,body.dark .alcohol-conversion-hydrometer-editor-body{background:rgba(255,255,255,.025);border-color:rgba(255,255,255,.12);}
+body.theme-dark .alcohol-conversion-editor-field input,body.dark .alcohol-conversion-editor-field input,body.theme-dark .alcohol-conversion-editor-cell input,body.dark .alcohol-conversion-editor-cell input{background:var(--role-input-bg);color:var(--text);border-color:var(--role-input-border);}
+@media(max-width:640px){.alcohol-conversion-editor-main-grid{grid-template-columns:1fr 1fr;}.alcohol-conversion-editor-field-wide{grid-column:1/-1;}.alcohol-conversion-editor-actions{grid-template-columns:1fr;}.alcohol-conversion-hydrometer-editor-body{padding:10px;}.alcohol-conversion-editor-points{gap:7px;}}

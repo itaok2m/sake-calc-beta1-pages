@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260528table4">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260530hydromaster1">
 </head>
 <body>
   <div class="tool-nav">
@@ -48,6 +48,39 @@
           </div>
         </div>
 
+        <details class="common-info-toggle alcohol-conversion-hydrometer-editor" id="alcohol-conversion-hydrometer-editor">
+          <summary><span class="toggle-label-closed">浮標・器差設定を編集</span><span class="toggle-label-open">浮標・器差設定を閉じる</span></summary>
+          <div class="alcohol-conversion-hydrometer-editor-body">
+            <p class="alcohol-conversion-hydrometer-editor-note">選択中の浮標について、浮標名・使用範囲・検定点%・器差補正%を保存します。検定点と器差補正の両方が入力された行だけ、通常画面の器差候補に出ます。</p>
+            <div class="alcohol-conversion-editor-grid alcohol-conversion-editor-main-grid" aria-label="浮標設定入力">
+              <label class="alcohol-conversion-editor-field alcohol-conversion-editor-field-wide"><span>浮標名</span><input id="alcohol-conversion-editor-label" type="text" autocomplete="off" placeholder="例：15〜20"></label>
+              <label class="alcohol-conversion-editor-field"><span>下限%</span><input id="alcohol-conversion-editor-min" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-field"><span>上限%</span><input id="alcohol-conversion-editor-max" inputmode="decimal" step="0.1" type="number"></label>
+            </div>
+            <div class="alcohol-conversion-editor-points" aria-label="器差補正設定">
+              <div class="alcohol-conversion-editor-head">検定点%</div>
+              <div class="alcohol-conversion-editor-head">器差補正%</div>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-kisa" inputmode="decimal" step="0.01" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-kisa" inputmode="decimal" step="0.01" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-kisa" inputmode="decimal" step="0.01" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-kisa" inputmode="decimal" step="0.01" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-kisa" inputmode="decimal" step="0.01" type="number"></label>
+            </div>
+            <div class="alcohol-conversion-editor-actions">
+              <button class="back-btn action-forward-btn" id="alcohol-conversion-editor-save" type="button">この浮標を保存</button>
+              <button class="back-btn" id="alcohol-conversion-editor-add" type="button">新しい浮標として追加</button>
+              <button class="back-btn reset-btn" id="alcohol-conversion-editor-delete" type="button">この浮標を削除</button>
+              <button class="back-btn reset-btn" id="alcohol-conversion-editor-defaults" type="button">初期浮標に戻す</button>
+            </div>
+            <div class="alcohol-conversion-editor-status" id="alcohol-conversion-editor-status" aria-live="polite"></div>
+          </div>
+        </details>
+
         <div class="group"><div class="group-title">器差を選ぶ</div>
           <div class="candidate-panel" id="alcohol-conversion-kisa-candidates" aria-live="polite"></div>
           <input id="alcohol-conversion-kisa" type="hidden">
@@ -70,7 +103,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260530hydro2"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260530hydromaster1"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>
