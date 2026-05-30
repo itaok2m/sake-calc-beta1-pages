@@ -1,1 +1,92 @@
-(function(){'use strict';const KEY='sakeCalc.htmlSplit.moto.lastInputs.v1';const $=id=>document.getElementById(id);function trunc(v,d){const n=Number(v),s=10**d;if(!Number.isFinite(n))return '';return (Math.trunc(n*s)/s).toFixed(d);}function row(sk,wk){const mz=(sk-wk)*3.5+wk;return `<tr><td>${sk}℃</td><td>${trunc(mz,2)}℃</td></tr>`;}function save(){try{localStorage.setItem(KEY,JSON.stringify({wk:$('moto-water-koji-temp')?.value||''}));}catch{}}function calc(){const input=$('moto-water-koji-temp'),result=$('moto-result'),err=$('moto-error'),body=$('moto-body'),yb=$('moto-yodan-body'),yd=$('moto-yodan');if(!input||!result||!err||!body||!yb)return;err.hidden=true;err.textContent='';body.innerHTML='';yb.innerHTML='';const raw=input.value;if(raw===''){result.hidden=true;if(yd)yd.open=false;save();return;}const wk=Number(raw);if(!Number.isFinite(wk)){result.hidden=true;err.textContent='水麹温度を数値で入力してください。';err.hidden=false;return;}body.innerHTML=[18,19,20,21,22,23,24,25,26,27,28,29,30].map(sk=>row(sk,wk)).join('');yb.innerHTML=[55,56,57,58,59,60].map(sk=>row(sk,wk)).join('');result.hidden=false;save();}function reset(){const el=$('moto-water-koji-temp');if(el)el.value='';calc();}document.addEventListener('DOMContentLoaded',()=>{try{const p=JSON.parse(localStorage.getItem(KEY)||'{}');if(p.wk&&$('moto-water-koji-temp'))$('moto-water-koji-temp').value=p.wk;}catch{}$('moto-water-koji-temp')?.addEventListener('input',calc);$('moto-reset')?.addEventListener('click',reset);calc();});})();
+(function(){
+  'use strict';
+
+  const STORAGE_KEY = 'sakeCalc.htmlSplit.moto.lastInputs.v1';
+  const $ = (id) => document.getElementById(id);
+
+  function truncateFixed(value, digits){
+    const number = Number(value);
+    const scale = 10 ** digits;
+    if(!Number.isFinite(number)) return '';
+    return (Math.trunc(number * scale) / scale).toFixed(digits);
+  }
+
+  function buildRow(targetTemp, waterKojiTemp){
+    const steamedRiceTemp = (targetTemp - waterKojiTemp) * 3.5 + waterKojiTemp;
+    return `<tr><td>${targetTemp}℃</td><td>${truncateFixed(steamedRiceTemp, 2)}℃</td></tr>`;
+  }
+
+  function saveInputs(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        waterKojiTemp: $('moto-water-koji-temp')?.value || ''
+      }));
+    } catch(_err) {}
+  }
+
+  function calculate(){
+    const input = $('moto-water-koji-temp');
+    const result = $('moto-result');
+    const error = $('moto-error');
+    const body = $('moto-body');
+    const yodanBody = $('moto-yodan-body');
+    const yodanDetails = $('moto-yodan');
+
+    if(!input || !result || !error || !body || !yodanBody) return;
+
+    error.hidden = true;
+    error.textContent = '';
+    body.innerHTML = '';
+    yodanBody.innerHTML = '';
+
+    const raw = input.value;
+    if(raw === ''){
+      result.hidden = true;
+      if(yodanDetails) yodanDetails.open = false;
+      saveInputs();
+      return;
+    }
+
+    const waterKojiTemp = Number(raw);
+    if(!Number.isFinite(waterKojiTemp)){
+      result.hidden = true;
+      error.textContent = '水麹温度を数値で入力してください。';
+      error.hidden = false;
+      return;
+    }
+
+    body.innerHTML = [18,19,20,21,22,23,24,25,26,27,28,29,30]
+      .map((targetTemp) => buildRow(targetTemp, waterKojiTemp))
+      .join('');
+
+    yodanBody.innerHTML = [55,56,57,58,59,60]
+      .map((targetTemp) => buildRow(targetTemp, waterKojiTemp))
+      .join('');
+
+    result.hidden = false;
+    saveInputs();
+  }
+
+  function reset(){
+    const input = $('moto-water-koji-temp');
+    if(input) input.value = '';
+    calculate();
+  }
+
+  function restoreInputs(){
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      const input = $('moto-water-koji-temp');
+      if(saved.waterKojiTemp && input) input.value = saved.waterKojiTemp;
+      // 旧キー互換: 以前の圧縮JSでは wk で保存していた。
+      if(!saved.waterKojiTemp && saved.wk && input) input.value = saved.wk;
+    } catch(_err) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    restoreInputs();
+    $('moto-water-koji-temp')?.addEventListener('input', calculate);
+    $('moto-reset')?.addEventListener('click', reset);
+    calculate();
+  });
+})();
