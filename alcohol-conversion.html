@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260530hydromaster1">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260530hydrotxt1">
 </head>
 <body>
   <div class="tool-nav">
@@ -33,7 +33,7 @@
       </details>
 
       <section class="card alcohol-conversion-card" aria-label="アルコール換算入力">
-        <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="alcohol-conversion-reset" type="button">入力値をリセット</button></div>
+        <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="alcohol-conversion-reset" type="button">入力値を消す</button></div>
 
         <div class="group"><div class="group-title">測定</div>
           <div class="alcohol-conversion-field-grid">
@@ -51,15 +51,34 @@
         <details class="common-info-toggle alcohol-conversion-hydrometer-editor" id="alcohol-conversion-hydrometer-editor">
           <summary><span class="toggle-label-closed">浮標・器差設定を編集</span><span class="toggle-label-open">浮標・器差設定を閉じる</span></summary>
           <div class="alcohol-conversion-hydrometer-editor-body">
-            <p class="alcohol-conversion-hydrometer-editor-note">ここは浮標マスターの編集です。普段使う浮標を1本ずつ登録します。検定点%と器差補正%の両方が入っている行だけ、入力画面の器差候補に出ます。新しい浮標を増やす時は、下の「新しい浮標の入力を始める」で空欄にしてから入力します。</p>
+            <p class="alcohol-conversion-hydrometer-editor-note">ここは浮標・器差設定の管理です。現在の登録内容を.txtで書き出し、別端末や他の人から受け取った.txtを読み込めます。読み込んだ内容はすぐ保存せず、この画面で確認してから登録します。検定位置と器差補正の両方が入っている行だけ、入力画面の器差候補に出ます。</p>
+
+            <section class="alcohol-conversion-txt-tools" aria-label="浮標・器差設定のtxt入出力">
+              <div class="alcohol-conversion-txt-tools-head">.txtで受け渡す</div>
+              <p class="alcohol-conversion-txt-note">浮標を増やす時は.txt内の【浮標】のまとまりをコピーして追記します。消す時は、そのまとまりを削除します。読み込むと一覧を丸ごと置き換える確認状態になります。</p>
+              <div class="alcohol-conversion-txt-actions">
+                <button class="back-btn" id="alcohol-conversion-txt-export-current" type="button">現在の登録内容を.txtで書き出す</button>
+                <button class="back-btn" id="alcohol-conversion-txt-export-empty" type="button">空の入力用テンプレートを作る</button>
+                <button class="back-btn" id="alcohol-conversion-txt-export-backup" type="button">変更前の登録内容を.txtで書き出す</button>
+              </div>
+              <label class="alcohol-conversion-txt-field"><span>.txtの内容を貼り付ける</span><textarea id="alcohol-conversion-txt-input" rows="8" spellcheck="false" placeholder="ここに.txtの内容を貼り付けてください。"></textarea></label>
+              <div class="alcohol-conversion-txt-actions alcohol-conversion-txt-actions-main">
+                <button class="back-btn" id="alcohol-conversion-txt-load-paste" type="button">貼り付けた内容を読み込む</button>
+                <label class="back-btn alcohol-conversion-file-button" for="alcohol-conversion-txt-file">.txtファイルを選ぶ<input id="alcohol-conversion-txt-file" type="file" accept=".txt,text/plain"></label>
+                <button class="back-btn action-forward-btn" id="alcohol-conversion-txt-apply" type="button" disabled>この内容で登録する</button>
+                <button class="back-btn reset-btn" id="alcohol-conversion-txt-restore-backup" type="button">変更前の登録内容に戻す</button>
+              </div>
+              <div class="alcohol-conversion-txt-status" id="alcohol-conversion-txt-status" aria-live="polite"></div>
+            </section>
+
             <div class="alcohol-conversion-editor-grid alcohol-conversion-editor-main-grid" aria-label="浮標設定入力">
               <label class="alcohol-conversion-editor-field alcohol-conversion-editor-field-wide"><span>浮標名</span><input id="alcohol-conversion-editor-label" type="text" autocomplete="off" placeholder="例：15〜20"></label>
-              <label class="alcohol-conversion-editor-field"><span>下限%</span><input id="alcohol-conversion-editor-min" inputmode="decimal" step="0.1" type="number"></label>
-              <label class="alcohol-conversion-editor-field"><span>上限%</span><input id="alcohol-conversion-editor-max" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-field"><span>下限（%）</span><input id="alcohol-conversion-editor-min" inputmode="decimal" step="0.1" type="number"></label>
+              <label class="alcohol-conversion-editor-field"><span>上限（%）</span><input id="alcohol-conversion-editor-max" inputmode="decimal" step="0.1" type="number"></label>
             </div>
             <div class="alcohol-conversion-editor-points" aria-label="器差補正設定">
-              <div class="alcohol-conversion-editor-head">検定点%</div>
-              <div class="alcohol-conversion-editor-head">器差補正%</div>
+              <div class="alcohol-conversion-editor-head">検定位置（%）</div>
+              <div class="alcohol-conversion-editor-head">器差補正（%）</div>
               <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
               <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-kisa" inputmode="decimal" step="0.01" type="number"></label>
               <label class="alcohol-conversion-editor-cell"><input class="alcohol-conversion-editor-point" inputmode="decimal" step="0.1" type="number"></label>
@@ -75,7 +94,6 @@
               <button class="back-btn action-forward-btn" id="alcohol-conversion-editor-save" type="button">この浮標を上書き保存</button>
               <button class="back-btn" id="alcohol-conversion-editor-add" type="button">新しい浮標の入力を始める</button>
               <button class="back-btn reset-btn" id="alcohol-conversion-editor-delete" type="button">この浮標を一覧から削除</button>
-              <button class="back-btn reset-btn" id="alcohol-conversion-editor-defaults" type="button">標準の浮標一覧に戻す</button>
             </div>
             <div class="alcohol-conversion-editor-status" id="alcohol-conversion-editor-status" aria-live="polite"></div>
           </div>
@@ -103,7 +121,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260530hydroedit2"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260530hydrotxt1"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>
