@@ -40,6 +40,7 @@
   // 2026-05-28: 15℃補正後アルコール分の自動計算は停止中。
   // この画面では補正後示度までを出し、横田表画像へ確認位置を渡す。
 
+  function safeGet(key){ try { return localStorage.getItem(key); } catch(_err){ return ''; } }
   function safeSet(key, value){ try { localStorage.setItem(key, value); } catch(_err){} }
   function cloneDefaults(){ return JSON.parse(JSON.stringify(DEFAULT_HYDROMETERS)); }
   function loadHydrometers(){
