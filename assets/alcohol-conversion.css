@@ -73,3 +73,7 @@ body.theme-dark .alcohol-conversion-corrected-card,body.dark .alcohol-conversion
 body.theme-dark .alcohol-conversion-hydrometer-editor-body,body.dark .alcohol-conversion-hydrometer-editor-body{background:rgba(255,255,255,.025);border-color:rgba(255,255,255,.12);}
 body.theme-dark .alcohol-conversion-editor-field input,body.dark .alcohol-conversion-editor-field input,body.theme-dark .alcohol-conversion-editor-cell input,body.dark .alcohol-conversion-editor-cell input{background:var(--role-input-bg);color:var(--text);border-color:var(--role-input-border);}
 @media(max-width:640px){.alcohol-conversion-editor-main-grid{grid-template-columns:1fr 1fr;}.alcohol-conversion-editor-field-wide{grid-column:1/-1;}.alcohol-conversion-editor-actions{grid-template-columns:1fr;}.alcohol-conversion-hydrometer-editor-body{padding:10px;}.alcohol-conversion-editor-points{gap:7px;}}
+
+
+/* 2026-05-30 hydroedit2: 浮標マスター編集の文言と新規追加操作を整理。新規追加は即コピー保存せず、空欄入力から保存する。 */
+.alcohol-conversion-editor-actions .back-btn:disabled{opacity:.55;cursor:not-allowed;filter:grayscale(.15);}

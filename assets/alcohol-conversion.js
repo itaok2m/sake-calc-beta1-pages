@@ -48,6 +48,8 @@
   let manualKisaTouched = false;
   let activeCandidateKey = '';
   let hydrometerRenderToken = 0;
+  let editorMode = 'edit';
+  let editorDraftId = '';
 
   // 2026-05-28: 15℃補正後アルコール分の自動計算は停止中。
   // この画面では補正後示度までを出し、横田表画像へ確認位置を渡す。
@@ -254,6 +256,20 @@
     el.editorStatus.classList.remove('is-ok', 'is-error');
     if (type) el.editorStatus.classList.add(type === 'error' ? 'is-error' : 'is-ok');
   }
+  function setEditorMode(mode){
+    editorMode = mode === 'new' ? 'new' : 'edit';
+    if (editorMode === 'new') {
+      if (!editorDraftId) editorDraftId = uniqueId();
+      if (el.editorSave) el.editorSave.textContent = '新しい浮標として保存';
+      if (el.editorAdd) el.editorAdd.textContent = '入力を空欄にする';
+      if (el.editorDelete) el.editorDelete.disabled = true;
+    } else {
+      editorDraftId = '';
+      if (el.editorSave) el.editorSave.textContent = 'この浮標を上書き保存';
+      if (el.editorAdd) el.editorAdd.textContent = '新しい浮標の入力を始める';
+      if (el.editorDelete) el.editorDelete.disabled = false;
+    }
+  }
   function updateTableLink(corrected, temp){
     const params = new URLSearchParams();
     if (Number.isFinite(corrected)) params.set('abv', roundTo(corrected, 2).toFixed(2));
@@ -308,6 +324,7 @@
   }
   function fillEditorFromHydrometer(hydrometer){
     if (!hydrometer || !el.editorLabel) return;
+    setEditorMode('edit');
     el.editorLabel.value = hydrometer.label || '';
     el.editorMin.value = Number.isFinite(Number(hydrometer.min)) ? String(hydrometer.min) : '';
     el.editorMax.value = Number.isFinite(Number(hydrometer.max)) ? String(hydrometer.max) : '';
@@ -356,6 +373,18 @@
     el.kisa.value = '';
   }
   function saveCurrentHydrometer(){
+    if (editorMode === 'new') {
+      const result = readEditorHydrometer(editorDraftId || uniqueId());
+      if (result.error) { setEditorStatus(result.error, 'error'); return; }
+      hydrometers.push(result.hydrometer);
+      saveHydrometers();
+      populateHydrometerOptions(result.hydrometer.id);
+      fillEditorFromHydrometer(selectedHydrometer());
+      resetSelectionState();
+      updateAll();
+      setEditorStatus('新しい浮標を保存しました。', 'ok');
+      return;
+    }
     const current = selectedHydrometer();
     if (!current) return;
     const result = readEditorHydrometer(current.id);
@@ -366,25 +395,16 @@
     fillEditorFromHydrometer(selectedHydrometer());
     resetSelectionState();
     updateAll();
-    setEditorStatus('保存しました。', 'ok');
+    setEditorStatus('この浮標を上書き保存しました。', 'ok');
   }
-  function addHydrometerFromEditor(){
-    const result = readEditorHydrometer(uniqueId());
-    if (result.error) { setEditorStatus(result.error, 'error'); return; }
-    let baseLabel = result.hydrometer.label;
-    const labels = new Set(hydrometers.map(h => h.label));
-    if (labels.has(baseLabel)) {
-      let i = 2;
-      while (labels.has(baseLabel + ' ' + i)) i += 1;
-      result.hydrometer.label = baseLabel + ' ' + i;
-    }
-    hydrometers.push(result.hydrometer);
-    saveHydrometers();
-    populateHydrometerOptions(result.hydrometer.id);
-    fillEditorFromHydrometer(selectedHydrometer());
-    resetSelectionState();
-    updateAll();
-    setEditorStatus('新しい浮標として追加しました。', 'ok');
+  function startNewHydrometerDraft(){
+    setEditorMode('new');
+    if (el.editorLabel) el.editorLabel.value = '';
+    if (el.editorMin) el.editorMin.value = '';
+    if (el.editorMax) el.editorMax.value = '';
+    el.editorPoints.forEach((input) => { input.value = ''; });
+    el.editorKisas.forEach((input) => { input.value = ''; });
+    setEditorStatus('新しい浮標の入力欄を空にしました。浮標名・範囲・検定点%・器差補正%を入力して保存してください。', 'ok');
   }
   function deleteCurrentHydrometer(){
     const current = selectedHydrometer();
@@ -407,7 +427,7 @@
     fillEditorFromHydrometer(selectedHydrometer());
     resetSelectionState();
     updateAll();
-    setEditorStatus('初期浮標に戻しました。', 'ok');
+    setEditorStatus('標準の浮標一覧に戻しました。', 'ok');
   }
   function resetAll(){
     resetSelectionState();
@@ -436,7 +456,7 @@
     });
     el.reset.addEventListener('click', resetAll);
     if (el.editorSave) el.editorSave.addEventListener('click', saveCurrentHydrometer);
-    if (el.editorAdd) el.editorAdd.addEventListener('click', addHydrometerFromEditor);
+    if (el.editorAdd) el.editorAdd.addEventListener('click', startNewHydrometerDraft);
     if (el.editorDelete) el.editorDelete.addEventListener('click', deleteCurrentHydrometer);
     if (el.editorDefaults) el.editorDefaults.addEventListener('click', restoreDefaultHydrometers);
   }
