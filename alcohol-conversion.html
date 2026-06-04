@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>アルコール換算 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260604txtfile1">
+  <link rel="stylesheet" href="./assets/alcohol-conversion.css?v=20260604kisamanual1">
 </head>
 <body>
   <div class="tool-nav">
@@ -83,6 +83,7 @@
 
         <div class="group"><div class="group-title">器差を選ぶ</div>
           <div class="candidate-panel" id="alcohol-conversion-kisa-candidates" aria-live="polite"></div>
+          <p class="alcohol-conversion-kisa-note">器差補正は自動選択しません。登録済み器差または「器差補正なし」を人間が選んでください。</p>
           <input id="alcohol-conversion-kisa" type="hidden">
         </div>
 
@@ -103,7 +104,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol-conversion.js?v=20260604txtfile1"></script>
+  <script src="./assets/alcohol-conversion.js?v=20260604kisamanual1"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>

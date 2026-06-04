@@ -58,8 +58,10 @@
   // この画面では補正後示度までを出し、横田表画像へ確認位置を渡す。
   // 2026-05-30: 使用浮標と器差補正は、端末内の登録値として保持する。
   // 2026-05-30: 浮標・器差設定の.txt書き出し、.txt読み込み、確認後登録、変更前復元を追加。
-  // 2026-06-04 reload1: リロード時は、測定入力と設定画面の開閉だけ復帰し、未登録の.txt貼り付け・確認状態は復帰しない。
+  // 2026-06-04 reload1: リロード時は、測定入力と設定画面の開閉だけ復帰し、未登録の.txt読み込み確認状態は復帰しない。
   // 2026-06-04 txtfile1: アプリ内編集を通常導線から外し、.txtファイル読込・確認・登録・書き出しへ一本化。
+  // 2026-06-04 kisanone1: 全浮標に器差補正なし（0.00%）を用意し、検定していない度数帯は補正なしで扱えるようにする。
+  // 2026-06-04 kisamanual1: 器差補正の自動選択を停止し、人間が候補を選ぶまで補正後示度を出さないようにする。
 
   function safeGet(key){ try { return localStorage.getItem(key); } catch(_err){ return ''; } }
   function safeSet(key, value){ try { localStorage.setItem(key, value); } catch(_err){} }
@@ -233,58 +235,55 @@
     if (!Number.isFinite(reading)) return [];
     const points = getRegisteredKisaPoints(hydrometer);
     if (!points.length) return [];
-    const withDistance = points.map((p) => ({ degree:p.degree, kisa:p.kisa, distance:Math.abs(reading - p.degree) }));
-    const min = Math.min.apply(null, withDistance.map(p => p.distance));
-    return withDistance.filter(p => Math.abs(p.distance - min) < 1e-9).sort((a,b) => a.degree - b.degree || a.kisa - b.kisa);
+    const roundedReading = roundTo(reading, 1);
+    return points
+      .filter(p => Math.abs(roundTo(p.degree, 1) - roundedReading) < 1e-9)
+      .sort((a,b) => a.degree - b.degree || a.kisa - b.kisa);
   }
-  function candidateKey(c){ return c ? String(c.degree) + ':' + roundTo(c.kisa, 2).toFixed(2) : ''; }
+  function noKisaCandidate(){ return {degree:null, kisa:0, isNoKisa:true}; }
+  function candidateKey(c){
+    if (c && c.isNoKisa) return 'none:0.00';
+    return c ? String(c.degree) + ':' + roundTo(c.kisa, 2).toFixed(2) : '';
+  }
+  function candidateText(c){
+    if (c && c.isNoKisa) return '器差補正なし：0.00%';
+    return formatDegree(c.degree) + '%時：' + formatSigned(c.kisa, 2) + '%';
+  }
+  function setKisaCandidate(c){
+    activeCandidateKey = candidateKey(c);
+    manualKisaTouched = true;
+    el.kisa.value = roundTo(c.kisa, 2).toFixed(2);
+    updateAll();
+  }
   function renderCandidates(points){
     el.candidates.innerHTML = '';
-    if (!points.length) {
-      const div = document.createElement('div');
-      div.className = 'candidate-empty';
-      div.textContent = 'この浮標には器差候補が登録されていません。';
-      el.candidates.appendChild(div);
-      activeCandidateKey = '';
-      return;
-    }
     const list = document.createElement('div');
     list.className = 'candidate-list';
-    points.forEach((c) => {
+    [noKisaCandidate()].concat(Array.isArray(points) ? points : []).forEach((c) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'kisa-candidate-btn';
       const key = candidateKey(c);
       btn.dataset.kisa = String(c.kisa);
       btn.dataset.key = key;
-      btn.textContent = formatDegree(c.degree) + '%時：' + formatSigned(c.kisa, 2) + '%';
+      btn.textContent = candidateText(c);
+      btn.classList.toggle('is-none', !!c.isNoKisa);
       btn.classList.toggle('is-active', key === activeCandidateKey);
-      btn.addEventListener('click', () => {
-        activeCandidateKey = key;
-        manualKisaTouched = true;
-        el.kisa.value = c.kisa.toFixed(2);
-        updateAll();
-      });
+      btn.addEventListener('click', () => setKisaCandidate(c));
       list.appendChild(btn);
     });
     el.candidates.appendChild(list);
+    if (!points.length) {
+      const div = document.createElement('div');
+      div.className = 'candidate-empty';
+      div.textContent = '登録済みの器差候補はありません。必要な場合は浮標・器差設定のtxtを更新してください。';
+      el.candidates.appendChild(div);
+    }
   }
-  function pickDefaultCandidate(reading, candidates){
-    if (!Number.isFinite(reading)) {
-      if (!manualKisaTouched) {
-        el.kisa.value = '';
-        activeCandidateKey = '';
-      }
-      return;
-    }
+  function clearKisaIfNotTouched(){
     if (manualKisaTouched) return;
-    if (candidates.length === 1) {
-      el.kisa.value = candidates[0].kisa.toFixed(2);
-      activeCandidateKey = candidateKey(candidates[0]);
-    } else {
-      el.kisa.value = '';
-      activeCandidateKey = '';
-    }
+    el.kisa.value = '';
+    activeCandidateKey = '';
   }
   function saveInputs(){
     if (txtReviewMode) return;
@@ -397,12 +396,14 @@
     const hasReading = valueEntered(el.reading);
     const hasTemp = valueEntered(el.temp);
     const hasKisa = valueEntered(el.kisa);
+    const hydrometerInRange = !!(hasReading && hydrometer && Number.isFinite(reading) && reading >= Number(hydrometer.min) && reading <= Number(hydrometer.max));
     if (hasReading && !Number.isFinite(reading)) return '測定度数を確認してください。';
     if (hasTemp && !Number.isFinite(temp)) return '測定温度を確認してください。';
     if (hasKisa && !Number.isFinite(kisa)) return '器差を確認してください。';
     if (hasReading && hydrometer && Number.isFinite(reading) && (reading < Number(hydrometer.min) || reading > Number(hydrometer.max))) {
       return '選択中の浮標範囲外です。';
     }
+    if (hasReading && hasTemp && hydrometerInRange && !hasKisa) return '器差補正を選んでください。';
     if (hasReading && hasTemp && hasKisa && (!Number.isFinite(corrected) || corrected < 0 || corrected > 100)) return '補正後示度が表の範囲外です。';
     if (hasTemp && Number.isFinite(temp) && (temp < 0 || temp > 35)) return '測定温度が表の範囲外です。';
     return '';
@@ -414,12 +415,7 @@
     const points = getRegisteredKisaPoints(hydrometer);
     const hydrometerInRange = !!(hydrometer && Number.isFinite(reading) && reading >= Number(hydrometer.min) && reading <= Number(hydrometer.max));
     const candidates = hydrometerInRange ? getKisaCandidates(reading, hydrometer) : [];
-    if (hydrometerInRange) {
-      pickDefaultCandidate(reading, candidates);
-    } else if (!manualKisaTouched) {
-      el.kisa.value = '';
-      activeCandidateKey = '';
-    }
+    clearKisaIfNotTouched();
     renderCandidates(points);
     const kisa = numberValue(el.kisa);
     const corrected = Number.isFinite(reading) && Number.isFinite(kisa) && hydrometerInRange ? reading - kisa : NaN;
@@ -443,6 +439,7 @@
       '# 浮標名、下限（%）、上限（%）は必須です。',
       '# 検定位置と器差補正はセットで入力します。使わない行は空欄のままでよいです。',
       '# 器差補正に「±」は使えません。+0.02 / -0.02 / 0.00 のように書いてください。',
+      '# 検定していない度数帯は、アプリ画面で「器差補正なし」を選びます。',
       '# 読み込むと、現在の浮標一覧を丸ごと置き換える確認状態になります。',
       ''
     ];
