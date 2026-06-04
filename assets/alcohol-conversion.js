@@ -66,6 +66,7 @@
   // この画面では補正後示度までを出し、横田表画像へ確認位置を渡す。
   // 2026-05-30: 使用浮標と器差補正は、端末内で登録・編集できる。
   // 2026-05-30: 浮標・器差設定の.txt書き出し、.txt読み込み、確認後登録、変更前復元を追加。
+  // 2026-05-30 txtguide1: .txt貼り付け欄と読み込み後の確認・微修正欄の役割を画面導線で分離。
 
   function safeGet(key){ try { return localStorage.getItem(key); } catch(_err){ return ''; } }
   function safeSet(key, value){ try { localStorage.setItem(key, value); } catch(_err){} }
@@ -442,7 +443,7 @@
   function txtFileName(){ return '浮標_器差設定_' + todayYmd() + '.txt'; }
   function putTextForCopy(text, message){
     if (el.txtInput) el.txtInput.value = text;
-    setTxtStatus(message || '.txt内容を下の欄へ出しました。必要に応じてコピーしてください。', 'ok');
+    setTxtStatus(message || '.txt内容を貼り付け欄へ出しました。必要に応じてコピーしてください。', 'ok');
   }
   function downloadTextFile(text, fileName, fallbackMessage){
     if (!text) return;
@@ -459,7 +460,7 @@
         if (typeof a.click === 'function') a.click();
         if (a.parentNode && a.parentNode.removeChild) a.parentNode.removeChild(a);
         setTimeout(() => { try { URL.revokeObjectURL(url); } catch(_err){} }, 500);
-        setTxtStatus((fileName || txtFileName()) + ' を作成しました。内容は貼り付け欄にも残しています。', 'ok');
+        setTxtStatus((fileName || txtFileName()) + ' を作成しました。内容は.txt貼り付け欄にも残しています。', 'ok');
         return;
       }
     } catch(_err) {}
@@ -603,18 +604,18 @@
     resetSelectionState();
     updateAll();
     if (el.editor) el.editor.open = true;
-    setTxtStatus(hydrometers.length + '本を読み込みました。まだ登録していません。内容を確認してから「この内容で登録する」を押してください。', 'warn');
+    setTxtStatus(hydrometers.length + '本を読み込みました。まだ登録していません。下の入力欄で確認・微修正してから「確認した内容で登録する」を押してください。', 'warn');
   }
   function exportCurrentTxt(){
-    downloadTextFile(buildHydrometerTxt(loadStoredHydrometers()), txtFileName(), '現在の登録内容を下の欄へ出しました。');
+    downloadTextFile(buildHydrometerTxt(loadStoredHydrometers()), txtFileName(), '現在の登録内容を.txt貼り付け欄へ出しました。');
   }
   function exportEmptyTxt(){
-    downloadTextFile(buildHydrometerTxt([], {empty:true}), '浮標_器差入力用_' + todayYmd() + '.txt', '空の入力用テンプレートを下の欄へ出しました。');
+    downloadTextFile(buildHydrometerTxt([], {empty:true}), '浮標_器差入力用_' + todayYmd() + '.txt', '入力用テンプレートを.txt貼り付け欄へ出しました。');
   }
   function exportBackupTxt(){
     const backup = loadHydrometerBackup();
     if (!backup) { setTxtStatus('変更前の登録内容がまだありません。', 'error'); return; }
-    downloadTextFile(buildHydrometerTxt(backup.hydrometers), '浮標_器差設定_変更前_' + todayYmd() + '.txt', '変更前の登録内容を下の欄へ出しました。');
+    downloadTextFile(buildHydrometerTxt(backup.hydrometers), '浮標_器差設定_変更前_' + todayYmd() + '.txt', '変更前の登録内容を.txt貼り付け欄へ出しました。');
   }
   function loadPastedTxt(){
     loadTxtIntoReview(el.txtInput ? el.txtInput.value : '', '貼り付け読込前');
@@ -741,7 +742,7 @@
     if (el.editorMax) el.editorMax.value = '';
     el.editorPoints.forEach((input) => { input.value = ''; });
     el.editorKisas.forEach((input) => { input.value = ''; });
-    setEditorStatus('新しい浮標の入力欄を空にしました。浮標名・範囲・検定位置（%）・器差補正（%）を入力して保存してください。', 'ok');
+    setEditorStatus('新しい浮標の入力欄を空にしました。浮標名・範囲・検定位置（%）・器差補正（%）を入力して保存してください。読み込み確認中の場合は、最後に「確認した内容で登録する」を押すまで現在の登録内容は置き換わりません。', 'ok');
   }
   function deleteCurrentHydrometer(){
     const current = selectedHydrometer();
