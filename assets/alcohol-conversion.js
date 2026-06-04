@@ -5,7 +5,8 @@
     hydrometers: 'sake_alcohol_conversion_hydrometer_master_v1',
     hydrometerBackup: 'sake_alcohol_conversion_hydrometer_backup_v1',
     lastHydrometer: 'sake_alcohol_conversion_last_hydrometer_v1',
-    lastInputs: 'sake_alcohol_conversion_last_inputs_v1'
+    lastInputs: 'sake_alcohol_conversion_last_inputs_v1',
+    uiState: 'sake_alcohol_conversion_ui_state_v1'
   };
 
   const DEFAULT_HYDROMETERS = [
@@ -67,6 +68,7 @@
   // 2026-05-30: 使用浮標と器差補正は、端末内で登録・編集できる。
   // 2026-05-30: 浮標・器差設定の.txt書き出し、.txt読み込み、確認後登録、変更前復元を追加。
   // 2026-05-30 txtguide1: .txt貼り付け欄と読み込み後の確認・微修正欄の役割を画面導線で分離。
+  // 2026-06-04 reload1: リロード時は、測定入力と設定画面の開閉だけ復帰し、未登録の.txt貼り付け・確認状態は復帰しない。
 
   function safeGet(key){ try { return localStorage.getItem(key); } catch(_err){ return ''; } }
   function safeSet(key, value){ try { localStorage.setItem(key, value); } catch(_err){} }
@@ -294,6 +296,7 @@
     }
   }
   function saveInputs(){
+    if (txtReviewMode) return;
     safeSet(STORAGE_KEYS.lastInputs, JSON.stringify({
       reading: el.reading.value,
       temp: el.temp.value,
@@ -316,6 +319,30 @@
         if (String(el.kisa.value || '').trim()) manualKisaTouched = true;
       }
     } catch(_err) {}
+  }
+  function loadUiState(){
+    const raw = safeGet(STORAGE_KEYS.uiState);
+    if (!raw) return {};
+    try {
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch(_err) {
+      return {};
+    }
+  }
+  function saveUiState(){
+    safeSet(STORAGE_KEYS.uiState, JSON.stringify({
+      editorOpen: !!(el.editor && el.editor.open)
+    }));
+  }
+  function restoreUiState(){
+    const state = loadUiState();
+    if (el.editor && typeof state.editorOpen === 'boolean') el.editor.open = state.editorOpen;
+  }
+  function clearTransientTxtState(){
+    if (el.txtInput) el.txtInput.value = '';
+    if (el.txtFile) { try { el.txtFile.value = ''; } catch(_err) {} }
+    setTxtStatus('', '');
   }
   function showError(message){
     el.error.textContent = message || '';
@@ -794,6 +821,7 @@
     if (el.txtApply) el.txtApply.addEventListener('click', applyTxtHydrometers);
     if (el.txtRestoreBackup) el.txtRestoreBackup.addEventListener('click', restoreBackupHydrometers);
     if (el.txtFile) el.txtFile.addEventListener('change', handleTxtFileChange);
+    if (el.editor) el.editor.addEventListener('toggle', saveUiState);
   }
   function init(){
     hydrometers = normalizeHydrometers(hydrometers);
@@ -803,6 +831,8 @@
     restoreInputs();
     fillEditorFromHydrometer(selectedHydrometer());
     setTxtReviewMode(false, '');
+    clearTransientTxtState();
+    restoreUiState();
     bindEvents();
     updateAll();
   }
