@@ -34,41 +34,32 @@
     reset: document.getElementById('alcohol-conversion-reset'),
     tableLink: document.getElementById('alcohol-conversion-open-table'),
     editor: document.getElementById('alcohol-conversion-hydrometer-editor'),
-    editorLabel: document.getElementById('alcohol-conversion-editor-label'),
-    editorMin: document.getElementById('alcohol-conversion-editor-min'),
-    editorMax: document.getElementById('alcohol-conversion-editor-max'),
-    editorPoints: Array.prototype.slice.call(document.querySelectorAll('.alcohol-conversion-editor-point')),
-    editorKisas: Array.prototype.slice.call(document.querySelectorAll('.alcohol-conversion-editor-kisa')),
-    editorSave: document.getElementById('alcohol-conversion-editor-save'),
-    editorAdd: document.getElementById('alcohol-conversion-editor-add'),
-    editorDelete: document.getElementById('alcohol-conversion-editor-delete'),
-    editorStatus: document.getElementById('alcohol-conversion-editor-status'),
     txtExportCurrent: document.getElementById('alcohol-conversion-txt-export-current'),
     txtExportEmpty: document.getElementById('alcohol-conversion-txt-export-empty'),
     txtExportBackup: document.getElementById('alcohol-conversion-txt-export-backup'),
-    txtInput: document.getElementById('alcohol-conversion-txt-input'),
-    txtLoadPaste: document.getElementById('alcohol-conversion-txt-load-paste'),
     txtFile: document.getElementById('alcohol-conversion-txt-file'),
     txtApply: document.getElementById('alcohol-conversion-txt-apply'),
     txtRestoreBackup: document.getElementById('alcohol-conversion-txt-restore-backup'),
-    txtStatus: document.getElementById('alcohol-conversion-txt-status')
+    txtStatus: document.getElementById('alcohol-conversion-txt-status'),
+    txtPreview: document.getElementById('alcohol-conversion-txt-preview'),
+    txtPreviewSummary: document.getElementById('alcohol-conversion-txt-preview-summary'),
+    txtPreviewList: document.getElementById('alcohol-conversion-txt-preview-list')
   };
 
   let hydrometers = loadHydrometers();
   let manualKisaTouched = false;
   let activeCandidateKey = '';
   let hydrometerRenderToken = 0;
-  let editorMode = 'edit';
-  let editorDraftId = '';
   let txtReviewMode = false;
   let txtReviewSource = '';
+  let txtPendingHydrometers = [];
 
   // 2026-05-28: 15℃補正後アルコール分の自動計算は停止中。
   // この画面では補正後示度までを出し、横田表画像へ確認位置を渡す。
-  // 2026-05-30: 使用浮標と器差補正は、端末内で登録・編集できる。
+  // 2026-05-30: 使用浮標と器差補正は、端末内の登録値として保持する。
   // 2026-05-30: 浮標・器差設定の.txt書き出し、.txt読み込み、確認後登録、変更前復元を追加。
-  // 2026-05-30 txtguide1: .txt貼り付け欄と読み込み後の確認・微修正欄の役割を画面導線で分離。
   // 2026-06-04 reload1: リロード時は、測定入力と設定画面の開閉だけ復帰し、未登録の.txt貼り付け・確認状態は復帰しない。
+  // 2026-06-04 txtfile1: アプリ内編集を通常導線から外し、.txtファイル読込・確認・登録・書き出しへ一本化。
 
   function safeGet(key){ try { return localStorage.getItem(key); } catch(_err){ return ''; } }
   function safeSet(key, value){ try { localStorage.setItem(key, value); } catch(_err){} }
@@ -340,19 +331,15 @@
     if (el.editor && typeof state.editorOpen === 'boolean') el.editor.open = state.editorOpen;
   }
   function clearTransientTxtState(){
-    if (el.txtInput) el.txtInput.value = '';
+    txtPendingHydrometers = [];
     if (el.txtFile) { try { el.txtFile.value = ''; } catch(_err) {} }
+    setTxtReviewMode(false, '');
+    renderTxtPreview([]);
     setTxtStatus('', '');
   }
   function showError(message){
     el.error.textContent = message || '';
     el.error.hidden = !message;
-  }
-  function setEditorStatus(message, type){
-    if (!el.editorStatus) return;
-    el.editorStatus.textContent = message || '';
-    el.editorStatus.classList.remove('is-ok', 'is-error');
-    if (type) el.editorStatus.classList.add(type === 'error' ? 'is-error' : 'is-ok');
   }
   function setTxtStatus(message, type){
     if (!el.txtStatus) return;
@@ -366,19 +353,28 @@
     if (el.txtApply) el.txtApply.disabled = !txtReviewMode;
     if (el.editor) el.editor.classList.toggle('is-txt-review', txtReviewMode);
   }
-  function setEditorMode(mode){
-    editorMode = mode === 'new' ? 'new' : 'edit';
-    if (editorMode === 'new') {
-      if (!editorDraftId) editorDraftId = uniqueId();
-      if (el.editorSave) el.editorSave.textContent = '新しい浮標として保存';
-      if (el.editorAdd) el.editorAdd.textContent = '入力を空欄にする';
-      if (el.editorDelete) el.editorDelete.disabled = true;
-    } else {
-      editorDraftId = '';
-      if (el.editorSave) el.editorSave.textContent = 'この浮標を上書き保存';
-      if (el.editorAdd) el.editorAdd.textContent = '新しい浮標の入力を始める';
-      if (el.editorDelete) el.editorDelete.disabled = false;
+  function renderTxtPreview(list){
+    const hyds = normalizeHydrometers(list);
+    if (el.txtPreview) el.txtPreview.hidden = !hyds.length;
+    if (el.txtPreviewSummary) {
+      el.txtPreviewSummary.textContent = hyds.length ? hyds.length + '本を読み取りました。登録すると現在の浮標一覧を丸ごと置き換えます。' : '';
     }
+    if (!el.txtPreviewList) return;
+    el.txtPreviewList.innerHTML = '';
+    hyds.forEach((h) => {
+      const card = document.createElement('div');
+      card.className = 'alcohol-conversion-txt-preview-item';
+      const title = document.createElement('div');
+      title.className = 'alcohol-conversion-txt-preview-title';
+      title.textContent = h.label + '（' + formatDegree(h.min) + '〜' + formatDegree(h.max) + '%）';
+      const points = document.createElement('div');
+      points.className = 'alcohol-conversion-txt-preview-points';
+      const pointText = getRegisteredKisaPoints(h).map((p) => formatDegree(p.degree) + '%時 ' + formatSigned(p.kisa, 2) + '%').join(' / ');
+      points.textContent = pointText || '器差候補なし';
+      card.appendChild(title);
+      card.appendChild(points);
+      el.txtPreviewList.appendChild(card);
+    });
   }
   function updateTableLink(corrected, temp){
     const params = new URLSearchParams();
@@ -468,13 +464,8 @@
     return lines.join('\n');
   }
   function txtFileName(){ return '浮標_器差設定_' + todayYmd() + '.txt'; }
-  function putTextForCopy(text, message){
-    if (el.txtInput) el.txtInput.value = text;
-    setTxtStatus(message || '.txt内容を貼り付け欄へ出しました。必要に応じてコピーしてください。', 'ok');
-  }
-  function downloadTextFile(text, fileName, fallbackMessage){
+  function downloadTextFile(text, fileName){
     if (!text) return;
-    if (el.txtInput) el.txtInput.value = text;
     try {
       if (typeof Blob !== 'undefined' && typeof URL !== 'undefined' && URL.createObjectURL && document.body) {
         const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
@@ -487,11 +478,11 @@
         if (typeof a.click === 'function') a.click();
         if (a.parentNode && a.parentNode.removeChild) a.parentNode.removeChild(a);
         setTimeout(() => { try { URL.revokeObjectURL(url); } catch(_err){} }, 500);
-        setTxtStatus((fileName || txtFileName()) + ' を作成しました。内容は.txt貼り付け欄にも残しています。', 'ok');
+        setTxtStatus((fileName || txtFileName()) + ' を作成しました。外部で編集してから「txtファイルを選ぶ」で読み込んでください。', 'ok');
         return;
       }
     } catch(_err) {}
-    putTextForCopy(text, fallbackMessage);
+    setTxtStatus('この環境では.txtファイルを作成できませんでした。PCのブラウザなどで再度試してください。', 'error');
   }
   function keyIndex(raw){
     const map = {'①':1,'②':2,'③':3,'④':4,'⑤':5,'１':1,'２':2,'３':3,'４':4,'５':5,'1':1,'2':2,'3':3,'4':4,'5':5};
@@ -618,172 +609,76 @@
   function loadTxtIntoReview(text, sourceLabel){
     const parsed = parseHydrometerTxt(text);
     if (parsed.errors && parsed.errors.length) {
+      txtPendingHydrometers = [];
       setTxtReviewMode(false, '');
+      renderTxtPreview([]);
       setTxtStatus(parsed.errors.slice(0, 5).join(' / ') + (parsed.errors.length > 5 ? ' / ほか' + (parsed.errors.length - 5) + '件' : ''), 'error');
       return;
     }
-    hydrometers = parsed.hydrometers;
-    saveHydrometers({persist:false});
+    txtPendingHydrometers = normalizeHydrometers(parsed.hydrometers);
     setTxtReviewMode(true, sourceLabel || '.txt読込');
-    safeRemove(STORAGE_KEYS.lastHydrometer);
-    populateHydrometerOptions(hydrometers[0] && hydrometers[0].id);
-    fillEditorFromHydrometer(selectedHydrometer());
-    resetSelectionState();
-    updateAll();
+    renderTxtPreview(txtPendingHydrometers);
     if (el.editor) el.editor.open = true;
-    setTxtStatus(hydrometers.length + '本を読み込みました。まだ登録していません。下の入力欄で確認・微修正してから「確認した内容で登録する」を押してください。', 'warn');
+    setTxtStatus(txtPendingHydrometers.length + '本を読み取りました。まだ登録していません。内容を確認してから「このtxtの内容で登録する」を押してください。', 'warn');
   }
   function exportCurrentTxt(){
-    downloadTextFile(buildHydrometerTxt(loadStoredHydrometers()), txtFileName(), '現在の登録内容を.txt貼り付け欄へ出しました。');
+    downloadTextFile(buildHydrometerTxt(loadStoredHydrometers()), txtFileName());
   }
   function exportEmptyTxt(){
-    downloadTextFile(buildHydrometerTxt([], {empty:true}), '浮標_器差入力用_' + todayYmd() + '.txt', '入力用テンプレートを.txt貼り付け欄へ出しました。');
+    downloadTextFile(buildHydrometerTxt([], {empty:true}), '浮標_器差入力用_' + todayYmd() + '.txt');
   }
   function exportBackupTxt(){
     const backup = loadHydrometerBackup();
     if (!backup) { setTxtStatus('変更前の登録内容がまだありません。', 'error'); return; }
-    downloadTextFile(buildHydrometerTxt(backup.hydrometers), '浮標_器差設定_変更前_' + todayYmd() + '.txt', '変更前の登録内容を.txt貼り付け欄へ出しました。');
-  }
-  function loadPastedTxt(){
-    loadTxtIntoReview(el.txtInput ? el.txtInput.value : '', '貼り付け読込前');
+    downloadTextFile(buildHydrometerTxt(backup.hydrometers), '浮標_器差設定_変更前_' + todayYmd() + '.txt');
   }
   function applyTxtHydrometers(){
-    if (!txtReviewMode) { setTxtStatus('登録する読み込み内容がありません。', 'error'); return; }
+    if (!txtReviewMode || !txtPendingHydrometers.length) { setTxtStatus('登録する読み込み内容がありません。', 'error'); return; }
     saveHydrometerBackup(txtReviewSource || '.txt登録前', loadStoredHydrometers());
+    hydrometers = cloneHydrometers(txtPendingHydrometers);
     saveHydrometers();
+    txtPendingHydrometers = [];
     setTxtReviewMode(false, '');
+    renderTxtPreview([]);
+    safeRemove(STORAGE_KEYS.lastHydrometer);
     populateHydrometerOptions(hydrometers[0] && hydrometers[0].id);
-    fillEditorFromHydrometer(selectedHydrometer());
     resetSelectionState();
     updateAll();
-    setTxtStatus('この内容で登録しました。変更前の登録内容はアプリ内に1件保存しています。', 'ok');
+    setTxtStatus('このtxtの内容で登録しました。変更前の登録内容はアプリ内に1件保存しています。', 'ok');
   }
   function restoreBackupHydrometers(){
     const backup = loadHydrometerBackup();
     if (!backup) { setTxtStatus('変更前の登録内容がまだありません。', 'error'); return; }
     hydrometers = cloneHydrometers(backup.hydrometers);
     saveHydrometers();
+    txtPendingHydrometers = [];
     setTxtReviewMode(false, '');
+    renderTxtPreview([]);
     safeRemove(STORAGE_KEYS.lastHydrometer);
     populateHydrometerOptions(hydrometers[0] && hydrometers[0].id);
-    fillEditorFromHydrometer(selectedHydrometer());
     resetSelectionState();
     updateAll();
     setTxtStatus('変更前の登録内容に戻しました。保存日時：' + (backup.createdAt || '不明') + ' / 理由：' + (backup.reason || '不明'), 'ok');
   }
   function handleTxtFileChange(evt){
-    const file = evt && evt.target && evt.target.files && evt.target.files[0];
+    const fileInput = evt && evt.target;
+    const file = fileInput && fileInput.files && fileInput.files[0];
     if (!file) return;
-    if (typeof FileReader === 'undefined') { setTxtStatus('この環境ではファイル読み込みを使えません。内容を貼り付けて読み込んでください。', 'error'); return; }
+    if (typeof FileReader === 'undefined') { setTxtStatus('この環境ではtxtファイル読み込みを使えません。', 'error'); return; }
     const reader = new FileReader();
     reader.onload = () => {
       const text = String(reader.result || '');
-      if (el.txtInput) el.txtInput.value = text;
       loadTxtIntoReview(text, '.txt読込前');
+      try { if (fileInput) fileInput.value = ''; } catch(_err) {}
     };
     reader.onerror = () => setTxtStatus('.txtファイルを読めませんでした。', 'error');
     reader.readAsText(file, 'UTF-8');
   }
 
-  function fillEditorFromHydrometer(hydrometer){
-    if (!hydrometer || !el.editorLabel) return;
-    setEditorMode('edit');
-    el.editorLabel.value = hydrometer.label || '';
-    el.editorMin.value = Number.isFinite(Number(hydrometer.min)) ? String(hydrometer.min) : '';
-    el.editorMax.value = Number.isFinite(Number(hydrometer.max)) ? String(hydrometer.max) : '';
-    const points = getRegisteredKisaPoints(hydrometer);
-    el.editorPoints.forEach((input, index) => {
-      input.value = points[index] ? String(points[index].degree) : '';
-    });
-    el.editorKisas.forEach((input, index) => {
-      input.value = points[index] ? points[index].kisa.toFixed(2) : '';
-    });
-    setEditorStatus('', '');
-  }
-  function readEditorHydrometer(existingId){
-    const label = clampString(el.editorLabel.value);
-    const min = numberValue(el.editorMin);
-    const max = numberValue(el.editorMax);
-    if (!label) return {error:'浮標名を入力してください。'};
-    if (!Number.isFinite(min) || !Number.isFinite(max) || min < 0 || max > 100 || min >= max) return {error:'浮標の下限%・上限%を確認してください。'};
-    const points = [];
-    for (let i = 0; i < Math.max(el.editorPoints.length, el.editorKisas.length); i += 1) {
-      const pRaw = el.editorPoints[i] ? String(el.editorPoints[i].value || '').trim() : '';
-      const kRaw = el.editorKisas[i] ? String(el.editorKisas[i].value || '').trim() : '';
-      if (!pRaw && !kRaw) continue;
-      if (!pRaw || !kRaw) return {error:'検定位置（%）と器差補正（%）はセットで入力してください。'};
-      const degree = parseNumberText(pRaw);
-      const kisa = parseNumberText(kRaw);
-      if (!Number.isFinite(degree) || degree < min || degree > max) return {error:'検定位置（%）は浮標の範囲内で入力してください。'};
-      if (!Number.isFinite(kisa) || kisa < -5 || kisa > 5) return {error:'器差補正%を確認してください。'};
-      points.push({degree:roundTo(degree, 1), kisa:roundTo(kisa, 2)});
-    }
-    if (!points.length) return {error:'検定位置（%）と器差補正（%）を1組以上入力してください。'};
-    return {hydrometer:{
-      id: existingId || uniqueId(),
-      label,
-      min:roundTo(min, 1),
-      max:roundTo(max, 1),
-      inspectionDate:'',
-      nextInspectionGuide:'',
-      status:'using',
-      points:sortPoints(points)
-    }};
-  }
   function resetSelectionState(){
     manualKisaTouched = false;
     activeCandidateKey = '';
     el.kisa.value = '';
-  }
-  function saveCurrentHydrometer(){
-    if (editorMode === 'new') {
-      const result = readEditorHydrometer(editorDraftId || uniqueId());
-      if (result.error) { setEditorStatus(result.error, 'error'); return; }
-      if (!txtReviewMode) saveHydrometerBackup('手入力保存前', hydrometers);
-      hydrometers.push(result.hydrometer);
-      saveHydrometers({persist:txtReviewMode ? false : true});
-      populateHydrometerOptions(result.hydrometer.id);
-      fillEditorFromHydrometer(selectedHydrometer());
-      resetSelectionState();
-      updateAll();
-      setEditorStatus(txtReviewMode ? '確認中の内容へ新しい浮標を追加しました。まだ登録していません。' : '新しい浮標を保存しました。', 'ok');
-      return;
-    }
-    const current = selectedHydrometer();
-    if (!current) return;
-    const result = readEditorHydrometer(current.id);
-    if (result.error) { setEditorStatus(result.error, 'error'); return; }
-    if (!txtReviewMode) saveHydrometerBackup('手入力保存前', hydrometers);
-    hydrometers = hydrometers.map(h => h.id === current.id ? result.hydrometer : h);
-    saveHydrometers({persist:txtReviewMode ? false : true});
-    populateHydrometerOptions(result.hydrometer.id);
-    fillEditorFromHydrometer(selectedHydrometer());
-    resetSelectionState();
-    updateAll();
-    setEditorStatus(txtReviewMode ? '確認中の内容を更新しました。まだ登録していません。' : 'この浮標を上書き保存しました。', 'ok');
-  }
-  function startNewHydrometerDraft(){
-    setEditorMode('new');
-    if (el.editorLabel) el.editorLabel.value = '';
-    if (el.editorMin) el.editorMin.value = '';
-    if (el.editorMax) el.editorMax.value = '';
-    el.editorPoints.forEach((input) => { input.value = ''; });
-    el.editorKisas.forEach((input) => { input.value = ''; });
-    setEditorStatus('新しい浮標の入力欄を空にしました。浮標名・範囲・検定位置（%）・器差補正（%）を入力して保存してください。読み込み確認中の場合は、最後に「確認した内容で登録する」を押すまで現在の登録内容は置き換わりません。', 'ok');
-  }
-  function deleteCurrentHydrometer(){
-    const current = selectedHydrometer();
-    if (!current) return;
-    if (hydrometers.length <= 1) { setEditorStatus('最後の1本は削除できません。', 'error'); return; }
-    if (!txtReviewMode) saveHydrometerBackup('浮標削除前', hydrometers);
-    hydrometers = hydrometers.filter(h => h.id !== current.id);
-    saveHydrometers({persist:txtReviewMode ? false : true});
-    if (!txtReviewMode) safeRemove(STORAGE_KEYS.lastHydrometer);
-    populateHydrometerOptions(hydrometers[0] && hydrometers[0].id);
-    fillEditorFromHydrometer(selectedHydrometer());
-    resetSelectionState();
-    updateAll();
-    setEditorStatus(txtReviewMode ? '確認中の内容から削除しました。まだ登録していません。' : '削除しました。', 'ok');
   }
   function resetAll(){
     resetSelectionState();
@@ -807,17 +702,12 @@
     el.hydrometer.addEventListener('change', () => {
       if (!txtReviewMode) safeSet(STORAGE_KEYS.lastHydrometer, el.hydrometer.value);
       resetSelectionState();
-      fillEditorFromHydrometer(selectedHydrometer());
       updateAll();
     });
     el.reset.addEventListener('click', resetAll);
-    if (el.editorSave) el.editorSave.addEventListener('click', saveCurrentHydrometer);
-    if (el.editorAdd) el.editorAdd.addEventListener('click', startNewHydrometerDraft);
-    if (el.editorDelete) el.editorDelete.addEventListener('click', deleteCurrentHydrometer);
     if (el.txtExportCurrent) el.txtExportCurrent.addEventListener('click', exportCurrentTxt);
     if (el.txtExportEmpty) el.txtExportEmpty.addEventListener('click', exportEmptyTxt);
     if (el.txtExportBackup) el.txtExportBackup.addEventListener('click', exportBackupTxt);
-    if (el.txtLoadPaste) el.txtLoadPaste.addEventListener('click', loadPastedTxt);
     if (el.txtApply) el.txtApply.addEventListener('click', applyTxtHydrometers);
     if (el.txtRestoreBackup) el.txtRestoreBackup.addEventListener('click', restoreBackupHydrometers);
     if (el.txtFile) el.txtFile.addEventListener('change', handleTxtFileChange);
@@ -829,7 +719,6 @@
     saveHydrometers();
     populateHydrometerOptions();
     restoreInputs();
-    fillEditorFromHydrometer(selectedHydrometer());
     setTxtReviewMode(false, '');
     clearTransientTxtState();
     restoreUiState();
