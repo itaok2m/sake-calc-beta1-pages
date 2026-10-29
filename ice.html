@@ -6,154 +6,112 @@
   <meta name="theme-color" content="#2f4257">
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <title>氷投入量計算 / 日本酒醸造 計算ツール</title>
+  <title>氷・汲水温度調整 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/ice.css">
+  <link rel="stylesheet" href="./assets/ice.css?v=20261029field1">
 </head>
 <body>
   <div class="tool-nav">
     <a class="back-btn" href="./calculators.html">← 計算機一覧へ戻る</a>
-    <div class="tool-nav-place"><span class="tool-nav-title">氷投入量計算</span></div>
+    <div class="tool-nav-place"><span class="tool-nav-title">氷・汲水温度調整</span></div>
   </div>
-
   <main class="tool-body">
     <section class="screen-lead">
-      <h1>氷投入量計算</h1>
-      <p>必要氷量kgと水量を確認します。</p>
+      <h1>氷・汲水温度調整</h1>
+      <p>酛・醪の作業に合わせて、必要な水量と氷量を計算します。</p>
     </section>
-
     <div class="wrapper">
-      <details class="common-info-toggle formula-toggle">
-        <summary><span class="toggle-label-closed">計算式・考え方を見る</span><span class="toggle-label-open">計算式・考え方を閉じる</span></summary>
-        <section class="unit-bar" aria-label="氷投入量計算の式">
-          <div class="unit-bar-formula">
-            <span class="fml-main" id="ice-formula-main">標準0℃：必要氷kg ＝ 現在L × 4.186 ×（現在水温 − 目標水温）÷（334 ＋ 4.186 × 目標水温）</span>
-            <span class="fml-note" id="ice-formula-sub">0℃を基準結果として残し、選択した氷温別の計算結果を下の欄に出します。</span>
+      <section class="card ice-card" aria-label="氷投入量計算">
+        <div class="ice-topline"><strong>まず、何を調整しますか？</strong><span>標準は氷0℃、教本の「−80℃換算」</span></div>
+        <div class="ice-mode-cards" role="group" aria-label="計算する作業を選択">
+          <button class="ice-mode-card is-active" type="button" data-mode="water" aria-pressed="true"><span class="ice-mode-card-title">① 汲水を冷やす</span><span class="ice-mode-card-text">汲水の一部を氷に置き換える</span></button>
+          <button class="ice-mode-card" type="button" data-mode="koji" aria-pressed="false"><span class="ice-mode-card-title">② 水麹の温度を合わせる</span><span class="ice-mode-card-text">目標水麹温度から逆算する</span></button>
+          <button class="ice-mode-card" type="button" data-mode="dilution" aria-pressed="false"><span class="ice-mode-card-title">③ 成分と温度を同時に調整</span><span class="ice-mode-card-text">割水量と氷量をまとめて計算</span></button>
+        </div>
+        <details class="ice-advanced">
+          <summary>詳細設定：氷が0℃より冷たい場合</summary>
+          <label class="ice-field"><span>使用する氷の温度（標準は0℃）</span>
+            <select id="ice-ice-temp" class="ice-select">
+              <option value="0">0℃（教本の−80℃換算）</option>
+              <option value="-5">−5℃</option>
+              <option value="-10">−10℃</option>
+              <option value="-20">−20℃</option>
+              <option value="-30">−30℃</option>
+            </select>
+          </label>
+          <p class="ice-inline-note">氷温が0℃より低い場合、氷自体が0℃になるまでの冷却効果も加えます。氷温が不明なら0℃のまま使用してください。</p>
+        </details>
+        <div class="field-reset-row ice-utility-row">
+          <button class="back-btn reset-btn inline-reset-btn" id="ice-example" type="button">この方式の計算例を入力</button>
+          <button class="back-btn reset-btn inline-reset-btn" id="ice-reset" type="button">この方式の入力を消す</button>
+        </div>
+
+        <section class="ice-mode-block" data-panel="water" aria-label="汲水を冷やす">
+          <div class="ice-mode-heading"><h2>汲水を冷やす</h2><p>通常は「汲水の総量を変えない」を選びます。水の一部を氷に置き換えます。</p></div>
+          <label class="ice-field ice-approach"><span>水と氷の入れ方</span>
+            <select id="ice-water-way" class="ice-select">
+              <option value="replace">汲水総量を変えない（水の一部を氷に置き換える）</option>
+              <option value="add">すでにある水に氷を追加する（総量は増える）</option>
+            </select>
+          </label>
+          <div class="ice-field-grid">
+            <label class="ice-field"><span id="ice-water-volume-label">必要な汲水総量（水＋氷）</span><div class="ice-input-wrap"><input id="ice-water-volume" type="number" inputmode="decimal" min="0" step="any" placeholder="例：100"><span class="iunit">L</span></div></label>
+            <label class="ice-field"><span>現在の水温</span><div class="ice-input-wrap"><input id="ice-water-current-temp" type="number" inputmode="decimal" step="any" placeholder="例：18"><span class="iunit">℃</span></div></label>
+            <label class="ice-field"><span>目標の水温</span><div class="ice-input-wrap"><input id="ice-water-target-temp" type="number" inputmode="decimal" step="any" placeholder="例：10"><span class="iunit">℃</span></div></label>
           </div>
         </section>
-      </details>
 
-      <section class="card ice-card" aria-label="氷投入量計算入力">
-        <p class="ice-panel-desc">標準0℃の氷で概算します。</p>
-        <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" id="ice-reset" type="button">入力値をリセット</button></div>
-
-        <section class="ice-mode-select" aria-label="計算方式を選ぶ">
-          <div class="group-title">計算方式を選ぶ</div>
-          <div class="ice-mode-cards">
-            <button class="ice-mode-card is-active" id="ice-mode-forward" type="button" data-mode="forward" aria-pressed="true">
-              <span class="ice-mode-card-title">現在水量から計算</span>
-              <span class="ice-mode-card-text">今ある水を目標水温まで冷やす。必要氷量kgと氷投入後の概算Lを出します。</span>
-            </button>
-            <button class="ice-mode-card" id="ice-mode-final" type="button" data-mode="final" aria-pressed="false">
-              <span class="ice-mode-card-title">仕上がり水量から計算</span>
-              <span class="ice-mode-card-text">氷投入後にほしいLから、最初に入れる水量Lと必要氷量kgを出します。</span>
-            </button>
+        <section class="ice-mode-block" data-panel="koji" aria-label="水麹の目標温度から計算" hidden>
+          <div class="ice-mode-heading"><h2>水麹の目標温度から計算</h2><p>教本の簡易式で必要な汲水温度を求め、汲水の一部を氷に置き換えます。</p></div>
+          <div class="ice-field-grid">
+            <label class="ice-field"><span>汲水総量（水＋氷）</span><div class="ice-input-wrap"><input id="ice-koji-volume" type="number" inputmode="decimal" min="0" step="any" placeholder="例：100"><span class="iunit">L</span></div></label>
+            <label class="ice-field"><span>現在の汲水温度</span><div class="ice-input-wrap"><input id="ice-koji-water-temp" type="number" inputmode="decimal" step="any" placeholder="例：18"><span class="iunit">℃</span></div></label>
+            <label class="ice-field"><span>水麹前の品温（醪の品温）</span><div class="ice-input-wrap"><input id="ice-koji-before-temp" type="number" inputmode="decimal" step="any" placeholder="例：12"><span class="iunit">℃</span></div></label>
+            <label class="ice-field"><span>目標水麹温度</span><div class="ice-input-wrap"><input id="ice-koji-target-temp" type="number" inputmode="decimal" step="any" placeholder="例：10"><span class="iunit">℃</span></div></label>
           </div>
+          <p class="ice-inline-note">「水麹前の品温」は麹単体の温度ではありません。水麹作業前の醪の品温を入れます。</p>
         </section>
 
-        <section class="ice-mode-block" id="ice-forward-panel" aria-label="現在水量から計算">
-          <div class="ice-mode-heading">
-            <h2>現在水量から計算</h2>
-            <p>現在水量から必要氷量を出します。</p>
+        <section class="ice-mode-block" data-panel="dilution" aria-label="成分と温度を同時に調整" hidden>
+          <div class="ice-mode-heading"><h2>成分と品温を同時に調整</h2><p>まず目標成分までの割水総量を出し、その中の何kgを氷にするか計算します。</p></div>
+          <div class="ice-field-grid">
+            <label class="ice-field"><span>調整する成分</span><select id="ice-dilution-component" class="ice-select"><option value="alc">アルコール度数（ALC）</option><option value="ta">酸度（TA）</option><option value="aa">アミノ酸度（AA）</option><option value="be">ボーメ（Be・簡易計算）</option></select></label>
+            <label class="ice-field"><span>追い水前の数量</span><div class="ice-input-wrap"><input id="ice-dilution-volume" type="number" inputmode="decimal" min="0" step="any" placeholder="例：184"><span class="iunit">L</span></div></label>
+            <label class="ice-field"><span>現在の成分値 <span id="ice-dilution-unit-before">（％）</span></span><div class="ice-input-wrap"><input id="ice-dilution-current" type="number" inputmode="decimal" step="any" placeholder="例：11.5"></div></label>
+            <label class="ice-field"><span>目標の成分値 <span id="ice-dilution-unit-target">（％）</span></span><div class="ice-input-wrap"><input id="ice-dilution-target" type="number" inputmode="decimal" step="any" placeholder="例：8"></div></label>
+            <label class="ice-field"><span>追い水前の品温</span><div class="ice-input-wrap"><input id="ice-dilution-mash-temp" type="number" inputmode="decimal" step="any" placeholder="例：25"><span class="iunit">℃</span></div></label>
+            <label class="ice-field"><span>投入する水の温度</span><div class="ice-input-wrap"><input id="ice-dilution-water-temp" type="number" inputmode="decimal" step="any" placeholder="例：18"><span class="iunit">℃</span></div></label>
+            <label class="ice-field"><span>目標の品温</span><div class="ice-input-wrap"><input id="ice-dilution-target-temp" type="number" inputmode="decimal" step="any" placeholder="例：20"><span class="iunit">℃</span></div></label>
           </div>
-
-          <div class="group"><div class="group-title">現在の水</div>
-            <div class="ice-field-grid">
-              <label class="ice-field"><span>現在水量</span><div class="ice-input-wrap"><input id="ice-current-volume" inputmode="decimal" placeholder="例：100" step="0.1" type="number"><span class="iunit">L</span></div></label>
-              <label class="ice-field"><span>現在水温</span><div class="ice-input-wrap"><input id="ice-current-temp" inputmode="decimal" placeholder="例：15" step="0.1" type="number"><span class="iunit">℃</span></div></label>
-            </div>
-          </div>
-
-          <div class="group"><div class="group-title">目標</div>
-            <div class="ice-field-grid">
-              <label class="ice-field"><span>目標水温</span><div class="ice-input-wrap"><input id="ice-target-temp" inputmode="decimal" placeholder="例：10" step="0.1" type="number"><span class="iunit">℃</span></div></label>
-              <div class="ice-field is-readonly"><span>氷投入後の概算水量</span><span class="ice-hint">→ 計算結果で表示</span></div>
-            </div>
-          </div>
-
-          <section class="result-card" id="ice-result" hidden>
-            <div class="result-title">基準結果 / 標準0℃</div>
-            <div class="result-grid r2">
-              <div><div class="result-label">必要氷量</div><div class="result-value"><span id="ice-result-kg">—</span><span class="result-unit">kg</span></div></div>
-              <div><div class="result-label">氷投入後の概算水量</div><div class="result-value"><span id="ice-result-volume">—</span><span class="result-unit">L</span></div></div>
-            </div>
-            <div class="ice-result-note" id="ice-result-note">—</div>
-            <div class="ice-temp-panel">
-              <label class="ice-field ice-temp-select-field"><span>氷温別の結果を選ぶ</span><select id="ice-forward-temp-view" class="ice-select"><option value="0">0℃</option><option value="-5">-5℃</option><option value="-10">-10℃</option><option value="-20">-20℃</option><option value="-30">-30℃</option></select></label>
-              <div class="ice-temp-detail ice-temp-result-box" id="ice-forward-temp-detail">
-                <div class="ice-temp-result-title">氷温別の計算結果 / <span id="ice-forward-selected-temp-label">0℃</span></div>
-                <div class="ice-temp-result-grid">
-                  <div><span class="ice-mini-label">必要氷量</span><strong><span id="ice-forward-selected-kg">—</span>kg</strong></div>
-                  <div><span class="ice-mini-label">氷投入後</span><strong><span id="ice-forward-selected-volume">—</span>L</strong></div>
-                </div>
-                <div class="ice-temp-result-note" id="ice-forward-selected-diff">—</div>
-              </div>
-            </div>
-          </section>
-          <div class="err" id="ice-error" hidden></div>
+          <p class="ice-inline-note">酛・醪の数量は2mm表などの見掛け数量を用いる簡易計算です。Beは現場向け加重平均の目安です。</p>
         </section>
 
-        <section class="ice-mode-block" id="ice-final-panel" aria-label="仕上がり水量から計算" hidden>
-          <div class="ice-mode-heading">
-            <h2>仕上がり水量から計算</h2>
-            <p>仕上がり水量から逆算します。</p>
+        <div class="err ice-feedback" id="ice-error" hidden role="alert"></div>
+        <section class="result-card ice-result" id="ice-result" hidden aria-live="polite">
+          <div class="result-title">必要な投入量（計算上の目安）</div>
+          <div class="result-grid r2">
+            <div><div class="result-label" id="ice-result-water-label">投入する水</div><div class="result-value"><span id="ice-result-water">—</span><span class="result-unit">L</span></div></div>
+            <div><div class="result-label">投入する氷</div><div class="result-value"><span id="ice-result-ice">—</span><span class="result-unit">kg</span></div></div>
           </div>
-
-          <div class="group"><div class="group-title">仕上がり目標</div>
-            <div class="ice-field-grid">
-              <label class="ice-field"><span>氷投入後の仕上がり水量</span><div class="ice-input-wrap"><input id="ice-final-volume" inputmode="decimal" placeholder="例：100" step="0.1" type="number"><span class="iunit">L</span></div></label>
-              <label class="ice-field"><span>現在水温</span><div class="ice-input-wrap"><input id="ice-final-current-temp" inputmode="decimal" placeholder="例：15" step="0.1" type="number"><span class="iunit">℃</span></div></label>
-            </div>
-          </div>
-
-          <div class="group"><div class="group-title">目標水温</div>
-            <div class="ice-field-grid">
-              <label class="ice-field"><span>目標水温</span><div class="ice-input-wrap"><input id="ice-final-target-temp" inputmode="decimal" placeholder="例：10" step="0.1" type="number"><span class="iunit">℃</span></div></label>
-              <div class="ice-field is-readonly"><span>最初に入れる水量</span><span class="ice-hint">→ 計算結果で表示</span></div>
-            </div>
-          </div>
-
-          <section class="result-card" id="ice-final-result" hidden>
-            <div class="result-title">基準結果 / 標準0℃</div>
-            <div class="result-grid r3">
-              <div><div class="result-label">最初に入れる水量</div><div class="result-value"><span id="ice-final-water">—</span><span class="result-unit">L</span></div></div>
-              <div><div class="result-label">必要氷量</div><div class="result-value"><span id="ice-final-kg">—</span><span class="result-unit">kg</span></div></div>
-              <div><div class="result-label">氷投入後の仕上がり水量</div><div class="result-value"><span id="ice-final-result-volume">—</span><span class="result-unit">L</span></div></div>
-            </div>
-            <div class="ice-result-note" id="ice-final-note">—</div>
-            <div class="ice-temp-panel">
-              <label class="ice-field ice-temp-select-field"><span>氷温別の結果を選ぶ</span><select id="ice-final-temp-view" class="ice-select"><option value="0">0℃</option><option value="-5">-5℃</option><option value="-10">-10℃</option><option value="-20">-20℃</option><option value="-30">-30℃</option></select></label>
-              <div class="ice-temp-detail ice-temp-result-box" id="ice-final-temp-detail">
-                <div class="ice-temp-result-title">氷温別の計算結果 / <span id="ice-final-selected-temp-label">0℃</span></div>
-                <div class="ice-temp-result-grid">
-                  <div><span class="ice-mini-label">最初の水量</span><strong><span id="ice-final-selected-water">—</span>L</strong></div>
-                  <div><span class="ice-mini-label">必要氷量</span><strong><span id="ice-final-selected-kg">—</span>kg</strong></div>
-                </div>
-                <div class="ice-temp-result-note" id="ice-final-selected-diff">—</div>
-              </div>
-            </div>
-          </section>
-          <div class="err" id="ice-final-error" hidden></div>
+          <div class="ice-result-summary" id="ice-result-summary"></div>
+          <div class="ice-result-note" id="ice-result-note"></div>
+          <details class="ice-math-details" id="ice-calculation-steps"><summary>電卓での計算式・途中計算を見る</summary><div id="ice-result-steps" class="ice-math-steps"></div></details>
         </section>
-
-        <div class="calc-help">自動更新</div>
-
-        <section class="compact-tools-panel ice-action-panel" aria-label="氷投入量計算の操作">
-          <div class="inline-tools-title-row ice-action-title-row">
-            <div class="inline-tools-title">氷投入量計算の扱い</div>
-          </div>
-          <div class="inline-tools-note ice-action-note">概算確認用 ／ 履歴：専用保存 ／ 2mm表候補なし</div>
+        <div class="calc-help">数値を入力すると自動計算します。小数点以下は表示上2桁まで（計算途中では丸めません）。</div>
+        <section class="compact-tools-panel ice-action-panel" aria-label="保存と計算上の注意">
+          <div class="inline-tools-title">計算結果の扱い</div>
+          <p class="inline-tools-note">標準の氷0℃では、融解熱を水の約80℃分として計算します。水1L≒1kg、氷1kg≒融解後1Lとして扱う概算です。実作業では融解・混合後に品温と成分を実測してください。</p>
+          <p class="inline-tools-note">履歴はボタンを押したときだけ保存します。2mm表への送信・候補確認・共有・比較とは接続していません。</p>
           <div class="calc-main-actions">
-            <button class="calc-btn" id="ice-save-history" type="button" disabled>この氷投入量計算を履歴に残す</button>
-            <a class="back-btn history-link-btn" id="ice-toggle-history" href="./ice-history.html">氷投入量履歴を見る →</a>
+            <button class="calc-btn" id="ice-save-history" type="button" disabled>この計算結果を履歴に保存</button>
+            <a class="back-btn history-link-btn" href="./ice-history.html">氷投入量の履歴を見る →</a>
           </div>
-          <div class="history-action-status" id="ice-history-status" aria-live="polite">計算結果が出ると履歴に残せます。</div>
+          <div class="history-action-status" id="ice-history-status" aria-live="polite">計算ができると履歴に保存できます。</div>
         </section>
       </section>
     </div>
   </main>
-
-  <script src="./assets/ice.js"></script>
+  <script src="./assets/ice.js?v=20261029field1"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>

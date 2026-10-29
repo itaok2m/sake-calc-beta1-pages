@@ -1,337 +1,273 @@
-(function(){
+(function () {
   'use strict';
 
-  const DRAFT_KEY = 'sakeCalc.htmlSplit.ice.lastInputs.v3';
+  // 氷投入量計算専用。既存履歴キーを継続し、旧履歴も削除しない。
+  const DRAFT_KEY = 'sakeCalc.htmlSplit.ice.lastInputs.v4';
+  const OLD_DRAFT_KEY = 'sakeCalc.htmlSplit.ice.lastInputs.v3';
   const HISTORY_KEY = 'sakeCalc.htmlSplit.ice.history.v1';
   const HISTORY_RESTORE_KEY = 'sakeCalc.htmlSplit.ice.history.restore.v1';
-  const modeLabels = { forward:'現在水量から計算', final:'仕上がり水量から計算' };
-  const C_WATER = 4.186;
-  const C_ICE = 2.1;
-  const LATENT_HEAT = 334;
-  let draftReady = false;
-  let activeMode = 'forward';
-  let latestValidSnapshot = null;
+  const modeLabels = {water:'汲水を冷やす',koji:'水麹温度から計算',dilution:'成分と品温を調整'};
+  const components = {
+    alc:{label:'アルコール度数',unit:'％'},
+    ta:{label:'酸度',unit:''},
+    aa:{label:'アミノ酸度',unit:''},
+    be:{label:'ボーメ（簡易）',unit:''}
+  };
+  const ids = [
+    'ice-water-way','ice-water-volume','ice-water-current-temp','ice-water-target-temp',
+    'ice-koji-volume','ice-koji-water-temp','ice-koji-before-temp','ice-koji-target-temp',
+    'ice-dilution-component','ice-dilution-volume','ice-dilution-current','ice-dilution-target',
+    'ice-dilution-mash-temp','ice-dilution-water-temp','ice-dilution-target-temp','ice-ice-temp'
+  ];
   const $ = (id) => document.getElementById(id);
+  const numeral = (value) => Number(value).toFixed(2);
+  const readable = (value) => Number(value.toFixed(5)).toString();
+  let activeMode = 'water';
+  let draftReady = false;
+  // 氷温の補正：氷の比熱約2.1、水の比熱約4.2 kJ/(kg・℃)。
+  function iceCoolingOffset() { return Math.abs(input('ice-ice-temp')) * 0.5; }
+  function iceDenom(waterTemperature) { return waterTemperature + 80 + iceCoolingOffset(); }
+  function iceTempLabel() { return readable(input('ice-ice-temp'))+'℃'; }
+  let latestValidSnapshot = null;
 
-  function readNumber(id){
-    const el = $(id);
-    if(!el || el.value === '') return NaN;
-    return Number(el.value);
+  function input(id) { const el=$(id); return el && el.value !== '' ? Number(el.value) : NaN; }
+  function present(idsToCheck) { return idsToCheck.every(id => Number.isFinite(input(id))); }
+  function readInputValues() { return Object.fromEntries(ids.map(id => [id, $(id).value])); }
+  function saveDraft() {
+    if(!draftReady) return;
+    try { localStorage.setItem(DRAFT_KEY,JSON.stringify({activeMode,values:readInputValues()})); } catch(_err) {}
   }
-  function setText(id, value){
-    const el = $(id);
-    if(el) el.textContent = value;
+  function fillValues(values) {
+    ids.forEach(id => { if(Object.prototype.hasOwnProperty.call(values,id) && values[id] != null) $(id).value=values[id]; });
   }
-  function truncatedFixed(value, decimals){
-    const num = Number(value);
-    const digits = Math.max(0, Math.min(4, Number(decimals) || 0));
-    if(!Number.isFinite(num)) return '';
-    const scale = 10 ** digits;
-    const out = num >= 0 ? Math.trunc(num * scale) / scale : Math.ceil(num * scale) / scale;
-    return out.toFixed(digits);
+  function importLegacy(state) {
+    const values = state.values || state.fieldValues || {};
+    const sourceMode = state.activeMode || state.mode;
+    if(sourceMode === 'forward') {
+      return {mode:'water',values:{'ice-water-way':'add', 'ice-water-volume':values['ice-current-volume'], 'ice-water-current-temp':values['ice-current-temp'], 'ice-water-target-temp':values['ice-target-temp']}};
+    }
+    if(sourceMode === 'final') {
+      return {mode:'water',values:{'ice-water-way':'replace', 'ice-water-volume':values['ice-final-volume'], 'ice-water-current-temp':values['ice-final-current-temp'], 'ice-water-target-temp':values['ice-final-target-temp']}};
+    }
+    return {mode:modeLabels[sourceMode] ? sourceMode : 'water',values};
   }
-  function formatJst(date){
-    return new Intl.DateTimeFormat('ja-JP', {
-      timeZone:'Asia/Tokyo',
-      year:'numeric', month:'2-digit', day:'2-digit',
-      hour:'2-digit', minute:'2-digit', second:'2-digit',
-      hour12:false
-    }).format(date).replace(/\//g, '-');
+  function restoreDraft() {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      const old = !raw ? localStorage.getItem(OLD_DRAFT_KEY) : null;
+      if(!raw && !old) return;
+      const parsed = JSON.parse(raw || old);
+      const state = raw ? parsed : importLegacy(parsed);
+      activeMode = modeLabels[state.activeMode || state.mode] ? (state.activeMode || state.mode) : 'water';
+      fillValues(state.values || {});
+    }catch(_err) {}
   }
-  function iceHeatPerKg(iceTemp, targetTemp){
-    return C_ICE * (0 - iceTemp) + LATENT_HEAT + C_WATER * targetTemp;
+  function setMode(mode) {
+    activeMode = modeLabels[mode] ? mode : 'water';
+    document.querySelectorAll('[data-mode]').forEach(button => {
+      const selected=button.dataset.mode===activeMode;
+      button.classList.toggle('is-active',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+    document.querySelectorAll('[data-panel]').forEach(panel => { panel.hidden=panel.dataset.panel!==activeMode; });
+    calculate();
+    saveDraft();
   }
-  function iceRatio(currentTemp, targetTemp, iceTemp){
-    const denom = iceHeatPerKg(iceTemp, targetTemp);
-    if(denom <= 0) return NaN;
-    return C_WATER * (currentTemp - targetTemp) / denom;
+  function setWaterWay() {
+    $('ice-water-volume-label').textContent = $('ice-water-way').value==='replace' ? '必要な汲水総量（水＋氷）' : 'すでにある水量（氷は別に追加）';
   }
-  function validateTemp(currentTemp, targetTemp, iceTemp){
-    if(!Number.isFinite(iceTemp)) return '氷温を選択してください。';
-    if(targetTemp < 0) return '目標水温は0℃以上で入力してください。';
-    if(targetTemp >= currentTemp) return '氷投入量計算は水を冷やす計算です。目標水温は現在水温より低い値にしてください。';
-    if(iceTemp > 0) return '氷温は0℃以下で入力してください。';
-    if(iceTemp < -30) return '氷温は-30℃以上で確認してください。';
-    const heat = iceHeatPerKg(iceTemp, targetTemp);
-    if(heat <= 0) return '計算条件が成立しません。入力値を確認してください。';
+  function setComponentText() {
+    const part=components[$('ice-dilution-component').value] || components.alc;
+    const unit=part.unit ? '（'+part.unit+'）' : '';
+    $('ice-dilution-unit-before').textContent=unit;
+    $('ice-dilution-unit-target').textContent=unit;
+    $('ice-dilution-current').placeholder=part.unit==='％' ? '例：11.5' : '現在の分析値';
+    $('ice-dilution-target').placeholder=part.unit==='％' ? '例：8' : '目標の値';
+  }
+  function displayError(message) {
+    $('ice-result').hidden=true;
+    $('ice-error').hidden=false;
+    $('ice-error').textContent=message;
+    latestValidSnapshot=null;
+    $('ice-save-history').disabled=true;
+  }
+  function clearResult() {
+    $('ice-result').hidden=true;
+    $('ice-error').hidden=true;
+    $('ice-error').textContent='';
+    latestValidSnapshot=null;
+    $('ice-save-history').disabled=true;
+  }
+  function checkWaterTemperature(waterTemp,goal) {
+    if(waterTemp < 0 || goal < 0) return '水温の計算は0℃以上の条件で入力してください。';
+    if(goal > waterTemp) return '現在の水温より高い目標温度です。氷では温められません。';
     return '';
   }
-  function showResult(resultId, errorId, values){
-    const result = $(resultId);
-    const error = $(errorId);
-    if(error){ error.textContent = ''; error.hidden = true; }
-    if(result) result.hidden = false;
-    Object.keys(values || {}).forEach(id => setText(id, values[id]));
+  function checkIceResult(iceKg, total, mode) {
+    if(!Number.isFinite(iceKg)) return '計算できませんでした。入力値を確認してください。';
+    if(iceKg < -1e-8) return 'この条件では水を入れるだけで目標より冷たくなる計算です。氷の追加では合わせられません。水温または目標を見直してください。';
+    if(mode !== 'add' && iceKg > total + 1e-8) return '必要な氷が割水・汲水の総量を超えます。水の一部を氷に置き換える方法では、この目標にできません。';
+    return '';
   }
-  function showError(resultId, errorId, message){
-    const result = $(resultId);
-    const error = $(errorId);
-    if(result) result.hidden = true;
-    if(error){ error.textContent = message; error.hidden = false; }
-    latestValidSnapshot = null;
-    updateHistoryButton();
+  function resultValues({water,ice,summary,note,steps,inputRows,resultRows}) {
+    $('ice-result').hidden=false;
+    $('ice-error').hidden=true;
+    $('ice-error').textContent='';
+    $('ice-result-water').textContent=numeral(water);
+    $('ice-result-ice').textContent=numeral(ice);
+    $('ice-result-summary').textContent=summary;
+    $('ice-result-note').textContent=note;
+    const stepsBox=$('ice-result-steps');
+    stepsBox.replaceChildren();
+    steps.forEach(line=>{ const p=document.createElement('p');p.textContent=line;stepsBox.appendChild(p); });
+    latestValidSnapshot={mode:activeMode,modeLabel:modeLabels[activeMode],inputRows,resultRows};
+    $('ice-save-history').disabled=false;
   }
-  function clearBlock(resultId, errorId){
-    const result = $(resultId);
-    const error = $(errorId);
-    if(result) result.hidden = true;
-    if(error){ error.textContent = ''; error.hidden = true; }
-    latestValidSnapshot = null;
-    updateHistoryButton();
+  function mkrow(label, pairs) { return {label,values:pairs.map(([key,value])=>({label:key,value:String(value)}))}; }
+  function calcWater() {
+    const required=['ice-water-volume','ice-water-current-temp','ice-water-target-temp'];
+    if(!present(required)) return clearResult();
+    const amount=input(required[0]),waterTemp=input(required[1]),target=input(required[2]);
+    const isAdd=$('ice-water-way').value==='add';
+    if(amount<=0) return displayError('水量は0Lより大きい数値を入力してください。');
+    const error=checkWaterTemperature(waterTemp,target);
+    if(error) return displayError(error);
+    const ice=isAdd ? amount*(waterTemp-target)/(target+80+iceCoolingOffset()) : amount*(waterTemp-target)/iceDenom(waterTemp);
+    const warning=checkIceResult(ice,amount,isAdd?'add':'replace');
+    if(warning) return displayError(warning);
+    const water=amount;
+    const actualWater=isAdd?water:water-ice;
+    const finalAmount=isAdd?amount+ice:amount;
+    const caption=isAdd?'氷追加後の概算総量：'+numeral(finalAmount)+'L':'汲水総量（水＋氷）：'+numeral(amount)+'L';
+    $('ice-result-water-label').textContent=isAdd?'すでにある水（追加しない）':'投入する水';
+    const formula=isAdd ? `氷量 ＝ ${readable(amount)} × (${readable(waterTemp)} − ${readable(target)}) ÷ (${readable(target)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg` :
+      `氷量 ＝ ${readable(amount)} × (${readable(waterTemp)} − ${readable(target)}) ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`;
+    const steps=[formula];
+    if(isAdd){steps.push(`氷投入後の概算総量 ＝ ${readable(amount)} ＋ ${numeral(ice)} ＝ ${numeral(finalAmount)}L`);}
+    else{steps.push(`入れる水量 ＝ ${readable(amount)} − ${numeral(ice)} ＝ ${numeral(actualWater)}L`);}
+    resultValues({water:actualWater,ice,summary:caption,note:isAdd?'水はすでにある数量です。氷を追加した分だけ合計量が増えます。':'必要な総量を変えず、水の一部を氷に置き換える計算です。',steps,
+      inputRows:[mkrow('条件',[['水と氷の入れ方',isAdd?'すでにある水へ氷追加':'汲水総量を固定'],['水量',readable(amount)+'L'],['現在の水温',readable(waterTemp)+'℃'],['目標の水温',readable(target)+'℃'],['氷温',iceTempLabel()]])],
+      resultRows:[mkrow('計算結果',[[isAdd?'すでにある水':'投入する水',numeral(actualWater)+'L'],['投入する氷',numeral(ice)+'kg'],['仕上がりの概算量',numeral(finalAmount)+'L']])]});
   }
-  function setDetailError(boxId, message){
-    const el = $(boxId);
-    if(!el) return;
-    el.classList.add('is-error');
-    el.textContent = message;
+  function calcKoji() {
+    const keys=['ice-koji-volume','ice-koji-water-temp','ice-koji-before-temp','ice-koji-target-temp'];
+    if(!present(keys)) return clearResult();
+    const total=input(keys[0]),waterTemp=input(keys[1]),before=input(keys[2]),target=input(keys[3]);
+    if(total<=0) return displayError('汲水総量は0Lより大きい値を入力してください。');
+    const needed=target*2-before;
+    if(needed<0) return displayError('必要な汲水温度が0℃未満です。氷と水の置き換え計算では対応できません。');
+    const error=checkWaterTemperature(waterTemp,needed);
+    if(error) return displayError('必要な汲水温度は'+readable(needed)+'℃です。'+error);
+    const ice=total*(waterTemp-needed)/iceDenom(waterTemp);
+    const warning=checkIceResult(ice,total,'replace');
+    if(warning) return displayError(warning);
+    const water=total-ice;
+    $('ice-result-water-label').textContent='投入する水';
+    resultValues({water,ice,summary:'必要な汲水温度：'+readable(needed)+'℃／総汲水量：'+readable(total)+'L',
+      note:'水麹前品温×1、目標水麹温度×2の教本簡易式を採用。麹の温度や投入後の実測との差はここでは扱いません。',
+      steps:[`必要な汲水温度 ＝ ${readable(target)} × 2 − ${readable(before)} ＝ ${readable(needed)}℃`,
+        `氷量 ＝ ${readable(total)} × (${readable(waterTemp)} − ${readable(needed)}) ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`,
+        `投入する水量 ＝ ${readable(total)} − ${numeral(ice)} ＝ ${numeral(water)}L`],
+      inputRows:[mkrow('条件',[['汲水総量',readable(total)+'L'],['現在の水温',readable(waterTemp)+'℃'],['水麹前品温',readable(before)+'℃'],['目標水麹温度',readable(target)+'℃'],['氷温',iceTempLabel()]])],
+      resultRows:[mkrow('計算結果',[['必要汲水温度',readable(needed)+'℃'],['投入する水',numeral(water)+'L'],['投入する氷',numeral(ice)+'kg']])]});
   }
-  function ensureForwardDetailMarkup(){
-    const el = $('ice-forward-temp-detail');
-    if(!el) return;
-    if(!$('ice-forward-selected-kg')){
-      el.classList.add('ice-temp-result-box');
-      el.innerHTML = '<div class="ice-temp-result-title">氷温別の計算結果 / <span id="ice-forward-selected-temp-label">0℃</span></div><div class="ice-temp-result-grid"><div><span class="ice-mini-label">必要氷量</span><strong><span id="ice-forward-selected-kg">—</span>kg</strong></div><div><span class="ice-mini-label">氷投入後</span><strong><span id="ice-forward-selected-volume">—</span>L</strong></div></div><div class="ice-temp-result-note" id="ice-forward-selected-diff">—</div>';
-    }
-    el.classList.remove('is-error');
+  function calcDilution() {
+    const keys=['ice-dilution-volume','ice-dilution-current','ice-dilution-target','ice-dilution-mash-temp','ice-dilution-water-temp','ice-dilution-target-temp'];
+    if(!present(keys)) return clearResult();
+    const volume=input(keys[0]),current=input(keys[1]),goal=input(keys[2]),mashTemp=input(keys[3]),waterTemp=input(keys[4]),targetTemp=input(keys[5]);
+    const item=components[$('ice-dilution-component').value] || components.alc;
+    if(volume<=0) return displayError('追い水前の数量は0Lより大きい数値を入力してください。');
+    if(current<=0 || goal<=0) return displayError('現在の成分値と目標成分値は0より大きい数値を入力してください。');
+    if(goal>current) return displayError('この画面は水で成分値を下げる計算です。目標の成分値は現在値以下にしてください。');
+    if(waterTemp<0 || targetTemp<0) return displayError('水温・目標品温は0℃以上で入力してください。');
+    const total=volume*current/goal-volume;
+    // 氷0℃を水−80℃相当とした近似熱収支。氷も割水総量に含める。
+    if(total<1e-9) return displayError('必要割水量が0Lです。この計算では冷却用の氷を追加できません。');
+    const numerator=volume*(mashTemp-targetTemp)+total*(waterTemp-targetTemp);
+    const ice=numerator/iceDenom(waterTemp);
+    const warning=checkIceResult(ice,total,'replace');
+    if(warning) return displayError(warning);
+    const water=total-ice;
+    const finalVol=volume+total;
+    $('ice-result-water-label').textContent='投入する水';
+    resultValues({water,ice,summary:'割水総量（水＋氷）：'+numeral(total)+'L ／ 割水後の概算数量：'+numeral(finalVol)+'L',
+      note:`${item.label}から割水量を概算し、品温の熱収支で氷を配分しています。${$('ice-dilution-component').value==='be'?'Beは濃度に比例すると仮定した現場用の簡易加重平均です。':'容積の加算・比熱の近似を含みます。'} 最終の成分・品温は実測で確認してください。`,
+      steps:[`割水総量 ＝ ${readable(volume)} × ${readable(current)} ÷ ${readable(goal)} − ${readable(volume)} ＝ ${numeral(total)}L`,
+        `氷量 ＝ [${readable(volume)} × (${readable(mashTemp)} − ${readable(targetTemp)}) ＋ ${numeral(total)} × (${readable(waterTemp)} − ${readable(targetTemp)})] ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`,
+        `投入する水量 ＝ ${numeral(total)} − ${numeral(ice)} ＝ ${numeral(water)}L`],
+      inputRows:[mkrow('条件',[["調整する成分",item.label],["追い水前の数量",readable(volume)+'L'],["現在値",readable(current)+item.unit],["目標値",readable(goal)+item.unit],['追い水前品温',readable(mashTemp)+'℃'],['投入水温',readable(waterTemp)+'℃'],['目標品温',readable(targetTemp)+'℃'],['氷温',iceTempLabel()]])],
+      resultRows:[mkrow('計算結果',[['割水総量',numeral(total)+'L'],['投入する水',numeral(water)+'L'],['投入する氷',numeral(ice)+'kg'],['割水後概算数量',numeral(finalVol)+'L']])]});
   }
-  function ensureFinalDetailMarkup(){
-    const el = $('ice-final-temp-detail');
-    if(!el) return;
-    if(!$('ice-final-selected-kg')){
-      el.classList.add('ice-temp-result-box');
-      el.innerHTML = '<div class="ice-temp-result-title">氷温別の計算結果 / <span id="ice-final-selected-temp-label">0℃</span></div><div class="ice-temp-result-grid"><div><span class="ice-mini-label">最初の水量</span><strong><span id="ice-final-selected-water">—</span>L</strong></div><div><span class="ice-mini-label">必要氷量</span><strong><span id="ice-final-selected-kg">—</span>kg</strong></div></div><div class="ice-temp-result-note" id="ice-final-selected-diff">—</div>';
-    }
-    el.classList.remove('is-error');
+  function calculate() {
+    if(activeMode==='koji') calcKoji();
+    else if(activeMode==='dilution') calcDilution();
+    else calcWater();
   }
-  function readTempView(scope){
-    const select = $(scope + '-temp-view');
-    const raw = select ? select.value : '0';
-    return Number(raw);
-  }
-  function tempLabel(temp){
-    return truncatedFixed(temp, temp % 1 === 0 ? 0 : 1) + '℃';
-  }
-  function diffText(diff){
-    if(Math.abs(diff) < 0.005) return '0℃基準と同じです。';
-    return '0℃基準との差：' + (diff > 0 ? '+' : '') + truncatedFixed(diff, 2) + 'kg';
-  }
-  function setActiveMode(mode){
-    activeMode = mode === 'final' ? 'final' : 'forward';
-    const forwardPanel = $('ice-forward-panel');
-    const finalPanel = $('ice-final-panel');
-    if(forwardPanel) forwardPanel.hidden = activeMode !== 'forward';
-    if(finalPanel) finalPanel.hidden = activeMode !== 'final';
-    document.querySelectorAll('.ice-mode-card').forEach((button) => {
-      const isActive = button.dataset.mode === activeMode;
-      button.classList.toggle('is-active', isActive);
-      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-    });
-    latestValidSnapshot = null;
-    calculate();
-    saveInputDraft();
-  }
-  function calculateForward(){
-    const currentVolume = readNumber('ice-current-volume');
-    const currentTemp = readNumber('ice-current-temp');
-    const targetTemp = readNumber('ice-target-temp');
-    if([currentVolume, currentTemp, targetTemp].some(value => !Number.isFinite(value))){
-      clearBlock('ice-result', 'ice-error');
-      return;
-    }
-    if(currentVolume <= 0) return showError('ice-result', 'ice-error', '現在水量は0より大きい値を入力してください。');
-    const baseTemp = 0;
-    const tempError = validateTemp(currentTemp, targetTemp, baseTemp);
-    if(tempError) return showError('ice-result', 'ice-error', tempError);
-    const ratio = iceRatio(currentTemp, targetTemp, baseTemp);
-    if(!Number.isFinite(ratio) || ratio <= 0) return showError('ice-result', 'ice-error', '計算条件が成立しません。入力値を確認してください。');
-    const iceKg = currentVolume * ratio;
-    const finalVolume = currentVolume + iceKg;
-    latestValidSnapshot = { mode:'forward', modeLabel:modeLabels.forward, inputRows:[{label:'現在の水', values:[{label:'現在水量', value:truncatedFixed(currentVolume, 2) + 'L'}, {label:'現在水温', value:truncatedFixed(currentTemp, 2) + '℃'}]}, {label:'目標', values:[{label:'目標水温', value:truncatedFixed(targetTemp, 2) + '℃'}, {label:'氷温標準', value:'0℃'}]}], resultRows:[{label:'計算結果', values:[{label:'必要氷量', value:truncatedFixed(iceKg, 2) + 'kg'}, {label:'氷投入後概算L', value:truncatedFixed(finalVolume, 2) + 'L'}]}] };
-    showResult('ice-result', 'ice-error', {
-      'ice-result-kg':truncatedFixed(iceKg, 2),
-      'ice-result-volume':truncatedFixed(finalVolume, 2),
-      'ice-result-note':'標準条件：水1L≒1kg、氷温0℃、氷の融解熱334kJ/kg、水の比熱4.186kJ/kg℃。氷投入後Lは「現在L＋必要氷kg」の概算です。'
-    });
-    updateHistoryButton();
-    updateForwardTempDetail({currentVolume, currentTemp, targetTemp, baseIceKg:iceKg, baseFinalVolume:finalVolume});
-  }
-  function updateForwardTempDetail(base){
-    ensureForwardDetailMarkup();
-    const detailTemp = readTempView('ice-forward');
-    const detailId = 'ice-forward-temp-detail';
-    const tempError = validateTemp(base.currentTemp, base.targetTemp, detailTemp);
-    if(tempError) return setDetailError(detailId, tempError);
-    const ratio = iceRatio(base.currentTemp, base.targetTemp, detailTemp);
-    if(!Number.isFinite(ratio) || ratio <= 0) return setDetailError(detailId, '計算条件が成立しません。入力値を確認してください。');
-    const iceKg = base.currentVolume * ratio;
-    const finalVolume = base.currentVolume + iceKg;
-    setText('ice-forward-selected-temp-label', tempLabel(detailTemp));
-    setText('ice-forward-selected-kg', truncatedFixed(iceKg, 2));
-    setText('ice-forward-selected-volume', truncatedFixed(finalVolume, 2));
-    setText('ice-forward-selected-diff', diffText(iceKg - base.baseIceKg));
-  }
-  function calculateFinal(){
-    const finalVolume = readNumber('ice-final-volume');
-    const currentTemp = readNumber('ice-final-current-temp');
-    const targetTemp = readNumber('ice-final-target-temp');
-    if([finalVolume, currentTemp, targetTemp].some(value => !Number.isFinite(value))){
-      clearBlock('ice-final-result', 'ice-final-error');
-      return;
-    }
-    if(finalVolume <= 0) return showError('ice-final-result', 'ice-final-error', '氷投入後の仕上がり水量は0より大きい値を入力してください。');
-    const baseTemp = 0;
-    const tempError = validateTemp(currentTemp, targetTemp, baseTemp);
-    if(tempError) return showError('ice-final-result', 'ice-final-error', tempError);
-    const ratio = iceRatio(currentTemp, targetTemp, baseTemp);
-    if(!Number.isFinite(ratio) || ratio <= 0) return showError('ice-final-result', 'ice-final-error', '計算条件が成立しません。入力値を確認してください。');
-    const initialWater = finalVolume / (1 + ratio);
-    const iceKg = finalVolume - initialWater;
-    latestValidSnapshot = { mode:'final', modeLabel:modeLabels.final, inputRows:[{label:'仕上がり条件', values:[{label:'仕上がり水量', value:truncatedFixed(finalVolume, 2) + 'L'}, {label:'現在水温', value:truncatedFixed(currentTemp, 2) + '℃'}, {label:'目標水温', value:truncatedFixed(targetTemp, 2) + '℃'}, {label:'氷温標準', value:'0℃'}]}], resultRows:[{label:'計算結果', values:[{label:'最初の水量', value:truncatedFixed(initialWater, 2) + 'L'}, {label:'必要氷量', value:truncatedFixed(iceKg, 2) + 'kg'}, {label:'氷投入後概算L', value:truncatedFixed(finalVolume, 2) + 'L'}]}] };
-    showResult('ice-final-result', 'ice-final-error', {
-      'ice-final-water':truncatedFixed(initialWater, 2),
-      'ice-final-kg':truncatedFixed(iceKg, 2),
-      'ice-final-result-volume':truncatedFixed(finalVolume, 2),
-      'ice-final-note':'標準条件：仕上がりLから、必要氷量で増える分を差し引いて最初に入れる水量を出しています。氷温0℃、水1L≒1kgの概算です。'
-    });
-    updateHistoryButton();
-    updateFinalTempDetail({finalVolume, currentTemp, targetTemp, baseInitialWater:initialWater, baseIceKg:iceKg});
-  }
-  function updateFinalTempDetail(base){
-    ensureFinalDetailMarkup();
-    const detailTemp = readTempView('ice-final');
-    const detailId = 'ice-final-temp-detail';
-    const tempError = validateTemp(base.currentTemp, base.targetTemp, detailTemp);
-    if(tempError) return setDetailError(detailId, tempError);
-    const ratio = iceRatio(base.currentTemp, base.targetTemp, detailTemp);
-    if(!Number.isFinite(ratio) || ratio <= 0) return setDetailError(detailId, '計算条件が成立しません。入力値を確認してください。');
-    const initialWater = base.finalVolume / (1 + ratio);
-    const iceKg = base.finalVolume - initialWater;
-    setText('ice-final-selected-temp-label', tempLabel(detailTemp));
-    setText('ice-final-selected-water', truncatedFixed(initialWater, 2));
-    setText('ice-final-selected-kg', truncatedFixed(iceKg, 2));
-    setText('ice-final-selected-diff', diffText(iceKg - base.baseIceKg));
-  }
-  function calculate(){
-    if(activeMode === 'final') calculateFinal();
-    else calculateForward();
-  }
-  function collectDraftInputs(){
-    const out = { activeMode, values:{} };
-    [
-      'ice-current-volume','ice-current-temp','ice-target-temp',
-      'ice-final-volume','ice-final-current-temp','ice-final-target-temp',
-      'ice-forward-temp-view','ice-final-temp-view'
-    ].forEach(id => {
-      const el = $(id);
-      if(el) out.values[id] = el.value;
-    });
-    return out;
-  }
-  function saveInputDraft(){
-    if(!draftReady) return;
-    try{ localStorage.setItem(DRAFT_KEY, JSON.stringify(collectDraftInputs())); }catch(_err){}
-  }
-  function restoreInputDraft(){
-    try{
-      const raw = localStorage.getItem(DRAFT_KEY);
-      if(!raw) return;
-      const parsed = JSON.parse(raw);
-      if(parsed && parsed.values){
-        Object.keys(parsed.values).forEach(id => { const el = $(id); if(el) el.value = parsed.values[id] || ''; });
-      }
-      if(parsed && parsed.activeMode) activeMode = parsed.activeMode === 'final' ? 'final' : 'forward';
-    }catch(_err){}
-  }
-  function resetInputs(){
-    [
-      'ice-current-volume','ice-current-temp','ice-target-temp',
-      'ice-final-volume','ice-final-current-temp','ice-final-target-temp'
-    ].forEach(id => { const el = $(id); if(el) el.value = ''; });
-    const forwardView = $('ice-forward-temp-view');
-    const finalView = $('ice-final-temp-view');
-    if(forwardView) forwardView.value = '0';
-    if(finalView) finalView.value = '0';
-    clearBlock('ice-result', 'ice-error');
-    clearBlock('ice-final-result', 'ice-final-error');
-    ensureForwardDetailMarkup();
-    ensureFinalDetailMarkup();
-    setText('ice-forward-selected-temp-label', '0℃');
-    setText('ice-forward-selected-kg', '—');
-    setText('ice-forward-selected-volume', '—');
-    setText('ice-forward-selected-diff', '—');
-    setText('ice-final-selected-temp-label', '0℃');
-    setText('ice-final-selected-water', '—');
-    setText('ice-final-selected-kg', '—');
-    setText('ice-final-selected-diff', '—');
-    latestValidSnapshot = null;
-    updateHistoryButton();
-    calculate();
-    saveInputDraft();
-  }
-  function bindInputs(){
-    document.querySelectorAll('#ice-current-volume,#ice-current-temp,#ice-target-temp,#ice-final-volume,#ice-final-current-temp,#ice-final-target-temp').forEach(input => {
-      input.addEventListener('input', () => { calculate(); saveInputDraft(); });
-    });
-    document.querySelectorAll('#ice-forward-temp-view,#ice-final-temp-view').forEach(select => {
-      select.addEventListener('change', () => { calculate(); saveInputDraft(); });
-    });
-    document.querySelectorAll('.ice-mode-card').forEach(button => {
-      button.addEventListener('click', () => setActiveMode(button.dataset.mode));
-    });
-    const reset = $('ice-reset');
-    if(reset) reset.addEventListener('click', resetInputs);
-  }
-
-
-  function escapeHtml(value){ return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
-  function loadHistoryItems(){ try{ const raw = localStorage.getItem(HISTORY_KEY); const parsed = JSON.parse(raw || '[]'); return Array.isArray(parsed) ? parsed : []; }catch(_err){ return []; } }
-  function saveHistoryItems(items){ try{ localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, 80))); return true; }catch(_err){ return false; } }
-  function flattenRows(rows){ return (rows || []).flatMap(row => (row.values || []).map(value => ({label:(row.label ? row.label + ' / ' : '') + value.label, value:value.value}))); }
-  function currentHistoryFilter(){ const filter = $('ice-history-filter'); return filter ? filter.value : 'all'; }
-  function setupHistoryFilter(){ const filter = $('ice-history-filter'); if(!filter || filter.options.length) return; filter.appendChild(new Option('すべての方式', 'all')); filter.appendChild(new Option(modeLabels.forward, 'forward')); filter.appendChild(new Option(modeLabels.final, 'final')); }
-  function updateHistoryButton(){ const button = $('ice-save-history'); if(button) button.disabled = !latestValidSnapshot; }
-  function setHistoryStatus(message, isError){ const status = $('ice-history-status'); if(!status) return; status.textContent = message || ''; status.classList.remove('is-success','is-info','is-error'); status.style.color = ''; if(isError) status.classList.add('is-error'); else if(message === '履歴に残しました。') status.classList.add('is-success'); else if(message) status.classList.add('is-info'); }
-  function buildHistoryItem(){ if(!latestValidSnapshot) return null; const now = new Date(); const fieldValues = collectDraftInputs().values || {}; return { id:'ice-history-' + now.getTime() + '-' + Math.random().toString(16).slice(2), savedAtISO:now.toISOString(), savedAtJst:formatJst(now), toolName:'氷投入量計算', mode:activeMode, modeLabel:modeLabels[activeMode] || '氷投入量計算', fieldValues, inputRows:latestValidSnapshot.inputRows || [], resultRows:latestValidSnapshot.resultRows || [] }; }
-  function saveCurrentHistory(){ const item = buildHistoryItem(); if(!item){ setHistoryStatus('計算結果が出てから履歴に残せます。', true); return; } const items = loadHistoryItems(); const prev = items[0]; if(prev && prev.mode === item.mode && JSON.stringify(prev.fieldValues) === JSON.stringify(item.fieldValues) && JSON.stringify(prev.resultRows) === JSON.stringify(item.resultRows)){ setHistoryStatus('直前と同じ計算結果のため、二重保存はしませんでした。'); return; } items.unshift(item); if(saveHistoryItems(items)){ setHistoryStatus('履歴に残しました。'); renderHistoryList(); } else setHistoryStatus('履歴を保存できませんでした。この端末の保存設定を確認してください。', true); }
-  function restoreHistoryItem(id){ const item = loadHistoryItems().find(entry => entry.id === id); if(!item) return; Object.keys(item.fieldValues || {}).forEach(fieldId => { const el = $(fieldId); if(el) el.value = item.fieldValues[fieldId]; }); activeMode = item.mode === 'final' ? 'final' : 'forward'; setActiveMode(activeMode); saveInputDraft(); setHistoryStatus('履歴の入力値を戻しました。履歴保存や2mm表候補作成は自動実行していません。'); window.scrollTo({top:0, behavior:'smooth'}); }
-
-  function restorePendingHistoryItem(){
-    let item = null;
-    try{
-      const raw = sessionStorage.getItem(HISTORY_RESTORE_KEY);
-      if(!raw) return;
-      sessionStorage.removeItem(HISTORY_RESTORE_KEY);
-      item = JSON.parse(raw);
-    }catch(_err){ return; }
-    if(!item || !item.fieldValues) return;
-    Object.keys(item.fieldValues || {}).forEach(fieldId => {
-      const el = $(fieldId);
-      if(el) el.value = item.fieldValues[fieldId];
-    });
-    activeMode = item.mode === 'final' ? 'final' : 'forward';
-    setActiveMode(activeMode);
-    saveInputDraft();
-    setHistoryStatus('履歴の入力値を戻しました。履歴保存や2mm表候補作成は自動実行していません。');
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function deleteHistoryItem(id){ const next = loadHistoryItems().filter(entry => entry.id !== id); saveHistoryItems(next); setHistoryStatus('履歴を削除しました。'); renderHistoryList(); }
-  function renderHistoryList(){ const list = $('ice-history-list'); if(!list) return; const filter = currentHistoryFilter(); const items = loadHistoryItems().filter(item => filter === 'all' || item.mode === filter); if(!items.length){ list.innerHTML = '<div class="dedicated-history-empty">この方式の履歴はまだありません。</div>'; return; } list.innerHTML = items.map(item => { const inputLines = flattenRows(item.inputRows).slice(0,8).map(line => `<div class="dedicated-history-line"><strong>${escapeHtml(line.label)}</strong>：${escapeHtml(line.value)}</div>`).join(''); const resultLines = flattenRows(item.resultRows).slice(0,8).map(line => `<div class="dedicated-history-line"><strong>${escapeHtml(line.label)}</strong>：${escapeHtml(line.value)}</div>`).join(''); return `<article class="dedicated-history-card"><div class="dedicated-history-meta"><span>${escapeHtml(item.savedAtJst || '')}</span><span>${escapeHtml(item.modeLabel || '')}</span></div><div class="dedicated-history-card-title">${escapeHtml(item.toolName || '氷投入量計算')}</div><div class="dedicated-history-lines">${inputLines}${resultLines}</div><div class="dedicated-history-card-actions"><button class="calc-btn restore-action-btn" data-history-restore="${escapeHtml(item.id)}" type="button">この履歴を入力欄に戻す</button><button class="back-btn danger-btn history-delete-btn" data-history-delete="${escapeHtml(item.id)}" type="button">削除</button></div></article>`; }).join(''); }
-  function bindHistoryUI(){ setupHistoryFilter(); const saveButton = $('ice-save-history'); if(saveButton) saveButton.addEventListener('click', saveCurrentHistory); const toggleButton = $('ice-toggle-history'); const panel = $('ice-history-panel'); if(toggleButton && panel){ toggleButton.addEventListener('click', () => { panel.hidden = !panel.hidden; toggleButton.textContent = panel.hidden ? '氷投入量履歴を見る' : '氷投入量履歴を閉じる'; if(!panel.hidden) renderHistoryList(); }); } const filter = $('ice-history-filter'); if(filter) filter.addEventListener('change', renderHistoryList); const list = $('ice-history-list'); if(list) list.addEventListener('click', (event) => { const restore = event.target.closest('[data-history-restore]'); if(restore) return restoreHistoryItem(restore.getAttribute('data-history-restore')); const del = event.target.closest('[data-history-delete]'); if(del) return deleteHistoryItem(del.getAttribute('data-history-delete')); }); renderHistoryList(); updateHistoryButton(); }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    restoreInputDraft();
-    bindInputs();
-    bindHistoryUI();
-    draftReady = true;
-    setActiveMode(activeMode);
-    restorePendingHistoryItem();
-  });
-
-  window.SakeCalcIce = {
-    calculate,
-    calculateForward,
-    calculateFinal,
-    setActiveMode
+  const exampleValues = {
+    water:{'ice-water-way':'replace','ice-water-volume':'100','ice-water-current-temp':'18','ice-water-target-temp':'10'},
+    koji:{'ice-koji-volume':'100','ice-koji-water-temp':'18','ice-koji-before-temp':'12','ice-koji-target-temp':'10'},
+    dilution:{'ice-dilution-component':'alc','ice-dilution-volume':'184','ice-dilution-current':'11.5','ice-dilution-target':'8','ice-dilution-mash-temp':'25','ice-dilution-water-temp':'18','ice-dilution-target-temp':'20'}
   };
+  const modeFields={water:ids.slice(0,4),koji:ids.slice(4,8),dilution:ids.slice(8,15)};
+  function resetCurrent() {
+    modeFields[activeMode].forEach(id=>{$(id).value='';});
+    if(activeMode==='water') $('ice-water-way').value='replace';
+    if(activeMode==='dilution') $('ice-dilution-component').value='alc';
+    $('ice-ice-temp').value='0';
+    setWaterWay();setComponentText();calculate();saveDraft();
+  }
+  function applyExample() {
+    fillValues(exampleValues[activeMode]);
+    setWaterWay();setComponentText();calculate();saveDraft();
+  }
+  function historyItems() {
+    try{const parsed=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(parsed)?parsed:[];}catch(_err){return [];}
+  }
+  function setStatus(message,ok=false) {
+    const area=$('ice-history-status');area.textContent=message;
+    area.classList.toggle('is-success',ok);
+  }
+  function saveHistory() {
+    if(!latestValidSnapshot) {setStatus('計算結果が出ていません。');return;}
+    const now=new Date();
+    const item={
+      id:'ice-history-'+Date.now()+'-'+Math.random().toString(16).slice(2),
+      savedAtISO:now.toISOString(),
+      savedAtJst:new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now),
+      toolName:'氷・汲水温度調整',mode:activeMode,modeLabel:modeLabels[activeMode],fieldValues:readInputValues(),
+      inputRows:latestValidSnapshot.inputRows,resultRows:latestValidSnapshot.resultRows
+    };
+    const items=historyItems();
+    if(items[0] && items[0].mode===item.mode && JSON.stringify(items[0].fieldValues)===JSON.stringify(item.fieldValues)) {
+      setStatus('直前と同じ入力値なので二重保存しませんでした。');return;
+    }
+    items.unshift(item);
+    try {localStorage.setItem(HISTORY_KEY,JSON.stringify(items.slice(0,80)));setStatus('この計算結果を履歴に保存しました。',true);}
+    catch(_err) {setStatus('保存できませんでした。端末の保存設定を確認してください。');}
+  }
+  function restorePendingHistory() {
+    try {
+      const raw=sessionStorage.getItem(HISTORY_RESTORE_KEY);
+      if(!raw)return;
+      sessionStorage.removeItem(HISTORY_RESTORE_KEY);
+      const state=importLegacy(JSON.parse(raw));
+      fillValues(state.values);
+      setWaterWay();setComponentText();setMode(state.mode);
+      saveDraft();
+      setStatus('履歴の入力値を復元しました。自動保存・2mm表候補への送信はしていません。');
+    }catch(_err){setStatus('履歴の入力値を戻せませんでした。');}
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    restoreDraft();
+    setWaterWay();setComponentText();
+    document.querySelectorAll('[data-mode]').forEach(button=>button.addEventListener('click',()=>setMode(button.dataset.mode)));
+    ids.forEach(id=>{$(id).addEventListener('input',()=>{setWaterWay();setComponentText();calculate();saveDraft();});$(id).addEventListener('change',()=>{setWaterWay();setComponentText();calculate();saveDraft();});});
+    $('ice-reset').addEventListener('click',resetCurrent);
+    $('ice-example').addEventListener('click',applyExample);
+    $('ice-save-history').addEventListener('click',saveHistory);
+    draftReady=true;
+    setMode(activeMode);
+    restorePendingHistory();
+  });
+  window.SakeCalcIce={calculate,setMode};
 })();

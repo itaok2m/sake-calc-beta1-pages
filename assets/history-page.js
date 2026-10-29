@@ -79,8 +79,11 @@
       returnHref:'./ice.html',
       emptyText:'まだ氷投入量履歴はありません。',
       modes:[
-        {value:'forward', label:'現在水量から計算'},
-        {value:'final', label:'仕上がり水量から計算'}
+        {value:'water', label:'汲水を冷やす'},
+        {value:'koji', label:'水麹温度から計算'},
+        {value:'dilution', label:'成分と品温を調整'},
+        {value:'forward', label:'旧：水に氷を追加'},
+        {value:'final', label:'旧：仕上がり水量から計算'}
       ]
     }
   };
