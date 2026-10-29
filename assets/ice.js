@@ -21,7 +21,7 @@
   ];
   const $ = (id) => document.getElementById(id);
   const numeral = (value) => Number(value).toFixed(2);
-  const readable = (value) => Number(value.toFixed(5)).toString();
+  const readable = (value) => String(Number(value)); // 表示式では途中値を丸めない
   let activeMode = 'water';
   let draftReady = false;
   // 氷温の補正：氷の比熱約2.1、水の比熱約4.2 kJ/(kg・℃)。
@@ -44,10 +44,12 @@
     const values = state.values || state.fieldValues || {};
     const sourceMode = state.activeMode || state.mode;
     if(sourceMode === 'forward') {
-      return {mode:'water',values:{'ice-water-way':'add', 'ice-water-volume':values['ice-current-volume'], 'ice-water-current-temp':values['ice-current-temp'], 'ice-water-target-temp':values['ice-target-temp']}};
+      const iceTemp = values['ice-forward-temp-view'];
+      return {mode:'water',values:{'ice-water-way':'add', 'ice-water-volume':values['ice-current-volume'], 'ice-water-current-temp':values['ice-current-temp'], 'ice-water-target-temp':values['ice-target-temp'], ...(iceTemp!==undefined ? {'ice-ice-temp':iceTemp} : {})}};
     }
     if(sourceMode === 'final') {
-      return {mode:'water',values:{'ice-water-way':'replace', 'ice-water-volume':values['ice-final-volume'], 'ice-water-current-temp':values['ice-final-current-temp'], 'ice-water-target-temp':values['ice-final-target-temp']}};
+      const iceTemp = values['ice-final-temp-view'];
+      return {mode:'water',values:{'ice-water-way':'replace', 'ice-water-volume':values['ice-final-volume'], 'ice-water-current-temp':values['ice-final-current-temp'], 'ice-water-target-temp':values['ice-final-target-temp'], ...(iceTemp!==undefined ? {'ice-ice-temp':iceTemp} : {})}};
     }
     return {mode:modeLabels[sourceMode] ? sourceMode : 'water',values};
   }
@@ -99,7 +101,7 @@
     $('ice-save-history').disabled=true;
   }
   function checkWaterTemperature(waterTemp,goal) {
-    if(waterTemp < 0 || goal < 0) return '水温の計算は0℃以上の条件で入力してください。';
+    if(waterTemp < 0 || goal < 0 || waterTemp > 100 || goal > 100) return '水温は0～100℃の範囲で入力してください。';
     if(goal > waterTemp) return '現在の水温より高い目標温度です。氷では温められません。';
     return '';
   }
@@ -143,8 +145,8 @@
     const formula=isAdd ? `氷量 ＝ ${readable(amount)} × (${readable(waterTemp)} − ${readable(target)}) ÷ (${readable(target)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg` :
       `氷量 ＝ ${readable(amount)} × (${readable(waterTemp)} − ${readable(target)}) ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`;
     const steps=[formula];
-    if(isAdd){steps.push(`氷投入後の概算総量 ＝ ${readable(amount)} ＋ ${numeral(ice)} ＝ ${numeral(finalAmount)}L`);}
-    else{steps.push(`入れる水量 ＝ ${readable(amount)} − ${numeral(ice)} ＝ ${numeral(actualWater)}L`);}
+    if(isAdd){steps.push(`氷投入後の概算総量 ＝ ${readable(amount)} ＋ ${readable(ice)} ＝ ${numeral(finalAmount)}L`);}
+    else{steps.push(`入れる水量 ＝ ${readable(amount)} − ${readable(ice)} ＝ ${numeral(actualWater)}L`);}
     resultValues({water:actualWater,ice,summary:caption,note:isAdd?'水はすでにある数量です。氷を追加した分だけ合計量が増えます。':'必要な総量を変えず、水の一部を氷に置き換える計算です。',steps,
       inputRows:[mkrow('条件',[['水と氷の入れ方',isAdd?'すでにある水へ氷追加':'汲水総量を固定'],['水量',readable(amount)+'L'],['現在の水温',readable(waterTemp)+'℃'],['目標の水温',readable(target)+'℃'],['氷温',iceTempLabel()]])],
       resultRows:[mkrow('計算結果',[[isAdd?'すでにある水':'投入する水',numeral(actualWater)+'L'],['投入する氷',numeral(ice)+'kg'],['仕上がりの概算量',numeral(finalAmount)+'L']])]});
@@ -154,6 +156,7 @@
     if(!present(keys)) return clearResult();
     const total=input(keys[0]),waterTemp=input(keys[1]),before=input(keys[2]),target=input(keys[3]);
     if(total<=0) return displayError('汲水総量は0Lより大きい値を入力してください。');
+    if(before<0 || before>100 || target<0 || target>100) return displayError('水麹前品温と目標水麹温度は0～100℃で入力してください。');
     const needed=target*2-before;
     if(needed<0) return displayError('必要な汲水温度が0℃未満です。氷と水の置き換え計算では対応できません。');
     const error=checkWaterTemperature(waterTemp,needed);
@@ -167,7 +170,7 @@
       note:'水麹前品温×1、目標水麹温度×2の教本簡易式を採用。麹の温度や投入後の実測との差はここでは扱いません。',
       steps:[`必要な汲水温度 ＝ ${readable(target)} × 2 − ${readable(before)} ＝ ${readable(needed)}℃`,
         `氷量 ＝ ${readable(total)} × (${readable(waterTemp)} − ${readable(needed)}) ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`,
-        `投入する水量 ＝ ${readable(total)} − ${numeral(ice)} ＝ ${numeral(water)}L`],
+        `投入する水量 ＝ ${readable(total)} − ${readable(ice)} ＝ ${numeral(water)}L`],
       inputRows:[mkrow('条件',[['汲水総量',readable(total)+'L'],['現在の水温',readable(waterTemp)+'℃'],['水麹前品温',readable(before)+'℃'],['目標水麹温度',readable(target)+'℃'],['氷温',iceTempLabel()]])],
       resultRows:[mkrow('計算結果',[['必要汲水温度',readable(needed)+'℃'],['投入する水',numeral(water)+'L'],['投入する氷',numeral(ice)+'kg']])]});
   }
@@ -178,8 +181,9 @@
     const item=components[$('ice-dilution-component').value] || components.alc;
     if(volume<=0) return displayError('追い水前の数量は0Lより大きい数値を入力してください。');
     if(current<=0 || goal<=0) return displayError('現在の成分値と目標成分値は0より大きい数値を入力してください。');
+    if($('ice-dilution-component').value==='alc' && (current>100 || goal>100)) return displayError('アルコール度数は0％超～100％以下の範囲で入力してください。');
     if(goal>current) return displayError('この画面は水で成分値を下げる計算です。目標の成分値は現在値以下にしてください。');
-    if(waterTemp<0 || targetTemp<0) return displayError('水温・目標品温は0℃以上で入力してください。');
+    if([mashTemp,waterTemp,targetTemp].some(t=>t<0 || t>100)) return displayError('酛・醪の品温と水温は0～100℃で入力してください。');
     const total=volume*current/goal-volume;
     // 氷0℃を水−80℃相当とした近似熱収支。氷も割水総量に含める。
     if(total<1e-9) return displayError('必要割水量が0Lです。この計算では冷却用の氷を追加できません。');
@@ -193,8 +197,8 @@
     resultValues({water,ice,summary:'割水総量（水＋氷）：'+numeral(total)+'L ／ 割水後の概算数量：'+numeral(finalVol)+'L',
       note:`${item.label}から割水量を概算し、品温の熱収支で氷を配分しています。${$('ice-dilution-component').value==='be'?'Beは濃度に比例すると仮定した現場用の簡易加重平均です。':'容積の加算・比熱の近似を含みます。'} 最終の成分・品温は実測で確認してください。`,
       steps:[`割水総量 ＝ ${readable(volume)} × ${readable(current)} ÷ ${readable(goal)} − ${readable(volume)} ＝ ${numeral(total)}L`,
-        `氷量 ＝ [${readable(volume)} × (${readable(mashTemp)} − ${readable(targetTemp)}) ＋ ${numeral(total)} × (${readable(waterTemp)} − ${readable(targetTemp)})] ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`,
-        `投入する水量 ＝ ${numeral(total)} − ${numeral(ice)} ＝ ${numeral(water)}L`],
+        `氷量 ＝ [${readable(volume)} × (${readable(mashTemp)} − ${readable(targetTemp)}) ＋ ${readable(total)} × (${readable(waterTemp)} − ${readable(targetTemp)})] ÷ (${readable(waterTemp)} ＋ 80 ＋ ${readable(iceCoolingOffset())}) ＝ ${numeral(ice)}kg`,
+        `投入する水量 ＝ ${readable(total)} − ${readable(ice)} ＝ ${numeral(water)}L`],
       inputRows:[mkrow('条件',[["調整する成分",item.label],["追い水前の数量",readable(volume)+'L'],["現在値",readable(current)+item.unit],["目標値",readable(goal)+item.unit],['追い水前品温',readable(mashTemp)+'℃'],['投入水温',readable(waterTemp)+'℃'],['目標品温',readable(targetTemp)+'℃'],['氷温',iceTempLabel()]])],
       resultRows:[mkrow('計算結果',[['割水総量',numeral(total)+'L'],['投入する水',numeral(water)+'L'],['投入する氷',numeral(ice)+'kg'],['割水後概算数量',numeral(finalVol)+'L']])]});
   }

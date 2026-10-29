@@ -144,7 +144,12 @@
 
   function firstResults(record){
     const rows = flattenRows(record.resultRows).filter(row => row.value !== undefined && row.value !== null && row.value !== '');
-    return rows.slice(0, 2);
+    if(tool !== 'ice') return rows.slice(0, 2);
+    // 氷計算は、どの方式も水量と氷量を先に表示する（旧履歴も対象）。
+    const water = rows.find(row => /投入する水|すでにある水|水量/.test(row.label) && !/総量|必要汲水温度/.test(row.label));
+    const ice = rows.find(row => /投入する氷|必要な氷|氷量/.test(row.label));
+    const selected = [water,ice].filter(Boolean);
+    return selected.length === 2 ? selected : rows.slice(0,2);
   }
 
   function allLines(record){

@@ -8,7 +8,7 @@
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
   <title>氷・汲水温度調整 / 日本酒醸造 計算ツール</title>
   <link rel="stylesheet" href="./assets/common.css?v=20260516dark1">
-  <link rel="stylesheet" href="./assets/ice.css?v=20261029field1">
+  <link rel="stylesheet" href="./assets/ice.css?v=20261029audit2">
 </head>
 <body>
   <div class="tool-nav">
@@ -97,7 +97,7 @@
           <div class="ice-result-note" id="ice-result-note"></div>
           <details class="ice-math-details" id="ice-calculation-steps"><summary>電卓での計算式・途中計算を見る</summary><div id="ice-result-steps" class="ice-math-steps"></div></details>
         </section>
-        <div class="calc-help">数値を入力すると自動計算します。小数点以下は表示上2桁まで（計算途中では丸めません）。</div>
+        <div class="calc-help">数値を入力すると自動計算します。結果は小数点以下2桁表示。途中式は丸め前の数値で検算できます。</div>
         <section class="compact-tools-panel ice-action-panel" aria-label="保存と計算上の注意">
           <div class="inline-tools-title">計算結果の扱い</div>
           <p class="inline-tools-note">標準の氷0℃では、融解熱を水の約80℃分として計算します。水1L≒1kg、氷1kg≒融解後1Lとして扱う概算です。実作業では融解・混合後に品温と成分を実測してください。</p>
@@ -111,7 +111,7 @@
       </section>
     </div>
   </main>
-  <script src="./assets/ice.js?v=20261029field1"></script>
+  <script src="./assets/ice.js?v=20261029audit2"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>
