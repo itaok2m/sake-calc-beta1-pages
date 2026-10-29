@@ -45,14 +45,14 @@
           <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-alcohol-reset="0" type="button">入力値をリセット</button></div>
           <div class="group"><div class="group-title">添加前（現在）</div>
             <div class="alcohol-field-grid">
-              <label class="alcohol-field"><span>成分（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-0-current-component" inputmode="decimal" placeholder="例：13.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>成分（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-0-current-component" inputmode="decimal" placeholder="例：13.5" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
               <label class="alcohol-field"><span>数量（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-0-current-volume" inputmode="decimal" placeholder="例：300" step="0.1" type="number"><span class="iunit">L</span></div></label>
             </div>
           </div>
           <div class="group"><div class="group-title">添加するアルコール ／ 目標</div>
             <div class="alcohol-field-grid">
-              <label class="alcohol-field"><span>添加アルコール濃度</span><div class="alcohol-input-wrap"><input id="alcohol-0-add-component" inputmode="decimal" placeholder="例：95.0" step="0.1" type="number"><span class="iunit">%</span></div></label>
-              <label class="alcohol-field"><span>目標成分（添加後）</span><div class="alcohol-input-wrap"><input id="alcohol-0-target-component" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>添加アルコール濃度</span><div class="alcohol-input-wrap"><input id="alcohol-0-add-component" inputmode="decimal" placeholder="例：95.0" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>目標成分（添加後）</span><div class="alcohol-input-wrap"><input id="alcohol-0-target-component" inputmode="decimal" placeholder="例：15.5" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
             </div>
           </div>
           <div class="calc-help">自動更新</div>
@@ -68,14 +68,14 @@
           <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-alcohol-reset="1" type="button">入力値をリセット</button></div>
           <div class="group"><div class="group-title">添加前（現在）</div>
             <div class="alcohol-field-grid">
-              <label class="alcohol-field"><span>成分（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-1-current-component" inputmode="decimal" placeholder="例：13.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>成分（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-1-current-component" inputmode="decimal" placeholder="例：13.5" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
               <div class="alcohol-field is-readonly"><span>数量（現在）</span><span class="alcohol-hint">→ 計算で求まります</span></div>
             </div>
           </div>
           <div class="group"><div class="group-title">添加するアルコール ／ 目標</div>
             <div class="alcohol-field-grid">
-              <label class="alcohol-field"><span>添加アルコール濃度</span><div class="alcohol-input-wrap"><input id="alcohol-1-add-component" inputmode="decimal" placeholder="例：95.0" step="0.1" type="number"><span class="iunit">%</span></div></label>
-              <label class="alcohol-field"><span>目標成分（添加後）</span><div class="alcohol-input-wrap"><input id="alcohol-1-target-component" inputmode="decimal" placeholder="例：15.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>添加アルコール濃度</span><div class="alcohol-input-wrap"><input id="alcohol-1-add-component" inputmode="decimal" placeholder="例：95.0" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>目標成分（添加後）</span><div class="alcohol-input-wrap"><input id="alcohol-1-target-component" inputmode="decimal" placeholder="例：15.5" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
               <label class="alcohol-field"><span>目標数量（添加後）</span><div class="alcohol-input-wrap"><input id="alcohol-1-target-volume" inputmode="decimal" placeholder="例：320" step="0.1" type="number"><span class="iunit">L</span></div></label>
             </div>
           </div>
@@ -92,13 +92,13 @@
           <div class="field-reset-row"><button class="back-btn reset-btn inline-reset-btn" data-alcohol-reset="2" type="button">入力値をリセット</button></div>
           <div class="group"><div class="group-title">添加前（現在）</div>
             <div class="alcohol-field-grid">
-              <label class="alcohol-field"><span>成分（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-2-current-component" inputmode="decimal" placeholder="例：13.5" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>成分（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-2-current-component" inputmode="decimal" placeholder="例：13.5" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
               <label class="alcohol-field"><span>数量（現在）</span><div class="alcohol-input-wrap"><input id="alcohol-2-current-volume" inputmode="decimal" placeholder="例：300" step="0.1" type="number"><span class="iunit">L</span></div></label>
             </div>
           </div>
           <div class="group"><div class="group-title">添加するアルコール</div>
             <div class="alcohol-field-grid">
-              <label class="alcohol-field"><span>添加アルコール濃度</span><div class="alcohol-input-wrap"><input id="alcohol-2-add-component" inputmode="decimal" placeholder="例：95.0" step="0.1" type="number"><span class="iunit">%</span></div></label>
+              <label class="alcohol-field"><span>添加アルコール濃度</span><div class="alcohol-input-wrap"><input id="alcohol-2-add-component" inputmode="decimal" placeholder="例：95.0" step="0.1" min="0" max="100" type="number"><span class="iunit">%</span></div></label>
               <label class="alcohol-field"><span>添加量</span><div class="alcohol-input-wrap"><input id="alcohol-2-add-volume" inputmode="decimal" placeholder="例：20.0" step="0.1" type="number"><span class="iunit">L</span></div></label>
             </div>
           </div>
@@ -127,7 +127,7 @@
     </div>
   </main>
 
-  <script src="./assets/alcohol.js"></script>
+  <script src="./assets/alcohol.js?v=20261029guard3"></script>
   <script src="./assets/theme.js?v=20260516dark1" defer></script>
 </body>
 </html>

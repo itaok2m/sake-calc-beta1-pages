@@ -55,6 +55,15 @@
       return;
     }
 
+    // 入力事故の防止。四段仕込の55～60℃表など出力対象は変更しない。
+    if(waterKojiTemp < 0 || waterKojiTemp > 100){
+      result.hidden = true;
+      error.textContent = '水麹温度は0～100℃の範囲で入力してください。';
+      error.hidden = false;
+      saveInputs();
+      return;
+    }
+
     body.innerHTML = [18,19,20,21,22,23,24,25,26,27,28,29,30]
       .map((targetTemp) => buildRow(targetTemp, waterKojiTemp))
       .join('');

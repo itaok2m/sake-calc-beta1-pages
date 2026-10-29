@@ -155,12 +155,18 @@
     };
   }
 
+  // アルコール度数は体積百分率。どの方式でも現実に存在しない入力を計算へ渡さない。
+  function invalidAlcoholPercent(values){
+    return values.some(value => value < 0 || value > 100);
+  }
+
   function calcMode0(){
     const cc = readNumber('alcohol-0-current-component');
     const cv = readNumber('alcohol-0-current-volume');
     const ac = readNumber('alcohol-0-add-component');
     const tc = readNumber('alcohol-0-target-component');
     if([cc, cv, ac, tc].some(value => !Number.isFinite(value))) return clearResult(0);
+    if(invalidAlcoholPercent([cc, ac, tc])) return showError(0, 'アルコール度数・添加アルコール濃度は0～100％で入力してください。');
     if(cv <= 0) return showError(0, '数量は0より大きい値を入力してください。');
     if(ac <= tc) return showError(0, '添加アルコール濃度は目標成分より高い値を入力してください。');
     if(tc <= cc) return showError(0, '目標成分は現在成分より高い値を入力してください。');
@@ -177,6 +183,7 @@
     const tc = readNumber('alcohol-1-target-component');
     const tv = readNumber('alcohol-1-target-volume');
     if([cc, ac, tc, tv].some(value => !Number.isFinite(value))) return clearResult(1);
+    if(invalidAlcoholPercent([cc, ac, tc])) return showError(1, 'アルコール度数・添加アルコール濃度は0～100％で入力してください。');
     if(tv <= 0) return showError(1, '数量は0より大きい値を入力してください。');
     if(ac <= tc) return showError(1, '添加アルコール濃度は目標成分より高い値を入力してください。');
     if(ac <= cc) return showError(1, '添加アルコール濃度は現在成分より高い値を入力してください。');
@@ -194,6 +201,7 @@
     const ac = readNumber('alcohol-2-add-component');
     const av = readNumber('alcohol-2-add-volume');
     if([cc, cv, ac, av].some(value => !Number.isFinite(value))) return clearResult(2);
+    if(invalidAlcoholPercent([cc, ac])) return showError(2, 'アルコール度数・添加アルコール濃度は0～100％で入力してください。');
     if(cv <= 0 || av < 0) return showError(2, '数量に正しい数値を入力してください。');
     const tv = cv + av;
     if(tv <= 0) return showError(2, '添加後数量が0以下になりました。入力値を確認してください。');

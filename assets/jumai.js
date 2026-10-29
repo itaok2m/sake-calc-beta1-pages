@@ -49,6 +49,15 @@
       return;
     }
 
+    // 入力事故の防止。四段仕込の55～60℃表など出力対象は変更しない。
+    if(waterKojiTemp < 0 || waterKojiTemp > 100){
+      result.hidden = true;
+      error.textContent = '水麹温度は0～100℃の範囲で入力してください。';
+      error.hidden = false;
+      saveInputs();
+      return;
+    }
+
     let html = '';
     for(let targetTemp = 6.0; targetTemp <= 15.0001; targetTemp += 0.5){
       const steamedRiceTemp = (targetTemp - waterKojiTemp) * factor + waterKojiTemp;
