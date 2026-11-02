@@ -8,7 +8,7 @@
 <main class="koji"><div class="screen-lead"><h1>麹の盛り・出麹配分</h1><p>均等に盛り、出麹を白米の使用割合で取り分けます。</p></div>
 <form id="koji-form" novalidate>
 <section><h2>1. 白米量と使う箱数</h2><div class="fields"><label>白米総重量（kg）<input id="rice" type="number" inputmode="decimal" min="0" step="any" placeholder="例：100"></label><label>使用箱数<select id="boxes"><option value="">選択してください</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label></div><p class="note">吟の箱は全6箱。白米換算26.5kg／箱以下を目安に、実際の状態で箱数を選んでください。1回の白米量は150kgが運用の目安です。</p><div id="box-result" class="result" aria-live="polite"></div><p id="box-warning" class="warning" hidden></p></section>
-<section><h2>2. 盛りの均等分け</h2><p class="note">各箱へ同じ重さを先に盛った後、残った麹を量ります。容器の重さを除いた麹だけの実重量を入力してください。</p><div class="fields"><label>1箱へ先に盛った合計（kg）<input id="loaded" type="number" inputmode="decimal" min="0" step="any" placeholder="15kgを2回なら30"></label><label>残った麹の実重量（kg）<input id="remaining" type="number" inputmode="decimal" min="0" step="any" placeholder="例：10（残りなしは0）"></label></div><div id="mori-result" class="result" aria-live="polite"></div></section>
+<section><h2>2. 盛りの均等分け</h2><p class="note">各箱へ同じ重さを先に盛った後、残った麹を量ります。容器の重さを除いた麹だけの実重量を入力してください。追加量は、箱数と残りの重量だけで計算できます。</p><label>残った麹の実重量（kg）<input id="remaining" type="number" inputmode="decimal" min="0" step="any" placeholder="例：10（残りなしは0）"></label><div id="mori-result" class="result" aria-live="polite" style="font-size:1.35rem;font-weight:700"></div><p id="mori-formula" class="note"></p><details><summary>任意：盛り後の重量も確認する</summary><label>1箱へ先に盛った合計（kg・任意）<input id="loaded" type="number" inputmode="decimal" min="0" step="any" placeholder="15kgを2回なら30"></label><p id="mori-total" class="note" aria-live="polite"></p></details></section>
 <section><h2>3. 出麹の取り分け</h2><p class="note">出麹時に1箱だけ量り、他の箱も同じ重量として推定します。盛りの入力がなくても、白米量・箱数があれば計算できます。</p><label>代表1箱の出麹実重量（kg・容器を除く）<input id="sample" type="number" inputmode="decimal" min="0" step="any" placeholder="例：22"></label><h3>使用先の白米換算量（kg）</h3><div class="fields"><label>酛麹<input id="use-moto" type="number" inputmode="decimal" min="0" step="any" placeholder="使用しない場合は空欄または0"></label><label>添麹<input id="use-soe" type="number" inputmode="decimal" min="0" step="any" placeholder="使用しない場合は空欄または0"></label><label>仲麹<input id="use-naka" type="number" inputmode="decimal" min="0" step="any" placeholder="使用しない場合は空欄または0"></label><label>留麹<input id="use-tome" type="number" inputmode="decimal" min="0" step="any" placeholder="使用しない場合は空欄または0"></label></div><p id="allocation-status" class="note" aria-live="polite"></p><div id="dekoji-result" class="result" aria-live="polite"></div><p class="note">全箱の重量差は測定していないため、総重量・配分量は推定です。表示は小数第2位まで。最後の使用先で表示上の端数を調整します。</p></section>
 <button type="reset" class="back-btn">この画面の入力をリセット</button><p class="note">入力はこの画面を開いている間だけ保持します。閉じる・再読み込みで消えます。</p>
 <details><summary>計算式を見る</summary><p>1箱の白米換算＝白米総重量÷箱数<br>各箱への追加量＝残った麹重量÷箱数<br>盛り時の実総重量＝先に盛った1箱分×箱数＋残り<br>出麹の推定総重量＝代表1箱の実重量×箱数<br>使用先への配分＝出麹の推定総重量×使用先の白米量÷白米総重量</p></details></form></main>
@@ -29,8 +29,16 @@
   if(valid(r)&&r>150)warn.push('白米総量が運用目安の150kgを超えています。');
   if(valid(r)&&r>159)warn.push('6箱では26.5kg／箱以下にできません。');
   $('box-warning').hidden=!warn.length;show('box-warning',warn.join(' '));
-  show('mori-result','白米量・箱数と、先に盛った重量・残りの重量を入力してください（重量は0以上）。');
-  if(base&&valid(l,true)&&valid(rem,true))show('mori-result',`各箱へ追加：${fmt(rem/b)}kg ／ 追加後1箱：${fmt(l+rem/b)}kg ／ 盛り時の実総重量：${fmt(l*b+rem)}kg`);
+  const boxesOK=Number.isInteger(b)&&b>=1&&b<=6;
+  show('mori-result','箱数と残った麹の重量（0以上）を入力してください。');
+  show('mori-formula','');
+  show('mori-total','先に盛った1箱分の重量を入力すると、追加後の重量も確認できます。');
+  if(boxesOK&&valid(rem,true)){
+   show('mori-result',`各箱へ追加：${fmt(rem/b)}kg`);
+   show('mori-formula',`${fmt(rem)}kg ÷ ${b}箱 ＝ 1箱あたり${fmt(rem/b)}kg`);
+   if(valid(l,true))show('mori-total',`追加後1箱：${fmt(l+rem/b)}kg ／ 盛り時の実総重量：${fmt(l*b+rem)}kg`);
+   else if(l!==null)show('mori-total','先に盛った重量は0以上の数値で入力してください。');
+  } else show('mori-total','箱数と残った麹の重量を入力してください。');
   const ids=['moto','soe','naka','tome'], labels=['酛麹','添麹','仲麹','留麹'];
   const parts=ids.map(id=>read('use-'+id));const values=parts.map(n=>n===null?0:n);
   const partsOK=values.every(n=>valid(n,true)); const sum=values.reduce((a,n)=>a+n,0);
